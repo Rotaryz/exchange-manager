@@ -1,5 +1,5 @@
 ---
-to: "src/pages/<%= h.inflection.dasherize(name) %>/modules/<%= h.inflection.dasherize(name) %>.js"
+to: "src/pages/<%= h.inflection.dasherize(name)%>/modules/<%= h.inflection.dasherize(name.replace('_', '')) %>.js"
 ---
 export const state = {
   todo: true

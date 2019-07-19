@@ -6,7 +6,7 @@ export default [
   {
     path: '/home',
     name: 'home',
-    component: () => import('@pages/home/home'),
+    component: () => import('@pages/_basic-layout/_basic-layout'),
     children: [
       {
         path: 'test-page',
@@ -48,22 +48,3 @@ export default [
     redirect: '404'
   }
 ]
-
-// function lazyLoadView(AsyncView) {
-//   /** const AsyncHandler = () => ({
-//     component: AsyncView,
-//     loading: require('@pages/_loading/_loading').default,
-//     delay: 400,
-//     error: require('@pages/_timeout/_timeout').default,
-//     timeout: 10000
-//   })
-//
-//   return Promise.resolve({
-//     functional: true,
-//     render(h, {data, children}) {
-//       // 将属性和方法传递给所有展示组件
-//       return h(AsyncHandler, data, children)
-//     }
-//   }) **/
-//   return AsyncView
-// }
