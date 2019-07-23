@@ -8,7 +8,7 @@
 
 <script type="text/ecmascript-6">
   // import * as Helpers from './helpers'
-  // import API from '@api'
+  import API from '@api'
   const PAGE_NAME = 'BASIC_LAYOUT'
   const TITLE = 'home'
 
@@ -21,6 +21,17 @@
       return {
 
       }
+    },
+    created() {
+      let data = {hj: '123g'}
+      API.Global.getToken({
+        data,
+        doctor(res) {
+          console.log(res)
+        }
+      }).then(res => {
+        console.log(res)
+      })
     }
   }
 </script>
