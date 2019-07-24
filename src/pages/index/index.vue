@@ -2,7 +2,12 @@
   <div class="index">
     <navigation-menu></navigation-menu>
     <div class="main-container">
-
+      <div class="crumbs"></div>
+      <div class="container">
+        <div class="container-show">
+          <router-view></router-view>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,11 +40,61 @@
   .index
     width: 100vw
     height: 100vh
+    box-sizing: border-box
     background: $color-background
     overflow: hidden
-    display: flex
 
   .main-container
-    flex: 1
-    width: 0
+    display: flex
+    flex-direction: column
+    height: 100vh
+    box-sizing: border-box
+    .container
+      flex: 1
+      box-sizing: border-box
+      margin: 20px
+      overflow: auto
+      &::-webkit-scrollbar
+        width: 0
+        height: 0
+        transition: all 0.2s
+      &::-webkit-scrollbar-thumb
+        background-color: rgba(0, 0, 0, .06)
+        border-radius: 10px
+      &::-webkit-scrollbar-thumb:hover
+        background-color: rgba(0, 0, 0, .15)
+      &::-webkit-scrollbar-track
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, .06)
+        border-radius: 10px
+      &:hover
+        &::-webkit-scrollbar
+          transition: all 0.2s
+          width: 5px
+          height: 5px
+      .container-show
+        overflow-x: hidden
+        min-width: 1200px
+        min-height: 100%
+        box-sizing: border-box
+        &::-webkit-scrollbar
+          width: 0
+          height: 0
+          transition: all 0.2s
+        &::-webkit-scrollbar-thumb
+          background-color: rgba(0, 0, 0, .06)
+          border-radius: 10px
+        &::-webkit-scrollbar-thumb:hover
+          background-color: rgba(0, 0, 0, .15)
+        &::-webkit-scrollbar-track
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, .06)
+          border-radius: 10px
+        &:hover
+          &::-webkit-scrollbar
+            transition: all 0.2s
+            width: 5px
+            height: 8px
+    .crumbs
+      height: 50px
+      min-height: 50px
+      background: $color-white
 </style>

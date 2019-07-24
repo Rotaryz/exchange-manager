@@ -24,8 +24,8 @@
   @import "~nprogress/nprogress.css"
 
   #nprogress .bar
-    background: red !important
+    background: $color-main !important
 
   #nprogress .peg
-    box-shadow: 0 0 10px red, 0 0 5px red !important
+    box-shadow: 0 0 10px $color-main, 0 0 5px $color-main !important
 </style>
