@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="basic-layout">
-      basic-layout
+      basic-layout1222
     </div>
   </transition>
 </template>

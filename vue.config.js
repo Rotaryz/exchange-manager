@@ -1,10 +1,10 @@
 const appConfig = require('./src/app.config')
 const TerserPlugin = require('terser-webpack-plugin')
 
-let toBuild = process.argv.some(val => val === 'build')
+let builded = process.argv.some(val => val === 'build')
 let optimization = {}
 const splitChunks = {}
-if (toBuild){
+if (builded){
   splitChunks.cacheGroups = {
     vendors: {
       name: 'chunk-vendors',
@@ -58,15 +58,15 @@ module.exports = {
   },
   css: {
     // 是否使用css分离插件 ExtractTextPlugin
-    extract: toBuild,
+    extract: builded,
     // 开启 CSS source maps?
-    sourceMap: !toBuild,
+    sourceMap: !builded,
     // css预设器配置项
     loaderOptions: {},
     // 启用 CSS modules for all css / pre-processor files.
-    modules: !toBuild
+    modules: builded
   },
-  productionSourceMap: !toBuild,
+  productionSourceMap: !builded,
   devServer: {
     port: 3959,
     ...(process.env.VUE_APP_API
