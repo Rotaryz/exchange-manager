@@ -45,7 +45,7 @@ if (builded){
 
 module.exports = {
   // baseUrl: appConfig.routerMode === 'history' ? '/' : './',
-  baseUrl:'/',
+  // baseUrl:'/',
   configureWebpack: {
     name: appConfig.title,
     resolve: {
