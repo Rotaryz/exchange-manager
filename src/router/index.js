@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueMeta from 'vue-meta'
 import NProgress from 'nprogress/nprogress'
 import routes from './routes'
+import appConfig from '@src/app.config' // eslint-disable-next-line
 
 NProgress.configure({showSpinner: false})
 
@@ -13,7 +14,7 @@ Vue.use(VueMeta, {
 
 const router = new VueRouter({
   routes,
-  mode: 'history',
+  mode: appConfig.routerMode,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition

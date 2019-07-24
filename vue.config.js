@@ -44,7 +44,8 @@ if (builded){
 }
 
 module.exports = {
-  baseUrl: process.env.VUE_APP_ENV !== 'production' ? './' : '/',
+  // baseUrl: appConfig.routerMode === 'history' ? '/' : './',
+  baseUrl:'/',
   configureWebpack: {
     name: appConfig.title,
     resolve: {

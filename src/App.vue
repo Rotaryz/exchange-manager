@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import appConfig from '@src/app.config'
+  import appConfig from '@src/app.config' // eslint-disable-next-line
 
   export default {
     page: {
