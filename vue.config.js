@@ -57,9 +57,13 @@ module.exports = {
     return config
   },
   css: {
+    // 是否使用css分离插件 ExtractTextPlugin
+    extract: toBuild,
+    // 开启 CSS source maps?
     sourceMap: !toBuild,
-    extract: true,
+    // css预设器配置项
     loaderOptions: {},
+    // 启用 CSS modules for all css / pre-processor files.
     modules: !toBuild
   },
   productionSourceMap: !toBuild,
