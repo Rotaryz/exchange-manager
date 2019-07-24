@@ -1,14 +1,14 @@
 export default [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/index'
   },
+  // 首页
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('@pages/_basic-layout/_basic-layout'),
-    children: [
-    ]
+    path: '/index',
+    name: 'index',
+    component: () => import('@pages/index/index'),
+    children: []
   },
   {
     path: '/404',
