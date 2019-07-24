@@ -18,6 +18,7 @@ HTTP.setCallback({
   },
   // 请求拦截
   willRequest(request) {
+    request.url = resetUrl(request.url)
     return request
   },
   // 响应拦截
@@ -73,6 +74,20 @@ function errorCodeHandle(code) {
     default:
       break
   }
+}
+
+function resetUrl(url) {
+  const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+  if (IS_PRODUCTION) {
+    return url
+  }
+  let pathname = window.location.pathname
+  if (pathname && pathname.indexOf('/v') > -1) {
+    let version = pathname.substr(1)
+    url = url.split('api/').join(`${version}api/`)
+    return url
+  }
+  return url
 }
 
 /**
