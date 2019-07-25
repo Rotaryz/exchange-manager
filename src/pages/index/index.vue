@@ -2,7 +2,7 @@
   <div class="index">
     <navigation-menu></navigation-menu>
     <div class="main-container">
-      <div class="crumbs"></div>
+      <top-bar></top-bar>
       <div class="container">
         <div class="container-show">
           <router-view></router-view>
@@ -16,6 +16,7 @@
   // import * as Helpers from './helpers'
   // import API from '@api'
   import NavigationMenu from './navigation-menu/navigation-menu'
+  import TopBar from './top-bar/top-bar'
 
   const PAGE_NAME = 'INDEX'
   const TITLE = '首页'
@@ -26,7 +27,8 @@
       title: TITLE
     },
     components: {
-      NavigationMenu
+      NavigationMenu,
+      TopBar
     },
     data() {
       return {}

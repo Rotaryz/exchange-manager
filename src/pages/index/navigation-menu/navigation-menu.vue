@@ -5,7 +5,7 @@
         <img src="./pic-logo@2x.png" class="logo-img">
       </div>
       <div class="first">
-        <div v-for="(item, index) in menuData" :key="index" :class="{'first-item-active': menuIndex === index}" class="first-item">
+        <div v-for="(item, index) in menuData" :key="index" :class="{'first-item-active': menuIndex === index}" class="first-item hand" @click="changMenu(index)">
           <img :src="item.icon" class="first-img">
           <p class="first-title">{{item.title}}</p>
         </div>
@@ -17,7 +17,7 @@
         <div class="second-item">
           <p class="second-title">{{item.text}}</p>
           <div v-for="(child, i) in item.children" :key="i" class="second-link hand" @click="setChildActive(child)">
-            <span v-if="child.meta" :class="child | childrenActive" class="second-link-content">{{child.meta.title}}</span>
+            <router-link v-if="child.meta" tag="span" :to="child.path" :class="{'router-link-active': ''}" class="second-link-content">{{child.meta.title}}</router-link>
           </div>
         </div>
       </div>
@@ -60,10 +60,13 @@
         if (newVal.fullPath === oldVal.fullPath) {
           return
         }
-        this._handleNavList()
+        let url = newVal.fullPath
+        let type = (url.slice(1, -1)).split('/')[0]
+        this._infoFirst(type)
       },
       menuIndex(news) {
         this.navList = JSON.parse(JSON.stringify(this.menuData[news].children))
+        this.$router.push(this.navList[0].children[0].path)
       }
     },
     created() {
@@ -72,58 +75,39 @@
       this._infoFirst(type)
     },
     methods: {
-      _infoFirst(type) {
-        // this.menuIndex = this.menuData.findIndex((item) => item.type === type)
-        // this.navList = JSON.parse(JSON.stringify(this.menuData[this.menuIndex].children))
+      changMenu(index) {
+        if (index === this.menuIndex) return
+        this.menuIndex = index
       },
+      _infoFirst(type) {
+        this.menuIndex = this.menuData.findIndex((item) => item.type === type)
+        this.navList = JSON.parse(JSON.stringify(this.menuData[this.menuIndex].children))
+      },
+      // 格式化路由数据
       createMenuData(routes) {
         let r = routes.find((r) => r.name === 'index')
         let routerArr = [...r.children]
         let menu = []
         routerArr.forEach((item) => {
           if (item.meta && item.meta.type && item.meta.type === 'first_menu') {
-            console.log(item)
-            let children = []
-            // item.children.forEach((items) => {
-            //   if (items.meta.type && items.meta.type === 'sec-menu') {
-            //     children.push(items)
-            //   }
-            // })
-            console.log(children)
-            let obj = Object.assign({}, item.meta, {children: children, type: item.name})
+            let child = item.children.map((sec) => {
+              let secItem = JSON.parse(JSON.stringify(sec))
+              if (secItem.text) {
+                let children = []
+                secItem.children.forEach((third) => {
+                  if (third.meta && third.meta.type === 'sec-menu') {
+                    children.push(third)
+                  }
+                })
+                secItem.children = JSON.parse(JSON.stringify(children))
+              }
+              return secItem
+            })
+            let obj = Object.assign({}, item.meta, {children: child || [], type: item.name})
             menu.push(obj)
           }
         })
         return menu
-      },
-      // 监听页面变化
-      _handleNavList() {
-        // console.log('fdgd')
-        // this.$route.meta.resetHooks && this['ADD_HOOKS'](this.$route.meta.resetHooks)
-        // let currentPath = this.$route.fullPath
-        // let currentNav
-        // this.firstMenu.forEach((item, idx) => {
-        //   if (currentPath.includes(item.url)) {
-        //     currentNav = item.children
-        //     this.firstMenu[idx].isLight = true
-        //     this.firstMenu[idx].children[0].children[0].isLight = true
-        //   } else {
-        //     this.firstMenu[idx].isLight = false
-        //   }
-        //   item.children && item.children.forEach((it, id) => {
-        //     it.children && it.children.forEach((child, i) => {
-        //       if (currentPath.includes(child.front_url)) {
-        //         currentNav = item.children
-        //         this.firstMenu[idx].isLight = true
-        //         this.firstMenu[idx].children[id].children[i].isLight = true
-        //       } else {
-        //         this.firstMenu[idx].children[id].children[i].isLight = false
-        //       }
-        //     })
-        //   })
-        // })
-        // this.navList = currentNav || []
-        // this.$forceUpdate()
       },
       setChildActive() {
       }
@@ -140,6 +124,7 @@
     display: flex
     float: left
     clear-float()
+    user-select: none
 
   .nav-left
     width: 90px
@@ -218,19 +203,16 @@
       line-height: 24px
       color: $color-text-main
       font-size: $font-size-14
-
+      margin-bottom: 12px
       &:hover
         color: $color-main
 
-    .second-link-active
-      background: rgba(79, 189, 102, 0.17)
-      color: $color-main
-      padding: 5px 10px
-      background: rgba(76, 132, 255, 0.1)
-      border-radius: 22px
     .second-link-content
       margin-left: -10px
-      border-radius: 2px
       color: #4E5983
       padding: 5px 10px
+      border-radius: 22px
+    .router-link-active
+      background: rgba(76, 132, 255, 0.1)
+      color: $color-main
 </style>
