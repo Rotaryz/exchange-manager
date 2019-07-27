@@ -1,3 +1,14 @@
+.table
+  display: flex
+  flex-direction: column
+
+.table-content
+  display: flex
+  padding: 0 20px
+  background: $color-white
+  flex-direction: column
+  flex: 1
+
 .tab-header
   height: 80px
   display: flex
@@ -8,7 +19,9 @@
     margin-right: 10px
 
 .big-list
-  max-height: 645px
+  flex: 1
+  border-radius: 4px
+  box-sizing: border-box
   background: $color-white
   overflow: visible
   display: flex
@@ -19,7 +32,7 @@
   min-height: 45px
   font-family: $font-family-regular
   color: $color-text-main
-  background: #F5F7FA
+  background: #F4F8F9
   &:after
     content: ""
     pointer-events: none // 解决iphone上的点击无效Bug
@@ -85,11 +98,11 @@
   .list-content
     font-family: $font-family-regular
     color: $color-text-main
-    height: 60px
+    height: 65px
     &:nth-child(2n)
-      background: #F5F7FA
+      background: #F4F8F9
     &:hover
-      background: #F7FAF5
+      background: #E8F4F9
     .list-item
       no-wrap()
       font-size: $font-size-14
@@ -119,14 +132,16 @@
       align-items: center
 
 .pagination-box
-  height: 60px
+  height: 66px
   align-items: center
   display: flex
 
 .down-content
-  padding: 0 20px
   box-sizing: border-box
-  min-height: 72px
+  border: 0.5px solid $color-line
+  border-radius: 4px
+  padding: 0 20px
+  min-height: 80px
   background: $color-white
   display: flex
   align-items: center
@@ -213,3 +228,28 @@
     cursor: not-allowed
     background: $color-line
     color: $color-text-assist
+
+// 标题
+.identification
+  background: $color-white
+  height: 72px
+  display: flex
+  align-items: center
+  justify-content: space-between
+  box-sizing: border-box
+  .identification-page
+    display: flex
+    align-items: center
+  .identification-icon
+    width: 14px
+    height: 14px
+    margin-right: 6px
+  .identification-name
+    line-height: 1
+    white-space: nowrap
+    font-size: $font-size-16
+    font-family: $font-family-regular
+    color: $color-text-main
+
+.function-btn
+  display: flex

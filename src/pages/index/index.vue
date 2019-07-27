@@ -57,8 +57,8 @@
       margin: 20px
       overflow: auto
       &::-webkit-scrollbar
-        width: 0
-        height: 0
+        width: 5px
+        height: 8px
         transition: all 0.2s
       &::-webkit-scrollbar-thumb
         background-color: rgba(0, 0, 0, .06)
@@ -75,12 +75,13 @@
           height: 5px
       .container-show
         overflow-x: hidden
-        min-width: 1200px
+        min-width: 1000px
         min-height: 100%
         box-sizing: border-box
+        display: flex
         &::-webkit-scrollbar
-          width: 0
-          height: 0
+          width: 5px
+          height: 8px
           transition: all 0.2s
         &::-webkit-scrollbar-thumb
           background-color: rgba(0, 0, 0, .06)

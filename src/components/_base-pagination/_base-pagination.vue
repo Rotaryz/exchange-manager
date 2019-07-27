@@ -73,7 +73,7 @@
       total: {
         // 当前页面
         type: Number,
-        default: 0
+        default: 1
       }
     },
     data() {

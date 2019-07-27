@@ -41,7 +41,8 @@ export default [
                 meta: {
                   type: '',
                   title: '编辑商品',
-                  crumbs: ['商品列表', '新建商品']
+                  variableIndex: 1,
+                  crumbs: ['商品列表', '商品']
                 }
               }
             ]

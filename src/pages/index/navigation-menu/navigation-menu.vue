@@ -154,7 +154,12 @@
         font-size: $font-size-12
         color: $color-white
     .first-item-active
+      position: relative
       background: $color-main
+      &:after
+        content: ''
+        col-center()
+        border: 6px soolid $color-white
 
   .nav-right
     flex: 1
@@ -162,8 +167,9 @@
     background: $color-white
     border-right-1px($color-line)
     &::-webkit-scrollbar
-      width: 0
-      height: 0
+      width: 6px
+      height: 8px
+      opacity: 0
       transition: all 0.2s
     &::-webkit-scrollbar-thumb
       background-color: rgba(0, 0, 0, .05)
@@ -176,6 +182,7 @@
     &:hover
       &::-webkit-scrollbar
         transition: all 0.2s
+        opacity: 1
         width: 6px
         height: 8px
 
