@@ -1,16 +1,15 @@
 <template>
-  <div class="product-list normal-box table">
+  <div class="customer-list normal-box table">
     <div v-for="i in 1" :key="i" class="down-content">
       <base-search></base-search>
     </div>
     <div class="table-content">
       <div class="identification">
         <div class="identification-page">
-          <img src="./icon-product_list@2x.png" class="identification-icon">
-          <p class="identification-name">商品列表</p>
+          <img src="./icon-customer_list@2x.png" class="identification-icon">
+          <p class="identification-name">客户列表</p>
         </div>
         <div class="function-btn">
-          <router-link tag="div" to="edit-product" append class="btn-main">新建商品<span class="add-icon"></span></router-link>
         </div>
       </div>
       <div class="big-list">
@@ -30,20 +29,24 @@
         </div>
       </div>
     </div>
+    <default-confirm></default-confirm>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-
+  import DefaultConfirm from '@components/default-confirm/default-confirm'
   // import * as Helpers from './helpers'
   // import API from '@api'
-  const PAGE_NAME = 'PRODUCT_LIST'
-  const TITLE = '商品列表'
+  const PAGE_NAME = 'CUSTOMER_LIST'
+  const TITLE = '客户列表'
 
   export default {
     name: PAGE_NAME,
     page: {
       title: TITLE
+    },
+    components: {
+      DefaultConfirm
     },
     data() {
       return {}
@@ -54,6 +57,6 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
-  .product-list
+  .customer-list
     width: 100%
 </style>
