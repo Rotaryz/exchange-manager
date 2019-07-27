@@ -57,9 +57,9 @@
         title: ''
       }
     },
-    mounted() {
-      this.$refs.modal.showModal()
-    },
+    // mounted() {
+    //   this.$refs.modal.showModal()
+    // },
     methods: {
       show(text, title) {
         if (!text && !title) return
