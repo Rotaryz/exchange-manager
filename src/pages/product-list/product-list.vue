@@ -11,7 +11,7 @@
 
     </base-form-item>
     <div>
-      <base-button  addIcon @click="getValue">get</base-button>
+      <base-button addIcon @click="getValue">get</base-button>
       <base-button type="primary" disable plain @click="getValue">get</base-button>
     </div>
     <button>9999</button>
@@ -24,8 +24,7 @@
         <div class="function-btn">
           <router-link tag="div" to="edit-product" append>
             <base-button type="primary" plain addIcon>新建商品</base-button>
-           </router-link>
-          <!-- 新建商品<span class="add-icon"></span>-->
+          </router-link>
         </div>
       </div>
       <div class="big-list">
@@ -61,12 +60,12 @@
     },
     data() {
       return {
-        selectId:'',
+        selectId: '',
         inputValue: '1122',
-        arr:[{id:111,label:'ajsdf'}]
+        arr: [{id: 111, label: 'ajsdf'}]
       }
     },
-    methods:{
+    methods: {
       getValue() {
         console.log(this.inputValue)
       }
