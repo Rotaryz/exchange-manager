@@ -22,7 +22,10 @@
           <p class="identification-name">商品列表</p>
         </div>
         <div class="function-btn">
-          <router-link tag="div" to="edit-product" append class="btn-main">新建商品<span class="add-icon"></span></router-link>
+          <router-link tag="div" to="edit-product" append>
+            <base-button type="primary" plain addIcon>新建商品</base-button>
+           </router-link>
+          <!-- 新建商品<span class="add-icon"></span>-->
         </div>
       </div>
       <div class="big-list">
