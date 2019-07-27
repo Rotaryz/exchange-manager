@@ -1,8 +1,16 @@
 <template>
   <transition name="fade">
-    <section v-show="isShow" :style="styles" class="default-modal">
-      <div :class="showActive ? 'model-active' : 'model-un-active'">
-        <slot name="content"></slot>
+    <section v-show="visible" class="default-modal__wrap">
+      <div :class="[showActive ? 'model-active' : 'model-un-active','default-modal']" :style="{height:height,top:top}">
+        <div v-if="title" class="modal-title">
+          <span class="text">{{title}}</span>
+          <span v-if="showClose" class="handle-close-icon" @click="hide"></span></div>
+        <div v-if="$slots.default" class="modal-body">
+          <slot></slot>
+        </div>
+        <div v-if="$slots.footer" class="modal-footer">
+          <slot name="footer"></slot>
+        </div>
       </div>
     </section>
   </transition>
@@ -14,32 +22,59 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      top: {
+        type: String,
+        default: ''
+      },
+      height: {
+        type: String,
+        default: ''
+      },
+      showClose: { // 可sync
+        type: Boolean,
+        default: true
+      },
+      title: { // 可sync
+        type: String,
+        default: ''
+      },
+      visible: { // 可sync
+        type: Boolean,
+        default: false
+      },
       styles: {
         type: String,
         default: ''
+      },
+      beforeClose: {
+        type: Function,
+        default: function (done) {
+          done()
+        }
       }
     },
     data() {
       return {
         showActive: false,
-        isShow: false
       }
     },
     watch: {
-      $route() {
-        this.isShow = false
+      showActive() {
+        return this.visible
       }
     },
     methods: {
       showModal() {
-        this.isShow = true
-        this.showActive = true
+        this.$emit('update:visible', true)
+      },
+      hide() {
+        this.beforeClose(this.hideModal)
       },
       hideModal() {
         setTimeout(() => {
-          this.isShow = false
+          this.$emit('update:visible', false)
+          this.$emit('change-visible', false)
         }, 100)
-        this.showActive = false
       }
     }
   }
@@ -48,7 +83,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   $menu-width = 200px
   @import "~@design"
-  .default-modal
+  .default-modal__wrap
     position: fixed
     background: rgba(36, 41, 59, 0.5)
     top: 0
@@ -59,6 +94,42 @@
     layout()
     justify-content: center
     align-items: center
+
+    .default-modal
+      min-width: 500px
+      min-height: 200px
+      max-height: 100%
+      box-shadow: 0 0 5px 0 $color-text-main
+      border-radius: 3px
+      background-color $color-white
+      display flex
+      flex-direction column
+
+    .modal-title
+      padding: 22px 20px
+      color: $color-text-main
+      font-size: $font-size-16
+      flex-shrink 0
+      display flex
+      justify-content space-between
+
+      .text
+        flex: 1
+
+      .handle-close-icon
+        width: 10px
+        height: @width
+        icon-image(icon-close)
+
+    .modal-body
+      flex: 1
+      overflow auto
+      padding: 0 20px
+      scroll-opacity(5px, 5px, rgba(0, 0, 0, .15), rgba(0, 0, 0, .15))
+
+    .modal-footer
+      flex-shrink 0
+      padding: 20px
 
   .model-active
     box-shadow: 0 0 5px 0 #4E5983

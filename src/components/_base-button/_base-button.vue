@@ -1,6 +1,7 @@
 <template>
   <button class="base-button"
           :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
+          @click="$emit('click',$event)"
   >
     <slot></slot>
     <span v-if="addIcon" class="is-add"></span>
@@ -14,26 +15,25 @@
     name: COMPONENT_NAME,
     props: {
       addIcon: {
-        type:[Boolean,String],
+        type: [Boolean, String],
         default: false,
       },
       size: {
-        type:String,
-        default: '', // small middle big
-        require: true
+        type: String,
+        default: 'middle', // small middle big
       },
       type: {
-        type:String,
+        type: String,
         default: 'default', // primary default
         require: true
       },
       plain: {
-        type:[Boolean,String],
+        type: [Boolean, String],
         default: '', // 镂空
         require: false
       },
-      disable:{
-        type:[Boolean,String],
+      disable: {
+        type: [Boolean, String],
         default: false,
       }
     },
@@ -60,13 +60,15 @@
     transition: .1s
     user-select: none
     padding: 0px 12px
-    min-width:80px
+    min-width: 80px
+
     .is-add
-      display:inline-block
+      display: inline-block
       position: relative
       width: 8px
       height: 8px
-      margin-left:3px
+      margin-left: 3px
+
       &.is-add:before
       &.is-add:after
         content: ''
@@ -75,60 +77,72 @@
         transition: all 0.3s
         top: 50%
         transform translateY(-50%)
+
       &.is-add:before
-        right:0
+        right: 0
         width: 8px
         height: 2px
+
       &.is-add:after
-        right:3px
+        right: 3px
         width: 2px
         height: 8px
+
     &:hover .is-add
       &.is-add:before
       &.is-add:after
         background: $color-white
-  &.base-button--small
-      height: 28px
-      line-height 28px
-      min-width:50px
-    &.base-button--middle
-      height: 32px
-      line-height 32px
-      min-width:80px
-    &.base-button--big
-      height: 42px
-      line-height 42px
-      min-width:80px
-    &.base-button--default
-      border: 1px solid $color-btn-border
-      background-color $color-white
-      color: $color-text-main
-      &:hover
-        color: $color-text-sub
-        border-color: $color-text-sub
 
-    &.base-button--primary
-      background: $color-main
-      color: $color-white
-    &.is-plain
-      background:$color-white
-      border: 1px solid $color-main
-      color: $color-main
-      &:hover
-        color: $color-white
-        background:$color-main
-        border-color: $color-main
-      &.disable
-        cursor: not-allowed
-        background:$color-disable
-        border: 1px solid $color-border
-        color:  $color-text-disable
+  &.base-button--small
+    height: 28px
+    line-height 28px
+    min-width: 50px
+
+  &.base-button--middle
+    height: 32px
+    line-height 32px
+    min-width: 80px
+
+  &.base-button--big
+    height: 42px
+    line-height 42px
+    min-width: 80px
+
+  &.base-button--default
+    border: 1px solid $color-btn-border
+    background-color $color-white
+    color: $color-text-main
+
     &:hover
-      opacity: 0.8
+      color: $color-text-sub
+      border-color: $color-text-sub
+
+  &.base-button--primary
+    background: $color-main
+    color: $color-white
+
+  &.is-plain
+    background: $color-white
+    border: 1px solid $color-main
+    color: $color-main
+
+    &:hover
+      color: $color-white
+      background: $color-main
+      border-color: $color-main
 
     &.disable
       cursor: not-allowed
-      background:$color-disable
+      background: $color-disable
       border: 1px solid $color-border
-      color:  $color-text-disable
+      color: $color-text-disable
+
+  &:hover
+    opacity: 0.8
+
+  &.disable
+    cursor: not-allowed
+    background: $color-disable
+    border: 1px solid $color-border
+    color: $color-text-disable
 </style>
