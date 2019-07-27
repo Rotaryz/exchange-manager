@@ -103,5 +103,11 @@
     padding 14px
     min-height: 93px
     resize none
-
+  input::-webkit-input-placeholder
+    color: $color-text-sub
+  input:disabled
+    background: #f9f9f9
+    color: $color-text-assist
+  textarea::-webkit-input-placeholder
+    color: $color-text-sub
 </style>
