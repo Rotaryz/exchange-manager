@@ -50,7 +50,7 @@
   @import "~@design"
   .default-modal
     position: fixed
-    background: rgba(36,41,59,0.5)
+    background: rgba(36, 41, 59, 0.5)
     top: 0
     bottom: 0
     right: 0
@@ -61,6 +61,8 @@
     align-items: center
 
   .model-active
+    box-shadow: 0 0 5px 0 #4E5983
+    border-radius: 3px
     position: relative
     animation: layerFadeIn .3s
 

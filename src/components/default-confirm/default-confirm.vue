@@ -90,26 +90,12 @@
     height: 185px
     background: #fff
     border-radius: 3px
-    box-shadow: 0 8px 14px 0 rgba(12, 6, 14, 0.08)
     text-align: center
     padding: 0 20px
     box-sizing: border-box
     position: relative
-    .title-box
-      display: flex
-      box-sizing: border-box
-      padding: 23px 0
-      align-items: center
-      justify-content: space-between
-      .title
-        font-size: $font-size-16
-        font-family: $font-family-medium
-        line-height: 1
-        color: $color-text-main
-      .close
-        width: 10px
-        height: @width
-        icon-image('icon-close')
+    .close
+      icon-image('icon-close')
     .text
       margin-top: 7px
       font-size: $font-size-16
