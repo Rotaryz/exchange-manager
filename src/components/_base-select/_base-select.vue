@@ -1,8 +1,9 @@
 <template>
   <div class="base-select admin-select-box input-height-item"
        :class="[{'active': visible}, {'focus-light':!disabled}]"
-       :style="{'min-width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
-       @click.stop="selectType">
+       :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
+       @click.stop="selectType"
+  >
     <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]">{{valueLabel ? valueLabel : defaultLabel}}</div>
     <div v-else class="placeholder-text">{{placeholder}}</div>
     <input :value="valueLabel"
