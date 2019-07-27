@@ -3,6 +3,14 @@
     <div v-for="i in 1" :key="i" class="down-content">
       <base-search></base-search>
     </div>
+    <base-input v-model="inputValue" placeholder="safdsaf ;fk"></base-input>
+    <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
+    <base-select :data="arr" :value.sync="selectId"></base-select>
+    <base-form-item label="我说的司法" labelHeight="50px" :inline="true" :required="true" verticalAlign="center">
+      <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
+
+    </base-form-item>
+    <div @click="getValue">get</div>
     <div class="table-content">
       <div class="identification">
         <div class="identification-page">
@@ -46,8 +54,18 @@
       title: TITLE
     },
     data() {
-      return {}
+      return {
+        selectId:'',
+        inputValue: '1122',
+        arr:[{id:111,label:'ajsdf'}]
+      }
+    },
+    methods:{
+      getValue() {
+        console.log(this.inputValue)
+      }
     }
+
   }
 </script>
 
