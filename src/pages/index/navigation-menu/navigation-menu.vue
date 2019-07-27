@@ -17,7 +17,7 @@
         <div class="second-item">
           <p class="second-title">{{item.text}}</p>
           <div v-for="(child, i) in item.children" :key="i" class="second-link hand" @click="setChildActive(child)">
-            <router-link v-if="child.meta" tag="span" :to="child.path" :class="{'router-link-active': ''}" class="second-link-content">{{child.meta.title}}</router-link>
+            <router-link v-if="child.meta" tag="span" :to="child.path" class="second-link-content">{{child.meta.title}}</router-link>
           </div>
         </div>
       </div>
@@ -159,7 +159,11 @@
       &:after
         content: ''
         col-center()
-        border: 6px soolid $color-white
+        right: 0
+        border: 6px solid $color-white
+        border-left: 6px solid transparent
+        border-top: 6px solid transparent
+        border-bottom: 6px solid transparent
 
   .nav-right
     flex: 1

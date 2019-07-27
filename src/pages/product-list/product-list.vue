@@ -48,6 +48,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+
   // import * as Helpers from './helpers'
   // import API from '@api'
   const PAGE_NAME = 'PRODUCT_LIST'

@@ -49,6 +49,39 @@ export default [
 
           }
         ],
+      },
+      // 客户管理
+      {
+        path: '/client',
+        name: 'client',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '客户管理',
+          icon: require('./icon-client@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+            {
+            path: 'customer',
+            name: 'customer',
+            text: '客户',
+            component: {render: h => h('router-view')},
+            children: [
+              // 客户列表
+              {
+                path: '/client/customer/customer-list',
+                name: 'customer-list',
+                component: () => import('@pages/customer-list/customer-list'),
+                meta: {
+                  title: '客户列表',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['客户列表']
+                },
+              }
+            ]
+          }
+        ],
       }
     ]
   },
