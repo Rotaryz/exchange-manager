@@ -83,6 +83,10 @@
         right:3px
         width: 2px
         height: 8px
+    &:hover .is-add
+      &.is-add:before
+      &.is-add:after
+        background: $color-white
   &.base-button--small
       height: 28px
       line-height 28px
