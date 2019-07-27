@@ -25,9 +25,9 @@
         type: String,
         default: '客户昵称/客户手机号'
       },
-      infoText: {
+      defaultValue: {
         // 输入框值
-        type: String,
+        type: [String,Number],
         default: ''
       },
       width: {
@@ -48,13 +48,10 @@
     },
     data() {
       return {
-        searchText: this.infoText
+        searchText: this.defaultValue
       }
     },
     methods: {
-      infoTextMethods(keyword = '') {
-        this.searchText = keyword
-      },
       _search() {
         this.$emit('search', this.searchText)
       },
@@ -65,6 +62,10 @@
       },
       _setText(text) {
         this.searchText = text || ''
+      },
+      // 重置 表单 还原默认值
+      _reset(){
+        this.searchText =this.defaultValue
       }
     }
   }
