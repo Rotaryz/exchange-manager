@@ -14,8 +14,12 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      required: {
+        default: true,
+        type: Boolean
+      },
       inline:{
-        default: false,
+        default: true,
         type: Boolean
       },
       label: {
@@ -41,12 +45,7 @@
       labelMargin:{
         default: '',
         type: String
-      },
-      required: {
-        default: false,
-        type: Boolean
-      },
-
+      }
     },
     data() {
       return {}

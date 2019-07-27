@@ -10,7 +10,11 @@
       <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
 
     </base-form-item>
-    <div @click="getValue">get</div>
+    <div>
+      <base-button  addIcon @click="getValue">get</base-button>
+      <base-button type="primary" disable plain @click="getValue">get</base-button>
+    </div>
+    <button>9999</button>
     <div class="table-content">
       <div class="identification">
         <div class="identification-page">

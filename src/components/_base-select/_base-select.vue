@@ -1,6 +1,6 @@
 <template>
-  <div class="base-select admin-select-box input-height-item"
-       :class="[{'active': visible}, {'focus-light':!disabled}]"
+  <div class="base-select"
+       :class="[{'active': visible}, {'disabled':disabled}]"
        :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
        @click.stop="selectType"
   >
@@ -10,7 +10,7 @@
            :placeholder="placeholder"
            type="text"
            disabled="true"
-           class="input-item"
+           class="input-item-input"
            style="visibility: hidden"
            @click.stop="selectType"
     >
@@ -82,8 +82,8 @@
       },
       // 每一行宽度
       width: {
-        type: Number,
-        default: 102
+        type: [Number,String],
+        default: ''
       },
       // 显示选中input的高度
       height: {
@@ -134,7 +134,7 @@
         this.visible = false
         this.showHover = false
         let res = this.valueKey ? value[this.valueKey] : value
-        this.$emit('update:value',res)
+        this.$emit('update:value', res)
         this.$emit('input', res)
         this.$emit('change', res)
       }
@@ -146,8 +146,6 @@
   @import "~@design"
 
   .base-select
-    display: flex
-    align-items: center
     position: relative
     background-color $color-white
     border: 0.5px solid $color-border
@@ -155,27 +153,27 @@
     font-size $font-size-14
     border-radius: 2px
     white-space: nowrap
-    font-size: $font-size-12
-    position: relative
     box-sizing: border-box
     transition: all 0.2s
-    display: flex
-    justify-content: center
-    width:200px
-    &:hover .focus-light
+    width: 200px
+
+    &:hover
       border-color: $color-border-hover
+
     &.active
-      border-color: $color-main !important
+      border-color: $color-main
       color: $color-text-main
+    &.disabled
+      border-color: $color-disable
+      cursor not-allowed
     .input-item
       width: 100%
       height: 100%
-      border: 0px solid #ccc
       color: #333333
-      background #fff
-
-      &.disabled
-        cursor not-allowed
+    .input-item-input
+      width:0px
+      height:0px
+      visibility hidden
     .arrow-icon
       width: 8px
       height: @width
@@ -238,7 +236,6 @@
         &:hover
         &.active
           color: $color-main
-
 
 
 </style>
