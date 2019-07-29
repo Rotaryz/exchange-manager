@@ -1,10 +1,10 @@
 <template>
-  <div class="base-select hand"
-       :class="[{'active': visible}, {'disabled':disabled}]"
+  <div class="base-select"
+       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size]"
        :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
        @click.stop="selectType"
   >
-    <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]" class="placeholder-text">{{valueLabel ? valueLabel : defaultLabel}}</div>
+    <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]">{{valueLabel ? valueLabel : defaultLabel}}</div>
     <div v-else class="placeholder-text">{{placeholder}}</div>
     <input :value="valueLabel"
            :placeholder="placeholder"
@@ -14,7 +14,8 @@
            style="visibility: hidden"
            @click.stop="selectType"
     >
-    <img v-if="!disabled" src="./icon-pull_down@2x.png" class="arrow-icon" :class="{'active': visible}">
+    <!-- src="./icon-pull_down@2x.png"-->
+    <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
     <transition name="fade">
       <ul v-show="visible" class="select-child" :style="{top: (height - 4) + 'px'}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
@@ -34,6 +35,10 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
+      size:{
+        default: 'middle', // middle small big
+        type: String
+      },
       // 选中的值
       value: {
         type: [String, Object, Boolean, Number],
@@ -132,7 +137,6 @@
       },
       setValue(value, index) {
         this.visible = false
-        this.showHover = false
         let res = this.valueKey ? value[this.valueKey] : value
         this.$emit('update:value', res)
         this.$emit('input', res)
@@ -155,8 +159,17 @@
     white-space: nowrap
     box-sizing: border-box
     transition: all 0.2s
-    width: 200px
+    &.base-select--middle
+      height: 43px
+      min-width:200px
 
+    &.base-select--small
+      height: 31px
+      min-width:120px
+
+    &.base-select--big
+      height: 59px
+      min-width:360px
     &:hover
       border-color: $color-border-hover
 
@@ -175,14 +188,17 @@
       height: 0px
       visibility hidden
     .arrow-icon
-      width: 8px
-      height: @width
-      col-center()
-      right: 10px
+      position:absolute
+      width:0
+      height:0
+      border-top:5px solid $color-text-assist
+      border-left:4px solid transparent
+      border-right:4px solid transparent
+      right:10px
+      top:50%
       transform-origin: 50% 0
-      transform: rotate(0deg) translateY(-50%)
+      transform translateY(-50%)
       transition: transform 0.3s
-
       &.active
         transform-origin: 50% 0
         transform: rotate(180deg) translateY(-50%)

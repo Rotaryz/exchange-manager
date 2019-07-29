@@ -1,53 +1,20 @@
 <template>
   <div class="product-list normal-box table">
-    <div v-for="i in 1" :key="i" class="down-content">
-      <base-search></base-search>
-    </div>
-    <base-input v-model="inputValue" placeholder="safdsaf ;fk"></base-input>
-    <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
-    <base-select :data="arr" :value.sync="selectId"></base-select>
-    <base-form-item label="我说的司法" labelHeight="50px" :inline="true" :required="true" verticalAlign="center"
-                    @click="getValue"
-    >
-      <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
-    </base-form-item>
-    <div>
-      <base-button @click="getValue">get1111</base-button>
-      <base-button type="primary" disable plain @click="getValue">get222</base-button>
-    </div>
-    <button>9999</button>
-    <default-modal :visible.sync="visible" title="我是第一个弹框" height="100px" @change-visible="changeVisible">
-      <div slot="footer"></div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-
-      <div>sld;kfa;lsdfl沙发士大夫</div>
-
-
-
-
-    </default-modal>
+    <base-layout class="layout-top">
+      <base-form-item label="分类筛选" :inline="true" :required="false" verticalAlign="center">
+        <base-select :data="arr" :value.sync="selectId" size="small" class="type-frist"></base-select>
+        <base-select :data="arr" :value.sync="selectId" size="small"></base-select>
+      </base-form-item>
+      <base-form-item :inline="true" :required="false" verticalAlign="center">
+        <base-search></base-search>
+      </base-form-item>
+    </base-layout>
+    <base-table-tool iconUrl="images/icons/icon-product_list@2x.png" title="商品列表">
+      <router-link tag="div" to="edit-product" append>
+        <base-button type="primary" plain addIcon>新建商品</base-button>
+      </router-link>
+    </base-table-tool>
     <div class="table-content">
-      <div class="identification">
-        <div class="identification-page">
-          <img src="./icon-product_list@2x.png" class="identification-icon">
-          <p class="identification-name">商品列表</p>
-        </div>
-        <div class="function-btn">
-          <router-link tag="div" to="edit-product" append>
-            <base-button type="primary" plain addIcon>新建商品</base-button>
-          </router-link>
-        </div>
-      </div>
-
       <div class="big-list">
         <div class="list-header list-box"></div>
         <div class="list">
@@ -69,11 +36,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-
-  // import * as Helpers from './helpers'
   // import API from '@api'
-  import DefaultModal from '@components/default-modal/default-modal'
-
 
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
@@ -83,23 +46,33 @@
     page: {
       title: TITLE
     },
-    components: {
-      DefaultModal
-    },
+    components: {},
     data() {
       return {
-        visible: true,
+        visible: false,
         selectId: '',
         inputValue: '1122',
         arr: [{id: 111, label: 'ajsdf'}]
       }
     },
+    mounted() {
+      // console.log(this.$confirm)
+      // this.$confirm.confirm().then(() => {
+      //   console.log('确认 ')
+      // }, () => {
+      //   console.log('取消 ')
+      // })
+    },
     methods: {
-      changeVisible(val){
+      showModal() {
+        console.log(111)
+        this.visible = true
+      },
+      changeVisible(val) {
         console.log(val)
         // this.visible = val
       },
-      beforeClose(done){
+      beforeClose(done) {
         console.log(1111)
         // console.log(done)
         done()
@@ -119,4 +92,11 @@
 
   .product-list
     width: 100%
+
+  .layout-top
+    padding: 24px
+    margin-bottom: 20px
+
+  .type-frist
+    margin-right: 10px
 </style>
