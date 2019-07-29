@@ -6,15 +6,35 @@
     <base-input v-model="inputValue" placeholder="safdsaf ;fk"></base-input>
     <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
     <base-select :data="arr" :value.sync="selectId"></base-select>
-    <base-form-item label="我说的司法" labelHeight="50px" :inline="true" :required="true" verticalAlign="center">
+    <base-form-item label="我说的司法" labelHeight="50px" :inline="true" :required="true" verticalAlign="center"
+                    @click="getValue"
+    >
       <base-input v-model="selectId" placeholder="sdfkasdl;fk" type="textarea"></base-input>
-
     </base-form-item>
     <div>
-      <base-button addIcon @click="getValue">get</base-button>
-      <base-button type="primary" disable plain @click="getValue">get</base-button>
+      <base-button @click="getValue">get1111</base-button>
+      <base-button type="primary" disable plain @click="getValue">get222</base-button>
     </div>
     <button>9999</button>
+    <default-modal :visible.sync="visible" title="我是第一个弹框" height="100px" @change-visible="changeVisible">
+      <div slot="footer"></div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+
+      <div>sld;kfa;lsdfl沙发士大夫</div>
+
+
+
+
+    </default-modal>
     <div class="table-content">
       <div class="identification">
         <div class="identification-page">
@@ -27,6 +47,7 @@
           </router-link>
         </div>
       </div>
+
       <div class="big-list">
         <div class="list-header list-box"></div>
         <div class="list">
@@ -51,6 +72,9 @@
 
   // import * as Helpers from './helpers'
   // import API from '@api'
+  import DefaultModal from '@components/default-modal/default-modal'
+
+
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
 
@@ -59,15 +83,30 @@
     page: {
       title: TITLE
     },
+    components: {
+      DefaultModal
+    },
     data() {
       return {
+        visible: true,
         selectId: '',
         inputValue: '1122',
         arr: [{id: 111, label: 'ajsdf'}]
       }
     },
     methods: {
+      changeVisible(val){
+        console.log(val)
+        // this.visible = val
+      },
+      beforeClose(done){
+        console.log(1111)
+        // console.log(done)
+        done()
+      },
       getValue() {
+        console.log(1111)
+        this.visible = true
         console.log(this.inputValue)
       }
     }
