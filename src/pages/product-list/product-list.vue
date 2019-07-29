@@ -9,7 +9,7 @@
         <base-search></base-search>
       </base-form-item>
     </base-layout>
-    <base-table-tool iconUrl="images/icons/icon-product_list@2x.png" title="商品列表">
+    <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
       <router-link tag="div" to="edit-product" append>
         <base-button type="primary" plain addIcon>新建商品</base-button>
       </router-link>
