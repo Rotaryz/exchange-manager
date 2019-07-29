@@ -4,15 +4,8 @@
     <div class="down-content">
       <base-search @search="search"></base-search>
     </div>
+    <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
-      <div class="identification">
-        <div class="identification-page">
-          <img src="./icon-customer_list@2x.png" class="identification-icon">
-          <p class="identification-name">客户列表</p>
-        </div>
-        <div class="function-btn">
-        </div>
-      </div>
       <div class="big-list">
         <div class="list-header list-box">
           <div v-for="(item, index) in listHeader" :key="index" class="list-item">{{item}}</div>
@@ -36,11 +29,10 @@
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" title="设置账号等级" @change-visible="changeVisible">
+    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible">
       <div class="set-box">
         <base-form-item
           label="账号等级"
-          labelMargin="0 14.9px 0 0"
           labelHeight="44px"
           :inline="true"
           :required="true"
@@ -56,10 +48,6 @@
             type="input"
           ></base-select>
         </base-form-item>
-        <div class="btn-group">
-          <span class="btn cancel" @click="hideSet">取消</span>
-          <span class="btn confirm" @click="setGrade">确定</span>
-        </div>
       </div>
     </default-modal>
   </div>
@@ -141,12 +129,4 @@
         max-width: 98px
         min-width: 98px
         padding: 0
-
-  .set-box
-    position: relative
-    box-sizing: border-box
-    width: 494px
-    height: 144px
-    .btn-group
-      padding: 0
 </style>
