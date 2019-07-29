@@ -36,6 +36,7 @@
           labelHeight="44px"
           :inline="true"
           :required="true"
+          marginBottom="0"
           verticalAlign="center"
         >
           <base-select

@@ -48,7 +48,7 @@
       },
       value: {
         default: '',
-        type: [String,Boolean,Number]
+        type: [String, Boolean, Number]
       },
       placeholder: {
         default: '',
@@ -77,7 +77,7 @@
       width: 400px
       border-radius 2px
       border: 0.5px solid $color-border
-      color:$color-text-main
+      color: $color-text-main
       font-size $font-size-14
       font-family $font-family-regular
       padding-left 14px
@@ -91,24 +91,28 @@
   .zb-input
     &.zb-input--middle
       height: 43px
-      min-width:200px
+      min-width: 200px
 
     &.zb-input--small
       height: 31px
-      min-width:120px
+      min-width: 120px
 
     &.zb-input--big
       height: 59px
-      min-width:360px
+      min-width: 360px
+
   .zb-textarea
     padding 14px
     min-height: 93px
     resize none
+
   input::-webkit-input-placeholder
     color: $color-text-sub
+
   input:disabled
     background: #f9f9f9
     color: $color-text-assist
+
   textarea::-webkit-input-placeholder
     color: $color-text-sub
 </style>

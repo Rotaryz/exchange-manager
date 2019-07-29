@@ -35,7 +35,7 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      size:{
+      size: {
         default: 'middle', // middle small big
         type: String
       },
@@ -161,15 +161,15 @@
     transition: all 0.2s
     &.base-select--middle
       height: 43px
-      min-width:200px
+      min-width: 200px
 
     &.base-select--small
       height: 31px
-      min-width:120px
+      min-width: 120px
 
     &.base-select--big
       height: 59px
-      min-width:360px
+      min-width: 360px
     &:hover
       border-color: $color-border-hover
 
@@ -183,19 +183,21 @@
       width: 100%
       height: 100%
       color: #333333
+      text-indent: 10px
     .input-item-input
       width: 0px
       height: 0px
       visibility hidden
+      position: absolute
     .arrow-icon
-      position:absolute
-      width:0
-      height:0
-      border-top:5px solid $color-text-assist
-      border-left:4px solid transparent
-      border-right:4px solid transparent
-      right:10px
-      top:50%
+      position: absolute
+      width: 0
+      height: 0
+      border-top: 5px solid $color-text-assist
+      border-left: 4px solid transparent
+      border-right: 4px solid transparent
+      right: 10px
+      top: 50%
       transform-origin: 50% 0
       transform translateY(-50%)
       transition: transform 0.3s

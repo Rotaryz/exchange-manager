@@ -42,7 +42,8 @@
         default: '',
         type: String
       },
-      labelMarginRight:{
+      labelMarginRight: {
+        default: 10,
         type: Number
       },
       marginBottom:{
@@ -60,7 +61,7 @@
   @import "~@design"
 
   .base-form-item
-    margin-bottom:24px
+    margin-bottom: 24px
     &.inline
       display flex
       &.top
@@ -78,5 +79,5 @@
       line-height: 44px
       height: 44px
       white-space: nowrap
-      margin-right:10px
+      margin-right: 10px
 </style>
