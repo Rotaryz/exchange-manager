@@ -28,3 +28,22 @@ requireGlobalComponent.keys().forEach((fileName) => {
   }
   Vue.use(plugins[componentName])
 })
+
+// Vue.prototype[`$${componentName}`] =  function(props){
+//   const instance = new Vue({
+//     render: h => { // vdom
+//       console.log(h(componentConfig, {props}));
+//       return h(componentConfig, {props})
+//     }
+//   }).$mount();
+//   // 生成的dom追加至body中
+//   document.body.appendChild(instance.$el);
+//
+//   // 添加一个销毁方法
+//   const comp = instance.$children[0];
+//   comp.remove = function () {
+//     document.body.removeChild(instance.$el)
+//     instance.$destroy();
+//   }
+//   return comp
+// }

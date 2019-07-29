@@ -29,12 +29,12 @@
         </div>
       </div>
     </div>
-    <default-confirm></default-confirm>
+    <!--<default-confirm></default-confirm>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import DefaultConfirm from '@components/default-confirm/default-confirm'
+  // import DefaultConfirm from '@components/_global-confirm/_global-confirm'
   // import * as Helpers from './helpers'
   // import API from '@api'
   const PAGE_NAME = 'CUSTOMER_LIST'
@@ -46,7 +46,7 @@
       title: TITLE
     },
     components: {
-      DefaultConfirm
+      // DefaultConfirm
     },
     data() {
       return {}

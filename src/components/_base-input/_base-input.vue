@@ -1,3 +1,4 @@
+<script src="../../../../../vue-mart(1)/src/main.js"></script>
 <template>
   <div class="base-input">
     <!-- 'zb-input--prefix': $slots.prefix,
@@ -38,7 +39,7 @@
         type: [Object, String]
       },
       inputSize: {
-        default: '',
+        default: 'middle',
         type: String
       },
       inputDisabled: {
@@ -88,17 +89,17 @@
         border: 0.5px solid $color-main
 
   .zb-input
-    min-height: 43px
-
     &.zb-input--middle
       height: 43px
+      min-width:200px
 
     &.zb-input--small
       height: 31px
+      min-width:120px
 
     &.zb-input--big
       height: 59px
-
+      min-width:360px
   .zb-textarea
     padding 14px
     min-height: 93px

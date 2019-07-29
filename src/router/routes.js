@@ -25,7 +25,7 @@ export default [
             children: [
               {
                 path: '/mall/goods/product-list',
-                name: 'product-list',
+                name: 'mall-goods-product-list',
                 component: () => import('@pages/product-list/product-list'),
                 meta: {
                   title: '商品列表',
@@ -36,7 +36,7 @@ export default [
               // 新建商品
               {
                 path: '/mall/goods/product-list/edit-product',
-                name: 'edit-product',
+                name: 'mall-goods-product-list-edit',
                 component: () => import('@pages/edit-product/edit-product'),
                 meta: {
                   type: '',

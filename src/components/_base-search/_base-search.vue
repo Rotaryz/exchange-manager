@@ -75,7 +75,7 @@
   @import "~@design"
   .base-search-box
     display: inline-block
-
+    margin-left:30px
   .base-search
     display: flex
     height: 32px

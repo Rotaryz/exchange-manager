@@ -1,15 +1,18 @@
 <template>
-  <transition name="fade">
+  <transition name="fade-modal">
     <section v-show="visible" class="default-modal__wrap">
-      <div :class="[showActive ? 'model-active' : 'model-un-active','default-modal']" :style="{height:height,top:top}">
+      <div class="default-modal" :style="{height:height,top:top}">
         <div v-if="title" class="modal-title">
           <span class="text">{{title}}</span>
           <span v-if="showClose" class="handle-close-icon" @click="hide"></span></div>
         <div v-if="$slots.default" class="modal-body">
           <slot></slot>
         </div>
-        <div v-if="$slots.footer" class="modal-footer">
-          <slot name="footer"></slot>
+        <div v-if="isShowBtns" class="modal-footer">
+          <slot name="footer">
+            <base-button @click="cancel">{{cancelText}}</base-button>
+            <base-button type="primary" @click="submit">{{confirmText}}</base-button>
+          </slot>
         </div>
       </div>
     </section>
@@ -51,21 +54,28 @@
         default: function (done) {
           done()
         }
+      },
+      cancelText:{
+        type: String,
+        default: '取消'
+      },
+      confirmText:{
+        type: String,
+        default: '确定'
+      },
+      isShowBtns:{
+        type: Boolean,
+        default: true
       }
     },
     data() {
       return {
-        showActive: false,
-      }
-    },
-    watch: {
-      showActive() {
-        return this.visible
       }
     },
     methods: {
       showModal() {
         this.$emit('update:visible', true)
+        this.$emit('show', false)
       },
       hide() {
         this.beforeClose(this.hideModal)
@@ -73,8 +83,16 @@
       hideModal() {
         setTimeout(() => {
           this.$emit('update:visible', false)
-          this.$emit('change-visible', false)
+          this.$emit('close', false)
         }, 100)
+      },
+      cancel(){
+        this.hideModal()
+        this.$emit('cancel')
+      },
+      submit(){
+        this.hideModal()
+        this.$emit('submit')
       }
     }
   }
@@ -96,8 +114,8 @@
     align-items: center
 
     .default-modal
-      min-width: 500px
-      min-height: 200px
+      min-width: 300px
+      min-height: 185px
       max-height: 100%
       box-shadow: 0 0 5px 0 $color-text-main
       border-radius: 3px
@@ -130,35 +148,23 @@
     .modal-footer
       flex-shrink 0
       padding: 20px
+      text-align right
+      & :nth-child(n)
+        margin-right:10px
+      & :last-child
+        margin:0
 
-  .model-active
+  .default-modal
     box-shadow: 0 0 5px 0 #4E5983
     border-radius: 3px
     position: relative
-    animation: layerFadeIn .3s
+  .fade-modal-enter-active
+    opacity: 1
+    transition: all 0.5s
+  .fade-modal-enter,  .fade-modal-leave-to
+    opacity: 0
+    transform: scale(.5)
+    transition: all  0.5s
 
-  .model-un-active
-    animation: hideFadeIn .4s
 
-  @keyframes layerFadeIn {
-    0% {
-      opacity: 0
-      transform: scale(.5)
-    }
-    100% {
-      opacity: 1
-      transform: scale(1)
-    }
-  }
-
-  @keyframes hideFadeIn {
-    0% {
-      opacity: 1
-      transform: scale(1)
-    }
-    100% {
-      transform: scale(.5)
-      opacity: 0
-    }
-  }
 </style>

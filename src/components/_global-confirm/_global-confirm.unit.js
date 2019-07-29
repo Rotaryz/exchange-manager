@@ -1,4 +1,4 @@
-import DefaultConfirm from './default-confirm'
+import DefaultConfirm from './_global-confirm'
 
 describe('@components/default-confirm', () => {
   it('exports a valid component', () => {
