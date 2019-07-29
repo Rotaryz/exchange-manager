@@ -141,7 +141,6 @@
 
     .modal-body
       flex: 1
-      overflow auto
       padding: 0 20px
       scroll-opacity(5px, 5px, rgba(0, 0, 0, .15), rgba(0, 0, 0, .15))
 

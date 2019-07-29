@@ -39,7 +39,7 @@
         type: [Object, String]
       },
       inputSize: {
-        default: 'middle',
+        default: 'middle', // big middle small
         type: String
       },
       inputDisabled: {
@@ -81,7 +81,7 @@
       font-size $font-size-14
       font-family $font-family-regular
       padding-left 14px
-      box-sizing border-box
+      box-sizing: border-box
       &:hover
         border: 0.5px solid $color-border-hover
 
