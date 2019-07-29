@@ -2,7 +2,7 @@
   <div class="product-list normal-box table">
     <base-layout class="layout-top">
       <base-form-item label="分类筛选" :inline="true" :required="false" verticalAlign="center">
-        <base-select :data="arr" :value.sync="selectId" size="small" class="type-frist"></base-select>
+        <base-select :data="arr" :value.sync="selectId" size="small" placeholder="一级分类" class="type-frist"></base-select>
         <base-select :data="arr" :value.sync="selectId" size="small"></base-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">

@@ -1,4 +1,3 @@
-<script src="../../../../../vue-mart(1)/src/main.js"></script>
 <template>
   <div class="base-input">
     <!-- 'zb-input--prefix': $slots.prefix,
@@ -6,7 +5,7 @@
     <!-- eslint-disable  -->
     <input v-if="type==='input'"
            :value="value"
-           :class="[ 'zb-input','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
+           :class="['zb-textarea','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
            :style="inputStyle"
            :placeholder="placeholder"
            @focus="active = true"
@@ -16,6 +15,7 @@
     <textarea v-if="type==='textarea'"
               :value="value"
               :class="['zb-textarea','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
+              :style="inputStyle"
               :placeholder="placeholder"
               @focus="active = true"
               @blur="active = false"
@@ -87,7 +87,10 @@
 
       &:focus
         border: 0.5px solid $color-main
-
+    .border-rasuis-4
+      border-radius: 4px
+    .border-rasuis-2
+      border-radius: 2px
   .zb-input
     &.zb-input--middle
       height: 43px
