@@ -1,5 +1,5 @@
 <template>
-  <div class="base-select"
+  <div class="base-select hand"
        :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size]"
        :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
        @click.stop="selectType"

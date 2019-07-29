@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible">
+    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible" @submit="setGrade">
       <div class="set-box">
         <base-form-item
           label="账号等级"
@@ -101,9 +101,6 @@
       },
       showSet() {
         this.visible = true
-      },
-      hideSet() {
-        this.visible = false
       },
       setGrade() {
         console.log(this.grade)
