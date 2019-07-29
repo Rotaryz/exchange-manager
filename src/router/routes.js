@@ -1,3 +1,5 @@
+import store from '@state/store'
+
 export default [
   {
     path: '/',
@@ -5,7 +7,11 @@ export default [
     redirect: '/mall/goods/product-list',
     component: () => import('@pages/index/index'),
     children: [
-      // 商品列表
+      /**
+       *
+       * 商品管理
+       *
+       */
       {
         path: '/mall',
         name: 'mall',
@@ -50,7 +56,11 @@ export default [
           }
         ],
       },
-      // 客户管理
+      /**
+       *
+       *客户管理
+       *
+       */
       {
         path: '/client',
         name: 'client',
@@ -62,7 +72,7 @@ export default [
         },
         component: {render: h => h('router-view')},
         children: [
-            {
+          {
             path: 'customer',
             name: 'customer',
             text: '客户',
@@ -76,8 +86,22 @@ export default [
                 meta: {
                   title: '客户列表',
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['客户列表']
-                },
+                  crumbs: ['客户列表'],
+                  beforeResolve(routeTo, routeFrom, next) {
+                    !routeFrom.path.includes(routeTo.path) && store.dispatch('customerList/infoCustomer')
+                    store
+                      .dispatch('customerList/getCustomerList', true)
+                      .then((res) => {
+                        if (!res) {
+                          return next({name: '404'})
+                        }
+                        return next()
+                      })
+                      .catch(() => {
+                        return next({name: '404'})
+                      })
+                  }
+                }
               }
             ]
           }

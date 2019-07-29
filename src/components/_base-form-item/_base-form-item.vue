@@ -18,7 +18,7 @@
         default: true,
         type: Boolean
       },
-      inline:{
+      inline: {
         default: true,
         type: Boolean
       },
@@ -26,23 +26,23 @@
         default: '',
         type: String
       },
-      labelWidth:{
+      labelWidth: {
         default: '',
         type: String
       },
-      labelAlign:{
+      labelAlign: {
         default: '',
         type: String
       },
-      verticalAlign:{
+      verticalAlign: {
         default: 'center',
         type: String
       },
-      labelHeight:{
+      labelHeight: {
         default: '',
         type: String
       },
-      labelMargin:{
+      labelMargin: {
         default: '',
         type: String
       }
@@ -58,7 +58,7 @@
 
   .base-form-item
     width: 100%
-    marign-bottom:24px
+    marign-bottom: 24px
     &.inline
       display flex
       &.top
@@ -75,5 +75,6 @@
       color: $color-text-main
       line-height: 44px
       height: 44px
-      margin-right:40px
+      white-space: nowrap
+      margin-right: 40px
 </style>

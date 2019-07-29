@@ -4,7 +4,7 @@
       <div :class="[showActive ? 'model-active' : 'model-un-active','default-modal']" :style="{height:height,top:top}">
         <div v-if="title" class="modal-title">
           <span class="text">{{title}}</span>
-          <span v-if="showClose" class="handle-close-icon" @click="hide"></span></div>
+          <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
         <div v-if="$slots.default" class="modal-body">
           <slot></slot>
         </div>

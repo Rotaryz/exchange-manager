@@ -1,10 +1,10 @@
 <template>
-  <div class="base-select"
+  <div class="base-select hand"
        :class="[{'active': visible}, {'disabled':disabled}]"
        :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
        @click.stop="selectType"
   >
-    <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]">{{valueLabel ? valueLabel : defaultLabel}}</div>
+    <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]" class="placeholder-text">{{valueLabel ? valueLabel : defaultLabel}}</div>
     <div v-else class="placeholder-text">{{placeholder}}</div>
     <input :value="valueLabel"
            :placeholder="placeholder"
@@ -82,7 +82,7 @@
       },
       // 每一行宽度
       width: {
-        type: [Number,String],
+        type: [Number, String],
         default: ''
       },
       // 显示选中input的高度
@@ -171,8 +171,8 @@
       height: 100%
       color: #333333
     .input-item-input
-      width:0px
-      height:0px
+      width: 0px
+      height: 0px
       visibility hidden
     .arrow-icon
       width: 8px
@@ -237,5 +237,8 @@
         &.active
           color: $color-main
 
-
+  .placeholder-text
+    user-select: none
+    color: $color-text-sub
+    text-indent: 10px
 </style>

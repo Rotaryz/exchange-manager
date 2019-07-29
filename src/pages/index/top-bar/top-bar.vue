@@ -108,6 +108,7 @@
     height: 50px
     min-height: 50px
     background: $color-white
+    border-bottom-1px($color-line)
     .userInfo-content
       layout(row)
       align-items: center
