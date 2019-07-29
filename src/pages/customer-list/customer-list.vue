@@ -62,13 +62,11 @@
         </div>
       </div>
     </default-modal>
-    <default-confirm></default-confirm>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import DefaultModal from '@components/default-modal/default-modal'
-  import DefaultConfirm from '@components/default-confirm/default-confirm'
   import * as Helpers from './modules/helpers'
   // import API from '@api'
   const PAGE_NAME = 'CUSTOMER_LIST'
@@ -81,8 +79,7 @@
       title: TITLE
     },
     components: {
-      DefaultModal,
-      DefaultConfirm
+      DefaultModal
     },
     data() {
       return {
