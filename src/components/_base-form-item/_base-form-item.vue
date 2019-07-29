@@ -76,8 +76,6 @@
       font-family: $font-family-regular
       font-size: $font-size-14
       color: $color-text-main
-      line-height: 44px
-      height: 44px
       white-space: nowrap
       margin-right: 10px
 </style>
