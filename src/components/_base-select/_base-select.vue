@@ -264,5 +264,4 @@
   .placeholder-text
     user-select: none
     color: $color-text-sub
-    text-indent: 10px
 </style>
