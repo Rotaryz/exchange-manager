@@ -1,6 +1,6 @@
 <template>
   <div class="base-select"
-       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,borderRadius ? 'border-radius'+ borderRadius:'',!valueLabel && !defaultLabel ?'placeholder-text':'' ]"
+       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,borderRadius ? 'border-radius--'+ borderRadius:'',!valueLabel && !defaultLabel ?'placeholder-text':'' ]"
        :style="inputStyle"
        @click.stop="selectType"
   >
@@ -163,10 +163,10 @@
     text-indent: 10px
     padidng-riggh 15px
 
-    .border-rasuis-4
+    .border-radius--4
       border-radius: 4px
 
-    .border-rasuis-2
+    .border-radius--2
       border-radius: 2px
 
     &.base-select--middle

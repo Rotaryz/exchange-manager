@@ -6,9 +6,8 @@ export default {
    * @returns {Promise.<*>}
    */
   getUploadSign() {
-    const url = `/post_vod_sign`
-    const doctor = () => {}
-    return request.post({url, doctor})
+    const url = `/social-shopping/api/cos/upload-sign`
+    return request.get(url, {}, false)
   },
   /**
    * 数据入库
@@ -16,8 +15,7 @@ export default {
    * @returns {Promise.<*>}
    */
   saveFile(data) {
-    const url = `/api/merchant/check_default_image`
-    const doctor = () => {}
-    return request.post({url, data, doctor})
+    const url = `/social-shopping/api/cos/save-file`
+    return request.post(url, data)
   }
 }

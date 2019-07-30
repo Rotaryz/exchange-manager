@@ -8,6 +8,7 @@
            :class="['zb-input','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
            :style="inputStyle"
            :placeholder="placeholder"
+           :type="inputType"
            @focus="active = true"
            @blur="active = false"
            @input="inputEvent"
@@ -30,6 +31,10 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      inputType:{
+        default: 'text',
+        type: String
+      },
       type: {
         default: 'input',
         type: String
