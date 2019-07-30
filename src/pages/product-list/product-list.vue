@@ -2,11 +2,15 @@
   <div class="product-list normal-box table">
     <base-layout class="layout-top">
       <base-form-item label="分类筛选" :inline="true" :required="false" verticalAlign="center">
-        <base-select :data="arr" :value.sync="selectId" size="small" placeholder="一级分类" class="type-frist"></base-select>
-        <base-select :data="arr" :value.sync="selectId" size="small"></base-select>
+        <base-select :data="categoryListL1" :value.sync="selectCategoryFrist" borderRadius="4" size="small" defaultLabel="一级分类"
+                     class="type-frist" @change="getCategoryLevel1"
+        ></base-select>
+        <base-select :data="categoryListL2" :value.sync="selectCategorySecond" borderRadius="4" size="small" defaultLabel="二级分类"
+                     @change="getCategoryLevel2"
+        ></base-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">
-        <base-search></base-search>
+        <base-search ref="research" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout>
     <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
@@ -16,19 +20,23 @@
     </base-table-tool>
     <div class="table-content">
       <div class="big-list">
-        <div class="list-header list-box"></div>
+        <div class="list-header list-box">
+          <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
+        </div>
         <div class="list">
-          <div v-for="i in 2" :key="i" class="list-content list-box">
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
+          <div v-for="(item,i) in list" :key="i" class="list-content list-box">
+            <div v-for="(val,key) in listHeader" :key="key" class="list-item">
+              <base-switch v-if="val.type ==='switch'" :status.sync="item.status" @changeSwitch="changeSwitch(i)"></base-switch>
+              <div v-else-if="val.type === 'operate'">
+                <router-link tag="span" :to="{path:'edit-product',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
+                <span class="list-operation" @click="deleteBtn(i)">删除</span>
+              </div>
+              <template v-else>{{item[key]}}</template>
+            </div>
           </div>
         </div>
         <div class="pagination-box">
-          <!--:pageDetail="contentClassPage"-->
-          <base-pagination ref="pages"></base-pagination>
+          <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -49,10 +57,29 @@
     components: {},
     data() {
       return {
-        visible: false,
-        selectId: '',
         inputValue: '1122',
-        arr: [{id: 111, label: 'ajsdf'}]
+        selectCategoryFrist: '',
+        selectCategorySecond: '',
+        categoryListL1: [{id: 111, label: 'ajsdf'}],
+        categoryListL2: [{id: 111, label: 'ajsdf'}],
+        total: 40,
+        filter: {
+          keywords:'',
+          category: 0,
+          page: 1,
+          limit: 10
+        },
+        listHeader: {
+          first: {name: '商品名称'},
+          second: {name: '分类'},
+          third: {name: '库存'},
+          fourth: {name: '零售价'},
+          five: {name: '库存'},
+          six: {name: '会员价'},
+          status: {name: '状态',type:"switch"},
+          operate_text: {name: '操作',type:"operate"}
+        },
+        list: [{id:1,first: 123,second:5255,third:5255,fourth:5255,five:5255,six:5255,status:1}]
       }
     },
     mounted() {
@@ -62,25 +89,34 @@
       // }, () => {
       //   console.log('取消 ')
       // })
+      this.getList(this.filter)
     },
     methods: {
-      showModal() {
-        console.log(111)
-        this.visible = true
+      deleteBtn(idx){
+        this.$confirm.confirm().then(() => {
+          console.log('确认 ')
+        }, () => {
+          console.log('取消 ')
+        })
+        console.log(idx,this.list[idx])
       },
-      changeVisible(val) {
-        console.log(val)
-        // this.visible = val
+      changeSwitch(idx){
+        console.log(idx,this.list[idx].status)
       },
-      beforeClose(done) {
-        console.log(1111)
-        // console.log(done)
-        done()
+      getList() {
+
       },
-      getValue() {
-        console.log(1111)
-        this.visible = true
-        console.log(this.inputValue)
+      getCategoryLevel1(val) {
+
+      },
+      getCategoryLevel2(val) {
+
+      },
+      searchBtn(val) {
+
+      },
+      pageChange(val) {
+        console.log(this.filter.page)
       }
     }
 

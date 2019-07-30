@@ -33,7 +33,8 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      borderRadius:{// 2 4
+      borderRadius: {// 2 4
+        default:null,
         type: String
       },
       size: {
@@ -83,14 +84,17 @@
       },
       // 每一行高度
       itemStyle: {
-        type: [String,Object],
+        default:'',
+        type: [String, Object],
       },
       // 每一行宽度
       inputStyle: {
-        type: [String,Object],
+        default:'',
+        type: [String, Object],
       },
-      top:{
-        type:String ,
+      top: {
+        default:'',
+        type: String,
       }
     },
     data() {
@@ -158,43 +162,54 @@
     transition: all 0.2s
     text-indent: 10px
     padidng-riggh 15px
+
     .border-rasuis-4
       border-radius: 4px
+
     .border-rasuis-2
       border-radius: 2px
 
     &.base-select--middle
       height: 44px
-      line-height:44px
+      line-height: 44px
       min-width: 200px
+
       .select-child
-        top:44px
+        top: 44px
+
     &.base-select--small
       height: 32px
-      line-height:32px
+      line-height: 32px
       min-width: 120px
+
       .select-child
         top: 32px
+
     &.base-select--big
       height: 60px
-      line-height:60px
+      line-height: 60px
       min-width: 60px
+
       .select-child
         top: 60px
+
     &:hover
       border-color: $color-border-hover
 
     &.active
       border-color: $color-main
       color: $color-text-main
+
     &.disabled
       border-color: $color-disable
       cursor not-allowed
+
     .input-item-input
       width: 0px
       height: 0px
       visibility hidden
       position: absolute
+
     .arrow-icon
       position: absolute
       width: 0
@@ -207,6 +222,7 @@
       transform-origin: 50% 0
       transform translateY(-50%)
       transition: transform 0.3s
+
       &.active
         transform-origin: 50% 0
         transform: rotate(180deg) translateY(-50%)

@@ -12,7 +12,7 @@
     name: COMPONENT_NAME,
     props: {
       status: {
-        type: Number,
+        type: [Number,Boolean],
         default: 1
       },
       width: {
@@ -28,12 +28,12 @@
       switchColor: {
         // 组件打开背景色
         type: String,
-        default: '#4DBD65'
+        default: '#0ad4a1'
       },
       closeColor: {
         // 组件关闭背景色
         type: String,
-        default: '#E1E1E1'
+        default: '#e4e7eb'
       },
       transform: {
         // 按钮位移距离
@@ -53,8 +53,9 @@
     },
     methods: {
       _changeSwitch() {
-        this.$emit('changeSwitch')
-      // this.switchStatus = status
+        let res = !this.status
+        this.$emit('update:status',res)
+        this.$emit('changeSwitch',res)
       }
     }
   }

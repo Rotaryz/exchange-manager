@@ -56,17 +56,17 @@ body, html
     &:before
       width: 200%
       transform: scale(.5) translateZ(0)
-  
+
   .border-right-1px
     &:after
       height: 200%
       transform: scale(.5) translateZ(0)
-  
+
   .border-bottom-1px
     &:after
       width: 200%
       transform: scale(.5) translateZ(0)
-  
+
   .border-left-1px
     &:before
       height: 200%
@@ -77,17 +77,17 @@ body, html
     &:before
       width: 300%
       transform: scale(1 / 3) translateZ(0)
-  
+
   .border-right-1px
     &:after
       height: 300%
       transform: scale(1 / 3) translateZ(0)
-  
+
   .border-bottom-1px
     &:after
       width: 300%
       transform: scale(1 / 3) translateZ(0)
-  
+
   .border-left-1px
     &:before
       height: 300%
@@ -103,138 +103,88 @@ body, html
   flex: 1
 
 // 主颜色功能按钮
-.btn-main
-  position: relative
-  color: $color-main
-  font-family: $font-family-regular
-  padding: 9px 12px
-  min-width: 92px
-  box-sizing: border-box
-  justify-content: center
-  display: flex
-  align-items: center
-  border: 1px solid $color-main
-  transition: all 0.3s
-  font-size: $font-size-12
-  border-radius: 4px
-  line-height: 1
-  cursor: pointer
-  user-select: none
-  &:hover
-    background: $color-main
-    color: $color-white
-    .add-icon
-      &:before, &:after
-        background: $color-white
-  &:active
-    opacity: 0.8
+//.btn-main
+//  position: relative
+//  color: $color-main
+//  font-family: $font-family-regular
+//  padding: 9px 12px
+//  min-width: 92px
+//  box-sizing: border-box
+//  justify-content: center
+//  display: flex
+//  align-items: center
+//  border: 1px solid $color-main
+//  transition: all 0.3s
+//  font-size: $font-size-12
+//  border-radius: 4px
+//  line-height: 1
+//  cursor: pointer
+//  user-select: none
+//  &:hover
+//    background: $color-main
+//    color: $color-white
+//    .add-icon
+//      &:before, &:after
+//        background: $color-white
+//  &:active
+//    opacity: 0.8
 
-.btn-disable
-  cursor: not-allowed
-  color: #ACACAC
-  background: #E1E1E1
-  border: 1px solid #ACACAC
-  .add-icon
-    &:before, &:after
-      background: #ACACAC
-  &:hover
-    background: #E1E1E1
-    color: #ACACAC
-    .add-icon
-      &:before, &:after
-        background: #ACACAC
+//.btn-disable
+//  cursor: not-allowed
+//  color: #ACACAC
+//  background: #E1E1E1
+//  border: 1px solid #ACACAC
+//  .add-icon
+//    &:before, &:after
+//      background: #ACACAC
+//  &:hover
+//    background: #E1E1E1
+//    color: #ACACAC
+//    .add-icon
+//      &:before, &:after
+//        background: #ACACAC
 
-.btn-disable-store
-  cursor: not-allowed
-  color: #D2D2D2
-  background: #FBFBFB
-  border: 1px solid #E9ECEE
-  &:hover
-    background: #FBFBFB
-    color: #D2D2D2
-    .add-icon
-      &:before, &:after
-        background: #D2D2D2
-  &:active
-    opacity: 1
+//.btn-disable-store
+//  cursor: not-allowed
+//  color: #D2D2D2
+//  background: #FBFBFB
+//  border: 1px solid #E9ECEE
+//  &:hover
+//    background: #FBFBFB
+//    color: #D2D2D2
+//    .add-icon
+//      &:before, &:after
+//        background: #D2D2D2
+//  &:active
+//    opacity: 1
 
-.add-icon
-  margin-left: 4px
-  position: relative
-  width: 8px
-  height: 8px
-  transition: all 0.3s
-  &:after
-    content: ''
-    position: absolute
-    right: 3px
-    top: 0
-    width: 2px
-    height: 8px
-    background: $color-main
-    transition: all 0.3s
-  &:before
-    content: ''
-    position: absolute
-    right: 0px
-    top: 3px
-    width: 8px
-    height: 2px
-    background: $color-main
-    transition: all 0.3s
+//.add-icon
+//  margin-left: 4px
+//  position: relative
+//  width: 8px
+//  height: 8px
+//  transition: all 0.3s
+//  &:after
+//    content: ''
+//    position: absolute
+//    right: 3px
+//    top: 0
+//    width: 2px
+//    height: 8px
+//    background: $color-main
+//    transition: all 0.3s
+//  &:before
+//    content: ''
+//    position: absolute
+//    right: 0px
+//    top: 3px
+//    width: 8px
+//    height: 2px
+//    background: $color-main
+//    transition: all 0.3s
+//
+//.add-icon-disable
+//  &:before, &:after
+//    background: #D2D2D2
 
-.add-icon-disable
-  &:before, &:after
-    background: #D2D2D2
 
-// 列表操作栏样式
-.list-operation
-  display: inline-block
-  line-height: 14px
-  position: relative
-  color: $color-main
-  margin-right: 18px
-  height: 14px
-  white-space: nowrap
-  cursor: pointer
-  font-size: $font-size-14
-  transition: color 0.2s
-  overflow: visible
-  &:hover
-    color: #4D77BD
-  &:after
-    position: absolute
-    top: 0
-    right: -10px
-    content: ''
-    height: 14px
-    width: 1px
-    background: $color-line
-  &:last-child
-    margin-right: 0
-    &:after
-      display: none
-
-.list-operation-strong
-  display: inline-block
-  position: relative
-  color: $color-main
-  white-space: nowrap
-  cursor: pointer
-  font-size: $font-size-14
-  transition: color 0.2s
-  padding: 0 6px
-  line-height: 22px
-  border: 0.5px solid $color-main
-  border-radius: 2px
-  box-sizing: border-box
-  margin-right: 10px
-  &:hover
-    border: 0.5px solid #4D77BD
-    color: #06397E
-
-.list-operation-disable
-  cursor: not-allowed
-  color: #ACACAC
-  &:hover
-    color: #ACACAC

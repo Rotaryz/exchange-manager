@@ -131,6 +131,57 @@
       layout(row)
       align-items: center
 
+// 列表操作栏样式
+.list-operation
+  display: inline-block
+  line-height: 14px
+  position: relative
+  color: $color-main
+  margin-right: 18px
+  height: 14px
+  white-space: nowrap
+  cursor: pointer
+  font-size: $font-size-14
+  transition: color 0.2s
+  overflow: visible
+  &:hover
+    color: #4D77BD
+  &:after
+    position: absolute
+    top: 0
+    right: -10px
+    content: ''
+    height: 14px
+    width: 1px
+    background: $color-line
+  &:last-child
+    margin-right: 0
+    &:after
+      display: none
+
+.list-operation-strong
+  display: inline-block
+  position: relative
+  color: $color-main
+  white-space: nowrap
+  cursor: pointer
+  font-size: $font-size-14
+  transition: color 0.2s
+  padding: 0 6px
+  line-height: 22px
+  border: 0.5px solid $color-main
+  border-radius: 2px
+  box-sizing: border-box
+  margin-right: 10px
+  &:hover
+    border: 0.5px solid #4D77BD
+    color: #06397E
+
+.list-operation-disable
+  cursor: not-allowed
+  color: #ACACAC
+  &:hover
+    color: #ACACAC
 .pagination-box
   height: 66px
 .down-content

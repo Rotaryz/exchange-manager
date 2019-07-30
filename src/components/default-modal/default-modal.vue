@@ -1,20 +1,22 @@
 <template>
   <transition name="fade-modal">
     <section v-show="visible" class="default-modal__wrap">
-      <div class="default-modal" :style="{height:height,top:top}">
-        <div v-if="title" class="modal-title">
-          <span class="text">{{title}}</span>
-          <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
-        <div v-if="$slots.default" class="modal-body">
-          <slot></slot>
+      <transition name="scale-modal">
+        <div v-show="visible" class="default-modal" :style="{height:height,top:top}">
+          <div v-if="title" class="modal-title">
+            <span class="text">{{title}}</span>
+            <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
+          <div v-if="$slots.default" class="modal-body">
+            <slot></slot>
+          </div>
+          <div v-if="isShowBtns" class="modal-footer">
+            <slot name="footer">
+              <base-button @click="cancel">{{cancelText}}</base-button>
+              <base-button type="primary" @click="submit">{{confirmText}}</base-button>
+            </slot>
+          </div>
         </div>
-        <div v-if="isShowBtns" class="modal-footer">
-          <slot name="footer">
-            <base-button @click="cancel">{{cancelText}}</base-button>
-            <base-button type="primary" @click="submit">{{confirmText}}</base-button>
-          </slot>
-        </div>
-      </div>
+      </transition>
     </section>
   </transition>
 </template>
@@ -162,8 +164,13 @@
     transition: all 0.5s
   .fade-modal-enter,  .fade-modal-leave-to
     opacity: 0
+    transition: all  0.5s
+  .scale-modal-enter-active
+    transform: scale(1)
+  .scale-modal-enter,  .scale-modal-leave-to
     transform: scale(.5)
     transition: all  0.5s
+
 
 
 </style>
