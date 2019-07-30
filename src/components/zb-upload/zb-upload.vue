@@ -122,7 +122,7 @@
     computed: {
       isArr() {
         let type = typeof (this.data)
-        return type === 'string' ? false : true
+        return type === 'string' ? 0 : 1
       }
     },
     methods: {

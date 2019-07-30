@@ -27,7 +27,9 @@
         <upload :data.sync="edit.goodMainPic" multiple firstTag="封面图" tip="建议图片的尺寸：750*750，支持png，jpeg，jpg格式，最多可上传5张。" @delete="deleteGoodsMainPic()"></upload>
       </base-form-item>
       <base-form-item label="商品详情图" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <upload :data.sync="edit.goodsDetailPic" multiple firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15" @delete="deleteGoodsMainPic()"></upload>
+        <upload :data.sync="edit.goodsDetailPic" multiple firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15"
+                @delete="deleteGoodsMainPic()"
+        ></upload>
         <!--<upload :data.sync="edit.goodsDetailPic"  firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15" @delete="deleteGoodsDetailPic()"></upload>-->
       </base-form-item>
     </div>
@@ -90,11 +92,11 @@
           key: 'weight', rules: [{require: true, text: '请输入商品重量'}]
         }, {
           key: 'manufacturer', rules: [{require: true, text: '请输入生产商'}]
-        },{
-          key: 'goodMainPic', rules: [{minLength: 1, text: '请上传商品主图'},{maxLength: 5, text: '商品主图不可超过5张'}]
         }, {
-          key: 'goodsDetailPic', rules: [{minLength: 1, text: '请上传商品详情图'},{maxLength: 15, text: '商品详情图不可超过15张'}]
-        },  {
+          key: 'goodMainPic', rules: [{minLength: 1, text: '请上传商品主图'}, {maxLength: 5, text: '商品主图不可超过5张'}]
+        }, {
+          key: 'goodsDetailPic', rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
+        }, {
           key: 'specification', rules: [{require: true, text: '请输入商品规格'}]
         }, {
           key: 'price', rules: [{require: true, text: '请输入商品价格'}]
@@ -134,12 +136,12 @@
       },
       submitBtn() {
         let over = false
-        for(let i= 0 ;i<this.justifyItems.length;i++){
+        for (let i = 0; i < this.justifyItems.length; i++) {
           let item = this.justifyItems[i]
-          for(let j= 0 ;j<item.rules.length;j++) {
+          for (let j = 0; j < item.rules.length; j++) {
             let rule = item.rules[j]
             let value = this.edit[item.key]
-            let rulesRes = (rule.require && !value) || (rule.maxLength && value.length >rule.maxLength)||(rule.minLength && value.length <rule.minLength )
+            let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
             if (rulesRes) {
               this.$toast.show(rule.text)
               over = true
