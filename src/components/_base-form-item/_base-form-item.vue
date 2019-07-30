@@ -1,6 +1,6 @@
 <template>
   <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom}">
-    <div class="label-text" :style="{width:labelWidth,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,margin:labelMarginRight+'px'}">
+    <div class="label-text" :style="{width:labelWidth,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
       <span v-if="required" class="required-mask">*</span>
       {{label}}
     </div>
@@ -44,7 +44,7 @@
       },
       labelMarginRight: {
         default: 10,
-        type: Number
+        type: [Number,String]
       },
       marginBottom:{
         default: '',
