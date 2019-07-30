@@ -5,7 +5,7 @@
     <!-- eslint-disable  -->
     <input v-if="type==='input'"
            :value="value"
-           :class="['zb-textarea','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
+           :class="['zb-input','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
            :style="inputStyle"
            :placeholder="placeholder"
            @focus="active = true"
