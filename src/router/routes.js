@@ -84,11 +84,12 @@ export default [
                 name: 'customer-list',
                 component: () => import('@pages/customer-list/customer-list'),
                 meta: {
-                  title: '客户列表',
+                  title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['客户列表'],
+                  crumbs: ['客户列表'], // 面包屑标题
+                  isReset: false, // 是否刷新数据
                   beforeResolve(routeTo, routeFrom, next) {
-                    !routeFrom.path.includes(routeTo.path) && store.dispatch('customerList/infoCustomer')
+                    resetParam(routeFrom.meta.isReset, 'customerList/infoCustomer')
                     store
                       .dispatch('customerList/getCustomerList', true)
                       .then((res) => {
@@ -120,3 +121,8 @@ export default [
     redirect: '404'
   }
 ]
+
+// 初始化数据
+function resetParam(isReset, methed) {
+  !isReset && store.dispatch(methed)
+}
