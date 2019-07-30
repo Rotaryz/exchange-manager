@@ -1,6 +1,6 @@
 <template>
   <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom}">
-    <div class="label-text" :style="{width:labelWidth,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
+    <div class="label-text" :style="{width:labelWidth,color:labelColor,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
       <span v-if="required" class="required-mask">*</span>
       {{label}}
     </div>
@@ -14,6 +14,10 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      labelColor: {
+        default: '',
+        type: String
+      },
       required: {
         default: true,
         type: Boolean

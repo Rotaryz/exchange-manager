@@ -23,10 +23,14 @@
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
       </base-form-item>
-      <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+      <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
+                      labelHeight="40px"
+      >
         <upload :data.sync="edit.goodMainPic" multiple firstTag="封面图" tip="建议图片的尺寸：750*750，支持png，jpeg，jpg格式，最多可上传5张。" @delete="deleteGoodsMainPic()"></upload>
       </base-form-item>
-      <base-form-item label="商品详情图" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+      <base-form-item label="商品详情图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
+                      labelHeight="40px"
+      >
         <upload :data.sync="edit.goodsDetailPic" multiple firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15"
                 @delete="deleteGoodsMainPic()"
         ></upload>
@@ -35,8 +39,29 @@
     </div>
     <title-line title="销售信息" class="top-title"></title-line>
     <div class="container">
-      <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.specification"></base-input>
+      <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
+        <div>
+          <radio v-model="edit.specification" :list="specList"></radio>
+          <div v-if="edit.specification === 1">
+            <div v-for="(item,idx) in edit.goodsDetails" :key="idx" class="more-item-wrap">
+              <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
+                <base-input v-model="item.name" inputSize="small" clear></base-input>
+              </base-form-item>
+              <base-form-item labelColor="#868DAA" label="规格值" marginBottom="0px">
+                <template v-for="(value,i) in item.values">
+                  <base-input :key="i" v-model="item.values[i]" inputSize="small" clear class="value-input"></base-input>
+                </template>
+                <div class="add-btn" @click="addSpecVlaue(idx)">添加规格值</div>
+              </base-form-item>
+            </div>
+            <div class="add-moudle-wrap">
+              <base-button addIcon plain size="small" @click="addSpecModule">添加规格</base-button>
+              <span class="tip">最多支持3组规格</span>
+            </div>
+          </div>
+        </div>
+      </base-form-item>
+      <base-form-item v-if="edit.specification === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right">
       </base-form-item>
       <base-form-item label="商品价格" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.price" inputType="number"></base-input>
@@ -49,8 +74,6 @@
       <base-form-item label="库存" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.inventory" inputType="number"></base-input>
       </base-form-item>
-
-
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
@@ -62,6 +85,8 @@
 <script type="text/ecmascript-6">
   import Upload from '../../components/zb-upload/zb-upload.vue'
   import TitleLine from "../../components/title-line/title-line"
+  import Radio from "../../components/zb-radio/zb-radio"
+
   // import * as Helpers from './helpers'
   // import API from '@api'
   const PAGE_NAME = 'EDIT_PRODUCT'
@@ -74,10 +99,12 @@
     },
     components: {
       TitleLine,
-      Upload
+      Upload,
+      Radio
     },
     data() {
       return {
+        specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
         categoryLevel1: '',
         categoryLevel2: '',
         justifyItems: [{
@@ -123,7 +150,11 @@
             'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F30%2F1564467265993-294130',
             'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F30%2F1564467265995-733336'
           ],
-          specification: '',
+          specification: 1,
+          goodsDetails: [{
+            name: '',
+            values: ['']
+          }],
           price: '',
           vipPrice: '',
           inventory: ''
@@ -133,6 +164,15 @@
     methods: {
       cancelBtn() {
 
+      },
+      addSpecVlaue(idx){
+        this.$set(this.edit.goodsDetails[idx].values,this.edit.goodsDetails[idx].values.length,'')
+      },
+      addSpecModule(){
+        this.$set(this.edit.goodsDetails,this.edit.goodsDetails.length,{
+          name: '',
+          values: ['']
+        })
       },
       submitBtn() {
         let over = false
@@ -182,4 +222,25 @@
 
     .after-word
       margin-left: 10px
+    .more-item-wrap
+        width:700px
+        background-color #F4F8F9
+        padding:20px
+        margin:20px 0
+        .add-btn
+          color:$color-main
+          font-size $font-size-14
+          margin-left:14px
+          white-space nowrap
+        .value-input
+          margin-right:10px
+          &:last-child
+            margin-right:0px
+
+    .add-moudle-wrap
+      margin-bottom:40px
+    .tip
+      font-size $font-size-14
+      color:$color-text-sub
+      margin-left:10px
 </style>

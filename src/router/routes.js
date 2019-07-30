@@ -50,7 +50,29 @@ export default [
                   variableIndex: 1,
                   crumbs: ['商品列表', '商品']
                 }
-              }
+              },
+              // 商品分组
+              {
+                path: '/mall/goods/goods-grouping',
+                name: 'mall-goods-goods-grouping',
+                component: () => import('@pages/goods-grouping/goods-grouping'),
+                meta: {
+                  title: '商品分组',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['商品分组']
+                }
+              },
+              // 商品分类
+              {
+                path: '/mall/goods/goods-classify',
+                name: 'mall-goods-goods-classify',
+                component: () => import('@pages/goods-classify/goods-classify'),
+                meta: {
+                  title: '商品分类',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['商品分类']
+                }
+              },
             ]
 
           }
