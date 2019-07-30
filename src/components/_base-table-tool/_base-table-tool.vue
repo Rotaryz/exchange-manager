@@ -3,8 +3,11 @@
     <div class="title-wrap">
       <img v-if="iconUrl" :src="iconUrl" class="title-icon">
       <p v-if="title" class="title-name">{{title}}</p>
+      <slot name="left"></slot>
     </div>
-    <slot name="center"></slot>
+    <div v-if="$slots.center" class="center-left">
+      <slot name="center"></slot>
+    </div>
     <div class="function-btn">
       <slot></slot>
     </div>

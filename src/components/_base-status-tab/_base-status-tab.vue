@@ -57,15 +57,19 @@
         this.getStyle()
       }
     },
+    mounted() {
+      this.getStyle()
+    },
     methods: {
       getStyle() {
-        this.statusList.length > 0 &&
-          this.$nextTick(() => {
-            let el = this.$refs['tab-item' + this.value][0]
-            this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
-          })
+        this.statusList.length > 0 && this.$nextTick(() => {
+          let el = this.$refs['tab-item' + this.value][0]
+          this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+        })
       },
       checkStatus(index, item) {
+        console.log(index, item)
+        this.$emit('update:value', item[this.valueKey])
         this.$emit('change', item[this.valueKey])
       }
     }
@@ -83,10 +87,11 @@
     height: 30px
     box-sizing: border-box
     position: relative
+
     .status-tab-item
       border-radius: 100px
       min-width: 106px
-      padding:0px 10px
+      padding: 0px 10px
       color: $color-text-main
       line-height: 30px
       text-align: center
@@ -96,8 +101,10 @@
       background: transparent
       position: relative
       z-index: 1
+
     .status-tab-item-active
       color: $color-white
+
   .status-slider
     width: 106px
     position: absolute
