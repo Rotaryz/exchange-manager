@@ -45,7 +45,6 @@
             :width="416"
             :height="44"
             :valueKey="valueKey"
-            defaultLabel="十大大"
             type="input"
           ></base-select>
         </base-form-item>
@@ -77,7 +76,9 @@
         grade: '',
         arr: [{id: 111, label: 'ajsdf'}],
         valueKey: 'id',
-        currentPage: 1
+        currentPage: 1,
+        gradeText: '',
+        customerId: ''
       }
     },
     computed: {
@@ -91,18 +92,26 @@
         this.getMoreCustomerList({page})
       }
     },
-    created() {
+    async created() {
       this.currentPage = this.page
+      await this._getGrade()
     },
     methods: {
       ...Helpers.customerListMethods,
-      _getGrade() {
-
+      async _getGrade() {
+        // let res = await API.Customer.getCustomerGrade({data:{},loading:false,toast:true,doctor(){}})
+        // this.arr = res.error===this.$ERR_OK ? res.data : []
+        // this.grade = this.arr[0].name
       },
-      showSet() {
+      showSet(id) {
+        this.customerId = id
         this.visible = true
       },
       setGrade() {
+        // let data = {grade: this.grade}
+        // let res = await API.Customer.setCustomerGrade(this.customerId, {data,loading:false,toast:true,doctor(){}})
+        // res.error===this.$ERR_OK && this.getCustomerList()
+        // this.grade = this.arr[0].name
         console.log(this.grade)
       },
       search(keyword) {

@@ -1,6 +1,13 @@
 import store from '@state/store'
 
 export default [
+  // 订单列表
+  {
+    path: '/order-list',
+    name: 'order-list',
+    component: () => import('@pages/order-list/order-list')
+  },
+
   {
     path: '/',
     name: 'index',
@@ -102,6 +109,58 @@ export default [
                         return next({name: '404'})
                       })
                   }
+                }
+              }
+            ]
+          }
+        ],
+      },
+      /**
+       *
+       *订单管理
+       *
+       */
+      {
+        path: '/order-manager',
+        name: 'order-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '订单管理',
+          icon: require('./icon-order@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'order',
+            name: 'order',
+            text: '订单',
+            component: {render: h => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/order-manager/order/order-list',
+                name: 'customer-list',
+                component: () => import('@pages/order-list/order-list'),
+                meta: {
+                  title: '订单列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['订单列表'], // 面包屑标题
+                  isReset: false, // 是否刷新数据
+                  // beforeResolve(routeTo, routeFrom, next) {
+                    // resetParam(routeFrom.meta.isReset, 'customerList/infoCustomer')
+                    // store
+                    //   .dispatch('customerList/getCustomerList', true)
+                    //   .then((res) => {
+                    //     if (!res) {
+                    //       return next({name: '404'})
+                    //     }
+                    //     return next()
+                    //   })
+                    //   .catch(() => {
+                    //     return next({name: '404'})
+                    //   })
+                  // }
                 }
               }
             ]

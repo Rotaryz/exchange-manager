@@ -1,7 +1,7 @@
 <template>
-  <div class="base-search-box">
+  <div class="base-search-box" :style="boxStyle">
     <div class="base-search">
-      <div class="box-tip">搜索</div>
+      <div v-if="isShowTip" class="box-tip">{{boxTip}}</div>
       <input v-model="searchText" :style="{'width': width + 'px'}" type="text" class="search-input"
              :placeholder="placeHolder" @keydown="_enter"
       >
@@ -27,7 +27,7 @@
       },
       defaultValue: {
         // 输入框值
-        type: [String,Number],
+        type: [String, Number],
         default: ''
       },
       width: {
@@ -44,6 +44,10 @@
         // 组件自定义样式
         type: String,
         default: '搜索'
+      },
+      isShowTip: {
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -64,8 +68,8 @@
         this.searchText = text || ''
       },
       // 重置 表单 还原默认值
-      _reset(){
-        this.searchText =this.defaultValue
+      _reset() {
+        this.searchText = this.defaultValue
       }
     }
   }
@@ -75,7 +79,7 @@
   @import "~@design"
   .base-search-box
     display: inline-block
-    margin-left:30px
+
   .base-search
     display: flex
     height: 32px
