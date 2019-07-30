@@ -1,6 +1,6 @@
 <template>
   <div class="base-input" :class="[{'has-clear':clear},inputSize ? 'zb-input--' + inputSize : '']">
-    <span class="clear-wrap" @click="clearBtn">
+    <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
       <i class="clear-icon"></i>
     </span>
     <!-- 'zb-input--prefix': $slots.prefix,
@@ -34,11 +34,11 @@
   export default {
     name: COMPONENT_NAME,
     props: {
-      clear:{
+      clear: {
         default: false,
-        type: Boolean
+        type: [Boolean, String]
       },
-      inputType:{
+      inputType: {
         default: 'text',
         type: String
       },
@@ -73,7 +73,7 @@
       }
     },
     methods: {
-      clearBtn(){
+      clearBtn() {
         this.$emit('input', '')
       },
       inputEvent(e) {
@@ -87,35 +87,42 @@
   @import "~@design"
   .base-input
     display inline-block
+    &.zb-input--big
+      .input__inner
+        height: 60px
+        width: 360px
     &.zb-input--middle
       .input__inner
         height: 44px
-        min-width: 200px
+        width: 400px
+
       .clear-wrap
-        padding-top:10px
-        padding-bottom:10px
+        padding-top: 10px
+        padding-bottom: 10px
 
     &.zb-input--small
       .input__inner
         height: 40px
-        min-width: 164px
+        width: 164px
+
       .clear-wrap
-        padding-top:12px
-        padding-bottom:12px
+        padding-top: 12px
+        padding-bottom: 12px
+
     &.zb-input--mini
       .input__inner
         height: 32px
-        min-width: 120px
+        width: 120px
+
       .clear-wrap
         padding-top: 8px
-        padding-bottom:8px
-    &.zb-input--big
-      .input__inner
-        height: 60px
-        min-width: 360px
+        padding-bottom: 8px
+
+
       .clear-wrap
-        padding-top:23px
-        padding-bottom:23px
+        padding-top: 23px
+        padding-bottom: 23px
+
     .input__inner
       width: 400px
       border-radius 2px
@@ -125,29 +132,36 @@
       font-family $font-family-regular
       padding-left 14px
       box-sizing: border-box
+
       &:hover
         border: 0.5px solid $color-border-hover
 
       &:focus
         border: 0.5px solid $color-main
+
     .border-rasuis-4
       border-radius: 4px
+
     .border-rasuis-2
       border-radius: 2px
+
     &.has-clear
       position relative
+
       .input__inner
-        padding-right:30px
+        padding-right: 30px
+
       .clear-wrap
-          display inline-block
-          position absolute
-          top: 50%
-          right:0px
-          padding-right:10px
-          padding-left:7px
-          transform translateY(-50%)
+        display inline-block
+        position absolute
+        top: 50%
+        right: 0px
+        padding-right: 10px
+        padding-left: 7px
+        transform translateY(-50%)
+
       .clear-icon
-        width:13px
+        width: 13px
         height: @width
         icon-image('icon-delet')
 
