@@ -14,6 +14,7 @@
       </base-form-item>
     </base-layout>
     <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
+      <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
       <router-link tag="div" to="edit-product" append>
         <base-button type="primary" plain addIcon>新建商品</base-button>
       </router-link>
@@ -57,6 +58,7 @@
     components: {},
     data() {
       return {
+        statusList:[{label: '全部', value: 0, num: 0},{label: '上架', value:1, num: 0},{label: '下架', value: 2, num: 0}],
         inputValue: '1122',
         selectCategoryFrist: '',
         selectCategorySecond: '',
@@ -66,6 +68,7 @@
         filter: {
           keywords:'',
           category: 0,
+          status:1,
           page: 1,
           limit: 10
         },
@@ -83,15 +86,12 @@
       }
     },
     mounted() {
-      // console.log(this.$confirm)
-      // this.$confirm.confirm().then(() => {
-      //   console.log('确认 ')
-      // }, () => {
-      //   console.log('取消 ')
-      // })
       this.getList(this.filter)
     },
     methods: {
+      statusChange(val){
+        console.log(this.filter.status)
+      },
       deleteBtn(idx){
         this.$confirm.confirm().then(() => {
           console.log('确认 ')

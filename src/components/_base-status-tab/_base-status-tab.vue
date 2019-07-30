@@ -68,7 +68,6 @@
         })
       },
       checkStatus(index, item) {
-        console.log(index, item)
         this.$emit('update:value', item[this.valueKey])
         this.$emit('change', item[this.valueKey])
       }
