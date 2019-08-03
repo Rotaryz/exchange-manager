@@ -43,18 +43,21 @@
         <div>
           <radio v-model="edit.specification" :list="specList"></radio>
           <div v-if="edit.specification === 1">
-            <div v-for="(item,idx) in edit.goodsDetails" :key="idx" class="more-item-wrap">
+            <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
                 <base-input v-model="item.name" inputSize="small" clear></base-input>
               </base-form-item>
-              <base-form-item labelColor="#868DAA" label="规格值" marginBottom="0px">
-                <template v-for="(value,i) in item.values">
-                  <base-input :key="i" v-model="item.values[i]" inputSize="small" clear class="value-input"></base-input>
-                </template>
-                <div class="add-btn" @click="addSpecVlaue(idx)">添加规格值</div>
+              <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px" verticalAlign="top">
+                <div class="spec-value-row">
+                  <template v-for="(value,i) in item.values">
+                    <base-input :key="i" v-model="item.values[i]" inputSize="small" clear class="value-input"></base-input>
+                  </template>
+                  <span class="add-btn" @click="addSpecVlaue(idx)">添加规格值</span>
+                </div>
+
               </base-form-item>
             </div>
-            <div class="add-moudle-wrap">
+            <div v-if="goodsSpecification.length<3" class="add-moudle-wrap">
               <base-button addIcon plain size="small" @click="addSpecModule">添加规格</base-button>
               <span class="tip">最多支持3组规格</span>
             </div>
@@ -62,6 +65,30 @@
         </div>
       </base-form-item>
       <base-form-item v-if="edit.specification === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <div>
+          <div class="big-list">
+            <div class="list-header list-box">
+              <div v-for="(item,key) in goodsSpecification" :key="key" class="list-item">{{item.name}}</div>
+              <div class="list-item"><span class="required-mark">*</span>会员价</div>
+              <div class="list-item"><span class="required-mark">*</span>库存</div>
+            </div>
+            <div class="list">
+              <div v-for="(item,i) in edit.goodsDetails" :key="i" class="list-content list-box">
+                <div v-for="(val,key) in item" :key="key" class="list-item">
+                  <template v-if="key==='vipPrice'">
+                    <base-input v-model="item.vipPrice" inputType="number" inputSize="mini" clear class="value-input"></base-input>
+                  </template>
+                  <template v-else-if="key==='inventory'">
+                    <base-input v-model="item.inventory" inputType="number" inputSize="mini" clear class="value-input"></base-input>
+                  </template>
+                  <template v-else>
+                    {{val}}
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </base-form-item>
       <base-form-item label="商品价格" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.price" inputType="number"></base-input>
@@ -104,6 +131,7 @@
     },
     data() {
       return {
+        arrRes: [],
         specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
         categoryLevel1: '',
         categoryLevel2: '',
@@ -132,6 +160,13 @@
         }, {
           key: 'inventory', rules: [{require: true, text: '请输入商品库存'}]
         }],
+        goodsSpecification: [{
+          name: '颜色',
+          values: ['蓝色', '粉色']
+        }, {
+          name: '尺寸',
+          values: ['s', 'm', 'l']
+        }],
         edit: {
           name: '',
           describe: '',
@@ -151,13 +186,23 @@
             'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F30%2F1564467265995-733336'
           ],
           specification: 1,
-          goodsDetails: [{
-            name: '',
-            values: ['']
-          }],
+
+          // {
+          //   name: '',
+          //     values: ['']
+          // }
+          goodsDetails: [],
           price: '',
           vipPrice: '',
           inventory: ''
+        },
+      }
+    },
+    watch: {
+      goodsSpecification:{
+        deep:true,
+        handler(val) {
+          this.edit.goodsDetails = this.getDetails(val)
         }
       }
     },
@@ -165,14 +210,58 @@
       cancelBtn() {
 
       },
-      addSpecVlaue(idx){
-        this.$set(this.edit.goodsDetails[idx].values,this.edit.goodsDetails[idx].values.length,'')
+      addSpecVlaue(idx) {
+        this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, '')
       },
-      addSpecModule(){
-        this.$set(this.edit.goodsDetails,this.edit.goodsDetails.length,{
+      addSpecModule() {
+        this.$set(this.goodsSpecification, this.goodsSpecification.length, {
           name: '',
           values: ['']
         })
+      },
+      getDetails(arr) {
+        if (arr.length <= 0) return []
+        let arrRes = []
+        arr[0].values.forEach((val, i) => {
+          // console.log('arr[1]------', arr[1])
+          if (arr[1]) {
+            arr[1].values.forEach((val1, j) => {
+              // console.log('arr[2]------', arr[2])
+              if (arr[2]) {
+                arr[2].values.forEach((val2, k) => {
+                  // console.log('arr[3]------', arr[3])
+                  if (arr[3]) {
+                    return false
+                  } else {
+                    let obj = {}
+                    obj['name' + i] = val
+                    obj['name' + i + j] = val1
+                    obj['name' + i + j + k] = val2
+                    obj.vipPrice = 0
+                    obj.inventory = 0
+                    arrRes.push(obj)
+                  }
+                })
+              } else {
+                let obj = {}
+                obj['name' + i] = val
+                obj['name' + i + j] = val1
+                obj.vipPrice = 0
+                obj.inventory = 0
+                console.log(obj)
+                arrRes.push(obj)
+              }
+            })
+          } else {
+            let obj = {}
+            obj['name' + i] = val
+            obj.vipPrice = 0
+            obj.inventory = 0
+            arrRes.push(obj)
+          }
+        })
+        console.log('arrRes:', arrRes)
+        return arrRes
       },
       submitBtn() {
         let over = false
@@ -222,25 +311,38 @@
 
     .after-word
       margin-left: 10px
+
     .more-item-wrap
-        width:700px
-        background-color #F4F8F9
-        padding:20px
-        margin:20px 0
-        .add-btn
-          color:$color-main
-          font-size $font-size-14
-          margin-left:14px
-          white-space nowrap
-        .value-input
-          margin-right:10px
-          &:last-child
-            margin-right:0px
+      min-width: 700px
+      max-width: 100%
+      background-color #F4F8F9
+      padding: 20px 20px 10px
+      margin: 20px 0
+
+      .spec-value-row
+        flex-wrap wrap
+
+      .add-btn
+        color: $color-main
+        font-size $font-size-14
+        margin-left: 14px
+        white-space nowrap
+
+      .value-input
+        margin-right: 10px
+        margin-bottom: 10px
+
+        &:last-child
+          margin-right: 0px
 
     .add-moudle-wrap
-      margin-bottom:40px
+      margin-bottom: 16px
+
     .tip
       font-size $font-size-14
-      color:$color-text-sub
-      margin-left:10px
+      color: $color-text-sub
+      margin-left: 10px
+
+    .big-list
+      min-width: 700px
 </style>
