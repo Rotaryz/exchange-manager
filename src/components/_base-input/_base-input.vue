@@ -111,8 +111,8 @@
 
     &.zb-input--mini
       .input__inner
-        height: 32px
-        width: 120px
+        height: 34px
+        width: 96px
 
       .clear-wrap
         padding-top: 8px
