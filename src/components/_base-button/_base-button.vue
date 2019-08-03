@@ -1,6 +1,7 @@
 <template>
   <button class="base-button"
           :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
+          :style="buttonStyle"
           @click="$emit('click',$event)"
   >
     <slot></slot>
@@ -35,6 +36,10 @@
       disable: {
         type: [Boolean, String],
         default: false,
+      },
+      buttonStyle: {
+        type: String,
+        default: '',
       }
     },
     data() {

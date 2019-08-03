@@ -47,7 +47,7 @@
       },
       isShowTip: {
         type: Boolean,
-        default: false
+        default: true
       }
     },
     data() {

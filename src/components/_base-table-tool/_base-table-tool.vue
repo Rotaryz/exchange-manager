@@ -3,6 +3,7 @@
     <div class="title-wrap">
       <img v-if="iconUrl" :src="iconUrl" class="title-icon">
       <p v-if="title" class="title-name">{{title}}</p>
+      <slot name="status"></slot>
     </div>
     <slot name="center"></slot>
     <div class="function-btn">
@@ -43,7 +44,7 @@
     align-items: center
     justify-content: space-between
     box-sizing: border-box
-    padding:0 20px
+    padding: 0 20px
     .title-wrap
       display: flex
       align-items: center
