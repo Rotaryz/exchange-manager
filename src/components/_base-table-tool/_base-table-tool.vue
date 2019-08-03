@@ -47,6 +47,7 @@
     justify-content: space-between
     box-sizing: border-box
     padding:0 20px
+    flex-shrink 0
     .title-wrap
       display: flex
       align-items: center

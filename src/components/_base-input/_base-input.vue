@@ -12,6 +12,7 @@
            :style="inputStyle"
            :placeholder="placeholder"
            :type="inputType"
+           :maxlength="maxLength"
            @focus="active = true"
            @blur="active = false"
            @input="inputEvent"
@@ -65,7 +66,11 @@
       placeholder: {
         default: '',
         type: String
-      }
+      },
+      maxLength: {
+        default: null,
+        type: Number
+      },
     },
     data() {
       return {

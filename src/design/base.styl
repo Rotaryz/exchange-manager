@@ -9,6 +9,7 @@ body, html
 
 .border-top-1px, .border-right-1px, .border-bottom-1px, .border-left-1px
   position: relative
+
   &:before, &:after
     content: ""
     display: block
@@ -101,7 +102,59 @@ body, html
 .normal-box
   background: $color-background
   flex: 1
+
 // * 必填标志
 .required-mark
-  color:$color-error
-  font-size:$font-size-14
+  color: $color-error
+  font-size: $font-size-14
+
+// + 号
+.add-icon
+  display: inline-block
+  position: relative
+  width: 8px
+  height: 8px
+  margin-left: 3px
+
+  &:before
+  &:after
+    content: ''
+    position: absolute
+    background: $color-main
+    transition: all 0.3s
+    top: 50%
+    transform translateY(-50%)
+
+  &:before
+    right: 0
+    width: 8px
+    height: 2px
+
+  &:after
+    right: 3px
+    width: 2px
+    height: 8px
+
+.upload-add-icon
+  border: 1px dotted $color-border
+  width: 44px
+  height: @width
+  text-align center
+  line-height @width
+  &:before
+  &:after
+    content: ''
+    position: absolute
+    background-color $color-border
+    transition: all 0.3s
+    border-radius 1px
+    top: 50%
+    left:50%
+    transform translate(-50%,-50%)
+  &:before
+    width: 15px
+    height: 2px
+
+  &:after
+    width: 2px
+    height: 15px

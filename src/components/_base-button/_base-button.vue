@@ -4,7 +4,7 @@
           @click="$emit('click',$event)"
   >
     <slot></slot>
-    <span v-if="addIcon" class="is-add"></span>
+    <span v-if="addIcon" class="add-icon"></span>
   </button>
 </template>
 
@@ -62,35 +62,9 @@
     padding: 0px 12px
     min-width: 80px
 
-    .is-add
-      display: inline-block
-      position: relative
-      width: 8px
-      height: 8px
-      margin-left: 3px
-
-      &.is-add:before
-      &.is-add:after
-        content: ''
-        position: absolute
-        background: $color-main
-        transition: all 0.3s
-        top: 50%
-        transform translateY(-50%)
-
-      &.is-add:before
-        right: 0
-        width: 8px
-        height: 2px
-
-      &.is-add:after
-        right: 3px
-        width: 2px
-        height: 8px
-
-    &:hover .is-add
-      &.is-add:before
-      &.is-add:after
+    &:hover .add-icon
+      &:before
+      &:after
         background: $color-white
 
   &.base-button--small

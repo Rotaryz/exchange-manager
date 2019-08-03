@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{inline:inline}">
     <div v-if="type === 'image'" class="edit-image">
       <template v-if="data || data.length>0">
         <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
@@ -17,7 +17,10 @@
           <div v-if="otherTag" class="tag">{{otherTag || item.title}}</div>
         </div>
       </template>
-      <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="add-image hand">
+      <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
+        <slot name="icon">
+          <div class="add-image"></div>
+        </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
         <div v-if="showLoading" class="loading-mask">
           <img src="./loading.gif" class="loading">
@@ -37,7 +40,10 @@
           <span v-if="!disabled" class="close" @click="deleteBtn()"></span>
         </div>
       </template>
-      <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="add-image add-video hand">
+      <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
+        <slot name="icon">
+          <div class="add-image"></div>
+        </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="video/*" @change="getFiles($event)">
         <div v-if="showLoading" class="loading-mask">
           <img src="./loading.gif" class="loading">
@@ -60,6 +66,10 @@
       Draggable
     },
     props: {
+      inline:{
+        type: [Boolean,String], // 是否行内tip
+        default: null
+      },
       defaultKey: {
         type: String, // 返回的对象需要的值 { id:'image_id}'
         default: 'id'
@@ -91,7 +101,7 @@
       },
       data: {
         type: [Array, String], // 图片/视频列表
-        default: () => []
+        default: ''
       }, // 可以sync
       limit: {
         // 图片/视频数量
@@ -108,9 +118,9 @@
         default: false
       },
       size: {
-        // 组件使用类型
+        // 文件大小
         type: [String, Number],
-        default: ''
+        default: null
       }
     },
     data() {
@@ -227,7 +237,11 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-
+  .inline
+    display flex
+    align-items center
+    .tip
+      margin-left:10px
   .edit-image
     flex-wrap: wrap
     display: flex
@@ -244,16 +258,18 @@
     border-radius: 2px
     overflow: hidden
     position: relative
-    margin-bottom: 14px
-
-    .sendImage
-      height: 100%
-      width: 100%
-      top: 0
-      left: 0
-      opacity: 0
-      z-index: 1
-      position: absolute
+    margin-bottom:14px
+  .upload-wrap
+    position relative
+  .sendImage
+    height: 100%
+    width: 100%
+    top: 0
+    left: 0
+    opacity: 0
+    z-index: 1
+    position: absolute
+    font-size 0
 
   .add-video
     icon-image('pic-video')

@@ -57,22 +57,27 @@
           done()
         }
       },
-      cancelText:{
+      cancelText: {
         type: String,
         default: '取消'
       },
-      confirmText:{
+      confirmText: {
         type: String,
         default: '确定'
       },
-      isShowBtns:{
+      isShowBtns: {
         type: Boolean,
         default: true
+      },
+      submitBefore: {
+        type: Function,
+        default: (done) => {
+          done()
+        }
       }
     },
     data() {
-      return {
-      }
+      return {}
     },
     methods: {
       showModal() {
@@ -88,13 +93,15 @@
           this.$emit('close', false)
         }, 100)
       },
-      cancel(){
+      cancel() {
         this.hideModal()
         this.$emit('cancel')
       },
-      submit(){
-        this.hideModal()
-        this.$emit('submit')
+      submit() {
+        this.submitBefore(() => {
+          this.hideModal()
+          this.$emit('submit')
+        })
       }
     }
   }
@@ -150,27 +157,32 @@
       flex-shrink 0
       padding: 20px
       text-align right
+
       & :nth-child(n)
-        margin-right:10px
+        margin-right: 10px
+
       & :last-child
-        margin:0
+        margin: 0
 
   .default-modal
     box-shadow: 0 0 5px 0 #4E5983
     border-radius: 3px
     position: relative
+
   .fade-modal-enter-active
     opacity: 1
     transition: all 0.5s
-  .fade-modal-enter,  .fade-modal-leave-to
+
+  .fade-modal-enter, .fade-modal-leave-to
     opacity: 0
-    transition: all  0.5s
+    transition: all 0.5s
+
   .scale-modal-enter-active
     transform: scale(1)
-  .scale-modal-enter,  .scale-modal-leave-to
-    transform: scale(.5)
-    transition: all  0.5s
 
+  .scale-modal-enter, .scale-modal-leave-to
+    transform: scale(.5)
+    transition: all 0.5s
 
 
 </style>
