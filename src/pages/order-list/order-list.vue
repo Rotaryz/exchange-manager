@@ -5,7 +5,7 @@
       <base-search placeHolder="订单号/客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
-      <div slot="status">
+      <div slot="left">
         <base-status-tab></base-status-tab>
       </div>
       <base-button plain buttonStyle="width: 92px" @click="downExcel">
@@ -19,7 +19,7 @@
         </div>
         <div class="list">
           <!---->
-          <div v-for="(item, index) in 2" :key="index" class="list-content list-box">
+          <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
             <div class="list-item">1</div>
             <div class="list-item">1</div>
             <div class="list-item">
@@ -28,7 +28,7 @@
               <p class="goods-name">商品名称商品名称</p>
               <span class="show-more hand">
                 <transition name="fade">
-                  <div v-if="index===0" class="goods-box">
+                  <div class="goods-box">
                     <span class="tooltip__arrow"></span>
                     <ul class="more-goods">
                       <li class="goods-item">
@@ -58,28 +58,27 @@
           </div>
         </div>
         <div class="pagination-box">
-          <!--:currentPage.sync="currentPage" :total="total"-->
-          <base-pagination ref="pages"></base-pagination>
+          <!---->
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" height="268px" title="设置账号等级" @submit="setLogistics">
+    <default-modal :visible.sync="visible" height="268px" title="设置账号等级" :submitBefore="justifyForm" @submit="setLogistics">
       <div class="set-box">
         <base-form-item
           label="快递公司"
           labelHeight="44px"
           :inline="true"
           :required="true"
-          marginBottom="0"
+          marginBottom="20"
           verticalAlign="center"
         >
           <base-select
             placeholder="请选择快递公司"
             :value.sync="logisticsObj.logistics"
             :data="arr"
-            :width="416"
-            :height="44"
             :valueKey="valueKey"
+            inputStyle="width:416px;height:44px"
             type="input"
           ></base-select>
         </base-form-item>
@@ -93,7 +92,7 @@
         >
           <base-input
             placeholder="请输入快递单号"
-            :value.sync="logisticsObj.logisticsNum"
+            v-model="logisticsObj.logisticsNum"
             inputStyle="width:416px;height:44px"
             type="input"
             inputType="number"
@@ -112,6 +111,8 @@
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
+  const INFO_STATUS = ''
+  const EXCEL_URL = ''
 
   export default {
     name: PAGE_NAME,
@@ -130,16 +131,75 @@
         logisticsObj: {
           logistics: '',
           logisticsNum: ''
+        },
+        currentPage: 1,
+        page: 1,
+        orderList: [{}, {}],
+        keyword: '',
+        total: 21,
+        status: INFO_STATUS
+      }
+    },
+    computed: {
+      excelUrl() {
+        let data = {
+          page: this.page,
+          keyword: this.keyword,
+          status: this.status
         }
+        let search = []
+        for (let key in data) {
+          search.push(`${key}=${data[key]}`)
+        }
+        let url = `${process.env.VUE_APP_API}${EXCEL_URL}}?${search.join('&')}`
+        return url
+      }
+    },
+    // beforeRouteEnter() {
+    // this.getOrderList(true)
+    // this._orderStatus
+    // },
+    watch: {
+      page() {
+        this.getOrderList()
+      },
+      keyword() {
+        this.page = 1
+        this.getOrderList()
+      },
+      status() {
+        this.page = 1
+        this.getOrderList()
       }
     },
     methods: {
+      // 获取客户列表
+      getOrderList(loading = false) {
+        // let data = {page:this.page, keyword:this.keyword, status: this.status}
+        // return API.Order.getOrderList({data, loading, toast: true, doctor(){}})
+        //   .then((res) => {
+        //     this.total = res.meta.total
+        //     this.total = res.meta.total
+        //   })
+        //   .catch(() => {
+        //     return false
+        //   })
+        //   .finally(() => {
+        //     app.$loading.hide()
+        //   })
+        return true
+      },
+      // 获取订单状态
+      _orderStatus() {
+        // API.Order.getOrderList({data:{}, loading: false, toast: true, doctor(){}})
+      },
       // 搜索
       search(keyword) {
 
       },
       // 导出Excel
       downExcel() {
+        window.open(this.excelUrl, '_blank')
       },
       // 发货
       deliver() {
@@ -148,7 +208,20 @@
       // 确认发货
       setLogistics() {
         console.log(this.logisticsObj)
-
+      },
+      //  弹窗限制
+      justifyForm(done) {
+        let msg = ''
+        if (!this.logisticsObj.logistics) {
+          msg = '请选择快递公司'
+        } else if (!this.logisticsObj.logisticsNum) {
+          msg = '请输入快递单号'
+        }
+        if (msg) {
+          this.$toast.show(msg)
+          return
+        }
+        done()
       }
     }
   }
@@ -189,10 +262,16 @@
           position: relative
           icon-image('icon-more')
           margin-left: 6px
+          &:hover
+            .goods-box
+              opacity: 1
+              z-index: 100
           .goods-box
+            opacity: 0
+            z-index: 0
+            transition: all 0.3s
             box-shadow: 0 1px 8px 0 rgba(78, 89, 131, 0.2)
             background: $color-white
-            z-index: 100
             border-radius: 4px
             left: 23px
             box-sizing: border-box
@@ -248,6 +327,7 @@
                 box-sizing: border-box
                 overflow: hidden
                 display: block
+                object-fit: cover
                 background: $color-background
               .goods-name
                 width: 142px

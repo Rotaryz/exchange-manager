@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible" @submit="setGrade">
+    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" :submitBefore="justifyForm" @submit="setGrade">
       <div class="set-box">
         <base-form-item
           label="账号等级"
@@ -41,8 +41,7 @@
           <base-select
             :value.sync="grade"
             :data="arr"
-            :width="416"
-            :height="44"
+            inputStyle="width:416px;height:44px"
             :valueKey="valueKey"
             type="input"
           ></base-select>
@@ -117,8 +116,17 @@
       search(keyword) {
         this.getMoreCustomerList({page: 1, keyword})
       },
-      changeVisible() {
-
+      //  弹窗限制
+      justifyForm(done) {
+        let msg = ''
+        if (!this.grade) {
+          msg = '请选择等级'
+        }
+        if (msg) {
+          this.$toast.show(msg)
+          return
+        }
+        done()
       }
     }
   }

@@ -116,21 +116,7 @@ export default [
                   title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['客户列表'], // 面包屑标题
-                  isReset: false, // 是否刷新数据
-                  beforeResolve(routeTo, routeFrom, next) {
-                    resetParam(routeFrom.meta.isReset, 'customerList/infoCustomer')
-                    store
-                      .dispatch('customerList/getCustomerList', true)
-                      .then((res) => {
-                        if (!res) {
-                          return next({name: '404'})
-                        }
-                        return next()
-                      })
-                      .catch(() => {
-                        return next({name: '404'})
-                      })
-                  }
+                  isReset: false // 是否刷新数据
                 }
               }
             ]

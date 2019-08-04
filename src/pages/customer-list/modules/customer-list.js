@@ -4,7 +4,7 @@ export const state = {
   page: 1,
   customerList: [{}],
   keyword: '',
-  total: 21
+  total: 0
 }
 
 export const getters = {
