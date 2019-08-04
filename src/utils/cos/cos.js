@@ -1,15 +1,14 @@
 import request from '@utils/http'
 import storage from 'storage-controller'
-import {API_PUB} from '../constant'
-
+import {getCorpId} from '@utils/tool'
 /**
  * 数据入库
  * @param data
  * @returns {Promise.<*>}
  */
 function _saveFile(data) {
-  const url = `${API_PUB}/api/cos/save-file`
-  return request.post({method: 'post', url, data})
+  const url = `/social-shopping/api/cos/save-file`
+  return request.post(url, data)
 }
 
 /**
@@ -23,12 +22,13 @@ function _getAuthorization(options, callback) {
   const key = options.Key || ''
   // const pathname = key.indexOf('/') === 0 ? key : '/' + key
   const pathname = key
-  const Authorization = storage.get('auth.currentUser') ? storage.get('auth.currentUser').access_token : ''
-  const url = API_PUB + '/api/cos/h5-upload-image-sign?method=' + method + '&image=' + encodeURIComponent(pathname)
+  const Authorization = storage.get('auth.currentUser').access_token
+  const url =
+    '/social-shopping/api/cos/h5-upload-image-sign?method=' + method + '&image=' + encodeURIComponent(pathname)
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)
-  xhr.setRequestHeader('current-corp', process.env.VUE_APP_CURRENT_CORP)
+  xhr.setRequestHeader('current-corp', getCorpId())
   xhr.onload = function(e) {
     let AuthData
     try {
@@ -56,14 +56,14 @@ function _getAuthorization(options, callback) {
  * @param processCallBack 进度条回调方法let
  * @returns {Promise<any>}
  */
-export function uploadFiles({fileType, files, showProcess, processCallBack}) {
+export function uploadFiles(fileType, files, showProcess, processCallBack) {
   if (!files.map) {
     throw new Error('please use Array')
   }
   showProcess && showProcess()
   return new Promise((resolve, reject) => {
     let requests = files.map((file) => {
-      let Key = Date.now() + '-' + file.name
+      let Key = Date.now() + '-' + Math.random().toString().split('.')[1].substr(0,6)
       return new Promise((resolve, reject) => {
         _getAuthorization({Method: 'PUT', Key: Key}, (err, info) => {
           if (err) {
@@ -102,7 +102,7 @@ export function uploadFiles({fileType, files, showProcess, processCallBack}) {
       })
     })
     Promise.all(requests)
-    .then(resolve)
-    .catch(reject)
+      .then(resolve)
+      .catch(reject)
   })
 }

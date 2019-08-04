@@ -1,20 +1,22 @@
 <template>
   <transition name="fade-modal">
     <section v-show="visible" class="default-modal__wrap">
-      <div class="default-modal" :style="{height:height,top:top}">
-        <div v-if="title" class="modal-title">
-          <span class="text">{{title}}</span>
-          <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
-        <div v-if="$slots.default" class="modal-body">
-          <slot></slot>
+      <transition name="scale-modal">
+        <div v-show="visible" class="default-modal" :style="{height:height,top:top}">
+          <div v-if="title" class="modal-title">
+            <span class="text">{{title}}</span>
+            <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
+          <div v-if="$slots.default" class="modal-body">
+            <slot></slot>
+          </div>
+          <div v-if="isShowBtns" class="modal-footer">
+            <slot name="footer">
+              <base-button @click="cancel">{{cancelText}}</base-button>
+              <base-button type="primary" @click="submit">{{confirmText}}</base-button>
+            </slot>
+          </div>
         </div>
-        <div v-if="isShowBtns" class="modal-footer">
-          <slot name="footer">
-            <base-button @click="cancel">{{cancelText}}</base-button>
-            <base-button type="primary" @click="submit">{{confirmText}}</base-button>
-          </slot>
-        </div>
-      </div>
+      </transition>
     </section>
   </transition>
 </template>
@@ -55,22 +57,27 @@
           done()
         }
       },
-      cancelText:{
+      cancelText: {
         type: String,
         default: '取消'
       },
-      confirmText:{
+      confirmText: {
         type: String,
         default: '确定'
       },
-      isShowBtns:{
+      isShowBtns: {
         type: Boolean,
         default: true
+      },
+      submitBefore: {
+        type: Function,
+        default: (done) => {
+          done()
+        }
       }
     },
     data() {
-      return {
-      }
+      return {}
     },
     methods: {
       showModal() {
@@ -86,13 +93,15 @@
           this.$emit('close', false)
         }, 100)
       },
-      cancel(){
+      cancel() {
         this.hideModal()
         this.$emit('cancel')
       },
-      submit(){
-        this.hideModal()
-        this.$emit('submit')
+      submit() {
+        this.submitBefore(() => {
+          this.hideModal()
+          this.$emit('submit')
+        })
       }
     }
   }
@@ -148,22 +157,32 @@
       flex-shrink 0
       padding: 20px
       text-align right
+
       & :nth-child(n)
-        margin-right:10px
+        margin-right: 10px
+
       & :last-child
-        margin:0
+        margin: 0
 
   .default-modal
     box-shadow: 0 0 5px 0 #4E5983
     border-radius: 3px
     position: relative
+
   .fade-modal-enter-active
     opacity: 1
     transition: all 0.5s
-  .fade-modal-enter,  .fade-modal-leave-to
+
+  .fade-modal-enter, .fade-modal-leave-to
     opacity: 0
+    transition: all 0.5s
+
+  .scale-modal-enter-active
+    transform: scale(1)
+
+  .scale-modal-enter, .scale-modal-leave-to
     transform: scale(.5)
-    transition: all  0.5s
+    transition: all 0.5s
 
 
 </style>

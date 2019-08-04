@@ -1,11 +1,10 @@
 <template>
-  <div class="base-select hand"
-       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size]"
-       :style="{'width': width + 'px',height: height + 'px', lineHeight: height + 'px'}"
+  <div class="base-select"
+       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,borderRadius ? 'border-radius--'+ borderRadius:'',!valueLabel && !defaultLabel ?'placeholder-text':'' ]"
+       :style="inputStyle"
        @click.stop="selectType"
   >
-    <div v-if="valueLabel || defaultLabel" :class="['input-item',{disabled:disabled}]">{{valueLabel ? valueLabel : defaultLabel}}</div>
-    <div v-else class="placeholder-text">{{placeholder}}</div>
+    {{valueLabel ? valueLabel : defaultLabel?defaultLabel :placeholder}}
     <input :value="valueLabel"
            :placeholder="placeholder"
            type="text"
@@ -14,14 +13,13 @@
            style="visibility: hidden"
            @click.stop="selectType"
     >
-    <!-- src="./icon-pull_down@2x.png"-->
     <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
     <transition name="fade">
-      <ul v-show="visible" class="select-child" :style="{top: (height - 4) + 'px'}" @mouseleave="leaveHide()" @mouseenter="endShow">
+      <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
             :key="chIdx"
             :class="['select-child-item',{active:(valueKey ? child[valueKey] :child)===value}]"
-            :style="{height: itemHeight + 'px', lineHeight: itemHeight + 'px'}"
+            :style="itemStyle"
             @click.stop="setValue(child, chIdx)"
         >
           {{child[labelKey]}}
@@ -35,6 +33,10 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
+      borderRadius: {// 2 4
+        default:null,
+        type: String
+      },
       size: {
         default: 'middle', // middle small big
         type: String
@@ -81,19 +83,18 @@
         default: false
       },
       // 每一行高度
-      itemHeight: {
-        type: Number,
-        default: 40
+      itemStyle: {
+        default:'',
+        type: [String, Object],
       },
       // 每一行宽度
-      width: {
-        type: [Number, String],
-        default: ''
+      inputStyle: {
+        default:'',
+        type: [String, Object],
       },
-      // 显示选中input的高度
-      height: {
-        type: Number,
-        default: 28
+      top: {
+        default:'',
+        type: String,
       }
     },
     data() {
@@ -159,36 +160,56 @@
     white-space: nowrap
     box-sizing: border-box
     transition: all 0.2s
+    text-indent: 10px
+    padidng-riggh 15px
+
+    .border-radius--4
+      border-radius: 4px
+
+    .border-radius--2
+      border-radius: 2px
+
     &.base-select--middle
-      height: 43px
+      height: 44px
+      line-height: 44px
       min-width: 200px
 
+      .select-child
+        top: 44px
+
     &.base-select--small
-      height: 31px
+      height: 32px
+      line-height: 32px
       min-width: 120px
 
+      .select-child
+        top: 32px
+
     &.base-select--big
-      height: 59px
-      min-width: 360px
+      height: 60px
+      line-height: 60px
+      min-width: 60px
+
+      .select-child
+        top: 60px
+
     &:hover
       border-color: $color-border-hover
 
     &.active
       border-color: $color-main
       color: $color-text-main
+
     &.disabled
       border-color: $color-disable
       cursor not-allowed
-    .input-item
-      width: 100%
-      height: 100%
-      color: #333333
-      text-indent: 10px
+
     .input-item-input
       width: 0px
       height: 0px
       visibility hidden
       position: absolute
+
     .arrow-icon
       position: absolute
       width: 0
@@ -201,6 +222,7 @@
       transform-origin: 50% 0
       transform translateY(-50%)
       transition: transform 0.3s
+
       &.active
         transform-origin: 50% 0
         transform: rotate(180deg) translateY(-50%)
@@ -258,5 +280,4 @@
   .placeholder-text
     user-select: none
     color: $color-text-sub
-    text-indent: 10px
 </style>
