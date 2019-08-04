@@ -1,8 +1,7 @@
 <template>
   <div class="customer-list normal-box table">
-    <base-tab-select></base-tab-select>
     <div class="down-content">
-      <base-search @search="search"></base-search>
+      <base-search placeHolder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -107,6 +106,7 @@
         this.customerId = id
         this.visible = true
       },
+      // 设置等级
       setGrade() {
         // let data = {grade: this.grade}
         // let res = await API.Customer.setCustomerGrade(this.customerId, {data,loading:false,toast:true,doctor(){}})

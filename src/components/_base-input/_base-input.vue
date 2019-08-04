@@ -4,6 +4,7 @@
               'zb-input--suffix': $slots.suffix|| clearable,-->
     <!-- eslint-disable  -->
     <input v-if="type==='input'"
+           :type="inputType"
            :value="value"
            :class="[ 'zb-input','input__inner',{'is-disabled': inputDisabled},inputSize ? 'zb-input--' + inputSize : '']"
            :style="inputStyle"
@@ -50,6 +51,10 @@
         type: [String, Boolean, Number]
       },
       placeholder: {
+        default: '',
+        type: String
+      },
+      inputType: {
         default: '',
         type: String
       }

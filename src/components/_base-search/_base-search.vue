@@ -23,7 +23,7 @@
       placeHolder: {
         // 默认文字
         type: String,
-        default: '客户昵称/客户手机号'
+        default: ''
       },
       defaultValue: {
         // 输入框值

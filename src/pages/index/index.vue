@@ -57,8 +57,8 @@
       margin: 20px
       overflow: auto
       &::-webkit-scrollbar
-        width: 5px
-        height: 8px
+        width: 4px
+        height: 4px
         transition: all 0.2s
       &::-webkit-scrollbar-thumb
         background-color: rgba(0, 0, 0, .06)
@@ -68,11 +68,6 @@
       &::-webkit-scrollbar-track
         box-shadow: inset 0 0 6px rgba(0, 0, 0, .06)
         border-radius: 10px
-      &:hover
-        &::-webkit-scrollbar
-          transition: all 0.2s
-          width: 5px
-          height: 5px
       .container-show
         overflow-x: hidden
         min-width: 1000px
@@ -80,8 +75,8 @@
         box-sizing: border-box
         display: flex
         &::-webkit-scrollbar
-          width: 5px
-          height: 8px
+          width: 4px
+          height: 4px
           transition: all 0.2s
         &::-webkit-scrollbar-thumb
           background-color: rgba(0, 0, 0, .06)
@@ -91,11 +86,6 @@
         &::-webkit-scrollbar-track
           box-shadow: inset 0 0 6px rgba(0, 0, 0, .06)
           border-radius: 10px
-        &:hover
-          &::-webkit-scrollbar
-            transition: all 0.2s
-            width: 5px
-            height: 8px
     .crumbs
       height: 50px
       min-height: 50px
