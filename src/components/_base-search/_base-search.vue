@@ -7,7 +7,8 @@
                 inputStyle="width:220px;background: #F4F8F9;border: 1px solid #F3F2F7"
                 :placeholder="placeholder"
                 @input="setValue"
-                @keydown="_enter"></base-input>
+                @keydown="_enter"
+    ></base-input>
     <div class="search-icon-box hand" @click="_search">搜索</div>
   </div>
 </template>
