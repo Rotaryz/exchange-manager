@@ -16,6 +16,7 @@
            @focus="active = true"
            @blur="active = false"
            @input="inputEvent"
+           @keydown="keydown"
     >
     <textarea v-if="type==='textarea'"
               :value="value"
@@ -83,6 +84,9 @@
       },
       inputEvent(e) {
         this.$emit('input', e.target.value)
+      },
+      keydown(e) {
+        this.$emit('keydown', e)
       }
     }
   }
