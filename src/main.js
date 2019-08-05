@@ -6,8 +6,11 @@ import '@components/_globals'
 import {Plugins} from '@utils/plugins'
 import '@utils/env-clear'
 import '@utils/http-handler'
+import 'element-ui/lib/theme-chalk/index.css'
+import {DatePicker} from 'element-ui'
 
 Vue.use(Plugins)
+Vue.use(DatePicker)
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 

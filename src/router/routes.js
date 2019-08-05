@@ -1,4 +1,3 @@
-
 export default [
   /**
    *
@@ -122,8 +121,7 @@ export default [
                 meta: {
                   title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['客户列表'], // 面包屑标题
-                  isReset: false // 是否刷新数据
+                  crumbs: ['客户列表'] // 面包屑标题
                 }
               }
             ]
@@ -160,22 +158,44 @@ export default [
                 meta: {
                   title: '订单列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['订单列表'], // 面包屑标题
-                  isReset: false, // 是否刷新数据
-                  // beforeResolve(routeTo, routeFrom, next) {
-                    // resetParam(routeFrom.meta.isReset, 'customerList/infoCustomer')
-                    // store
-                    //   .dispatch('customerList/getCustomerList', true)
-                    //   .then((res) => {
-                    //     if (!res) {
-                    //       return next({name: '404'})
-                    //     }
-                    //     return next()
-                    //   })
-                    //   .catch(() => {
-                    //     return next({name: '404'})
-                    //   })
-                  // }
+                  crumbs: ['订单列表'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ],
+      },
+      /**
+       *
+       *页面管理
+       *
+       */
+      {
+        path: '/cms',
+        name: 'cms',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '内容管理',
+          icon: require('./icon-order@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'b-mall',
+            name: 'b-mall',
+            text: '订单',
+            component: {render: h => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/cms/b-mall/cms-manager',
+                name: 'cms-manager',
+                component: () => import('@pages/cms-manager/cms-manager'),
+                meta: {
+                  title: '首页配置', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['首页配置'] // 面包屑标题
                 }
               }
             ]
