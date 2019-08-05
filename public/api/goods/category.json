@@ -1,0 +1,151 @@
+{
+  "data": [
+    {
+      "id": 20,
+      "name": "\u4f11\u95f2\u96f6\u98df2",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 19,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832800017676.png",
+      "image_id": 109865,
+      "list": []
+    },
+    {
+      "id": 25,
+      "name": "\u7c73\u9762\u7cae\u6cb9",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 3,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832805784889.png",
+      "image_id": 109868,
+      "list": []
+    },
+    {
+      "id": 42,
+      "name": "\u65e5\u7528\u767e\u8d27",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 2,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832806537155.png",
+      "image_id": 109869,
+      "list": []
+    },
+    {
+      "id": 50,
+      "name": "\u8f7b\u98df\u7cd5\u70b9",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 1,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832807630516.png",
+      "image_id": 109870,
+      "list": []
+    },
+    {
+      "id": 1,
+      "name": "\u751f\u9c9c\u679c\u852c",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 1,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832802344926.png",
+      "image_id": 109866,
+      "list": []
+    },
+    {
+      "id": 650,
+      "name": "\u6e05\u4ed3",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852647161641.png",
+      "image_id": 109892,
+      "list": []
+    },
+    {
+      "id": 649,
+      "name": "\u7279\u4ef7",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852645784370.png",
+      "image_id": 109891,
+      "list": []
+    },
+    {
+      "id": 648,
+      "name": "\u79d2\u6740",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852634553347.png",
+      "image_id": 109890,
+      "list": []
+    },
+    {
+      "id": 647,
+      "name": "\u6d77\u9c9c",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852632655998.png",
+      "image_id": 109888,
+      "list": []
+    },
+    {
+      "id": 646,
+      "name": "\u7c73\u9762",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852630918798.png",
+      "image_id": 109887,
+      "list": []
+    },
+    {
+      "id": 645,
+      "name": "\u8089\u7c7b",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852628960941.png",
+      "image_id": 109886,
+      "list": []
+    },
+    {
+      "id": 644,
+      "name": "\u6c34\u679c",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/22\/155852627543637.png",
+      "image_id": 109885,
+      "list": []
+    },
+    {
+      "id": 635,
+      "name": "\u6c34\u4ea7\u6d77\u9c9c",
+      "parent_id": 0,
+      "goods_count": 0,
+      "sort": 0,
+      "is_selected": false,
+      "image_url": "https:\/\/social-shopping-api-1254297111.picgz.myqcloud.com\/1\/2019\/05\/20\/155832808379852.png",
+      "image_id": 109871,
+      "list": []
+    }
+  ],
+  "status": "success",
+  "status_code": 200,
+  "error": 0,
+  "code": 0
+}

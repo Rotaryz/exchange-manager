@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible" @submit="setGrade">
+    <base-modal :visible.sync="visible" height="204px" title="设置账号等级" @change-visible="changeVisible" @submit="setGrade">
       <div class="set-box">
         <base-form-item
           label="账号等级"
@@ -50,12 +50,11 @@
           ></base-select>
         </base-form-item>
       </div>
-    </default-modal>
+    </base-modal>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import DefaultModal from '@components/default-modal/default-modal'
   import * as Helpers from './modules/helpers'
   // import API from '@api'
   const PAGE_NAME = 'CUSTOMER_LIST'
@@ -66,9 +65,6 @@
     name: PAGE_NAME,
     page: {
       title: TITLE
-    },
-    components: {
-      DefaultModal
     },
     data() {
       return {

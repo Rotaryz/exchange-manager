@@ -4,12 +4,17 @@
       <transition name="scale-modal">
         <div v-show="visible" class="default-modal" :style="{height:height,top:top}">
           <div v-if="title" class="modal-title">
-            <span class="text">{{title}}</span>
+            <span class="text">
+              <span>{{title}}</span>
+              <slot name="titleTip">
+                <span v-if="titleTip" class="title-tip">{{titleTip}}</span>
+              </slot>
+            </span>
             <span v-if="showClose" class="handle-close-icon hand" @click="hide"></span></div>
           <div v-if="$slots.default" class="modal-body">
             <slot></slot>
           </div>
-          <div v-if="isShowBtns" class="modal-footer">
+          <div v-if="isShowBtns" :class="['modal-footer',{'top-line':footerTopLine}]">
             <slot name="footer">
               <base-button @click="cancel">{{cancelText}}</base-button>
               <base-button type="primary" @click="submit">{{confirmText}}</base-button>
@@ -39,7 +44,11 @@
         type: Boolean,
         default: true
       },
-      title: { // 可sync
+      title: {
+        type: String,
+        default: ''
+      },
+      titleTip:{
         type: String,
         default: ''
       },
@@ -51,12 +60,13 @@
         type: String,
         default: ''
       },
-      beforeClose: {
+      closeBefore: {
         type: Function,
         default: function (done) {
           done()
         }
       },
+
       cancelText: {
         type: String,
         default: '取消'
@@ -68,6 +78,10 @@
       isShowBtns: {
         type: Boolean,
         default: true
+      },
+      footerTopLine: {
+        type: Boolean,
+        default: false
       },
       submitBefore: {
         type: Function,
@@ -85,7 +99,7 @@
         this.$emit('show', false)
       },
       hide() {
-        this.beforeClose(this.hideModal)
+        this.closeBefore(this.hideModal)
       },
       hideModal() {
         setTimeout(() => {
@@ -99,6 +113,7 @@
       },
       submit() {
         this.submitBefore(() => {
+          console.log('submit')
           this.hideModal()
           this.$emit('submit')
         })
@@ -142,7 +157,11 @@
 
       .text
         flex: 1
-
+      .title-tip
+        font-size $font-size-12
+        color:$color-text-assist
+        letter-spacing 0.5px
+        margin-left 6px
       .handle-close-icon
         width: 10px
         height: @width
@@ -155,7 +174,7 @@
 
     .modal-footer
       flex-shrink 0
-      padding: 20px
+      padding:20px
       text-align right
 
       & :nth-child(n)
@@ -164,6 +183,8 @@
       & :last-child
         margin: 0
 
+      &.top-line
+        border-top-1px()
   .default-modal
     box-shadow: 0 0 5px 0 #4E5983
     border-radius: 3px

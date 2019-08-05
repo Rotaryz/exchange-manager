@@ -45,12 +45,12 @@
           <div v-if="edit.specification === 1">
             <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
-                <base-input v-model="item.name" inputSize="small" clear></base-input>
+                <base-input v-model="item.name" size="small" clear></base-input>
               </base-form-item>
               <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px" verticalAlign="top">
                 <div class="spec-value-row">
                   <template v-for="(value,i) in item.values">
-                    <base-input :key="i" v-model="item.values[i]" inputSize="small" clear class="value-input"></base-input>
+                    <base-input :key="i" v-model="item.values[i]" size="small" clear class="value-input"></base-input>
                   </template>
                   <span class="add-btn" @click="addSpecVlaue(idx)">添加规格值</span>
                 </div>
@@ -76,10 +76,10 @@
               <div v-for="(item,i) in edit.goodsDetails" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in item" :key="key" class="list-item">
                   <template v-if="key==='vipPrice'">
-                    <base-input v-model="item.vipPrice" inputType="number" inputSize="mini" clear class="value-input"></base-input>
+                    <base-input v-model="item.vipPrice" inputType="number" size="mini" clear class="value-input"></base-input>
                   </template>
                   <template v-else-if="key==='inventory'">
-                    <base-input v-model="item.inventory" inputType="number" inputSize="mini" clear class="value-input"></base-input>
+                    <base-input v-model="item.inventory" inputType="number" size="mini" clear class="value-input"></base-input>
                   </template>
                   <template v-else>
                     {{val}}

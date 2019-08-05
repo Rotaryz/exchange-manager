@@ -38,7 +38,7 @@
         type: String
       },
       size: {
-        default: 'middle', // middle small big
+        default: '', // middle small big
         type: String
       },
       // 选中的值
@@ -120,6 +120,7 @@
     methods: {
       clickHide() {
         this.visible = false
+        this.$emit('change-visible',false)
       },
       endShow() {
         clearTimeout(this.setTime)
@@ -134,7 +135,7 @@
           return
         }
         this.visible = !this.visible
-        this.$emit('change-visible')
+        this.$emit('change-visible',true)
       },
       setValue(value, index) {
         this.visible = false
@@ -162,7 +163,12 @@
     transition: all 0.2s
     text-indent: 10px
     padidng-riggh 15px
+    height: 44px
+    line-height: 44px
+    min-width: 200px
 
+    .select-child
+      top: 44px
     .border-radius--4
       border-radius: 4px
 
@@ -185,6 +191,13 @@
       .select-child
         top: 32px
 
+    &.base-select--mini
+      height: 28px
+      line-height: 28px
+      min-width: 218px
+
+      .select-child
+        top: 28px
     &.base-select--big
       height: 60px
       line-height: 60px
@@ -192,6 +205,7 @@
 
       .select-child
         top: 60px
+
 
     &:hover
       border-color: $color-border-hover

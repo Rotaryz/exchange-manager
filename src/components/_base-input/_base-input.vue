@@ -1,5 +1,5 @@
 <template>
-  <div class="base-input" :class="[{'has-clear':clear},inputSize ? 'zb-input--' + inputSize : '']">
+  <div class="base-input" :class="[{'has-clear':clear},size ? 'zb-input--' + size : '']">
     <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
       <i class="clear-icon"></i>
     </span>
@@ -8,7 +8,7 @@
     <!-- eslint-disable  -->
     <input v-if="type==='input'"
            :value="value"
-           :class="['zb-input','input__inner',{'is-disabled': inputDisabled}]"
+           :class="['zb-input','input__inner',raduis?'raduis-'+raduis:'',{'is-disabled': inputDisabled}]"
            :style="inputStyle"
            :placeholder="placeholder"
            :type="inputType"
@@ -40,6 +40,7 @@
         default: false,
         type: [Boolean, String]
       },
+
       inputType: {
         default: 'text',
         type: String
@@ -52,7 +53,11 @@
         default: '',
         type: [Object, String]
       },
-      inputSize: {
+      raduis:{
+        type:[Number,String],
+        default:null
+      },
+      size: {
         default: 'middle', // big middle small mini
         type: String
       },
@@ -148,10 +153,10 @@
       &:focus
         border: 0.5px solid $color-main
 
-    .border-rasuis-4
+    .raduis-4
       border-radius: 4px
 
-    .border-rasuis-2
+    .raduis-2
       border-radius: 2px
 
     &.has-clear

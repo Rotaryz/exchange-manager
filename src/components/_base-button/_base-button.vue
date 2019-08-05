@@ -36,6 +36,7 @@
         type: [Boolean, String],
         default: false,
       }
+
     },
     data() {
       return {}

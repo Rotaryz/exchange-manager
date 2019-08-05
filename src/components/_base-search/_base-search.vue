@@ -1,17 +1,15 @@
 <template>
-  <div class="base-search-box">
-    <div class="base-search">
-      <div class="box-tip">搜索</div>
-      <input v-model="searchText" :style="{'width': width + 'px'}" type="text" class="search-input"
-             :placeholder="placeHolder" @keydown="_enter"
-      >
-      <div class="search-icon-box hand" @click="_search">
-        搜索
-        <!--<span class="search-icon hand"></span>-->
-      </div>
-    </div>
+  <div class="base-search">
+    <div class="box-tip">搜索</div>
+    <base-input :value="searchText"
+                raduis="4"
+                size="mini"
+                inputStyle="width:220px;background: #F4F8F9;border: 1px solid #F3F2F7"
+                :placeholder="placeholder"
+                @input="setValue"
+                @keydown="_enter"></base-input>
+    <div class="search-icon-box hand" @click="_search">搜索</div>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
@@ -20,14 +18,22 @@
   export default {
     name: COMPONENT_NAME,
     props: {
-      placeHolder: {
+      paramsKey: {
+        type: String,
+        default: '', // small middle big
+      },
+      buttonSize: {
+        type: String,
+        default: '', // small middle big
+      },
+      placeholder: {
         // 默认文字
         type: String,
         default: '客户昵称/客户手机号'
       },
       defaultValue: {
         // 输入框值
-        type: [String,Number],
+        type: [String, Number],
         default: ''
       },
       width: {
@@ -44,28 +50,40 @@
         // 组件自定义样式
         type: String,
         default: '搜索'
+      },
+      value: {
+        type: String,
+        default: null
       }
     },
     data() {
       return {
-        searchText: this.defaultValue
+        newText: ''
+      }
+    },
+    computed: {
+      searchText:{
+        get() {
+          return this.value
+        },
+        set(val) {
+          this.newText = val
+        }
       }
     },
     methods: {
+      setValue(val){
+        this.searchText = val
+      },
       _search() {
-        this.$emit('search', this.searchText)
+        this.$emit('update:value',this.newText)
+        this.$emit('search', this.newText)
       },
       _enter(e) {
         if (e.keyCode === 13) {
-          this.$emit('search', this.searchText)
+          this.$emit('update:value',this.newText)
+          this.$emit('search', this.newText)
         }
-      },
-      _setText(text) {
-        this.searchText = text || ''
-      },
-      // 重置 表单 还原默认值
-      _reset(){
-        this.searchText =this.defaultValue
       }
     }
   }
@@ -73,21 +91,24 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-  .base-search-box
-    display: inline-block
-    margin-left:30px
+
   .base-search
+    margin-left: 30px
     display: flex
     height: 32px
     align-items: center
     overflow: hidden
+    position relative
+
+    &.small
+      height: 28px
+
     .box-tip
       font-size: $font-size-12
       color: $color-text-main
       margin-right: 10px
 
   .search-input
-    flex: 1
     color: $color-text-main
     font-family: $font-family-regular
     font-size: $font-size-12
@@ -99,11 +120,14 @@
     padding-left: 10px
     transition: all 0.2s
     background: #F4F8F9
+
     &:hover
       border: 0.5px solid #ACACAC
+
     &::placeholder
       font-family: $font-family-regular
       color: $color-text-sub
+
     &:focus
       background: $color-white
       border: 0.5px solid $color-main !important
@@ -120,6 +144,7 @@
     font-size: $font-size-12
     color: $color-white
     transition: 0.3s all
+
     &:hover
       opacity: 0.8
 </style>
