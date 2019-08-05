@@ -1,13 +1,20 @@
-import store from '@state/store'
 
 export default [
-  // 订单列表
+  /**
+   *
+   * 登录
+   *
+   */
   {
-    path: '/order-list',
-    name: 'order-list',
-    component: () => import('@pages/order-list/order-list')
+    path: '/login',
+    name: 'login',
+    component: () => import('@pages/login/login')
   },
-
+  /**
+   *
+   * 平台模块
+   *
+   */
   {
     path: '/',
     name: 'index',
@@ -148,7 +155,7 @@ export default [
               // 订单列表
               {
                 path: '/order-manager/order/order-list',
-                name: 'customer-list',
+                name: 'order-list',
                 component: () => import('@pages/order-list/order-list'),
                 meta: {
                   title: '订单列表', // 页面标题
@@ -189,7 +196,7 @@ export default [
   }
 ]
 
-// 初始化数据
-function resetParam(isReset, methed) {
-  !isReset && store.dispatch(methed)
-}
+// // 初始化数据
+// function resetParam(isReset, methed) {
+//   !isReset && store.dispatch(methed)
+// }

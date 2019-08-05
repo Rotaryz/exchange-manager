@@ -91,8 +91,8 @@
           verticalAlign="center"
         >
           <base-input
-            placeholder="请输入快递单号"
             v-model="logisticsObj.logisticsNum"
+            placeholder="请输入快递单号"
             inputStyle="width:416px;height:44px"
             type="input"
             inputType="number"
