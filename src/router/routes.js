@@ -176,7 +176,7 @@ export default [
         meta: {
           type: 'first_menu', // 一级标示
           title: '内容管理',
-          icon: require('./icon-order@2x.png'),
+          icon: require('./icon-content@2x.png'),
           iconSelected: '',
         },
         component: {render: h => h('router-view')},

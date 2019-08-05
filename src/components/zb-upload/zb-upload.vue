@@ -5,21 +5,21 @@
         <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
           <div v-for="(item, index) in data" :key="index" class="show-image hand">
             <img :src="item.image_url ||item" class="image">
-            <span v-if="!disabled" class="close" @click="deleteBtn(index)"></span>
+            <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
             <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
             <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
           </div>
         </draggable>
         <div v-else class="show-image hand">
-          <img :src="data.image_url || data" class="image">
-          <span v-if="!disabled" class="close" @click="deleteBtn()"></span>
+          <img :style="addStyle" :src="data.image_url || data" class="image">
+          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
           <div v-if="firstTag" class="tag">{{firstTag || item.title}}</div>
           <div v-if="otherTag" class="tag">{{otherTag || item.title}}</div>
         </div>
       </template>
       <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
         <slot name="icon">
-          <div class="add-image"></div>
+          <div :style="addStyle" class="add-image"></div>
         </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
         <div v-if="showLoading" class="loading-mask">
@@ -32,17 +32,17 @@
         <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
           <div v-for="(item, index) in data" :key="index" width="90px" class="show-image hand">
             <video class="video-tag" :src="item.image_url ||item"></video>
-            <span v-if="!disabled" class="close" @click="deleteBtn(index)"></span>
+            <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
           </div>
         </draggable>
         <div v-else width="90px" class="show-image hand">
           <video class="video-tag" :src="item.video_url ||item"></video>
-          <span v-if="!disabled" class="close" @click="deleteBtn()"></span>
+          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
         </div>
       </template>
       <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
         <slot name="icon">
-          <div class="add-image"></div>
+          <div :style="addStyle" class="add-image"></div>
         </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="video/*" @change="getFiles($event)">
         <div v-if="showLoading" class="loading-mask">
@@ -66,8 +66,8 @@
       Draggable
     },
     props: {
-      inline:{
-        type: [Boolean,String], // 是否行内tip
+      inline: {
+        type: [Boolean, String], // 是否行内tip
         default: null
       },
       defaultKey: {
@@ -121,6 +121,15 @@
         // 文件大小
         type: [String, Number],
         default: null
+      },
+      addStyle: {
+        // 添加样式
+        type: String,
+        default: ''
+      },
+      isShowDel: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -241,7 +250,8 @@
     display flex
     align-items center
     .tip
-      margin-left:10px
+      margin-left: 10px
+
   .edit-image
     flex-wrap: wrap
     display: flex
@@ -257,10 +267,11 @@
     position: relative
     border-radius: 2px
     overflow: hidden
-    position: relative
-    margin-bottom:14px
+    margin-bottom: 14px
+
   .upload-wrap
     position relative
+
   .sendImage
     height: 100%
     width: 100%
@@ -278,12 +289,13 @@
     margin-right: 20px
     margin-bottom: 14px
     position: relative
-
+    &:last-child
+      margin: 0
     .image
       height: 90px
       width: @height
       border-radius: 2px
-      confit: cover
+      object-fit: cover
 
     .video-tag
       width: 100%
@@ -320,7 +332,7 @@
     position: absolute
     top: 0
     left: 0
-    background: rgba(0, 0, 0, .6)
+    background: rgba(30, 35, 51, .5)
 
     .loading
       all-center()

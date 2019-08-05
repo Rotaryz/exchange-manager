@@ -7,10 +7,12 @@ import {Plugins} from '@utils/plugins'
 import '@utils/env-clear'
 import '@utils/http-handler'
 import 'element-ui/lib/theme-chalk/index.css'
-import {DatePicker} from 'element-ui'
+import {DatePicker, Carousel, CarouselItem} from 'element-ui'
 
 Vue.use(Plugins)
 Vue.use(DatePicker)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 

@@ -66,7 +66,6 @@
     user-select: none
     padding: 0px 12px
     min-width: 80px
-
     &:hover .add-icon
       &:before
       &:after
