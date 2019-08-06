@@ -28,11 +28,7 @@ HTTP.setCallback({
   // 请求完成后的逻辑处理
   responseFulfilled(res, {url, loading = true, toast = true, formatter, doctor}) {
     let err = false // 是否有错
-    if (typeof doctor !== 'function') {
-      const errorText = url + '-->' + '请添加doctor字段'
-      console.error(errorText)
-      throw new Error(errorText)
-    }
+
     // 可自定义处理loading
     if (typeof loading === 'function') {
       loading(res)
@@ -54,7 +50,12 @@ HTTP.setCallback({
     if (res.code !== ERR_OK || res.error !== ERR_OK) {
       console.error(url + ' <<<<<<接口异常>>>>> ' + JSON.stringify(res))
       err = true
-      doctor(res, url)
+      if (typeof doctor === 'function') {
+        doctor(res, url)
+      } else {
+        throw res
+      }
+
     }
     // 对返回的数据劫持
     if (typeof formatter === 'function') {
