@@ -105,4 +105,7 @@
 
   .el-date-editor .el-range__close-icon
     line-height: 25px !important
+
+  .el-input__inner
+    border: 0.5px solid #e9ecee
 </style>
