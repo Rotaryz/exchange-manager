@@ -1,19 +1,23 @@
 <template>
   <div class="base-select"
-       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,borderRadius ? 'border-radius--'+ borderRadius:'',!valueLabel && !defaultLabel ?'placeholder-text':'' ]"
-       :style="inputStyle"
+       :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,radius ? 'border-radius--'+ radius:'']"
+       :style="[{ width:width+'px',height:height+'px'}]"
        @click.stop="selectType"
   >
-    {{valueLabel ? valueLabel : defaultLabel?defaultLabel :placeholder}}
-    <input :value="valueLabel"
-           :placeholder="placeholder"
-           type="text"
-           disabled="true"
-           class="input-item-input"
-           style="visibility: hidden"
-           @click.stop="selectType"
+    <div class="inner-value">
+      {{valueLabel ? valueLabel : defaultLabel?defaultLabel :placeholder}}
+    </div>
+    <base-input :value="valueLabel"
+                :placeholder="placeholder"
+                handIcon="pointer"
+                type="text"
+                autocomplete="off"
+                readonly="readonly"
+                class="inner-input"
+                @click.stop="selectType"
     >
-    <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
+      <div slot="after"><span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span></div>
+    </base-input>
     <transition name="fade">
       <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
@@ -33,12 +37,20 @@
 <script type="text/ecmascript-6">
   export default {
     props: {
-      borderRadius: {// 2 4
-        default:null,
+      width: {
+        default: '',
+        type: [String, Number]
+      },
+      height: {
+        default: '32',
+        type: [String, Number]
+      },
+      radius: {// 2 4
+        default: null,
         type: String
       },
       size: {
-        default: '', // middle small big
+        default: 'middle', // middle small big
         type: String
       },
       // 选中的值
@@ -82,24 +94,23 @@
         type: Boolean,
         default: false
       },
-      // 每一行高度
+      // 每一行
       itemStyle: {
-        default:'',
+        default: '',
         type: [String, Object],
       },
-      // 每一行宽度
       inputStyle: {
-        default:'',
+        default: '',
         type: [String, Object],
       },
       top: {
-        default:'',
+        default: '',
         type: String,
       }
     },
     data() {
       return {
-        visible: "",
+        visible: false,
         setTime: '',
       }
     },
@@ -109,7 +120,7 @@
           let re = this.valueKey ? item[this.valueKey] === this.value : item === this.value
           return re
         })
-        return res ? res[this.labelKey] : ''
+        return res ? res[this.labelKey] : this.defaultLabel ? this.defaultLabel:''
       }
     },
     mounted() {
@@ -120,7 +131,7 @@
     methods: {
       clickHide() {
         this.visible = false
-        this.$emit('change-visible',false)
+        this.$emit('change-visible', false)
       },
       endShow() {
         clearTimeout(this.setTime)
@@ -134,8 +145,12 @@
         if (this.disabled) {
           return
         }
+        console.log(this.visible)
+
         this.visible = !this.visible
-        this.$emit('change-visible',true)
+        console.log(this.visible)
+
+        this.$emit('change-visible', true)
       },
       setValue(value, index) {
         this.visible = false
@@ -152,9 +167,8 @@
   @import "~@design"
 
   .base-select
-    position: relative
+    position relative
     background-color $color-white
-    border: 0.5px solid $color-border
     color: $color-text-main
     font-size $font-size-14
     border-radius: 2px
@@ -163,12 +177,16 @@
     transition: all 0.2s
     text-indent: 10px
     padidng-riggh 15px
-    height: 44px
-    line-height: 44px
     min-width: 200px
-
+    /*min-height:32px*/
+    .inner-value
+      padding-left:14px
+      padding-right:30px
+      visibility hidden
+      cursor pointer
     .select-child
       top: 44px
+
     .border-radius--4
       border-radius: 4px
 
@@ -198,6 +216,7 @@
 
       .select-child
         top: 28px
+
     &.base-select--big
       height: 60px
       line-height: 60px
@@ -218,11 +237,22 @@
       border-color: $color-disable
       cursor not-allowed
 
-    .input-item-input
-      width: 0px
-      height: 0px
-      visibility hidden
-      position: absolute
+    .inner-input
+      width: 100%
+      height:100%
+      min-height:32px
+      position absolute
+      top:0
+      right:0
+      bottom 0
+      left:0
+      z-index:20
+      cursor pointer
+
+    /*width: 0px*/
+    /*height: 0px*/
+    /*visibility hidden*/
+    /*position: absolute*/
 
     .arrow-icon
       position: absolute

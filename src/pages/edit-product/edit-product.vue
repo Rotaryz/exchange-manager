@@ -7,11 +7,10 @@
         <base-input v-model="edit.name"></base-input>
       </base-form-item>
       <base-form-item label="商品描述" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.describe" type="textarea" placeholder="输入商品描述"></base-input>
+        <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-select v-model="categoryLevel1" inputStyle="min-width:194px" placeholder="请选择分类" class="first-category-item"></base-select>
-        <base-select v-model="categoryLevel2" inputStyle="min-width:194px" placeholder="请选择子分类"></base-select>
+        <cascade-select v-model="edit.category" :inputStyle="{'min-width':'194px'}" size="middle" placeholder1="请选择分类" placeholder2="请选择子分类"></cascade-select>
       </base-form-item>
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.code"></base-input>
@@ -54,7 +53,6 @@
                   </template>
                   <span class="add-btn" @click="addSpecVlaue(idx)">添加规格值</span>
                 </div>
-
               </base-form-item>
             </div>
             <div v-if="goodsSpecification.length<3" class="add-moudle-wrap">
@@ -111,6 +109,7 @@
 
 <script type="text/ecmascript-6">
   import Upload from '../../components/zb-upload/zb-upload.vue'
+  import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
 
@@ -127,7 +126,8 @@
     components: {
       TitleLine,
       Upload,
-      Radio
+      Radio,
+      CascadeSelect
     },
     data() {
       return {
@@ -199,8 +199,8 @@
       }
     },
     watch: {
-      goodsSpecification:{
-        deep:true,
+      goodsSpecification: {
+        deep: true,
         handler(val) {
           this.edit.goodsDetails = this.getDetails(val)
         }

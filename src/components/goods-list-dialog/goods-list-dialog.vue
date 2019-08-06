@@ -8,7 +8,7 @@
   >
     <div class="operate-box">
       <cascade-select size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
-      <base-search ref="goodsSearch" placeHolder="请输入商品名称" @search="searchBtn"></base-search>
+      <base-search v-model="goodsListFilter.keyword" placeHolder="请输入商品名称" @search="searchBtn"></base-search>
     </div>
     <div class="big-list">
       <div class="list-header list-box">
@@ -108,10 +108,6 @@
           goods_category_id: '',
           keyword: ''
         },
-        goodsCategoryFirstList: [],
-        goodsCategorySecondList: [],
-        goodsCategoryFirst: '',
-        goodsCategorySecond: '',
         list: [], // 弹框商品列表
         selectGoods: [] // 单次选择的商品
       }
@@ -173,30 +169,8 @@
         this.goodsListFilter.page = page
         await this._getGoodsList()
       },
-      // 获取一级分类
-      async _getCategoryFirst() {
-        let res = await API.Goods.getGoodsCategory({
-          data: {parent_id: ''},
-          loading: false
-        })
-        this.goodsCategoryFirstList = res.error === this.$ERR_OK ? res.data : []
-        this.goodsCategorySecondList = []
-        this.goodsCategorySecond = ''
-      },
-      // 选择第一分类
-      async _selectCategoryFirst() {
-        let res = await API.Goods.getGoodsCategory({
-          data: {parent_id: this.goodsCategoryFirst},
-          loading: false
-        })
-        this.goodsCategorySecondList = res.error === this.$ERR_OK ? res.data : []
-        this.goodsCategoryChange(this.goodsCategoryFirst)
-      },
-      async _selectCategorySecond() {
-        this.goodsCategoryChange(this.goodsCategorySecond)
-      },
       // 选择分类
-      async goodsCategoryChange(id) {
+      async changeGategory(id) {
         this.goodsListFilter.goods_category_id = id
         this.goodsListFilter.page = 1
         this.selectGoods = []
@@ -204,7 +178,6 @@
       },
       // 搜索商品
       async searchBtn(text) {
-        this.goodsListFilter.keyword = text
         this.goodsListFilter.page = 1
         this.selectGoods = []
         await this._getGoodsList()
@@ -266,6 +239,8 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .goods-list-dialog
+    .big-list
+      margin-top:20px
     .operate-box
       display flex
       align-items center

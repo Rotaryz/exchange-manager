@@ -2,12 +2,15 @@
   <div class="cascade-select">
     <base-select v-model="goodsCategoryFirst"
                  :data="goodsCategoryFirstList"
-                 :placeholder1="placeholder1"
+                 :placeholder="placeholder1"
                  :valueKey="valueKey"
                  :labelKey="labelKey"
                  :size="size"
                  :defaultLabel="defaultLabel1"
-                 borderRadius="4"
+                 :width="width"
+                 :height="height"
+                 :style="inputStyle"
+                 radius="4"
                  @change-visible="_getCategoryFirst"
                  @change="_selectCategoryFirst"
     >
@@ -15,11 +18,14 @@
     <base-select v-model="goodsCategorySecond"
                  :data="goodsCategorySecondList"
                  :placeholder="placeholder2"
+                 :width="width"
+                 :height="height"
+                 :style="inputStyle"
                  :valueKey="valueKey"
                  :labelKey="labelKey"
                  :size="size"
                  :defaultLabel="defaultLabel2"
-                 borderRadius="4"
+                 radius="4"
                  class="level-two"
                  @change="_selectCategorySecond"
     >
@@ -36,7 +42,7 @@
     props: {
       getDataFunction: {
         type: Function,
-        default: (params)=> API.Goods.getGoodsList(params)
+        default: (params) => API.Goods.getCategory(params)
       },
       paramsKey: {
         type: String,
@@ -50,26 +56,38 @@
         type: String,
         default: 'name'
       },
-      size:{
+      defaultLabel1: {
         type: String,
         default: ''
       },
-      defaultLabel1:{
+      defaultLabel2: {
         type: String,
         default: ''
       },
-      defaultLabel2:{
-        type: String,
-        default: ''
-      },
-      placeholder1:{
+      placeholder1: {
         type: String,
         default: '一级分类'
       },
-      placeholder2:{
+      placeholder2: {
         type: String,
         default: '二级分类'
       },
+      width: {
+        default: '',
+        type: [String, Number]
+      },
+      height: {
+        default: '32',
+        type: [String, Number]
+      },
+      inputStyle: {
+        default: '',
+        type: [String, Object],
+      },
+      size:{
+        default: 'small',
+        type: String
+      }
     },
     data() {
       return {
@@ -82,7 +100,7 @@
     methods: {
       // 获取一级分类
       async _getCategoryFirst(val) {
-        if(!val) return  false
+        if (!val) return false
         console.log(111)
         // let functionName = this.getDataFunction || API.Goods.getGoodsList
         console.log(this.getDataFunction)
@@ -98,7 +116,7 @@
           data: {[this.paramsKey]: this.goodsCategoryFirst},
           loading: false
         })
-        if(res.isFail) return false
+        if (res.isFail) return false
         this.goodsCategorySecond = ''
         this.goodsCategorySecondList = res.isFail ? [] : res.data
         this.goodsCategoryChange(this.goodsCategoryFirst)
@@ -108,7 +126,7 @@
       },
       // 选择分类
       async goodsCategoryChange(val) {
-        this.$emit('change',val)
+        this.$emit('change', val)
       },
     }
   }
@@ -119,6 +137,7 @@
 
   .cascade-select
     display flex
+
     .level-two
       margin-left: 10px
 

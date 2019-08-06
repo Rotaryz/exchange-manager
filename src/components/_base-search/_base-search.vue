@@ -1,8 +1,8 @@
 <template>
   <div class="base-search">
     <div class="box-tip">搜索</div>
-    <base-input :value="searchText"
-                raduis="4"
+    <base-input :value="value"
+                radius="4"
                 width="220"
                 height="32"
                 :inputStyle="{background: '#F4F8F9',border: '1px solid #F3F2F7'}"
@@ -63,28 +63,16 @@
         newText: ''
       }
     },
-    computed: {
-      searchText:{
-        get() {
-          return this.value
-        },
-        set(val) {
-          this.newText = val
-        }
-      }
-    },
     methods: {
       setValue(val){
-        this.searchText = val
+        this.$emit('input',val)
       },
       _search() {
-        this.$emit('update:value',this.newText)
-        this.$emit('search', this.newText)
+        this.$emit('search', this.value)
       },
       _enter(e) {
         if (e.keyCode === 13) {
-          this.$emit('update:value',this.newText)
-          this.$emit('search', this.newText)
+          this.$emit('search', this.value)
         }
       }
     }

@@ -1,32 +1,37 @@
 <template>
 
-  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',raduis?'zb-input--raduis-'+raduis:'']">
+  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
+       :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
+  >
     <slot name="after">
       <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
         <i class="clear-icon"></i>
       </span>
     </slot>
-
     <textarea v-if="type==='textarea'"
               :value="value"
-              :style="[{ width:width && width + 'px',height:height && height + 'px'},inputStyle]"
-              :maxlength="maxlength"
+              :style="inputStyle"
+              :maxlength="maxlength || limit"
               :placeholder="placeholder"
+              :readonly="readonly || disabled"
+              :disabled="disabled"
               class="zb-textarea input__inner"
               @input="inputEvent"
               @keydown="keydown"
     ></textarea>
     <input v-else
            :value="value"
-           :style="[{ width:width && width + 'px',height:height && height + 'px'},inputStyle]"
+           :style="[inputStyle,{'cursor':handIcon}]"
            :placeholder="placeholder"
            :type="type"
-           :maxlength="maxlength"
+           :readonly="readonly || disabled"
+           :maxlength="maxlength || limit"
+           :disabled="disabled"
            class="zb-input input__inner"
            @input="inputEvent"
            @keydown="keydown"
     >
-    <span v-if="showWordLimit" class="base-input__count">0/30</span>
+    <span v-if="limit" class="base-input__count">{{value.length}}/{{limit}}</span>
   </div>
 </template>
 
@@ -36,11 +41,15 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      hand: {
+        default: false,
+        type: Boolean
+      },
       value: {
         default: '',
         type: [String, Boolean, Number]
       },
-      showWordLimit: {
+      limit: {
         type: [Number, String],
         default: null
       },
@@ -64,11 +73,16 @@
         default: null,
         type: Number
       },
-      inputStyle: {
-        default: () => {},
-        type: Object
+      readonly: {
+        default: false,
+        type: [String,Boolean]
       },
-      raduis: {
+      inputStyle: {
+        default: () => {
+        },
+        type: [Object, String]
+      },
+      radius: {
         type: [Number, String],
         default: null
       },
@@ -84,6 +98,10 @@
         default: '',
         type: [String, Number]
       },
+      handIcon:{
+        default: '',
+        type: String
+      }
     },
     data() {
       return {}
@@ -120,32 +138,28 @@
     position relative
 
     &.zb-input--big
-      .input__inner
-        height: 60px
-        width: 360px
+      height: 60px
+      width: 360px
 
     &.zb-input--middle
-      .input__inner
-        height: 44px
-        width: 400px
+      height: 44px
+      width: 400px
 
-      .clear-wrap
-        padding-top: 10px
-        padding-bottom: 10px
+    .clear-wrap
+      padding-top: 10px
+      padding-bottom: 10px
 
     &.zb-input--small
-      .input__inner
-        height: 40px
-        width: 164px
+      height: 40px
+      width: 164px
 
-      .clear-wrap
-        padding-top: 12px
-        padding-bottom: 12px
+    .clear-wrap
+      padding-top: 12px
+      padding-bottom: 12px
 
     &.zb-input--mini
-      .input__inner
-        height: 34px
-        width: 96px
+      height: 34px
+      width: 96px
 
       .clear-wrap
         padding-top: 8px
@@ -157,12 +171,14 @@
         padding-bottom: 23px
 
     .input__inner
-      width: 400px
+      width: 100%
+      height: 100%
       border-radius 2px
       border: 0.5px solid $color-border
       color: $color-text-main
       font-size $font-size-14
       font-family $font-family-regular
+      padding-right 14px
       padding-left 14px
       box-sizing: border-box
 
@@ -172,10 +188,10 @@
       &:focus
         border: 0.5px solid $color-main
 
-    &.zb-input--raduis-4 .input__inner
+    &.zb-input--radius-4 .input__inner
       border-radius: 4px
 
-    &.zb-input--raduis-2 .input__inner
+    &.zb-input--radius-2 .input__inner
       border-radius: 2px
 
     &.base-input--after
@@ -201,9 +217,15 @@
       color: $color-text-assist
       cursor not-allowed
 
+    .base-input__count
+      font-size $font-size-12
+      color:#C9CCDA
+      letter-spacing  0.5px
+      position absolute
+      bottom 10px
+      right 10px
   .zb-textarea
     padding 14px
-    min-height: 93px
     resize none
 
   input::-webkit-input-placeholder
