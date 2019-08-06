@@ -127,6 +127,7 @@
       },
       allCheckType: {
         get() {
+          if(this.list.length===0) return ''
           let arr = this.list.map(item => {
             return this.selectGoods.findIndex(goods => item[this.selectKey] === goods[this.selectKey])
           })
@@ -152,7 +153,7 @@
           data: this.goodsListFilter,
           loading: true
         }).then(res => {
-          if (!res.isSuccess) return
+          if (res.isFail) return
           this.total = res.meta.total
           this.list = res.data.map((item, index) => {
             item[this.selectKey] = item[this.selectKey] + '' + this.goodsListFilter.page
