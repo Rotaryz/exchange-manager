@@ -2,7 +2,7 @@
   <div class="order-list normal-box table">
     <base-tab-select></base-tab-select>
     <div class="down-content">
-      <base-date datePlaceholder="请选择时间" textName="下单时间"></base-date>
+      <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
       <base-search placeHolder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
@@ -138,7 +138,8 @@
         orderList: [{}, {}],
         keyword: '',
         total: 21,
-        status: INFO_STATUS
+        status: INFO_STATUS,
+        time: ['2019-08-02', '2018-09-06']
       }
     },
     computed: {
@@ -171,7 +172,10 @@
       status() {
         this.page = 1
         this.getOrderList()
-      }
+      },
+      time(times) {
+        console.log(times)
+      },
     },
     methods: {
       // 获取客户列表

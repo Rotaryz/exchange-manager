@@ -3,14 +3,14 @@
     <div class="block">
       <span v-if="showTextName" class="demonstration">{{textName}}</span>
       <el-date-picker
-        :value="times"
+        v-model="times"
+        style="height:32px; width: 280px"
         :type="dateType"
         :placeholder="datePlaceholder"
         :clearable="clearable"
         :valueFormat="valueFormat"
         :startPlaceholder="startPlaceholder"
         :endPlaceholder="endPlaceholder"
-        @change="getTime"
       >
       </el-date-picker>
     </div>
@@ -66,23 +66,29 @@
       clearable: {
         type: Boolean,
         default: true
+      },
+      infoTime: {
+        type: [Array, String],
+        default: () => {
+          return []
+        }
       }
     },
     data() {
       return {
-        times: ''
+        times: this.infoTime
       }
     },
     watch: {
-      time(times) {
-        console.log(times)
+      infoTime(times) {
+        this.times = times
+      },
+      times(news) {
+        this.$emit('update:infoTime', news || [])
+        this.$emit('changeDate', news || [])
       }
     },
-    methods: {
-      getTime(tiems) {
-        console.log(tiems)
-      }
-    }
+    methods: {}
   }
 </script>
 
@@ -94,4 +100,9 @@
     margin-right: 10px
     color: $color-text-main
 
+  .el-date-editor .el-range__icon
+    line-height: 25px !important
+
+  .el-date-editor .el-range__close-icon
+    line-height: 25px !important
 </style>
