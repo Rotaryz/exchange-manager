@@ -1,32 +1,32 @@
 <template>
-  <div class="base-input" :class="[{'has-clear':clear},size ? 'zb-input--' + size : '']">
-    <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
-      <i class="clear-icon"></i>
-    </span>
-    <!-- 'zb-input--prefix': $slots.prefix,
-              'zb-input--suffix': $slots.suffix|| clearable,-->
-    <!-- eslint-disable  -->
-    <input v-if="type==='input'"
+
+  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',raduis?'zb-input--raduis-'+raduis:'']">
+    <slot name="after">
+      <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
+        <i class="clear-icon"></i>
+      </span>
+    </slot>
+
+    <textarea v-if="type==='textarea'"
+              :value="value"
+              :style="[{ width:width && width + 'px',height:height && height + 'px'},inputStyle]"
+              :maxlength="maxlength"
+              :placeholder="placeholder"
+              class="zb-textarea input__inner"
+              @input="inputEvent"
+              @keydown="keydown"
+    ></textarea>
+    <input v-else
            :value="value"
-           :class="['zb-input','input__inner',raduis?'raduis-'+raduis:'',{'is-disabled': inputDisabled}]"
-           :style="inputStyle"
+           :style="[{ width:width && width + 'px',height:height && height + 'px'},inputStyle]"
            :placeholder="placeholder"
-           :type="inputType"
-           :maxlength="maxLength"
-           @focus="active = true"
-           @blur="active = false"
+           :type="type"
+           :maxlength="maxlength"
+           class="zb-input input__inner"
            @input="inputEvent"
            @keydown="keydown"
     >
-    <textarea v-if="type==='textarea'"
-              :value="value"
-              :class="['zb-textarea','input__inner',{'is-disabled': inputDisabled}]"
-              :style="inputStyle"
-              :placeholder="placeholder"
-              @focus="active = true"
-              @blur="active = false"
-              @input="inputEvent"
-    ></textarea>
+    <span v-if="showWordLimit" class="base-input__count">0/30</span>
   </div>
 </template>
 
@@ -36,52 +36,68 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      value: {
+        default: '',
+        type: [String, Boolean, Number]
+      },
+      showWordLimit: {
+        type: [Number, String],
+        default: null
+      },
       clear: {
         default: false,
         type: [Boolean, String]
       },
-
-      inputType: {
+      type: {
         default: 'text',
         type: String
       },
-      type: {
-        default: 'input',
-        type: String
-      },
-      inputStyle: {
-        default: '',
-        type: [Object, String]
-      },
-      raduis:{
-        type:[Number,String],
-        default:null
-      },
-      size: {
-        default: 'middle', // big middle small mini
-        type: String
-      },
-      inputDisabled: {
+      disabled: {
         default: false,
         type: Boolean
-      },
-      value: {
-        default: '',
-        type: [String, Boolean, Number]
       },
       placeholder: {
         default: '',
         type: String
       },
-      maxLength: {
+      maxlength: {
         default: null,
         type: Number
       },
+      inputStyle: {
+        default: () => {},
+        type: Object
+      },
+      raduis: {
+        type: [Number, String],
+        default: null
+      },
+      size: {
+        default: 'middle', // big middle small mini
+        type: String
+      },
+      width: {
+        default: '',
+        type: [String, Number]
+      },
+      height: {
+        default: '',
+        type: [String, Number]
+      },
     },
     data() {
-      return {
-        active: false
+      return {}
+    },
+    computed: {
+      style() {
+        return {
+          width: this.width && this.width + 'px',
+          height: this.height && this.height + 'px',
+        }
       }
+    },
+    mounted() {
+      console.log(this)
     },
     methods: {
       clearBtn() {
@@ -101,10 +117,13 @@
   @import "~@design"
   .base-input
     display inline-block
+    position relative
+
     &.zb-input--big
       .input__inner
         height: 60px
         width: 360px
+
     &.zb-input--middle
       .input__inner
         height: 44px
@@ -153,15 +172,13 @@
       &:focus
         border: 0.5px solid $color-main
 
-    .raduis-4
+    &.zb-input--raduis-4 .input__inner
       border-radius: 4px
 
-    .raduis-2
+    &.zb-input--raduis-2 .input__inner
       border-radius: 2px
 
-    &.has-clear
-      position relative
-
+    &.base-input--after
       .input__inner
         padding-right: 30px
 
@@ -179,18 +196,25 @@
         height: @width
         icon-image('icon-delet')
 
+    &.is-disabled .input__inner
+      background: #f9f9f9
+      color: $color-text-assist
+      cursor not-allowed
+
   .zb-textarea
     padding 14px
     min-height: 93px
     resize none
 
   input::-webkit-input-placeholder
+  textarea::-webkit-input-placeholder
     color: $color-text-sub
 
   input:disabled
+  textarea:disabled
     background: #f9f9f9
     color: $color-text-assist
+    cursor not-allowed
 
-  textarea::-webkit-input-placeholder
-    color: $color-text-sub
+
 </style>

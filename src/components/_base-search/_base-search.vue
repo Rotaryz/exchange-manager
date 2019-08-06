@@ -3,8 +3,9 @@
     <div class="box-tip">搜索</div>
     <base-input :value="searchText"
                 raduis="4"
-                size="mini"
-                inputStyle="width:220px;background: #F4F8F9;border: 1px solid #F3F2F7"
+                width="220"
+                height="32"
+                :inputStyle="{background: '#F4F8F9',border: '1px solid #F3F2F7'}"
                 :placeholder="placeholder"
                 @input="setValue"
                 @keydown="_enter"
