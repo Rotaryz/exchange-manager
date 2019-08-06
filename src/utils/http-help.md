@@ -33,20 +33,20 @@ API.Jwt.getToken({data}).then((res) => {
 - loading 默认为true; Boolean 或 Function 页面请求loading
 - toast 默认为true; Boolean 或 Function 页面异常toast
 - formatter 默认为undefined; Function 页面处理后台数据拦截,必须return处理完的数据
-- doctor 默认为undefined; (必填) Function 页面报错处理函数
+- doctor 默认为undefined;  Function 页面报错处理函数
 
 ```js
 // loading 为function 不会执行默认的关闭loading方法
 let data = {hello: 'world'}
 API.Jwt.getToken({
   data,
-  loading() {
+  loading:() => {
     // to do some thing
   },
-  toast() {
+  toast:() => {
     // to do some thing
   },
-  formatter(err, res) {
+  formatter:(err, res) => {
     // format res 
     if (err) { // 当有错误的时候处理函数
       // ...
@@ -58,14 +58,47 @@ API.Jwt.getToken({
 * @param res 响应数据
 * @param url 请求路由
 */
-  doctor(res, url) {
+  doctor:(res, url) =>{
     // to do some thing, fix error
   }
 }).then((res) => {
   // do some thing
 })
 ```
+### doctor参数说明
+> doctor默认值为undefined；此时后台code码错误走catch，正确逻辑走then
+```js
+API.Global.getToken().then(res => {
+  // 正确的逻辑
+}).catch(e => {
+  // 错误逻辑
+  console.log(e, 'catch')
+})
 
+```
+> doctor 为function时；此时后台的code码不会走catch;相当于自己的方法处理;
+>> 注意： 此时then也会执行
+
+```js
+// 一般的业务场景用于连续的接口调用
+async function f() {
+  try {
+    let res = await API.Global.getToken({
+      doctor: (e) => {
+        // 自己处理错误逻辑
+      }
+    })
+    // res 也会返回后台的数据，此时需要自己处理
+    res = await API.Global.getToken2({
+      doctor: (e) => {
+        // 自己处理错误逻辑
+      }
+    })
+  } catch (e) {
+    // 不走catch
+  }
+}
+```
 ## HTTP-API简述
 
 - init 初始化http的基本配置
