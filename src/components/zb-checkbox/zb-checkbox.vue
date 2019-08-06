@@ -14,7 +14,7 @@
     props:{
       type:{
         type:String,
-        default:'' // selected已选择 disable禁止 indeterminate 半选择状态
+        default:'' // checked已选择 disable禁止 indeterminate 半选择状态
       }
     },
     data() {
@@ -37,7 +37,7 @@
     background-color: #fff;
     z-index: 1;
     transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
-    &.selected
+    &.checked
     &.disable
     &.indeterminate
       &:after
@@ -52,7 +52,7 @@
         transition: transform .15s ease-in .05s
         transform-origin: center
 
-    &.selected
+    &.checked
       background-color $color-main
       &:after
         border-bottom: 2px solid #fff

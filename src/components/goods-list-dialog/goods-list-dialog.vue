@@ -135,7 +135,7 @@
           arr = arr.filter(newItem => newItem < 0)
           console.log(arr, 'arr2')
 
-          return arr.length === 0 ? 'selected' : arr.length < this.list.length ? 'indeterminate' : ''
+          return arr.length === 0 ? 'checked' : arr.length < this.list.length ? 'indeterminate' : ''
         },
         set(newValue) {
           return newValue
@@ -159,8 +159,8 @@
             item[this.selectKey] = item[this.selectKey] + '' + this.goodsListFilter.page
             let isInList = this.selects.findIndex((items) => items[this.selectKey] === item[this.selectKey])
             let isSelect = this.selectGoods.findIndex((select) => select[this.selectKey] === item[this.selectKey])
-            item.selecteStatus = isSelect !== -1 ? 'selected' : (isInList !== -1 ? 'disable' : '')
-            // '' 没有选择 selected 选择高亮  disable 原本已存在
+            item.selecteStatus = isSelect !== -1 ? 'checked' : (isInList !== -1 ? 'disable' : '')
+            // '' 没有选择 checked 选择高亮  disable 原本已存在
             return item
           })
         })
@@ -190,7 +190,7 @@
         switch (item.selecteStatus) {
           case 'disable':
             break
-          case 'selected':
+          case 'checked':
             this.list[index].selecteStatus = ''
             let idx = this.selectGoods.findIndex((items) => items[this.selectKey] === item[this.selectKey])
             if (idx !== -1) {
@@ -202,14 +202,14 @@
               this.$toast.show(`选择商品数量不能超过${this.limit}个`)
               return
             }
-            this.list[index].selecteStatus = 'selected'
+            this.list[index].selecteStatus = 'checked'
             this.selectGoods.push(item)
             break
         }
       },
       //全选
       selectAllGoodsBtn() {
-        if (this.allCheckType !== 'selected') {
+        if (this.allCheckType !== 'checked') {
           this.list.forEach((item, i) => {
             if (!item.selecteStatus) {
               this.selectGoodsBtn(item, i)
@@ -217,7 +217,7 @@
           })
         } else {
           this.list.forEach((item, i) => {
-            if (item.selecteStatus === 'selected') {
+            if (item.selecteStatus === 'checked') {
               this.selectGoodsBtn(item, i)
             }
           })
