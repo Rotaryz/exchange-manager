@@ -26,21 +26,16 @@ HTTP.setCallback({
     return response
   },
   // 请求完成后的逻辑处理
-  responseFulfilled(res, {url, loading = true, toast = true, success, fail}) {
-    // if (typeof fail !== 'function') {
-    //   const errorText = url + '-->' + '请添加doctor字段'
-    //   console.error(errorText)
-    //   throw new Error(errorText)
-    // }
+  responseFulfilled(res, {url, loading = true, toast = true, formatter, doctor}) {
+    let err = false // 是否有错
+
     // 可自定义处理loading
-    res.isFail = false// 成功
     if (typeof loading === 'function') {
       loading(res)
     } else if (loading) {
       hideLoading()
     }
     if (res.code !== ERR_OK) {
-      res.isFail = true// 有错
       errorCodeHandle(res.code)
     }
     // 可自定义处理toast错误
@@ -51,17 +46,21 @@ HTTP.setCallback({
         showToast(res.message)
       }
     }
-    // 错误处理
+    // 处理错误函数
     if (res.code !== ERR_OK || res.error !== ERR_OK) {
-      res.isFail = true// 有错
       console.error(url + ' <<<<<<接口异常>>>>> ' + JSON.stringify(res))
-      typeof fail !== 'function' && fail(res, url)
-    }
-    // 成功处理
-    else if (typeof success === 'function') {
-      return success(res)
-    }
+      err = true
+      if (typeof doctor === 'function') {
+        doctor(res, url)
+      } else {
+        throw res
+      }
 
+    }
+    // 对返回的数据劫持
+    if (typeof formatter === 'function') {
+      return formatter(err, res)
+    }
     return res
   }
 })
