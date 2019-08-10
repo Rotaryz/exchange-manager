@@ -1,6 +1,19 @@
-import store from '@state/store'
-
 export default [
+  /**
+   *
+   * 登录
+   *
+   */
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@pages/login/login')
+  },
+  /**
+   *
+   * 平台模块
+   *
+   */
   {
     path: '/',
     name: 'index',
@@ -117,23 +130,83 @@ export default [
                 name: 'customer-list',
                 component: () => import('@pages/customer-list/customer-list'),
                 meta: {
-                  title: '客户列表',
+                  title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['客户列表'],
-                  beforeResolve(routeTo, routeFrom, next) {
-                    !routeFrom.path.includes(routeTo.path) && store.dispatch('customerList/infoCustomer')
-                    store
-                      .dispatch('customerList/getCustomerList', true)
-                      .then((res) => {
-                        if (!res) {
-                          return next({name: '404'})
-                        }
-                        return next()
-                      })
-                      .catch(() => {
-                        return next({name: '404'})
-                      })
-                  }
+                  crumbs: ['客户列表'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ],
+      },
+      /**
+       *
+       *订单管理
+       *
+       */
+      {
+        path: '/order-manager',
+        name: 'order-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '订单管理',
+          icon: require('./icon-order@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'order',
+            name: 'order',
+            text: '订单',
+            component: {render: h => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/order-manager/order/order-list',
+                name: 'order-list',
+                component: () => import('@pages/order-list/order-list'),
+                meta: {
+                  title: '订单列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['订单列表'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ],
+      },
+      /**
+       *
+       *页面管理
+       *
+       */
+      {
+        path: '/cms',
+        name: 'cms',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '内容管理',
+          icon: require('./icon-content@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'b-mall',
+            name: 'b-mall',
+            text: '订单',
+            component: {render: h => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/cms/b-mall/cms-manager',
+                name: 'cms-manager',
+                component: () => import('@pages/cms-manager/cms-manager'),
+                meta: {
+                  title: '首页配置', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['首页配置'] // 面包屑标题
                 }
               }
             ]
@@ -153,3 +226,8 @@ export default [
     redirect: '404'
   }
 ]
+
+// // 初始化数据
+// function resetParam(isReset, methed) {
+//   !isReset && store.dispatch(methed)
+// }

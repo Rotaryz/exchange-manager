@@ -22,7 +22,7 @@
     props: {
       paramsKey: {
         type: String,
-        default: '', // small middle big
+        default: '',
       },
       buttonSize: {
         type: String,
@@ -31,7 +31,7 @@
       placeholder: {
         // 默认文字
         type: String,
-        default: '客户昵称/客户手机号'
+        default: ''
       },
       defaultValue: {
         // 输入框值
@@ -56,6 +56,10 @@
       value: {
         type: String,
         default: null
+      },
+      isShowTip: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -84,6 +88,10 @@
 
   .base-search
     margin-left: 30px
+  .base-search-box
+    display: inline-block
+
+  .base-search
     display: flex
     height: 32px
     align-items: center

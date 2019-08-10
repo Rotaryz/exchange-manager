@@ -171,7 +171,7 @@
     background: $color-white
     border-right-1px($color-line)
     &::-webkit-scrollbar
-      width: 6px
+      width: 5px
       height: 8px
       opacity: 0
       transition: all 0.2s

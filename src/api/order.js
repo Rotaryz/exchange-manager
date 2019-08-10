@@ -2,30 +2,39 @@ import request from '@utils/http'
 
 export default {
   /**
-   * 获取客户列表
+   * 获取订单列表
    * @param args
    * @returns {*}
    */
-  getCustomerList(args) {
+  getOrderList(args) {
     const url = ``
     return request.get({url, ...args})
   },
   /**
-   * 获取客户等级
+   * 订单列表状态
    * @param args
    * @returns {*}
    */
-  getCustomerGrade(args) {
+  orderStatus(args) {
     const url = ``
     return request.get({url, ...args})
   },
   /**
-   * 设置客户等级
+   * 发货详情
    * @param args
    * @returns {*}
    */
-  setCustomerGrade(id, args) {
+  logisticsDetail(id, args) {
     const url = `/${id}`
     return request.get({url, ...args})
+  },
+  /**
+   * 发货
+   * @param args
+   * @returns {*}
+   */
+  setLogistics(id, args) {
+    const url = `/${id}`
+    return request.post({url, ...args})
   }
 }

@@ -1,31 +1,37 @@
 // import API from '@api'
 // import app from '@src/main'
+const INFO_STATUS = ''
 export const state = {
   page: 1,
-  customerList: [{}],
+  orderList: [{}, {}],
   keyword: '',
-  total: 0
+  total: 21,
+  status: INFO_STATUS
 }
 
 export const getters = {
   page: (state) => state.page,
-  customerList: (state) => state.customerList,
+  orderList: (state) => state.orderList,
   keyword: (state) => state.keyword,
-  total: (state) => state.total
+  total: (state) => state.total,
+  status: (state) => state.status
 }
 
 export const mutations = {
   SET_PAGE(state, page) {
     state.page = page
   },
-  SET_CUSTOMER_LIST(state, customerList) {
-    state.customerList = customerList
+  SET_CUSTOMER_LIST(state, orderList) {
+    state.orderList = orderList
   },
   SET_KEYWORD(state, keyword) {
     state.keyword = keyword
   },
   SET_TOTAL(state, total) {
     state.total = total
+  },
+  SET_STATUS(state, status) {
+    state.status = status
   }
 }
 
@@ -35,9 +41,10 @@ export const actions = {
    * @param state
    * @param commit
    */
-  infoCustomer({state, commit}) {
+  infoOrder({state, commit}) {
     commit('SET_PAGE', 1)
     commit('SET_KEYWORD', '')
+    commit('SET_STATUS', INFO_STATUS)
   },
   /**
    * 获取客户列表
@@ -45,16 +52,15 @@ export const actions = {
    * @param commit
    * @param loading
    */
-  getCustomerList({state, commit}, loading = false) {
+  getOrderList({state, commit}, loading = false) {
     // let {page, keyword} = state
     // let data = {page, keyword}
-    // return API.Customer.getCustomerList({data, loading, toast: true, doctor(){}})
+    // return API.Order.getOrderList({data, loading, toast: true, doctor(){}})
     //   .then((res) => {
     //     if (res.error !== app.$ERR_OK) {
     //       app.$toast.show(res.message)
     //       return
     //     }
-    //     let list = res.data
     //     commit('SET_CUSTOMER_LIST', list)
     //     commit('SET_TOTAL', res.meta.total)
     //     return list
@@ -73,9 +79,10 @@ export const actions = {
    * @param commit
    * @param obj
    */
-  getMoreCustomerList({state, commit, dispatch}, obj) {
+  getMoreOrderList({state, commit, dispatch}, obj) {
     typeof (obj.page) !== 'undefined' && commit('SET_PAGE', obj.page)
     typeof (obj.keyword) !== 'undefined' && commit('SET_KEYWORD', obj.keyword)
-    dispatch('getCustomerList')
+    typeof (obj.status) !== 'undefined' && commit('SET_STATUS', obj.status)
+    dispatch('getOrderList')
   }
 }
