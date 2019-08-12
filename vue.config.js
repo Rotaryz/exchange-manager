@@ -74,7 +74,7 @@ module.exports = {
       ? // 代理生产地址.
         {
           proxy: {
-            '/api': {
+            '/gateway': {
               target: process.env.VUE_APP_API
             }
           }

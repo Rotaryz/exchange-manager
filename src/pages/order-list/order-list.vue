@@ -3,7 +3,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search placeHolder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search placeHolder="订单号/客户名字/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-    <default-modal :visible.sync="visible" height="268px" title="设置账号等级" :submitBefore="justifyForm" @submit="setLogistics">
+    <base-modal :visible.sync="visible" height="268px" title="设置账号等级" :submitBefore="justifyForm" @submit="setLogistics">
       <div class="set-box">
         <base-form-item
           label="快递公司"
@@ -100,13 +100,12 @@
           ></base-input>
         </base-form-item>
       </div>
-    </default-modal>
+    </base-modal>
 
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import DefaultModal from '@components/default-modal/default-modal'
   // import * as Helpers from './modules/helpers'
   // import API from '@api'
   const PAGE_NAME = 'ORDER_LIST'
@@ -119,9 +118,6 @@
     name: PAGE_NAME,
     page: {
       title: TITLE
-    },
-    components: {
-      DefaultModal
     },
     data() {
       return {

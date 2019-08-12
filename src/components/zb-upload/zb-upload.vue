@@ -36,7 +36,7 @@
           </div>
         </draggable>
         <div v-else width="90px" class="show-image hand">
-          <video class="video-tag" :src="item.video_url ||item"></video>
+          <vid0eo class="video-tag" :src="item.video_url ||item"></vid0eo>
           <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
         </div>
       </template>

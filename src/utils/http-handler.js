@@ -68,7 +68,7 @@ HTTP.setCallback({
 // 错误码处理
 function errorCodeHandle(code) {
   switch (code) {
-    case 10000:
+    case 10000: // token失效
       break
     case 13005:
       break
