@@ -1,7 +1,7 @@
 <template>
   <div class="goods-classify">
     <base-table-tool title="商品分类" :iconUrl="require('./icon-goods_classify@2x.png')">
-      <base-button plain addIcon @click="addBtn(0)">新建分类</base-button>
+      <base-button plain addIcon @click="addBtn">新建分类</base-button>
     </base-table-tool>
     <div class="tree-wrap">
       <zb-tree :data="list"
@@ -10,7 +10,7 @@
                @add-item="addChildBtn"
       ></zb-tree>
     </div>
-    <base-modal :visible.sync="editVisible" :title="editTitle" :submitBefore="justifyForm" @submit="editSubmit">
+    <base-modal :visible.sync="editVisible" :title="editTitle" :submitBefore="justifyForm">
       <base-form-item label="分类名称" labelWidth="84px" labelAlign="right">
         <base-input v-model="edit.name" :maxLength="10" clear></base-input>
       </base-form-item>
@@ -27,7 +27,7 @@
         </upload>
       </base-form-item>
       <base-form-item :required="false" label="排序" labelWidth="84px" labelAlign="right">
-        <base-input v-model="edit.sort" inputType="number"></base-input>
+        <base-input v-model="edit.sort" type="number"></base-input>
       </base-form-item>
     </base-modal>
   </div>
@@ -93,7 +93,7 @@
       failFile(err) {
         this.$toast(err)
       },
-      addBtn(pid) {
+      addBtn() {
         this.categoryImageUrl = ''
         this.editVisible = true
         this.edit = {
@@ -101,7 +101,7 @@
           name: '',
           image_id: 0,
           sort: 0,
-          pid: pid || 0
+          pid: 0
         }
       },
       editItem(obj) {
@@ -114,16 +114,13 @@
         this.edit.sort = childItem.sort || item.sort
         this.edit.id = childItem.id || item.id
         this.categoryImageUrl = !childItem.id ? item.image_url : ''
-        this.edit.image_id = !childItem.id ? item.image_id : ''
+        this.edit.image_id = !childItem.id ? item.image_id : 0
         this.edit.pid = childItem.id ? item.id : 0
       },
       editSubmit() {
-        console.log(this.edit.id, this.currentChildIndex, '--------')
         let requestName = this.edit.id ? 'editCategory' : 'addCategory'
         let {id, ...params} = this.edit
-        API.Goods[requestName]({data: this.edit.id ? this.edit : params}).then(res => {
-          this.getList()
-        })
+        return API.Goods[requestName]({data: this.edit.id ? this.edit : params})
       },
       deleteItem(obj) {
         let {item, childItem = null} = obj
@@ -134,19 +131,20 @@
         })
       },
       addChildBtn(obj) {
-        let {index = null, item = null} = obj
-        this.currentIndex = index
-        this.currentItem = item
-        this.addBtn(item.id)
+        let {item = {}} = obj
+        this.addBtn()
+        this.edit.pid=item.id
       },
       justifyForm(done) {
         console.log(this.edit)
         let msg = null
         if (!this.edit.name) msg = '请输入分类名称'
-        else if (!(/^(0|[1-9]\d{0,9})$/.test(this.edit.sort))) msg = '请输入正确的排序'
         else if (!this.edit.pid && !this.edit.image_id) msg = '请上传分类图标'
         if (!msg) {
-          done()
+          this.editSubmit().then(()=>{
+            done()
+            this.getList()
+          })
         } else {
           this.$toast.show(msg)
         }
