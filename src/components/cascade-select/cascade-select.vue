@@ -42,11 +42,15 @@
     props: {
       getDataFunction: {
         type: Function,
-        default: (params) => API.Goods.getCategory(params)
+        default: () => API.Goods.getCategory
       },
       paramsKey: {
         type: String,
-        default: 'parent_id'
+        default: 'pid'
+      },
+      value:{
+        type: [String,Boolean,Number],
+        default: ''
       },
       valueKey: {
         type: String,
@@ -84,13 +88,16 @@
         default: '',
         type: [String, Object],
       },
-      size:{
+      size: {
         default: 'small',
         type: String
       }
     },
     data() {
       return {
+        params: {
+          pid: -1
+        },
         goodsCategoryFirstList: [],
         goodsCategorySecondList: [],
         goodsCategoryFirst: '',
@@ -101,18 +108,15 @@
       // 获取一级分类
       async _getCategoryFirst(val) {
         if (!val) return false
-        console.log(111)
-        // let functionName = this.getDataFunction || API.Goods.getGoodsList
-        console.log(this.getDataFunction)
-        let res = await this.getDataFunction({
-          data: {[this.paramsKey]: ''},
+        let res = await this.getDataFunction()({
+          data: {[this.paramsKey]: -1},
           loading: false
         })
         this.goodsCategoryFirstList = res.isFail ? [] : res.data
       },
       // 选择第一分类
       async _selectCategoryFirst() {
-        let res = await this.getDataFunction({
+        let res = await this.getDataFunction()({
           data: {[this.paramsKey]: this.goodsCategoryFirst},
           loading: false
         })
@@ -125,8 +129,10 @@
         this.goodsCategoryChange(this.goodsCategorySecond)
       },
       // 选择分类
-      async goodsCategoryChange(val) {
-        this.$emit('change', val)
+      async goodsCategoryChange(value) {
+        this.$emit('update:value', value)
+        this.$emit('input', value)
+        this.$emit('change', value)
       },
     }
   }

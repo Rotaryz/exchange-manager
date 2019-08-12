@@ -22,10 +22,10 @@
         <div class="list">
           <div v-for="(item,i) in list" :key="i" class="list-content list-box">
             <div v-for="(val,key) in listHeader" :key="key" class="list-item">
-              <base-switch v-if="val.type ==='switch'" :status.sync="item.status" @changeSwitch="changeSwitch(i)"></base-switch>
+              <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
               <div v-else-if="val.type === 'operate'">
                 <router-link tag="span" :to="{path:'edit-product',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
-                <span class="list-operation" @click="deleteBtn(i)">删除</span>
+                <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
               </div>
               <template v-else>{{item[key]}}</template>
             </div>
@@ -42,12 +42,13 @@
 <script type="text/ecmascript-6">
   import API from '@api'
   import CascadeSelect from '@components/cascade-select/cascade-select'
+
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
-  const params =  {
-    keyword:'11111',
+  const params = {
+    keyword: '',
     category: 0,
-    status:1,
+    status: 1,
     page: 1,
     limit: 10
   }
@@ -68,30 +69,40 @@
     },
     data() {
       return {
-        getDataFunction:API.Goods.getGoodsList,
-        statusList:[{label: '全部', value: 0, num: 0},{label: '上架', value:1, num: 0},{label: '下架', value: 2, num: 0}],
+        getDataFunction: API.Goods.getGoodsList,
+        statusList: [],
         inputValue: '1122',
-        total: 40,
+        total: 0,
         filter: params,
         listHeader: {
-          first: {name: '商品名称'},
-          second: {name: '分类'},
-          third: {name: '库存'},
-          fourth: {name: '零售价'},
-          five: {name: '库存'},
-          six: {name: '会员价'},
-          status: {name: '状态',type:"switch"},
-          operate_text: {name: '操作',type:"operate"}
+          name: {name: '商品名称'},
+          category_name: {name: '分类'},
+          saleable: {name: '库存'},
+          price: {name: '零售价'},
+          discount_price: {name: '会员价'},
+          status: {name: '状态', type: "switch"},
+          operate_text: {name: '操作', type: "operate"}
         },
-        list: [{id:1,first: 123,second:5255,third:5255,fourth:5255,five:5255,six:5255,status:1}]
+        list: []
       }
     },
     mounted() {
-      this._getList(this.filter)
+      this._getList()
+      this._getStatus()
     },
     methods: {
-      setData(res){
+      setData(res) {
         this.list = res.data
+      },
+      _getStatus() {
+        API.Goods.getGoodsListStatus({
+          data: {
+            keyword: this.filter.keyword,
+            category: this.filter.category
+          }
+        }).then(res => {
+          this.statusList = res.data
+        })
       },
       _getList() {
         API.Goods.getGoodsList({
@@ -100,38 +111,31 @@
           this.setData(res)
         })
       },
-      changeGategory(val){
+      changeGategory(val) {
         this.filter.category = val
         this._getList()
       },
-      statusChange(val){
+      statusChange(val) {
         this._getList()
-        console.log(this.filter.status)
       },
-      deleteBtn(idx){
+      deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
-          console.log('确认 ')
-          let res = await  API.Goods.deleteGoods({data:idx})
-          if(res.isFail) return false
+          await API.Goods.deleteGoods({data: {id: item.id}})
           this._getList()
         }, () => {
           console.log('取消 ')
         })
-        console.log(idx,this.list[idx])
       },
-      async changeSwitch(idx){
-        let res = await  API.Goods.editStatus({data:idx})
-        if(res.isFail) return false
+      async changeSwitch(item) {
+        console.log(item)
+        await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
         this._getList()
-        console.log(idx,this.list[idx].status)
       },
       searchBtn(val) {
         this._getList()
       },
       pageChange(val) {
-        this.filter.keyword = 111
         this._getList()
-        console.log(this.filter.page)
       }
     }
 

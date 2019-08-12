@@ -6,19 +6,23 @@ export default {
     const url = `/gateway/platform/platform-goods/goods/index`
     return request.get({url, ...args})
   },
+  getGoodsListStatus(args) {
+    const url = `/gateway/platform/platform-goods/goods/statistic`
+    return request.get({url, ...args})
+  },
   editGoods(args) {
     const url = `/gateway/platform/platform-goods/goods/update`
-    return request.get({url, ...args})
+    return request.post({url, ...args})
   },
   addGoods(args) {
     const url = `/gateway/platform/platform-goods/goods/create`
-    return request.get({url, ...args})
+    return request.post({url, ...args})
   },
   deleteGoods(args) {
     const url = `/gateway/platform/platform-goods/goods/destroy`
     return request.get({url, ...args})
   },
-  editStatus(args){
+  editStatus(args) {
     const url = `/gateway/platform/platform-goods/goods/set-status`
     return request.get({url, ...args})
   },
@@ -35,7 +39,7 @@ export default {
     const url = `/gateway/platform/platform-goods/category/destroy`
     return request.post({url, ...args})
   },
-  editCategory(args){
+  editCategory(args) {
     const url = `/gateway/platform/platform-goods/category/update`
     return request.get({url, ...args})
   },
@@ -44,27 +48,27 @@ export default {
     const url = `/gateway/platform/platform-goods/group/index`
     return request.get({url, ...args})
   },
-  getGroupDetail(args){
+  getGroupDetail(args) {
     const url = `/gateway/platform/platform-goods/group/show`
     return request.get({url, ...args})
   },
-  addGroup(args){
+  addGroup(args) {
     const url = `/gateway/platform/platform-goods/group/create`
     return request.post({url, ...args})
   },
-  editGroup(args){
+  editGroup(args) {
     const url = `/gateway/platform/platform-goods/group/update`
     return request.post({url, ...args})
   },
-  deleltGroup(args){
+  deleltGroup(args) {
     const url = `/gateway/platform/platform-goods/group/destroy`
     return request.delete({url, ...args})
   },
-  addGroupGoods(args){
+  addGroupGoods(args) {
     const url = `/gateway/platform/platform-goods/group/add-goods`
     return request.post({url, ...args})
   },
-  deleltGroupGoods(args){
+  deleltGroupGoods(args) {
     const url = `/api/goods/category.json`
     return request.delete({url, ...args})
   }

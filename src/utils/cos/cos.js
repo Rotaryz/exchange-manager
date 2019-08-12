@@ -68,7 +68,6 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
             console.error(err)
             return
           }
-          console.log(info)
           const auth = info['authorization']
           const XCosSecurityToken = info['x_cos_security_token']
           const Bucket = info['bucket']
@@ -77,8 +76,6 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
           const prefix = protocol + '//' + Bucket + '.cos.' + Region + '.myqcloud.com/'
           const url = prefix + info.pathname
           const xhr = new XMLHttpRequest()
-
-          console.log(url)
           xhr.open('PUT', url, true)
           xhr.setRequestHeader('Authorization', auth)
           XCosSecurityToken && xhr.setRequestHeader('x-cos-security-token', XCosSecurityToken)
