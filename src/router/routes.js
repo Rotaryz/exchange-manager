@@ -19,6 +19,9 @@ export default [
     name: 'index',
     redirect: '/mall/goods/product-list',
     component: () => import('@pages/index/index'),
+    meta: {
+      authRequired: true
+    },
     children: [
       /**
        *

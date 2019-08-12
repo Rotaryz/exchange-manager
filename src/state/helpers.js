@@ -18,3 +18,11 @@ export const globalComputed = {
 export const globalMethods = {
   ...mapMutations('global', ['SET_CURRENT_TITLES'])
 }
+// 用户
+export const authMethods = mapActions('auth', ['logIn', 'logOut'])
+export const authComputed = {
+  ...mapState('auth', {
+    currentUser: (state) => state.currentUser
+  }),
+  ...mapGetters('auth', ['loggedIn'])
+}

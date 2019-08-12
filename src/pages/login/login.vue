@@ -15,11 +15,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import {authMethods} from '@state/helpers'
+  import {authMethods} from '@state/helpers'
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
-
+  const INFO_PATH = '/mall/goods/product-list'
   export default {
     name: PAGE_NAME,
     page: {
@@ -41,7 +41,7 @@
       }
     },
     methods: {
-      // ...authMethods,
+      ...authMethods,
       tryToLogIn() {
         if (this.tryingToLogIn) {
           return
@@ -55,10 +55,10 @@
             if (!user) {
               return
             }
-            this.$router.push(this.$route.query.redirectFrom || '/home/product-list')
+            this.$router.push(this.$route.query.redirectFrom || INFO_PATH)
           })
-          .catch((error) => {
-            this.$toast.show(error)
+          .catch(() => {
+            // console.error(error.message)
           })
           .finally(() => {
             this.tryingToLogIn = false

@@ -11,6 +11,9 @@ export const mutations = {
   },
   SET_MARGIN_BOTTOM(state, newValue) {
     state.marginBottom = newValue
+  },
+  CHECK_TOKEN(state){
+
   }
 }
 

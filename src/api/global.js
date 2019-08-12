@@ -1,9 +1,9 @@
-import request from '@utils/http'
+import HTTP from '@utils/http'
 
 export default {
   // 授权
   getToken(args) {
     const url = `/gateway/platform/manager/auth/post-login`
-    return request.get({url, ...args})
+    return HTTP.get({url, ...args})
   }
 }

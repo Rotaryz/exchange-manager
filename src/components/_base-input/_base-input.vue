@@ -75,7 +75,7 @@
       },
       readonly: {
         default: false,
-        type: [String,Boolean]
+        type: [String, Boolean]
       },
       inputStyle: {
         default: () => {
@@ -98,7 +98,7 @@
         default: '',
         type: [String, Number]
       },
-      handIcon:{
+      handIcon: {
         default: '',
         type: String
       }
@@ -115,7 +115,6 @@
       }
     },
     mounted() {
-      console.log(this)
     },
     methods: {
       clearBtn() {
@@ -164,7 +163,6 @@
       .clear-wrap
         padding-top: 8px
         padding-bottom: 8px
-
 
       .clear-wrap
         padding-top: 23px
@@ -219,11 +217,12 @@
 
     .base-input__count
       font-size $font-size-12
-      color:#C9CCDA
-      letter-spacing  0.5px
+      color: #C9CCDA
+      letter-spacing 0.5px
       position absolute
       bottom 10px
       right 10px
+
   .zb-textarea
     padding 14px
     resize none
