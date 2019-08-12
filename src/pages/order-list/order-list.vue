@@ -153,23 +153,25 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: '', status: INFO_STATUS}
-      API.Order.getOrderList({data, loading: true, toast: true})
-        .then((res) => {
-          API.Order.orderStatus({data: null, loading: true, toast: true})
-            .then((status) => {
-              console.log(status)
-              next(vx => {
-                vx.statusList = status.data
-                vx.orderList = res.data
-                console.log(vx.orderList)
-                vx.total = res.meta.total
-              })
-            })
-        })
-        .catch(() => {
-          next('404')
-        })
+      console.log('dsf')
+      // let data = {page: 1, keyword: '', status: INFO_STATUS}
+      // API.Order.getOrderList({data, loading: true, toast: true})
+      //   .then((res) => {
+      //     API.Order.orderStatus({data: null, loading: true, toast: true})
+      //       .then((status) => {
+      //         console.log(status)
+      //         next(vx => {
+      //           vx.statusList = status.data
+      //           vx.orderList = res.data
+      //           console.log(vx.orderList)
+      //           vx.total = res.meta.total
+      //         })
+      //       })
+      //   })
+      //   .catch(() => {
+      //     next('404')
+      //   })
+      next()
     },
     computed: {
       excelUrl() {
