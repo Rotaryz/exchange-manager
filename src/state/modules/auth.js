@@ -60,7 +60,6 @@ export const actions = {
           commit('SET_CURRENT_USER', {user: null, token: null})
           return null
         }
-        console.log(getters.currentUser)
         const user = res.data.manager_info
         commit('SET_CURRENT_USER', {user, token: res.data.access_token})
         return user

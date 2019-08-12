@@ -43,7 +43,7 @@ HTTP.setCallback({
         showToast(res.message)
       }
       // 3 错误处理
-      // console.error(url + ' <<<<<<接口异常>>>>> ' + JSON.stringify(res))
+      console.error(url + ' <<<<<<接口异常>>>>> ' + JSON.stringify(res))
       if (typeof doctor === 'function') {
         doctor(res, url)
       } else {
