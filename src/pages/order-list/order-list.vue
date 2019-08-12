@@ -162,12 +162,10 @@
         .then((res) => {
           API.Order.orderStatus({data: null, loading: true, toast: true})
             .then((status) => {
-              console.log(status)
               next(vx => {
                 vx.statusList = status.data
                 vx.orderList = res.data
                 vx.total = res.meta.total
-                console.log(vx.orderList)
               })
             })
         })

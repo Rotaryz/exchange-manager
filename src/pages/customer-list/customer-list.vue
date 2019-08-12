@@ -155,7 +155,6 @@
           }
         })
         res.error_code === this.$ERR_OK && this.getCustomerList()
-        console.log(this.grade)
       },
       search(keyword) {
         this.keyword = keyword || ''

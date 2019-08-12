@@ -66,7 +66,6 @@ class HTTP {
   }
   // 设置头部信息
   setHeaders(args = {}) {
-    console.log(args)
     for (let [key, value] of Object.entries(args)) {
       this.http.config.headers[key] = value
     }

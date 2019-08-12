@@ -20,7 +20,7 @@
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
-  const INFO_PATH = 'customer-list'
+  const INFO_PATH = 'client/customer/customer-list'
   export default {
     name: PAGE_NAME,
     page: {
@@ -44,7 +44,7 @@
     },
     beforeRouteEnter(to, from, next) {
       if (storage.get('auth.token', '')) {
-        return next({name: INFO_PATH})
+        return next({path: INFO_PATH})
       }
       return next()
     },
