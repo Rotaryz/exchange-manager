@@ -1,14 +1,14 @@
 import request from '@utils/http'
 import storage from 'storage-controller'
-import {getCorpId} from '@utils/tool'
+
 /**
  * 数据入库
  * @param data
  * @returns {Promise.<*>}
  */
 function _saveFile(data) {
-  const url = `/social-shopping/api/cos/save-file`
-  return request.post(url, data)
+  const url = `/gateway/common/file/image/create`
+  return request.post({url, data})
 }
 
 /**
@@ -18,18 +18,17 @@ function _saveFile(data) {
  * @private
  */
 function _getAuthorization(options, callback) {
-  const method = (options.Method || 'get').toLowerCase()
+  // const method = (options.Method || 'get').toLowerCase()
   const key = options.Key || ''
   // const pathname = key.indexOf('/') === 0 ? key : '/' + key
   const pathname = key
-  const Authorization = storage.get('auth.currentUser').access_token
+  const Authorization = storage.get('auth.token')
   const url =
-    '/social-shopping/api/cos/h5-upload-image-sign?method=' + method + '&image=' + encodeURIComponent(pathname)
+    '/gateway/common/file/image/get-upload-sign?image=' + encodeURIComponent(pathname)
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)
-  xhr.setRequestHeader('current-corp', getCorpId())
-  xhr.onload = function(e) {
+  xhr.onload = function (e) {
     let AuthData
     try {
       AuthData = JSON.parse(xhr.responseText)
@@ -42,12 +41,11 @@ function _getAuthorization(options, callback) {
       console.error('获取签名出错')
     }
   }
-  xhr.onerror = function(e) {
+  xhr.onerror = function (e) {
     console.error('获取签名出错', e)
   }
   xhr.send()
 }
-
 /**
  * 跳过选择图片的操作，直接上传
  * @param fileType 文件类型
@@ -63,13 +61,14 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
   showProcess && showProcess()
   return new Promise((resolve, reject) => {
     let requests = files.map((file) => {
-      let Key = Date.now() + '-' + Math.random().toString().split('.')[1].substr(0,6)
+      let Key = Date.now() + '-' + Math.random().toString().split('.')[1].substr(0, 6)
       return new Promise((resolve, reject) => {
         _getAuthorization({Method: 'PUT', Key: Key}, (err, info) => {
           if (err) {
             console.error(err)
             return
           }
+          console.log(info)
           const auth = info['authorization']
           const XCosSecurityToken = info['x_cos_security_token']
           const Bucket = info['bucket']
@@ -78,14 +77,16 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
           const prefix = protocol + '//' + Bucket + '.cos.' + Region + '.myqcloud.com/'
           const url = prefix + info.pathname
           const xhr = new XMLHttpRequest()
+
+          console.log(url)
           xhr.open('PUT', url, true)
           xhr.setRequestHeader('Authorization', auth)
           XCosSecurityToken && xhr.setRequestHeader('x-cos-security-token', XCosSecurityToken)
-          xhr.upload.onprogress = function(e) {
+          xhr.upload.onprogress = function (e) {
             let progress = Math.floor((e.loaded / e.total) * 10000) / 100
             processCallBack && processCallBack(progress)
           }
-          xhr.onload = function() {
+          xhr.onload = function () {
             if (xhr.status === 200 || xhr.status === 206) {
               _saveFile({path: '/' + encodeURIComponent(info.pathname), type: 'image'}).then((resp) => {
                 resolve(resp)
@@ -94,7 +95,7 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
               reject(new Error('文件 ' + Key + ' 上传失败，状态码：' + xhr.status))
             }
           }
-          xhr.onerror = function() {
+          xhr.onerror = function () {
             reject(new Error('文件 ' + Key + ' 上传失败，请检查是否没配置 CORS 跨域规则'))
           }
           xhr.send(file)

@@ -44,7 +44,7 @@
       },
       labelKey: {
         type: String,
-        default: 'label'
+        default: 'name'
       },
       valueKey: {
         type: String,
