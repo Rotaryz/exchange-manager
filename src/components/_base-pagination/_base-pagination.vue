@@ -89,7 +89,7 @@
     },
     computed: {
       pageTotal() {
-        return Math.ceil(this.total / this.pageSize)
+        return Math.ceil(this.total / this.pageSize) ? Math.ceil(this.total / this.pageSize) : 1
       },
       indexArr() {
         let ret = []

@@ -30,17 +30,17 @@
       valueKey: {
         // 默认键值(可使用自己所需键值)
         type: String,
-        default: 'value'
+        default: 'status'
       },
       labelKey: {
         // 默认label键值(可使用自己所需键值)
         type: String,
-        default: 'label'
+        default: 'status_text'
       },
       numKey: {
         // 默认num键值(可使用自己所需键值)
         type: String,
-        default: 'num'
+        default: 'statistic'
       }
     },
     data() {

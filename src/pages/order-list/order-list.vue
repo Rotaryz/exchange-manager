@@ -3,11 +3,11 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search placeHolder="订单号/客户名字/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search placeholder="订单号/客户名字/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
-        <base-status-tab></base-status-tab>
+        <base-status-tab :statusList="statusList" :value.sync="status"></base-status-tab>
       </div>
       <base-button plain buttonStyle="width: 92px" @click="downExcel">
         导出Excel
@@ -19,44 +19,49 @@
           <div v-for="(item, index) in listHeader" :key="index" class="list-item">{{item}}</div>
         </div>
         <div class="list">
-          <!---->
-          <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">
-              <!--商品样式-->
-              <img src="" alt="" class="item-img">
-              <p class="goods-name">商品名称商品名称</p>
-              <span class="show-more hand">
-                <transition name="fade">
-                  <div class="goods-box">
-                    <span class="tooltip__arrow"></span>
-                    <ul class="more-goods">
-                      <li class="goods-item">
-                        <img src="" alt="" class="goods-img">
-                        <p class="goods-name">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                        <p class="goods-num">x10</p>
-                        <p class="goods-price">238.00</p>
-                      </li>
-                    </ul>
-                  </div>
-                </transition>
-              </span>
-            </div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item list-double-row">
-              <div class="item-dark">张家辉</div>
-              <div class="item-sub-time">13627778899</div>
-            </div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">
-              <span class="list-operation" @click="deliver">发货</span>
+          <div v-if="orderList.length">
+            <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
+              <div class="list-item">{{item.order ? item.order.order_sn : ''}}</div>
+              <div class="list-item">{{item.sub_order_sn}}</div>
+              <div class="list-item">
+                <!--商品样式-->
+                <img :src="item.detail ? item.detail.goods_cover_image : ''" class="item-img">
+                <p class="goods-name">{{item.detail ? item.detail.goods_name : ''}}</p>
+                <span v-if="false" class="show-more hand">
+                  <transition name="fade">
+                    <div class="goods-box">
+                      <span class="tooltip__arrow"></span>
+                      <ul class="more-goods">
+                        <li class="goods-item">
+                          <img src="" alt="" class="goods-img">
+                          <p class="two-line">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
+                          <p class="goods-num">x10</p>
+                          <p class="goods-price">238.00</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </transition>
+                </span>
+              </div>
+              <div class="list-item">{{item.detail ? item.detail.goods_num : ''}}</div>
+              <!--单价-->
+              <div class="list-item">{{item.detail ? item.detail.goods_name : ''}}</div>
+              <div class="list-item list-double-row">
+                <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
+                <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
+                </div>
+              </div>
+              <div class="list-item two-line">{{item.receiver_addresses ? item.receiver_addresses.address : ''}}</div>
+              <div class="list-item">{{item.created_at}}</div>
+              <div class="list-item">{{item.goods_amount}}</div>
+              <div class="list-item">{{item.status_str}}</div>
+              <div class="list-item">
+                <span class="list-operation" @click="deliver(item)">{{item.status === -1 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
+                {{item.status === 0 || item.status === -1 ? '——' : ''}}
+              </div>
             </div>
           </div>
+          <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
           <!---->
@@ -76,11 +81,14 @@
         >
           <base-select
             placeholder="请选择快递公司"
-            :value.sync="logisticsObj.logistics"
+            :value.sync="logisticsObj.logistics_id"
+            :defaultLabel="logisticsObj.shipping_name"
             :data="arr"
             :valueKey="valueKey"
             inputStyle="width:416px;height:44px"
             type="input"
+            labelKey="name"
+            :disabled="disable"
           ></base-select>
         </base-form-item>
         <base-form-item
@@ -92,11 +100,12 @@
           verticalAlign="center"
         >
           <base-input
-            v-model="logisticsObj.logisticsNum"
+            v-model="logisticsObj.logistics_sn"
             placeholder="请输入快递单号"
             inputStyle="width:416px;height:44px"
             type="input"
             inputType="number"
+            :disabled="disable"
           ></base-input>
         </base-form-item>
       </div>
@@ -107,12 +116,14 @@
 
 <script type="text/ecmascript-6">
   // import * as Helpers from './modules/helpers'
-  // import API from '@api'
+  import API from '@api'
+  import storage from 'storage-controller'
+
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
-  const INFO_STATUS = ''
-  const EXCEL_URL = ''
+  const INFO_STATUS = 10
+  const EXCEL_URL = '/gateway/platform/platform-order/sub-order/export'
 
   export default {
     name: PAGE_NAME,
@@ -126,96 +137,176 @@
         valueKey: 'id',
         arr: [{id: 111, label: '顺丰'}],
         logisticsObj: {
-          logistics: '',
-          logisticsNum: ''
+          sub_order_id: '',
+          logistics_id: '',
+          logistics_sn: '',
+          shipping_name: ''
         },
         currentPage: 1,
         page: 1,
-        orderList: [{}, {}],
+        orderList: [],
         keyword: '',
         total: 21,
         status: INFO_STATUS,
-        time: ['2019-08-02', '2018-09-06']
+        time: [],
+        statusList: [],
+        deliverId: '',
+        disable: false
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      let data = {page: 1, keyword: '', status: INFO_STATUS}
+      API.Order.getOrderList({data, loading: true, toast: true})
+        .then((res) => {
+          API.Order.orderStatus({data: null, loading: true, toast: true})
+            .then((status) => {
+              console.log(status)
+              next(vx => {
+                vx.statusList = status.data
+                vx.orderList = res.data
+                vx.total = res.meta.total
+                console.log(vx.orderList)
+              })
+            })
+        })
+        .catch(() => {
+          next('404')
+        })
     },
     computed: {
       excelUrl() {
         let data = {
-          page: this.page,
           keyword: this.keyword,
-          status: this.status
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || '',
+          status: this.status,
+          access_token: storage.get('auth.token', '')
         }
         let search = []
         for (let key in data) {
           search.push(`${key}=${data[key]}`)
         }
-        let url = `${process.env.VUE_APP_API}${EXCEL_URL}}?${search.join('&')}`
+        let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
         return url
+      },
+      paramObj() {
+        let data = {page: this.page, keyword: this.keyword, status: this.status, start_at: this.time[0] || '', end_at: this.time[1] || ''}
+        return data
       }
     },
-    // beforeRouteEnter() {
-    // this.getOrderList(true)
-    // this._orderStatus
-    // },
     watch: {
-      page() {
-        this.getOrderList()
+      async page() {
+        await this.getOrderList()
       },
-      keyword() {
+      async keyword() {
         this.page = 1
-        this.getOrderList()
+        await this.getOrderList()
       },
-      status() {
+      async status() {
         this.page = 1
-        this.getOrderList()
+        await this.getOrderList()
       },
-      time(times) {
-        console.log(times)
-      },
+      async time() {
+        this.page = 1
+        await this.getOrderList()
+      }
+    },
+    created() {
+      this.getLogisticsList()
     },
     methods: {
-      // 获取客户列表
-      getOrderList(loading = false) {
-        // let data = {page:this.page, keyword:this.keyword, status: this.status}
-        // return API.Order.getOrderList({data, loading, toast: true, doctor(){}})
-        //   .then((res) => {
-        //     this.total = res.meta.total
-        //     this.total = res.meta.total
-        //   })
-        //   .catch(() => {
-        //     return false
-        //   })
-        //   .finally(() => {
-        //     app.$loading.hide()
-        //   })
-        return true
+      // 获取物流列表
+      getLogisticsList() {
+        API.Logistics.logisticsList({
+          limit: 0,
+          loading: false,
+          toast: true
+        })
+          .then((res) => {
+            this.arr = res.data
+          })
+      },
+      // 获取订单列表
+      async getOrderList(loading = true) {
+        await this._orderStatus()
+        API.Order.getOrderList({
+          data: this.paramObj,
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            this.orderList = res.data
+            this.total = res.meta.total
+          })
       },
       // 获取订单状态
-      _orderStatus() {
-        // API.Order.getOrderList({data:{}, loading: false, toast: true, doctor(){}})
+      async _orderStatus() {
+        let res = await API.Order.orderStatus({data: null, loading: false, toast: false})
+        if (res.error_code === this.$ERR_OK) {
+          this.statusList = res.data
+        }
       },
       // 搜索
       search(keyword) {
-
+        this.keyword = keyword
       },
       // 导出Excel
       downExcel() {
         window.open(this.excelUrl, '_blank')
       },
       // 发货
-      deliver() {
+      deliver(item) {
+        this.logisticsObj = {
+          sub_order_id: '',
+          logistics_id: '',
+          logistics_sn: '',
+          shipping_name: ''
+        }
+        this.logisticsObj.sub_order_id = item.id
+        if (item.status === 20 || item.status === 100) {
+          this.visible = true
+          this.disable = true
+          this._getLogisticsDetail()
+          return
+        }
         this.visible = true
+        this.disable = false
       },
       // 确认发货
-      setLogistics() {
-        console.log(this.logisticsObj)
+      async setLogistics() {
+        if (this.disable) {
+          return
+        }
+        await API.Order.logisticsDetail(
+          {
+            data: this.logisticsObj,
+            loading: true,
+            toast: true
+          }
+        )
+        await this.getOrderList(false)
+      },
+      // 查看发货详情
+      async _getLogisticsDetail() {
+        let res = await API.Order.logisticsDetail(
+          {
+            data: {sub_order_id: this.logisticsObj.sub_order_id},
+            loading: false,
+            toast: false
+          }
+        )
+        if (res.error_code === this.$ERR_OK) {
+          this.logisticsObj = res.data
+        }
       },
       //  弹窗限制
       justifyForm(done) {
         let msg = ''
-        if (!this.logisticsObj.logistics) {
+        if (!this.logisticsObj.logistics_id) {
           msg = '请选择快递公司'
-        } else if (!this.logisticsObj.logisticsNum) {
+        } else if (!this.logisticsObj.logistics_sn) {
           msg = '请输入快递单号'
         }
         if (msg) {
@@ -233,6 +324,14 @@
 
   .list-box
     overflow: visible
+    .two-line
+      color: $color-text-main
+      font-size: $font-size-14
+      line-height: 18px
+      font-family: $font-family-regular
+      max-width: 142px
+      white-space: normal !important
+      no-wrap-plus()
     .list-item
       &:nth-child(3)
         flex: 1.6
@@ -246,17 +345,11 @@
           min-width: @width
           height: @width
           min-height: @width
-          background: $color-main
+          background: $color-white
           border-radius: 2px
           object-fit: cover
-        .goods-name
-          margin-left: 12px
-          color: $color-text-main
-          font-size: $font-size-14
-          line-height: 18px
-          font-family: $font-family-regular
-          max-width: 142px
-          no-wrap-plus()
+          overflow: hidden
+          margin-right: 12px
         .show-more
           width: 14px
           height: 14px

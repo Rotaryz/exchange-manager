@@ -68,15 +68,15 @@
       }
     },
     methods: {
-      setValue(val){
-        this.$emit('input',val)
+      setValue(val) {
+        this.$emit('input', val)
       },
       _search() {
         this.$emit('search', this.value)
       },
       _enter(e) {
         if (e.keyCode === 13) {
-          this.$emit('search', this.value)
+          this.$emit('search', e.target.value)
         }
       }
     }
@@ -88,6 +88,7 @@
 
   .base-search
     margin-left: 30px
+
   .base-search-box
     display: inline-block
 

@@ -42,7 +42,6 @@ router.beforeEach((routeTo, routeFrom, next) => {
   if (store.getters['auth/loggedIn']) {
     // 检验登录的有效性，执行相应的操作
     return store.dispatch('auth/validate').then((validUser) => {
-      console.log('好的好的')
       validUser ? next() : redirectToLogin()
     })
   }

@@ -52,8 +52,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import * as Helpers from './modules/helpers'
-  // import API from '@api'
+  // import * as Helpers from './modules/helpers'
+  import API from '@api'
+
   const PAGE_NAME = 'CUSTOMER_LIST'
   const TITLE = '客户列表'
   const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '账号等级', '操作']
@@ -72,18 +73,26 @@
         valueKey: 'id',
         currentPage: 1,
         gradeText: '',
-        customerId: ''
+        customerId: '',
+        customerList: [],
+        page: 1,
+        keyword: '',
+        total: 1
       }
     },
     computed: {
-      ...Helpers.customerListComputed
+      paramObj() {
+        let data = {page: this.page, keyword: this.keyword}
+        return data
+      }
     },
     watch: {
-      page(news) {
-        this.currentPage = news
+      async page() {
+        await this.getOrderList()
       },
-      currentPage(page) {
-        this.getMoreCustomerList({page})
+      async keyword() {
+        this.page = 1
+        await this.getOrderList()
       }
     },
     async created() {
@@ -91,7 +100,20 @@
       await this._getGrade()
     },
     methods: {
-      ...Helpers.customerListMethods,
+      // 获取客户列表
+      async getCustomerList(loading = true) {
+        API.Order.getOrderList({
+          data: this.paramObj,
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            this.customerList = res.data
+            this.total = res.meta.total
+          })
+      },
       async _getGrade() {
         // let res = await API.Customer.getCustomerGrade({data:{},loading:false,toast:true,doctor(){}})
         // this.arr = res.error===this.$ERR_OK ? res.data : []
@@ -110,7 +132,7 @@
         console.log(this.grade)
       },
       search(keyword) {
-        this.getMoreCustomerList({page: 1, keyword})
+        this.keyword = keyword
       },
       //  弹窗限制
       justifyForm(done) {
