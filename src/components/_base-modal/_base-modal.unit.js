@@ -1,4 +1,4 @@
-import DefaultModal from './default-modal'
+import DefaultModal from './_base-modal'
 
 describe('@components/default-modal', () => {
   it('exports a valid component', () => {

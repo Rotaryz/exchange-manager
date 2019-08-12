@@ -9,14 +9,14 @@ import base from '@mixins/base'
 // import * as vod from './vod/vod'
 // import createQrCode from './create-qr-code'
 
-// const ERR_OK = 0
+const ERR_OK = 0
 
 // 定义插件
 export const Plugins = {
   install: function() {
     Vue.mixin(base)
     // Vue.prototype.$echarts = echarts todo
-    // Vue.prototype.$ERR_OK = ERR_OK
+    Vue.prototype.$ERR_OK = ERR_OK
     // Vue.prototype.$handle = handle
     // Vue.prototype.$cosFileType = fileType
     // Vue.prototype.$cos = cos

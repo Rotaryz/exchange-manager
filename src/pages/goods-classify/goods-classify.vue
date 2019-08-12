@@ -6,7 +6,7 @@
     <div class="tree-wrap">
       <zb-tree :data="list" labelKey="name" @edit-item="editItem" @delete-item="deleteItem" @add-item="addChildBtn"></zb-tree>
     </div>
-    <default-modal :visible.sync="editVisible" :title="editTitle" :submitBefore="justifyForm" @submit="editSubmit">
+    <base-modal :visible.sync="editVisible" :title="editTitle" :submitBefore="justifyForm" @submit="editSubmit">
       <base-form-item label="分类名称" labelWidth="84px" labelAlign="right">
         <base-input v-model="edit.name" :maxLength="10" clear></base-input>
       </base-form-item>
@@ -18,7 +18,7 @@
       <base-form-item label="排序" labelWidth="84px" labelAlign="right">
         <base-input v-model="edit.sort" inputType="number"></base-input>
       </base-form-item>
-    </default-modal>
+    </base-modal>
   </div>
 </template>
 
@@ -26,7 +26,6 @@
   // import * as Helpers from './modules/helpers'
   // import API from '@api'
   import ZbTree from '@components/zb-tree/zb-tree'
-  import DefaultModal from '@components/default-modal/default-modal'
   import Upload from '../../components/zb-upload/zb-upload.vue'
 
   const PAGE_NAME = 'GOODS_CLASSIFY'
@@ -39,7 +38,6 @@
     },
     components: {
       ZbTree,
-      DefaultModal,
       Upload
     },
     data() {

@@ -1,21 +1,19 @@
 <template>
-  <default-modal class="global-confirm" :title="modal.title" :visible.sync="visible" height="185px" @close="cancel">
+  <base-modal class="global-confirm" :title="modal.title" :visible.sync="visible" height="185px" @close="cancel">
     <div class="text">{{modal.text}}</div>
     <template slot="footer">
       <base-button @click="cancel">{{modal.cancelText}}</base-button>
       <base-button type="primary" @click="submit">{{modal.confirmText}}</base-button>
     </template>
-  </default-modal>
+  </base-modal>
 </template>
 
 <script type="text/ecmascript-6">
-  import DefaultModal from '@components/default-modal/default-modal'
 
   const COMPONENT_NAME = 'DEFAULT_CONFIRM'
 
   export default {
     name: COMPONENT_NAME,
-    components: {DefaultModal},
     props: {
       options: {
         // 取消文字

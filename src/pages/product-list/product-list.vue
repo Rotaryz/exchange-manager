@@ -1,16 +1,11 @@
 <template>
   <div class="product-list normal-box table">
     <base-layout class="layout-top">
-      <base-form-item label="分类筛选" :inline="true" :required="false" verticalAlign="center">
-        <base-select :data="categoryListL1" :value.sync="selectCategoryFrist" borderRadius="4" size="small" defaultLabel="一级分类"
-                     class="type-frist" @change="getCategoryLevel1"
-        ></base-select>
-        <base-select :data="categoryListL2" :value.sync="selectCategorySecond" borderRadius="4" size="small" defaultLabel="二级分类"
-                     @change="getCategoryLevel2"
-        ></base-select>
+      <base-form-item label="分类筛选" :required="false">
+        <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">
-        <base-search ref="research" @search="searchBtn"></base-search>
+        <base-search :value.sync="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout>
     <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
@@ -45,33 +40,39 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import API from '@api'
-
+  import API from '@api'
+  import CascadeSelect from '@components/cascade-select/cascade-select'
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
-
+  const params =  {
+    keyword:'11111',
+    category: 0,
+    status:1,
+    page: 1,
+    limit: 10
+  }
   export default {
     name: PAGE_NAME,
     page: {
       title: TITLE
     },
-    components: {},
+    components: {CascadeSelect},
+    beforeRouteEnter(to, from, next) {
+      API.Goods.getGoodsList({
+        data: params,
+      }).then(res => {
+        next(vw => {
+          vw.setData(res)
+        })
+      })
+    },
     data() {
       return {
+        getDataFunction:API.Goods.getGoodsList,
         statusList:[{label: '全部', value: 0, num: 0},{label: '上架', value:1, num: 0},{label: '下架', value: 2, num: 0}],
         inputValue: '1122',
-        selectCategoryFrist: '',
-        selectCategorySecond: '',
-        categoryListL1: [{id: 111, label: 'ajsdf'}],
-        categoryListL2: [{id: 111, label: 'ajsdf'}],
         total: 40,
-        filter: {
-          keywords:'',
-          category: 0,
-          status:1,
-          page: 1,
-          limit: 10
-        },
+        filter: params,
         listHeader: {
           first: {name: '商品名称'},
           second: {name: '分类'},
@@ -86,36 +87,50 @@
       }
     },
     mounted() {
-      this.getList(this.filter)
+      this._getList(this.filter)
     },
     methods: {
+      setData(res){
+        this.list = res.data
+      },
+      _getList() {
+        API.Goods.getGoodsList({
+          data: this.filter,
+        }).then(res => {
+          this.setData(res)
+        })
+      },
+      changeGategory(val){
+        this.filter.category = val
+        this._getList()
+      },
       statusChange(val){
+        this._getList()
         console.log(this.filter.status)
       },
       deleteBtn(idx){
-        this.$confirm.confirm().then(() => {
+        this.$confirm.confirm().then(async () => {
           console.log('确认 ')
+          let res = await  API.Goods.deleteGoods({data:idx})
+          if(res.isFail) return false
+          this._getList()
         }, () => {
           console.log('取消 ')
         })
         console.log(idx,this.list[idx])
       },
-      changeSwitch(idx){
+      async changeSwitch(idx){
+        let res = await  API.Goods.editStatus({data:idx})
+        if(res.isFail) return false
+        this._getList()
         console.log(idx,this.list[idx].status)
       },
-      getList() {
-
-      },
-      getCategoryLevel1(val) {
-
-      },
-      getCategoryLevel2(val) {
-
-      },
       searchBtn(val) {
-
+        this._getList()
       },
       pageChange(val) {
+        this.filter.keyword = 111
+        this._getList()
         console.log(this.filter.page)
       }
     }

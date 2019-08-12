@@ -84,8 +84,19 @@ export default [
                   title: '商品分组',
                   type: 'sec-menu', // 二级标识
                   crumbs: ['商品分组']
-                }
+                },
+                children:[ // 商品分组详情
+                  {
+                    path: '/mall/goods/goods-grouping/goods-grouping-detail/:id',
+                    name: 'mall-goods-goods-grouping-detail',
+                    component: () => import('@pages/goods-grouping-detail/goods-grouping-detail'),
+                    meta: {
+                      type: 'sec-menu', // 二级标识
+                      crumbs: ['商品分组','详情']
+                    }
+                  }]
               }
+
             ]
 
           }

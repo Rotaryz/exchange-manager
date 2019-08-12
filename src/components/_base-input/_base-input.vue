@@ -1,31 +1,37 @@
 <template>
-  <div class="base-input" :class="[{'has-clear':clear},inputSize ? 'zb-input--' + inputSize : '']">
-    <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
-      <i class="clear-icon"></i>
-    </span>
-    <!-- 'zb-input--prefix': $slots.prefix,
-              'zb-input--suffix': $slots.suffix|| clearable,-->
-    <!-- eslint-disable  -->
-    <input v-if="type==='input'"
-           :value="value"
-           :class="['zb-input','input__inner',{'is-disabled': inputDisabled}]"
-           :style="inputStyle"
-           :placeholder="placeholder"
-           :type="inputType"
-           :maxlength="maxLength"
-           @focus="active = true"
-           @blur="active = false"
-           @input="inputEvent"
-    >
+
+  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
+       :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
+  >
+    <slot name="after">
+      <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
+        <i class="clear-icon"></i>
+      </span>
+    </slot>
     <textarea v-if="type==='textarea'"
               :value="value"
-              :class="['zb-textarea','input__inner',{'is-disabled': inputDisabled}]"
               :style="inputStyle"
+              :maxlength="maxlength || limit"
               :placeholder="placeholder"
-              @focus="active = true"
-              @blur="active = false"
+              :readonly="readonly || disabled"
+              :disabled="disabled"
+              class="zb-textarea input__inner"
               @input="inputEvent"
+              @keydown="keydown"
     ></textarea>
+    <input v-else
+           :value="value"
+           :style="[inputStyle,{'cursor':handIcon}]"
+           :placeholder="placeholder"
+           :type="type"
+           :readonly="readonly || disabled"
+           :maxlength="maxlength || limit"
+           :disabled="disabled"
+           class="zb-input input__inner"
+           @input="inputEvent"
+           @keydown="keydown"
+    >
+    <span v-if="limit" class="base-input__count">{{value.length}}/{{limit}}</span>
   </div>
 </template>
 
@@ -35,27 +41,7 @@
   export default {
     name: COMPONENT_NAME,
     props: {
-      clear: {
-        default: false,
-        type: [Boolean, String]
-      },
-      inputType: {
-        default: 'text',
-        type: String
-      },
-      type: {
-        default: 'input',
-        type: String
-      },
-      inputStyle: {
-        default: '',
-        type: [Object, String]
-      },
-      inputSize: {
-        default: 'middle', // big middle small mini
-        type: String
-      },
-      inputDisabled: {
+      hand: {
         default: false,
         type: Boolean
       },
@@ -63,19 +49,73 @@
         default: '',
         type: [String, Boolean, Number]
       },
+      limit: {
+        type: [Number, String],
+        default: null
+      },
+      clear: {
+        default: false,
+        type: [Boolean, String]
+      },
+      type: {
+        default: 'text',
+        type: String
+      },
+      disabled: {
+        default: false,
+        type: Boolean
+      },
       placeholder: {
         default: '',
         type: String
       },
-      maxLength: {
+      maxlength: {
         default: null,
         type: Number
       },
+      readonly: {
+        default: false,
+        type: [String,Boolean]
+      },
+      inputStyle: {
+        default: () => {
+        },
+        type: [Object, String]
+      },
+      radius: {
+        type: [Number, String],
+        default: null
+      },
+      size: {
+        default: 'middle', // big middle small mini
+        type: String
+      },
+      width: {
+        default: '',
+        type: [String, Number]
+      },
+      height: {
+        default: '',
+        type: [String, Number]
+      },
+      handIcon:{
+        default: '',
+        type: String
+      }
     },
     data() {
-      return {
-        active: false
+      return {}
+    },
+    computed: {
+      style() {
+        return {
+          width: this.width && this.width + 'px',
+          height: this.height && this.height + 'px',
+        }
       }
+    },
+    mounted() {
+      console.log(this)
     },
     methods: {
       clearBtn() {
@@ -83,6 +123,9 @@
       },
       inputEvent(e) {
         this.$emit('input', e.target.value)
+      },
+      keydown(e) {
+        this.$emit('keydown', e)
       }
     }
   }
@@ -92,32 +135,31 @@
   @import "~@design"
   .base-input
     display inline-block
-    &.zb-input--big
-      .input__inner
-        height: 60px
-        width: 360px
-    &.zb-input--middle
-      .input__inner
-        height: 44px
-        width: 400px
+    position relative
 
-      .clear-wrap
-        padding-top: 10px
-        padding-bottom: 10px
+    &.zb-input--big
+      height: 60px
+      width: 360px
+
+    &.zb-input--middle
+      height: 44px
+      width: 400px
+
+    .clear-wrap
+      padding-top: 10px
+      padding-bottom: 10px
 
     &.zb-input--small
-      .input__inner
-        height: 40px
-        width: 164px
+      height: 40px
+      width: 164px
 
-      .clear-wrap
-        padding-top: 12px
-        padding-bottom: 12px
+    .clear-wrap
+      padding-top: 12px
+      padding-bottom: 12px
 
     &.zb-input--mini
-      .input__inner
-        height: 34px
-        width: 96px
+      height: 34px
+      width: 96px
 
       .clear-wrap
         padding-top: 8px
@@ -129,12 +171,14 @@
         padding-bottom: 23px
 
     .input__inner
-      width: 400px
+      width: 100%
+      height: 100%
       border-radius 2px
       border: 0.5px solid $color-border
       color: $color-text-main
       font-size $font-size-14
       font-family $font-family-regular
+      padding-right 14px
       padding-left 14px
       box-sizing: border-box
 
@@ -144,15 +188,13 @@
       &:focus
         border: 0.5px solid $color-main
 
-    .border-rasuis-4
+    &.zb-input--radius-4 .input__inner
       border-radius: 4px
 
-    .border-rasuis-2
+    &.zb-input--radius-2 .input__inner
       border-radius: 2px
 
-    &.has-clear
-      position relative
-
+    &.base-input--after
       .input__inner
         padding-right: 30px
 
@@ -170,18 +212,31 @@
         height: @width
         icon-image('icon-delet')
 
+    &.is-disabled .input__inner
+      background: #f9f9f9
+      color: $color-text-assist
+      cursor not-allowed
+
+    .base-input__count
+      font-size $font-size-12
+      color:#C9CCDA
+      letter-spacing  0.5px
+      position absolute
+      bottom 10px
+      right 10px
   .zb-textarea
     padding 14px
-    min-height: 93px
     resize none
 
   input::-webkit-input-placeholder
+  textarea::-webkit-input-placeholder
     color: $color-text-sub
 
   input:disabled
+  textarea:disabled
     background: #f9f9f9
     color: $color-text-assist
+    cursor not-allowed
 
-  textarea::-webkit-input-placeholder
-    color: $color-text-sub
+
 </style>

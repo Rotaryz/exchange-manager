@@ -80,7 +80,13 @@ module.exports = {
           }
         }
       : // 代理本地地址.
-        {})
+        {
+          proxy: {
+            '/api': {
+              target: '/'
+            }
+          }
+        })
     // { before: require('./tests/mock-api') }),
   }
 }
