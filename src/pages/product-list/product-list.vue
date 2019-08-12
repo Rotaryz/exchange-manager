@@ -5,7 +5,7 @@
         <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">
-        <base-search :value.sync="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
+        <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout>
     <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
