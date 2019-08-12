@@ -1,6 +1,7 @@
 import storage from 'storage-controller'
 import API from '@api'
 import {app as APP} from '../../main'
+import HTTP from '@utils/http'
 
 export const state = {
   currentUser: storage.get('auth.currentUser', 0), // 用户信息
@@ -18,12 +19,14 @@ export const mutations = {
     state.currentUser = user
     storage.set('auth.currentUser', user)
     storage.set('auth.token', token)
+    setDefaultAuthHeaders(state)
   }
 }
 
 export const actions = {
   // 初始化用户登录状态
   init({state, dispatch}) {
+    setDefaultAuthHeaders(state)
     // dispatch('validate')
   },
   // 登录
@@ -47,7 +50,7 @@ export const actions = {
     commit('SET_CURRENT_USER', {user: null, token: null})
   },
   // 验证用户身份的有效性
-  validate({commit, state}) {
+  validate({commit, state, getters}) {
     if (!state.currentUser) {
       return Promise.resolve(null)
     }
@@ -57,6 +60,7 @@ export const actions = {
           commit('SET_CURRENT_USER', {user: null, token: null})
           return null
         }
+        console.log(getters.currentUser)
         const user = res.data.manager_info
         commit('SET_CURRENT_USER', {user, token: res.data.access_token})
         return user
@@ -66,4 +70,15 @@ export const actions = {
         return null
       })
   }
+}
+
+/**
+ * 设置默认请求头 Authorization
+ * @param state
+ */
+
+function setDefaultAuthHeaders(state) {
+  HTTP.setHeaders({
+    Authorization: storage.get('auth.token', '')
+  })
 }

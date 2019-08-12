@@ -1,5 +1,5 @@
 <template>
-  <div class="base-search">
+  <div class="base-search" :style="boxStyle">
     <div class="box-tip">搜索</div>
     <base-input :value="value"
                 radius="4"

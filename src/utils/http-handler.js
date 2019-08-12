@@ -3,11 +3,9 @@ import {app as APP} from '../main'
 import {ERR_OK, TIME_OUT} from '@utils/config'
 import storage from 'storage-controller'
 
-const COMMON_HEADER = {Authorization: storage.get('auth.token', '')}
-
 HTTP.init(http => {
   http.config.timeout = TIME_OUT
-  http.config.headers = COMMON_HEADER
+  http.config.headers = {Authorization: storage.get('auth.token', '')}
 })
 
 HTTP.setCallback({

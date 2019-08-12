@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   getCustomerList(args) {
-    const url = ``
+    const url = `/gateway/platform/shop/shop-manager/index`
     return request.get({url, ...args})
   },
   /**
@@ -16,7 +16,7 @@ export default {
    * @returns {*}
    */
   getCustomerGrade(args) {
-    const url = ``
+    const url = `/gateway/platform/shop/level/index`
     return request.get({url, ...args})
   },
   /**
@@ -24,8 +24,8 @@ export default {
    * @param args
    * @returns {*}
    */
-  setCustomerGrade(id, args) {
-    const url = `/${id}`
-    return request.get({url, ...args})
+  setCustomerGrade(args) {
+    const url = `/gateway/platform/shop/shop-manager/set-level`
+    return request.post({url, ...args})
   }
 }
