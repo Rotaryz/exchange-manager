@@ -15,11 +15,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {authMethods} from '@state/helpers'
+  import {authMethods, authComputed} from '@state/helpers'
+  import store from '@state/store'
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
-  const INFO_PATH = '/mall/goods/product-list'
+  const INFO_PATH = '/order-manager/order/order-list'
   export default {
     name: PAGE_NAME,
     page: {
@@ -33,12 +34,17 @@
       }
     },
     computed: {
+      ...authComputed,
       placeHolders() {
         return {
           username: '请输入账号',
           password: '请输入密码'
         }
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      let path = store.getters['auth/loggedIn'] ? INFO_PATH : '/login'
+      next({path})
     },
     methods: {
       ...authMethods,

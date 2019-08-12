@@ -35,14 +35,13 @@ router.beforeEach((routeTo, routeFrom, next) => {
     return next()
   }
   // 从登录页面登录跳转不需要检测
-  if (routeFrom.name === 'login') {
-    return next()
-  }
+  // if (routeFrom.name === 'login') {
+  //   return next()
+  // }
   // 判断是否已经登录
   if (store.getters['auth/loggedIn']) {
     // 检验登录的有效性，执行相应的操作
     return store.dispatch('auth/validate').then((validUser) => {
-      console.log('好的好的')
       validUser ? next() : redirectToLogin()
     })
   }
@@ -52,6 +51,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   redirectToLogin()
 
   function redirectToLogin() {
+    console.log('sdfd')
     // 跳转到登录页面并且把当前的路由信息传递给登录页面
     next({name: 'login', query: {redirectFrom: routeTo.fullPath}})
   }

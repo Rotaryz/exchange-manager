@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   getOrderList(args) {
-    const url = ``
+    const url = `/gateway/platform/platform-order/sub-order/index`
     return request.get({url, ...args})
   },
   /**
@@ -16,7 +16,7 @@ export default {
    * @returns {*}
    */
   orderStatus(args) {
-    const url = ``
+    const url = `/gateway/platform/platform-order/sub-order/statistic`
     return request.get({url, ...args})
   },
   /**
@@ -24,8 +24,8 @@ export default {
    * @param args
    * @returns {*}
    */
-  logisticsDetail(id, args) {
-    const url = `/${id}`
+  logisticsDetail(args) {
+    const url = `/gateway/platform/platform-order/sub-order/show-ship/`
     return request.get({url, ...args})
   },
   /**
@@ -33,8 +33,8 @@ export default {
    * @param args
    * @returns {*}
    */
-  setLogistics(id, args) {
-    const url = `/${id}`
+  setLogistics(args) {
+    const url = `/gateway/platform/platform-order/sub-order/ship`
     return request.post({url, ...args})
   }
 }
