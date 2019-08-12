@@ -1,7 +1,24 @@
 <template>
   <div :class="{inline:inline}">
+    <div v-if="type === 'image-one'" class="image-one">
+      <div v-if="data" class="show-image hand">
+        <img :src="data" class="image">
+        <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
+        <div v-if="firstTag && !index" class="tag">{{firstTag}}</div>
+        <div v-if="otherTag && index" class="tag">{{otherTag}}</div>
+      </div>
+      <div v-else class="hand upload-wrap">
+        <slot name="icon">
+          <div :style="addStyle" class="add-image"></div>
+        </slot>
+        <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
+        <div v-if="showLoading" class="loading-mask">
+          <img src="./loading.gif" class="loading">
+        </div>
+      </div>
+    </div>
     <div v-if="type === 'image'" class="edit-image">
-      <template v-if="data || data.length>0">
+      <template v-if="!multiple && data || multiple &&data.length>0">
         <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
           <div v-for="(item, index) in data" :key="index" class="show-image hand">
             <img :src="item.image_url ||item" class="image">
@@ -75,7 +92,7 @@
         default: 'id'
       },
       valueKey: {
-        type: [Object], // 返回的对象需要的值 { id:'image_id}'
+        type: [Object, String], // 返回的对象需要的值 { id:'image_id}'
         default: () => {
         }
       },
@@ -141,7 +158,7 @@
     computed: {
       isArr() {
         let type = typeof (this.data)
-        return type === 'string' ? 0 : 1
+        return type === 'array' ? 1 : 0
       }
     },
     methods: {
@@ -168,7 +185,7 @@
             return false
           }
         })
-        if (this.type === 'image') {
+        if (this.type.includes('image')) {
           this._addPic(files)
         } else {
           this._addVideo(files)
@@ -178,18 +195,14 @@
         this.showLoading = true
         await cos('image', files).then(arr => {
           this.showLoading = false
-          arr.length && arr.forEach(item => {
-            if (item.error !== this.$ERR_OK) {
-              this.$emit('failFile', item.message)
+          arr.forEach(item => {
+            if (item.error_code !== this.$ERR_OK) {
               return false
             }
           })
-          arr = arr.filter(item => {
-            return item.error === this.$ERR_OK
-          })
-          let res = this.getResData(arr)
-          this.$emit('update:data', this.isArr ? res : res[0])
-          this.$emit('successImage', arr)
+          let item = arr.find(item => item.error_code !== this.$ERR_OK)
+          if (item) this.$emit('failFile', item.message)
+          else this.$emit('successImage', this.isArr ? arr : arr[0])
         }).catch(err => {
           this.$emit('failFile', err)
           this.showLoading = false
@@ -206,39 +219,12 @@
             this.$emit('failFile', res.message)
             return
           }
-          let resData = this.getResData(res.data)
-          this.$emit('update:data', resData)
           this.$emit('successVideo', res.data)
         }).catch(err => {
           this.$loading.hide()
           this.$emit('failFile', err)
         })
       },
-      getResData(data) {
-        let resData
-        if (data.constructor === 'Array') {
-          resData = data.map(item => {
-            return this.getOneData(item)
-          })
-        } else {
-          resData = this.getOneData(data)
-        }
-        return resData
-      },
-      getOneData(item) {
-        let resData
-        let keys = this.valueKey.keys()
-        if (keys.length) {
-          let obj = {}
-          this.valueKey.keys().forEach(key => {
-            obj[key] = item[this.valueKey[key]]
-          })
-          resData = obj
-        } else {
-          resData = item[this.defaultKey]
-        }
-        return resData
-      }
     }
   }
 </script>
@@ -249,6 +235,7 @@
   .inline
     display flex
     align-items center
+
     .tip
       margin-left: 10px
 
@@ -289,8 +276,10 @@
     margin-right: 20px
     margin-bottom: 14px
     position: relative
+
     &:last-child
       margin: 0
+
     .image
       height: 90px
       width: @height
