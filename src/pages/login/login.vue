@@ -16,7 +16,7 @@
 
 <script type="text/ecmascript-6">
   import {authMethods, authComputed} from '@state/helpers'
-  import store from '@state/store'
+  // import store from '@state/store'
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
@@ -42,10 +42,10 @@
         }
       }
     },
-    beforeRouteEnter(to, from, next) {
-      let path = store.getters['auth/loggedIn'] ? INFO_PATH : '/login'
-      next({path})
-    },
+    // beforeRouteEnter(to, from, next) {
+    // let path = store.getters['auth/loggedIn'] ? INFO_PATH : '/login'
+    // next({path})
+    // },
     methods: {
       ...authMethods,
       tryToLogIn() {

@@ -56,7 +56,7 @@
               <div class="list-item">{{item.goods_amount}}</div>
               <div class="list-item">{{item.status_str}}</div>
               <div class="list-item">
-                <span class="list-operation" @click="deliver(item)">{{item.status === 10 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
+                <span class="list-operation" @click="deliver(item)">{{item.status === -1 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
                 {{item.status === 0 || item.status === -1 ? '——' : ''}}
               </div>
             </div>
@@ -82,6 +82,7 @@
           <base-select
             placeholder="请选择快递公司"
             :value.sync="logisticsObj.logistics_id"
+            :defaultLabel="logisticsObj.shipping_name"
             :data="arr"
             :valueKey="valueKey"
             inputStyle="width:416px;height:44px"
@@ -116,12 +117,13 @@
 <script type="text/ecmascript-6">
   // import * as Helpers from './modules/helpers'
   import API from '@api'
+  import storage from 'storage-controller'
 
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
-  const INFO_STATUS = 20
-  const EXCEL_URL = ''
+  const INFO_STATUS = 10
+  const EXCEL_URL = '/gateway/platform/platform-order/sub-order/export'
 
   export default {
     name: PAGE_NAME,
@@ -153,38 +155,38 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      console.log('dsf')
-      // let data = {page: 1, keyword: '', status: INFO_STATUS}
-      // API.Order.getOrderList({data, loading: true, toast: true})
-      //   .then((res) => {
-      //     API.Order.orderStatus({data: null, loading: true, toast: true})
-      //       .then((status) => {
-      //         console.log(status)
-      //         next(vx => {
-      //           vx.statusList = status.data
-      //           vx.orderList = res.data
-      //           console.log(vx.orderList)
-      //           vx.total = res.meta.total
-      //         })
-      //       })
-      //   })
-      //   .catch(() => {
-      //     next('404')
-      //   })
-      next()
+      let data = {page: 1, keyword: '', status: INFO_STATUS}
+      API.Order.getOrderList({data, loading: true, toast: true})
+        .then((res) => {
+          API.Order.orderStatus({data: null, loading: true, toast: true})
+            .then((status) => {
+              console.log(status)
+              next(vx => {
+                vx.statusList = status.data
+                vx.orderList = res.data
+                vx.total = res.meta.total
+                console.log(vx.orderList)
+              })
+            })
+        })
+        .catch(() => {
+          next('404')
+        })
     },
     computed: {
       excelUrl() {
         let data = {
-          page: this.page,
           keyword: this.keyword,
-          status: this.status
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || '',
+          status: this.status,
+          access_token: storage.get('auth.token', '')
         }
         let search = []
         for (let key in data) {
           search.push(`${key}=${data[key]}`)
         }
-        let url = `${process.env.VUE_APP_API}${EXCEL_URL}}?${search.join('&')}`
+        let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
         return url
       },
       paramObj() {
@@ -210,7 +212,7 @@
       }
     },
     created() {
-      // this.getLogisticsList()
+      this.getLogisticsList()
     },
     methods: {
       // 获取物流列表
@@ -222,10 +224,9 @@
         })
           .then((res) => {
             this.arr = res.data
-            console.log(this.arr)
           })
       },
-      // 获取客户列表
+      // 获取订单列表
       async getOrderList(loading = true) {
         await this._orderStatus()
         API.Order.getOrderList({
@@ -257,6 +258,12 @@
       },
       // 发货
       deliver(item) {
+        this.logisticsObj = {
+          sub_order_id: '',
+          logistics_id: '',
+          logistics_sn: '',
+          shipping_name: ''
+        }
         this.logisticsObj.sub_order_id = item.id
         if (item.status === 20 || item.status === 100) {
           this.visible = true
@@ -279,8 +286,7 @@
             toast: true
           }
         )
-        await this.getOrderList()
-        console.log(this.logisticsObj)
+        await this.getOrderList(false)
       },
       // 查看发货详情
       async _getLogisticsDetail() {
