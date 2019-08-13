@@ -119,14 +119,11 @@
     padding-left: 10px
     transition: all 0.2s
     background: #F4F8F9
-
     &:hover
       border: 0.5px solid #ACACAC
-
     &::placeholder
       font-family: $font-family-regular
       color: $color-text-sub
-
     &:focus
       background: $color-white
       border: 0.5px solid $color-main !important

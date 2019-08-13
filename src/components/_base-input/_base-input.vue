@@ -136,6 +136,7 @@
     display inline-block
     position relative
 
+
     &.zb-input--big
       height: 60px
       width: 360px
