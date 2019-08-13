@@ -16,10 +16,11 @@
       </base-form-item>
       <base-form-item v-if="!edit.pid" label="分类图标" labelWidth="84px" labelAlign="right">
         <upload :data="categoryImageUrl"
-                type="image-one"
+                :multiple="false"
                 tip="建议上传1:1、大小2M以下的图片"
                 inline
                 size="2"
+                @delete="categoryImageDelete"
                 @successImage="successImage"
                 @failFile="failFile"
         >
@@ -85,6 +86,10 @@
         this.edit.image_id = ''
         this.categoryImageUrl = ''
       },
+      categoryImageDelete() {
+        this.edit.image_id = 0
+        this.categoryImageUrl = ''
+      },
       successImage(res) {
         console.log('successImage', res)
         this.edit.image_id = res.data.id
@@ -133,7 +138,7 @@
       addChildBtn(obj) {
         let {item = {}} = obj
         this.addBtn()
-        this.edit.pid=item.id
+        this.edit.pid = item.id
       },
       justifyForm(done) {
         console.log(this.edit)
@@ -141,7 +146,7 @@
         if (!this.edit.name) msg = '请输入分类名称'
         else if (!this.edit.pid && !this.edit.image_id) msg = '请上传分类图标'
         if (!msg) {
-          this.editSubmit().then(()=>{
+          this.editSubmit().then(() => {
             done()
             this.getList()
           })

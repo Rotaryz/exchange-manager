@@ -16,7 +16,7 @@
                 class="inner-input"
                 @click.stop="selectType"
     >
-      <div slot="after"><span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span></div>
+      <template slot="after"><span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span></template>
     </base-input>
     <transition name="fade">
       <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
@@ -244,11 +244,7 @@
       left:0
       z-index:20
       cursor pointer
-
-    /*width: 0px*/
-    /*height: 0px*/
-    /*visibility hidden*/
-    /*position: absolute*/
+      display: flex
 
     .arrow-icon
       position: absolute

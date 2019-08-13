@@ -1,6 +1,6 @@
 <template>
   <div class="goods-grouping-detail normal-box table">
-    <base-table-tool :title="detail.name" :iconUrl="require('./icon-product_list@2x.png')">
+    <base-table-tool :title="name" :iconUrl="require('./icon-product_list@2x.png')">
       <base-button plain addIcon @click="addBtn">添加商品</base-button>
       <base-button class="go-back-btn" @click="goBack">返回</base-button>
     </base-table-tool>
@@ -16,9 +16,12 @@
                 <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
               </template>
               <template v-else-if="val.type === 'status'" class="list-operation">
-                <i :class="['status-dot',item[key] ? 'success':'error']"></i> {{item.status_text}}
+                <i :class="['status-dot',item[key] ? 'success':'error']"></i> {{item.status ? '已上架' :'未上架'}}
               </template>
-              <template v-else>{{item[key]}}</template>
+              <template v-else>
+                <img v-if="val.before&& val.before.img" :src="item[val.before.img]" alt="" class="list-img">
+                <span>{{item[key]}}</span>
+              </template>
             </div>
           </div>
         </div>
@@ -27,13 +30,14 @@
         <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
       </div>
     </div>
-    <goods-list-dialog v-if="visible" :visible.sync="visible" :limit="20" @submit="_addGoods"></goods-list-dialog>
+    <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id}" :visible.sync="visible" :limit="20" @submit="_addGoods"></goods-list-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import GoodsListDialog from '../../components/goods-list-dialog/goods-list-dialog'
   import API from '@api'
+
   const PAGE_NAME = 'GOODS_GROUPING_DETAIL'
   const TITLE = '商品分组详情'
   export default {
@@ -47,9 +51,9 @@
     beforeRouteEnter(to, from, next) {
       API.Goods.getGroupDetail({
         data: {
+          id: to.params.id,
           page: 1,
-          limit: 10,
-          id:to.params.id
+          limit: 10
         }
       }).then(res => {
         next((vw) => {
@@ -61,41 +65,37 @@
       return {
         visible: false,
         listHeader: {
-          first: {name: '商品名称'},
-          second: {name: '分类'},
-          third: {name: '库存'},
-          fourth: {name: '零售价'},
-          five: {name: '库存'},
-          six: {name: '会员价'},
+          name: {
+            name: '商品名称', before: {
+              img: 'goods_cover_image'
+            }
+          },
+          category_name: {name: '分类'},
+          saleable: {name: '库存'},
+          price: {name: '零售价'},
+          discount_price: {name: '会员价'},
           status: {name: '状态', type: "status"},
           operate_text: {name: '操作', type: "operate", style: 'max-width:80px'}
         },
         total: 0,
-        list: [{
-          id: 1, first: 123, second: 5255, third: 5255, fourth: 5255, five: 5255, six: 5255, status: 1, status_text: '已上架'
-        }, {
-          id: 2, first: 123, second: 5255, third: 5255, fourth: 5255, five: 5255, six: 5255, status: 0, status_text: '已下架'
-        }],
+        list: [],
         filter: {
-          id:this.$route.id,
+          id: this.$route.params.id,
           page: 1,
           limit: 10
         },
-        detail: {
-          id: 1,
-          name: '家用电器'
-        },
+        name: '家用电器'
       }
     },
     methods: {
       setData(res) {
-        this.detail = res.data
+        this.list = res.data
+        this.total = res.meta.total
+        this.name = this.$route.query.name
       },
       _getDetail() {
-        console.log('_getDetail')
         API.Goods.getGroupDetail({data: this.filter}).then(res => {
           console.log('res', res)
-          if (res.isFail) return false
           this.setData(res)
         })
       },
@@ -105,8 +105,7 @@
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
           console.log('确认 ')
-          // todo 刪除請求
-          await API.Goods.deleltGroupGoods({data: item})
+          await API.Goods.deleteGroupGoods({data: {goods_id: item.id, group_id: this.filter.id}})
           this._getDetail()
         }, () => {
           console.log('取消 ')
@@ -122,7 +121,7 @@
       async _addGoods(arr) {
         console.log(arr)
         // todo 新增商品請求
-        await API.Goods.addGroupGoods({data: arr})
+        await API.Goods.addGroupGoods({data: {group_id: this.filter.id, goods_ids: arr}})
         this._getDetail()
       }
     }
@@ -142,4 +141,18 @@
 
     .go-back-btn
       margin-left 10px
+
+    .status-dot
+      display inline-block
+      width: 8px
+      height: @width
+      border-radius: 50%
+      margin-right: 5px
+
+      &.success
+        background $color-success
+
+      &.error
+        background $color-error
+
 </style>

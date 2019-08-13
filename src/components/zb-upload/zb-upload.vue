@@ -1,6 +1,6 @@
 <template>
   <div :class="{inline:inline}">
-    <div v-if="type === 'image-one'" class="image-one">
+    <div v-if="type === 'image' && !multiple" class="image-one">
       <div v-if="data" class="show-image hand">
         <img :src="data" class="image">
         <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
@@ -17,24 +17,16 @@
         </div>
       </div>
     </div>
-    <div v-if="type === 'image'" class="edit-image">
-      <template v-if="!multiple && data || multiple &&data.length>0">
-        <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
-          <div v-for="(item, index) in data" :key="index" class="show-image hand">
-            <img :src="item.image_url ||item" class="image">
-            <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
-            <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
-            <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
-          </div>
-        </draggable>
-        <div v-else class="show-image hand">
-          <img :style="addStyle" :src="data.image_url || data" class="image">
-          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
-          <div v-if="firstTag" class="tag">{{firstTag || item.title}}</div>
-          <div v-if="otherTag" class="tag">{{otherTag || item.title}}</div>
+    <div v-if="type === 'image' && multiple" class="edit-image">
+      <draggable v-if="data.length" v-model="list" class="draggable">
+        <div v-for="(item, index) in data" :key="index" class="show-image hand">
+          <img :src="item.image_url ||item" class="image">
+          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
+          <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
+          <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
         </div>
-      </template>
-      <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
+      </draggable>
+      <div v-if="data.length<limit" class="hand upload-wrap">
         <slot name="icon">
           <div :style="addStyle" class="add-image"></div>
         </slot>
@@ -53,7 +45,7 @@
           </div>
         </draggable>
         <div v-else width="90px" class="show-image hand">
-          <vid0eo class="video-tag" :src="item.video_url ||item"></vid0eo>
+          <video class="video-tag" :src="item.video_url ||item"></video>
           <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
         </div>
       </template>
@@ -151,29 +143,28 @@
     },
     data() {
       return {
-        list: this.data,
         showLoading: false
       }
     },
     computed: {
-      isArr() {
-        let type = typeof (this.data)
-        return type === 'array' ? 1 : 0
+      list: {
+        get() {
+          return this.data
+        },
+        set(val) {
+          this.$emit('update:data', val)
+          this.$emit('drag-change', val)
+        }
       }
     },
     methods: {
-      _setSort(val) {
-        this.$emit('update:data', val)
-        this.$emit('drag-change', val)
-      },
       deleteBtn(index) {
         let res = this.data
-        res = this.isArr ? res.splice(index, 1) : ''
+        if (Array.isArray(this.data)) res.splice(index, 1)
         this.$emit('update:data', res)
-        this.$emit('delete', res)
+        this.$emit('delete', index)
       },
       getFiles(e) {
-        console.log(Array.from(e.target.files))
         let files = Array.from(e.target.files)
         if (files.length > this.limit) files = files.splice(0, this.limit)
         e.target.value = ''
@@ -194,15 +185,11 @@
       async _addPic(files) {
         this.showLoading = true
         await cos('image', files).then(arr => {
+          console.log('_addPic', arr)
           this.showLoading = false
-          arr.forEach(item => {
-            if (item.error_code !== this.$ERR_OK) {
-              return false
-            }
-          })
           let item = arr.find(item => item.error_code !== this.$ERR_OK)
           if (item) this.$emit('failFile', item.message)
-          else this.$emit('successImage', this.isArr ? arr : arr[0])
+          else this.$emit('successImage', Array.isArray(this.data) ? arr : arr[0])
         }).catch(err => {
           this.$emit('failFile', err)
           this.showLoading = false
@@ -277,8 +264,8 @@
     margin-bottom: 14px
     position: relative
 
-    &:last-child
-      margin: 0
+    /*&:last-child*/
+    /*margin: 0*/
 
     .image
       height: 90px

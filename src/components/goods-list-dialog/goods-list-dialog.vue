@@ -61,6 +61,10 @@
       CascadeSelect
     },
     props: {
+      otherParams: {
+        type: Object,
+        default: () => {}
+      },
       selectKey: {
         type: String,
         default: 'id'
@@ -95,7 +99,7 @@
               image: 'goods_cover_image'
             }
           },
-          original_price: {
+          price: {
             name: '零售价', before: {
               text: '¥'
             }
@@ -106,7 +110,8 @@
           limit: 7,
           page: 1,
           goods_category_id: '',
-          keyword: ''
+          keyword: '',
+          status:''
         },
         list: [], // 弹框商品列表
         selectGoods: [] // 单次选择的商品
@@ -127,14 +132,11 @@
       },
       allCheckType: {
         get() {
-          if(this.list.length===0) return ''
+          if (this.list.length === 0) return ''
           let arr = this.list.map(item => {
             return this.selectGoods.findIndex(goods => item[this.selectKey] === goods[this.selectKey])
           })
-          console.log(arr, 'arr1')
           arr = arr.filter(newItem => newItem < 0)
-          console.log(arr, 'arr2')
-
           return arr.length === 0 ? 'checked' : arr.length < this.list.length ? 'indeterminate' : ''
         },
         set(newValue) {
@@ -148,18 +150,16 @@
     methods: {
       // 获取商品列表
       _getGoodsList() {
-        console.log('selectGoods', this.selectGoods)
         API.Goods.getGoodsList({
-          data: this.goodsListFilter,
+          data: {...this.goodsListFilter,...this.otherParams},
           loading: true
         }).then(res => {
           if (res.isFail) return
           this.total = res.meta.total
           this.list = res.data.map((item, index) => {
-            item[this.selectKey] = item[this.selectKey] + '' + this.goodsListFilter.page
             let isInList = this.selects.findIndex((items) => items[this.selectKey] === item[this.selectKey])
             let isSelect = this.selectGoods.findIndex((select) => select[this.selectKey] === item[this.selectKey])
-            item.selecteStatus = isSelect !== -1 ? 'checked' : (isInList !== -1 ? 'disable' : '')
+            item.selecteStatus = isSelect !== -1 ? 'checked' : (isInList !== -1 || item.is_selected ? 'disable' : '')
             // '' 没有选择 checked 选择高亮  disable 原本已存在
             return item
           })
@@ -204,6 +204,7 @@
             }
             this.list[index].selecteStatus = 'checked'
             this.selectGoods.push(item)
+            console.log(item)
             break
         }
       },
@@ -229,7 +230,6 @@
       },
       // 批量添加
       addSubmit() {
-        console.log(this.valueKey)
         let res = this.valueKey ? this.selectGoods.map(item => item[this.valueKey]) : this.selectGoods
         this.$emit('submit', res)
       }
@@ -241,10 +241,12 @@
   @import "~@design"
   .goods-list-dialog
     .big-list
-      margin-top:20px
+      margin-top: 20px
+
     .operate-box
       display flex
       align-items center
+
   .goods-image-wrap
     display inline-block
     width: 40px
