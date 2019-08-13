@@ -28,7 +28,7 @@
         <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
       </div>
     </div>
-    <goods-list-dialog v-if="visible" :visible.sync="visible" :limit="20" @submit="_addGoods"></goods-list-dialog>
+    <goods-list-dialog v-if="visible" :visible.sync="visible" :otherParams="{group_id:currentGroup.id}" :limit="20" @submit="_addGoods"></goods-list-dialog>
     <base-modal :visible.sync="editVisible" :title="(edit.id?'修改':'新建')+'商品分组'" :submitBefore="justifyAddGroup" @submit="_addGroup">
       <base-form-item label="分组名称">
         <base-input v-model="edit.name"></base-input>
@@ -107,7 +107,7 @@
       },
       setData(res) {
         this.list = res.data
-        this.total = res.total || 20
+        this.total = res.meta.total
       },
       _getList() {
         API.Goods.getGroupList({
@@ -134,19 +134,13 @@
         this.editVisible = true
       },
       addBtn(item, i) {
-        // todo 获取已选择的商品数组
         this.currentGroup = item
-        API.GOODS.getGroupDetail(res=>{
-          this.currentGoods = res.data
-        })
         this.visible = true
       },
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
-          // todo 删除请求
           console.log('确认 ')
-          let res = await API.Goods.deleltGroup({data: item})
-          if (res.isFail) return false
+          await API.Goods.deleteGroup({data: item})
           this._getList()
         }, () => {
           console.log('取消 ')
@@ -177,7 +171,7 @@
         this._getList()
       },
       async _addGoods(arr) {
-        await API.Goods.addGroupGoods({data: {group_id: this.currentGroup.id, goods_ids: arr}})
+        await API.Goods.addGroupGoods({data:{group_id: this.currentGroup.id, goods_ids: arr}})
         this._getList()
       }
     }

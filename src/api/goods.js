@@ -53,7 +53,7 @@ export default {
     return request.get({url, ...args})
   },
   getGroupDetail(args) {
-    const url = `/gateway/platform/platform-goods/group/show`
+    const url = `/gateway/platform/platform-goods/group/group-goods-list`
     return request.get({url, ...args})
   },
   addGroup(args) {
@@ -64,7 +64,7 @@ export default {
     const url = `/gateway/platform/platform-goods/group/update`
     return request.post({url, ...args})
   },
-  deleltGroup(args) {
+  deleteGroup(args) {
     const url = `/gateway/platform/platform-goods/group/destroy`
     return request.delete({url, ...args})
   },
@@ -72,8 +72,8 @@ export default {
     const url = `/gateway/platform/platform-goods/group/add-goods`
     return request.post({url, ...args})
   },
-  deleltGroupGoods(args) {
-    const url = `/api/goods/category.json`
+  deleteGroupGoods(args) {
+    const url = `/gateway/platform/platform-goods/group/delete-goods`
     return request.delete({url, ...args})
   }
 }

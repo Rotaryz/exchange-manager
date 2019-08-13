@@ -27,7 +27,10 @@
                 <router-link tag="span" :to="{path:'edit-product',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
                 <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
               </div>
-              <template v-else>{{item[key]}}</template>
+              <template v-else>
+                <img v-if="val.before && val.before.img" class="list-img" :src="item[val.before.img]">
+                <div>{{item[key]}}</div>
+              </template>
             </div>
           </div>
         </div>
@@ -75,7 +78,11 @@
         total: 0,
         filter: params,
         listHeader: {
-          name: {name: '商品名称'},
+          name: {
+            name: '商品名称', before: {
+              img: 'goods_cover_image'
+            }
+          },
           category_name: {name: '分类'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
@@ -154,4 +161,6 @@
 
   .type-frist
     margin-right: 10px
+  .list-item
+      display flex
 </style>
