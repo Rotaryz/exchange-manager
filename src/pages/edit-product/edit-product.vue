@@ -329,7 +329,7 @@
         let {price, discount_price: discountPrice, saleable, ...params} = this.edit
         let specsAttrs = []
         let goodsSpecs = []
-        if (this.specification_type) {
+        if (this.edit.specification_type) {
           specsAttrs = this.goodsSpecification
           goodsSpecs = this.goodsDetails.map(item => {
             item.price = price

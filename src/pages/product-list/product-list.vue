@@ -50,7 +50,7 @@
   const TITLE = '商品列表'
   const params = {
     keyword: '',
-    category: 0,
+    category_id: 0,
     status: 1,
     page: 1,
     limit: 10
@@ -106,7 +106,7 @@
         API.Goods.getGoodsListStatus({
           data: {
             keyword: this.filter.keyword,
-            category: this.filter.category
+            category_id: this.filter.category_id
           }
         }).then(res => {
           this.statusList = res.data
@@ -120,7 +120,7 @@
         })
       },
       changeGategory(val) {
-        this.filter.category = val
+        this.filter.category_id = val
         this._getList()
       },
       statusChange(val) {
