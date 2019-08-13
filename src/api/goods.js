@@ -48,6 +48,10 @@ export default {
     const url = `/gateway/platform/platform-goods/group/index`
     return request.get({url, ...args})
   },
+  getTradeList(args) {
+    const url = `/gateway/platform/industry/industry/index`
+    return request.get({url, ...args})
+  },
   getGroupDetail(args) {
     const url = `/gateway/platform/platform-goods/group/show`
     return request.get({url, ...args})

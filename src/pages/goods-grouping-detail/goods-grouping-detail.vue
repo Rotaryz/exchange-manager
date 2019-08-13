@@ -47,8 +47,6 @@
     beforeRouteEnter(to, from, next) {
       API.Goods.getGroupDetail({
         data: {
-          page: 1,
-          limit: 10,
           id:to.params.id
         }
       }).then(res => {
@@ -65,19 +63,14 @@
           second: {name: '分类'},
           third: {name: '库存'},
           fourth: {name: '零售价'},
-          five: {name: '库存'},
           six: {name: '会员价'},
           status: {name: '状态', type: "status"},
           operate_text: {name: '操作', type: "operate", style: 'max-width:80px'}
         },
         total: 0,
-        list: [{
-          id: 1, first: 123, second: 5255, third: 5255, fourth: 5255, five: 5255, six: 5255, status: 1, status_text: '已上架'
-        }, {
-          id: 2, first: 123, second: 5255, third: 5255, fourth: 5255, five: 5255, six: 5255, status: 0, status_text: '已下架'
-        }],
+        list: [],
         filter: {
-          id:this.$route.id,
+          id:this.$route.params.id,
           page: 1,
           limit: 10
         },
@@ -89,13 +82,15 @@
     },
     methods: {
       setData(res) {
-        this.detail = res.data
+        this.list = res.data
+        this.total = res.total
+        this.detail.id= this.$route.params.id
+        this.detail.name = this.$route.query.name
       },
       _getDetail() {
         console.log('_getDetail')
         API.Goods.getGroupDetail({data: this.filter}).then(res => {
           console.log('res', res)
-          if (res.isFail) return false
           this.setData(res)
         })
       },
