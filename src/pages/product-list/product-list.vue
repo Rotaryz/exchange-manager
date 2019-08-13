@@ -100,6 +100,7 @@
     methods: {
       setData(res) {
         this.list = res.data
+        this.total= res.meta.total
       },
       _getStatus() {
         API.Goods.getGoodsListStatus({
