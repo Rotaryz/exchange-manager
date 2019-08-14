@@ -52,6 +52,14 @@
       ZbTree,
       Upload
     },
+    beforeRouteEnter(to, from, next) {
+      API.Goods.getCategory({data: {pid: -1}}).then(res => {
+        // console.log(res)
+        next(vw => {
+          vw.setData(res)
+        })
+      })
+    },
     data() {
       return {
         editVisible: false,
@@ -77,9 +85,12 @@
       this.getList()
     },
     methods: {
+      setData(res) {
+        this.list = res.data
+      },
       getList() {
         API.Goods.getCategory({data: {pid: -1}}).then(res => {
-          this.list = res.data
+          this.setData(res)
         })
       },
       deleteBtn() {

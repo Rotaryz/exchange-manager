@@ -1,6 +1,6 @@
 <template>
   <div class="edit-product">
-    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" :title="(this.id ?'编辑':'新建')+'商品'"></base-table-tool>
+    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" :title="(id ?'编辑':'新建')+'商品'"></base-table-tool>
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="商品名称" labelMarginRight="40" labelWidth="78px" labelAlign="right">
@@ -131,10 +131,7 @@
   import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
-
-  // import * as Helpers from './helpers'
   import API from '@api'
-
   const PAGE_NAME = 'EDIT_PRODUCT'
   const TITLE = '新建商品'
 

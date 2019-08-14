@@ -70,7 +70,7 @@
           category_id: ''
         }
       })]).then(res => {
-        console.log(res)
+        // console.log(res)
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])
@@ -141,12 +141,9 @@
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGoods({data: {id: item.id}})
           this._getList()
-        }, () => {
-          console.log('取消 ')
         })
       },
       async changeSwitch(item) {
-        console.log(item)
         await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
         this._getList()
       },
