@@ -1,12 +1,15 @@
 <template>
-  <button class="base-button"
-          :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
-          :style="buttonStyle"
-          @click="$emit('click',$event)"
-  >
-    <slot></slot>
-    <span v-if="addIcon" class="add-icon"></span>
-  </button>
+  <div class="btn-box">
+    <button class="base-button"
+            :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
+            :style="buttonStyle"
+            @click="$emit('click',$event)"
+    >
+      <slot></slot>
+      <span v-if="addIcon" class="add-icon"></span>
+    </button>
+  </div>
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -51,6 +54,8 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  .btn-box
+    display: inline-block
 
   .base-button
     display: flex
