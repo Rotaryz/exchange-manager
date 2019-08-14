@@ -29,7 +29,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .base-layout
-    border-1px($color-line)
+    border: 0.5px solid $color-line
     background-color $color-white
     width: 100%
     padding: 24px

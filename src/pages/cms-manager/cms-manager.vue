@@ -450,8 +450,8 @@
 
   .cms-manager
     overflow: hidden
-    border-1px($color-line, 8px)
-    border-radius: 8px
+    border: 0.5px solid $color-line
+    border-radius: 4px
     background: $color-white
     width: 100%
     max-height: 100%
