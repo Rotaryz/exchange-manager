@@ -68,7 +68,7 @@
     padding: 0px 12px
     min-width: 80px
     &:hover .add-icon
-      bg-image('/design/icons/icon-addb')
+      bg-image('./icon-addb')
 
   &.base-button--small
     height: 28px
