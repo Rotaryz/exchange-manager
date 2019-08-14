@@ -271,24 +271,31 @@
       },
       // 判断
       justifyForm(done) {
+        let msg = ''
         switch (this.outLink) {
         case '3004':
           if (!this.outHtml) {
-            this.$toast.show('H5链接不能为空')
+            msg = 'H5链接不能为空'
+            this.$toast.show('')
           }
-          return
+          break
         case '3005':
           if (!this.miniLink) {
-            this.$toast.show('小程序链接不能为空')
+            msg = '小程序链接不能为空'
           }
-          return
+          break
         default:
           break
+        }
+        if (msg) {
+          this.$toast.show(msg)
+          return
         }
         done()
       },
       // 弹窗确定选择链接
       miniGoods() {
+        console.log('sada')
         let index = this.bannerIndex
         this[this.dataName][index].style = this.outLink
         switch (this.outLink) {

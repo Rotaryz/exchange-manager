@@ -169,4 +169,6 @@
     .tree-wrap
       padding: 0px 20px 20px
       overflow: hidden
+  .upload-add-icon
+    margin-right: 14px
 </style>

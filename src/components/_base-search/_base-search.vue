@@ -76,7 +76,8 @@
         this.$emit('input', val)
       },
       _search() {
-        this.$emit('search', this.value)
+        let e = document.querySelector('.input__inner')
+        this.$emit('search', e.value)
       },
       _enter(e) {
         if (e.keyCode === 13) {
