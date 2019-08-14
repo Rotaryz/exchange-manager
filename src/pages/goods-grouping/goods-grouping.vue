@@ -117,12 +117,15 @@
         })
       },
       addGroupBtn() {
-        this._getTradeList().then(res=>{
-          this.editVisible = true
-        })
+        this.showEditModal()
         this.edit.name = ''
         this.edit.industry_id = ''
         this.edit.id = ''
+      },
+      showEditModal(){
+        this._getTradeList().then(res=>{
+          this.editVisible = true
+        })
       },
       pageChange(val) {
         this._getList()
@@ -131,7 +134,7 @@
         this.edit.id = item.id
         this.edit.name = item.name
         this.edit.industry_id = item.industry_id || ''
-        this.editVisible = true
+        this.showEditModal()
       },
       addBtn(item, i) {
         this.currentGroup = item
