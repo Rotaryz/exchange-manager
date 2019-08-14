@@ -53,7 +53,8 @@
   @import "~@design"
 
   .base-button
-    display: inline
+    display: flex
+    align-items: center
     cursor: pointer
     box-sizing: border-box
     height: 32px
@@ -71,7 +72,6 @@
       &:before
       &:after
         background: $color-white
-
 
   &.base-button--small
     height: 28px
