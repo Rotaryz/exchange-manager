@@ -137,7 +137,7 @@
       align-items: center
       justify-content: center
       .logo-img
-        width: 26px
+        width: 40px
         display: block
     .first-item
       height: 80px
@@ -204,8 +204,8 @@
     .second-title
       transition: all 0.2s
       margin: 20px 0 17px
-      color: #888888
-      font-size: $font-size-14
+      color: #868DAA
+      font-size: $font-size-12
       line-height: 1
 
     .second-link
@@ -221,7 +221,7 @@
     .second-link-content
       margin-left: -10px
       color: #4E5983
-      padding: 5px 10px
+      padding: 4px 10px
       border-radius: 22px
     .router-link-active
       background: rgba(76, 132, 255, 0.1)

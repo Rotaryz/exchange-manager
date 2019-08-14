@@ -43,6 +43,7 @@
     height: 60px
 
   .footer
+    border-top-1px($color-line)
     position: fixed
     bottom 20px
     right: 20px

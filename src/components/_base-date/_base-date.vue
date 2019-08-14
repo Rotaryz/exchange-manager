@@ -108,4 +108,7 @@
 
   .el-input__inner
     border: 0.5px solid #e9ecee
+
+  .el-input__inner
+    border-color: $color-line !important
 </style>

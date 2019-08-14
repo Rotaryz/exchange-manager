@@ -449,7 +449,9 @@
   @import "~@design"
 
   .cms-manager
+    border-1px($color-line, 4px)
     overflow: hidden
+    border-radius: 4px
     background: $color-white
     width: 100%
     max-height: 100%
@@ -528,7 +530,6 @@
     align-items: center
     position: relative
     margin-top: 24px
-    border: 0.5px dashed #D9D9D9
     &:first-child
       margin-top: 30px
     .add-advertisement

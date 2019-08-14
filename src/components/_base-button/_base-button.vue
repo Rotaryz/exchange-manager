@@ -57,7 +57,6 @@
     cursor: pointer
     box-sizing: border-box
     height: 32px
-    line-height 32px
     font-size: $font-size-14
     white-space: nowrap
     text-align: center
@@ -67,24 +66,23 @@
     user-select: none
     padding: 0px 12px
     min-width: 80px
+    line-height: 1
     &:hover .add-icon
       &:before
       &:after
         background: $color-white
 
+
   &.base-button--small
     height: 28px
-    line-height 28px
     min-width: 50px
 
   &.base-button--middle
     height: 32px
-    line-height 32px
     min-width: 80px
 
   &.base-button--big
     height: 42px
-    line-height 42px
     min-width: 80px
 
   &.base-button--default

@@ -28,7 +28,7 @@
         <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
       </div>
     </div>
-    <div v-if="type === 'image' && multiple" class="edit-image">
+    <div v-if="type === 'image' && multiple" class="edit-image image-more">
       <draggable v-if="data.length" v-model="list" class="draggable">
         <div v-for="(item, index) in data" :key="index" class="show-image hand">
           <img :src="item.image_url ||item" class="image">
@@ -50,7 +50,7 @@
     </div>
     <div v-if="type === 'video'" class="edit-image">
       <template v-if="data || data.length>0">
-        <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
+        <draggable v-if="multiple" v-model="list" class="draggable">
           <div v-for="(item, index) in data" :key="index" width="90px" class="show-image hand">
             <video class="video-tag" :src="item.image_url ||item"></video>
             <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
@@ -241,14 +241,13 @@
     display flex
     align-items center
 
-    .tip
-      margin-left: 10px
-
   .edit-image
     flex-wrap: wrap
     display: flex
 
     .draggable
+      margin: 0
+      padding: 0
       flex-wrap: wrap
       display: flex
 
@@ -259,7 +258,7 @@
     position: relative
     border-radius: 2px
     overflow: hidden
-    margin-bottom: 14px
+    margin: 0
 
   .upload-wrap
     position relative
@@ -279,7 +278,6 @@
 
   .show-image
     margin-right: 20px
-    margin-bottom: 14px
     position: relative
 
     /*&:last-child*/
@@ -298,16 +296,15 @@
 
   .tag
     position absolute
-    bottom 0
+    bottom 3px
     right: 0
     left: 0
-    background: rgb(30, 35, 51)
+    background: rgba(30, 35, 51, 0.5)
     border-radius: 0 0 1px 1px
     height: 20px
     line-height 20px
     text-align center
     color: $color-white
-    opacity 0.5
     font-size $font-size-14
     font-family $font-family-regular
 
@@ -337,4 +334,9 @@
   .tip
     color: $color-text-sub
     font-size $font-size-14
+
+  .image-more
+    display: flex
+    .show-image
+      margin-bottom: 14px
 </style>

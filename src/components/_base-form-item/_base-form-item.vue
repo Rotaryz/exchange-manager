@@ -78,7 +78,7 @@
       color: $color-error
     .label-text
       font-family: $font-family-regular
-      font-size: $font-size-14
+      font-size: $font-size-12
       color: $color-text-main
       white-space: nowrap
       margin-right: 10px

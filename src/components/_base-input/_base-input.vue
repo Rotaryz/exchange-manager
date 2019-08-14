@@ -171,8 +171,8 @@
     .input__inner
       width: 100%
       height: 100%
-      border-radius 2px
-      border: 0.5px solid $color-border
+      border-radius 4px
+      border: 0.5px solid $color-line
       color: $color-text-main
       font-size $font-size-14
       font-family $font-family-regular
@@ -227,11 +227,13 @@
 
   input::-webkit-input-placeholder
   textarea::-webkit-input-placeholder
+    font-family: $font-family-regular
     color: $color-text-sub
 
   input:disabled
   textarea:disabled
     background: #f9f9f9
+    font-family: $font-family-regular
     color: $color-text-assist
     cursor not-allowed
 

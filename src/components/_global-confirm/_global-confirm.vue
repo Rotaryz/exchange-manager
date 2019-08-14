@@ -71,7 +71,7 @@
     .text
       font-size: $font-size-16
       font-family: $font-family-regular
-      color: #666
+      color: $color-text-assist
       text-align: left
       word-break: break-all
       line-height: 1.4
