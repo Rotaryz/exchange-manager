@@ -54,13 +54,14 @@
 
   .base-button
     display: flex
+    text-align: center
     align-items: center
+    justify-content: center
     cursor: pointer
     box-sizing: border-box
     height: 32px
     font-size: $font-size-14
     white-space: nowrap
-    text-align: center
     border-radius: 4px
     outline: none
     transition: .1s
