@@ -51,7 +51,7 @@
   const params = {
     keyword: '',
     category_id: '',
-    status: 1,
+    status: '',
     page: 1,
     limit: 10
   }
@@ -62,11 +62,18 @@
     },
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
-      API.Goods.getGoodsList({
-        data: params,
-      }).then(res => {
+      Promise.all([API.Goods.getGoodsList({
+        data: params
+      }), API.Goods.getGoodsListStatus({
+        data: {
+          keyword: '',
+          category_id: ''
+        }
+      })]).then(res => {
+        console.log(res)
         next(vw => {
-          vw.setData(res)
+          vw.setData(res[0])
+          vw.setStatus(res[1])
         })
       })
     },
@@ -100,7 +107,10 @@
     methods: {
       setData(res) {
         this.list = res.data
-        this.total= res.meta.total
+        this.total = res.meta.total
+      },
+      setStatus(res) {
+        this.statusList = res.data
       },
       _getStatus() {
         API.Goods.getGoodsListStatus({
@@ -164,6 +174,7 @@
 
   .type-frist
     margin-right: 10px
+
   .list-item
-      display flex
+    display flex
 </style>

@@ -72,23 +72,23 @@
         return b.sort - a.sort
       },
       openBtn(index) {
-        this.$set(this.selects,index,!this.selects[index])
+        this.$set(this.selects, index, !this.selects[index])
         console.log(this.selects)
       },
       addChild(item, index) {
-        this.$emit('add-item',{item,index})
+        this.$emit('add-item', {item, index})
       },
       editBtn(item, index) {
-        this.$emit('edit-item',{item,index})
+        this.$emit('edit-item', {item, index})
       },
       deleteBtn(item, index) {
-        this.$emit('delete-item',{item,index})
+        this.$emit('delete-item', {item, index})
       },
       editChildBtn(item, index, childItem, childIndex) {
-        this.$emit('edit-item',{item, index, childItem, childIndex})
+        this.$emit('edit-item', {item, index, childItem, childIndex})
       },
       deleteChildBtn(item, index, childItem, childIndex) {
-        this.$emit('delete-item',{item,index, childItem, childIndex})
+        this.$emit('delete-item', {item, index, childItem, childIndex})
       },
     }
   }
@@ -137,8 +137,10 @@
     .big-box
       width: 100%
       border-bottom-1px($color-line)
+
       &:last-child
         border-none()
+
       .big-box-main
         height: 60px
         padding-left: 22px
@@ -184,15 +186,11 @@
   .add-box
     height: 60px
     border-top-1px($color-line)
-    padding-left: 90px
+    padding-left: 22px
     layout(row)
     align-items: center
 
-    .icon
-      width: 12px
-      height: 12px
-      border-radius: 50%
-      background-size: 12px
+    .add-icon
       margin-right: 6px
 
     .text
@@ -204,7 +202,7 @@
   .open-item
     height: 60px
     border-top-1px($color-line)
-    background: $color-white
+    background: #FFFFFF
     padding-left: 90px
     padding-right: 14px
     layout(row)
@@ -213,10 +211,10 @@
     font-size: $font-size-14
 
     &:nth-child(2n -1)
-      background: #F5F7FA
+      background: #F4F8F9
 
     &:hover
-      background: #F7FAF5
+      background: #e8f4f9
 
     .open-item-left
       font-size: $font-size-14

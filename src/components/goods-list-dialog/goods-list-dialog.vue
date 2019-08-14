@@ -109,7 +109,7 @@
         goodsListFilter: {
           limit: 7,
           page: 1,
-          goods_category_id: '',
+          category_id: '',
           keyword: '',
           status:''
         },
@@ -172,7 +172,7 @@
       },
       // 选择分类
       async changeGategory(id) {
-        this.goodsListFilter.goods_category_id = id
+        this.goodsListFilter.category_id = id
         this.goodsListFilter.page = 1
         this.selectGoods = []
         await this._getGoodsList()

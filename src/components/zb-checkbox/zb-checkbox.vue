@@ -11,10 +11,10 @@
 
   export default {
     name: COMPONENT_NAME,
-    props:{
-      type:{
-        type:String,
-        default:'' // checked已选择 disable禁止 indeterminate 半选择状态
+    props: {
+      type: {
+        type: String,
+        default: 'default' // checked已选择 disable禁止 indeterminate 半选择状态
       }
     },
     data() {
@@ -27,49 +27,21 @@
   @import "~@design"
 
   .zb-checkbox
-  // 选择框样式
-    display: inline-block;
-    position: relative;
-    border: 1px solid #dcdfe6;
-    border-radius: 2px;
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    z-index: 1;
-    transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+    // 选择框样式
+    display: inline-block
+    position: relative
+    border-radius: 2px
+    width: 18px
+    height: 18px
+    border: 1px solid #dcdfe6
+    background-color: #fff
+    &.default
+      border: 1px solid #dcdfe6
+      background-color: #fff
     &.checked
+      icon-image('icon-pick')
     &.disable
+      icon-image('icon-nopick')
     &.indeterminate
-      &:after
-        box-sizing: content-box
-        content: "";
-        height: 8px
-        left: 5px
-        top:1px
-        position: absolute
-        transform: rotate(45deg)
-        width: 4px
-        transition: transform .15s ease-in .05s
-        transform-origin: center
-
-    &.checked
-      background-color $color-main
-      &:after
-        border-bottom: 2px solid #fff
-        border-right: 2px solid #fff
-    &.disable
-      background-color $color-disable
-      border-bottom 1px solid $color-borde
-      &:after
-        border-bottom: 2px solid $color-text-disable
-        border-right: 2px solid $color-text-disable
-    &.indeterminate
-      background-color $color-main
-      &:after
-        height 2px
-        width:8px
-        top:6px
-        left:4px
-        background-color $color-white
-        transform: rotate(0deg)
+      icon-image('icon-bkpick')
 </style>

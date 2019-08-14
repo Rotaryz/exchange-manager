@@ -1,98 +1,11 @@
 @import "variable.styl"
-
+@import "mixin.styl"
 body, html
   line-height: 1
   font-family: 'PingFangSC-Regular', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback'
   -webkit-tap-highlight-color: transparent
   background: $color-background
   color: $color-text-main
-
-.border-top-1px, .border-right-1px, .border-bottom-1px, .border-left-1px
-  position: relative
-  
-  &:before, &:after
-    content: ""
-    display: block
-    position: absolute
-    transform-origin: 0 0
-
-.border-top-1px
-  &:before
-    border-top: 1px solid $color-line
-    left: 0
-    top: 0
-    width: 100%
-    transform-origin: 0 top
-
-.border-right-1px
-  &:after
-    border-right: 1px solid $color-line
-    top: 0
-    right: 0
-    height: 100%
-    transform-origin: right 0
-
-.border-bottom-1px
-  &:after
-    border-bottom: 1px solid $color-line
-    left: 0
-    bottom: 0
-    width: 100%
-    transform-origin: 0 bottom
-
-.border-left-1px
-  &:before
-    border-left: 1px solid $color-line
-    top: 0
-    left: 0
-    height: 100%
-    transform-origin: left 0
-
-//  鼠标移入时变手
-.hand
-  cursor: pointer
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)
-  .border-top-1px
-    &:before
-      width: 200%
-      transform: scale(.5) translateZ(0)
-  
-  .border-right-1px
-    &:after
-      height: 200%
-      transform: scale(.5) translateZ(0)
-  
-  .border-bottom-1px
-    &:after
-      width: 200%
-      transform: scale(.5) translateZ(0)
-  
-  .border-left-1px
-    &:before
-      height: 200%
-      transform: scale(.5) translateZ(0)
-
-@media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3)
-  .border-top-1px
-    &:before
-      width: 300%
-      transform: scale(1 / 3) translateZ(0)
-  
-  .border-right-1px
-    &:after
-      height: 300%
-      transform: scale(1 / 3) translateZ(0)
-  
-  .border-bottom-1px
-    &:after
-      width: 300%
-      transform: scale(1 / 3) translateZ(0)
-  
-  .border-left-1px
-    &:before
-      height: 300%
-      transform: scale(1 / 3) translateZ(0)
 
 //  鼠标移入时变手
 .hand
@@ -113,46 +26,15 @@ body, html
   transform: translateY(-1px)
   display: inline-block
   position: relative
-  width: 8px
-  height: 8px
+  width: 12px
+  height: 12px
   margin-left: 3px
-  &:before
-  &:after
-    content: ''
-    position: absolute
-    background: $color-main
-    transition: all 0.3s
-    top: 50%
-    transform translateY(-50%)
-  &:before
-    right: 0
-    width: 8px
-    height: 2px
-  &:after
-    right: 3px
-    width: 2px
-    height: 8px
+  icon-image('design/icons/icon-plus_young')
+  background-size 100% 100%
 
+// 上传icon
 .upload-add-icon
-  border: 1px dotted $color-border
   width: 44px
   height: @width
-  text-align center
-  line-height @width
-  &:before
-  &:after
-    content: ''
-    position: absolute
-    background-color $color-border
-    transition: all 0.3s
-    border-radius 1px
-    top: 50%
-    left: 50%
-    transform translate(-50%, -50%)
-  &:before
-    width: 15px
-    height: 2px
-  
-  &:after
-    width: 2px
-    height: 15px
+  icon-image('design/icons/icon-addpic')
+  background-size 100% 100%
