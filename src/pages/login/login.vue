@@ -92,7 +92,7 @@
       left: 109px
       top: 42px
       width: 156px
-      height: 43px
+      height: 26px
       icon-image('pic-dhsc')
     .login-wrapper
       position: absolute

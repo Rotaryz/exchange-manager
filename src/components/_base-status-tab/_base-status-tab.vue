@@ -89,8 +89,7 @@
 
     .status-tab-item
       border-radius: 100px
-      min-width: 106px
-      padding: 0px 10px
+      padding: 0px 14px
       color: $color-text-main
       line-height: 30px
       text-align: center

@@ -245,7 +245,7 @@
       },
       // 获取订单状态
       async _orderStatus() {
-        let res = await API.Order.orderStatus({data: null, loading: false, toast: false})
+        let res = await API.Order.orderStatus({data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''}, loading: false, toast: false})
         if (res.error_code === this.$ERR_OK) {
           this.statusList = res.data
         }
