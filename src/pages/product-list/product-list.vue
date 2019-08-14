@@ -50,7 +50,7 @@
   const TITLE = '商品列表'
   const params = {
     keyword: '',
-    category_id: 0,
+    category_id: '',
     status: 1,
     page: 1,
     limit: 10
@@ -122,6 +122,7 @@
       changeGategory(val) {
         this.filter.category_id = val
         this._getList()
+        this._getStatus()
       },
       statusChange(val) {
         this._getList()
@@ -141,6 +142,7 @@
       },
       searchBtn(val) {
         this._getList()
+        this._getStatus()
       },
       pageChange(val) {
         this._getList()

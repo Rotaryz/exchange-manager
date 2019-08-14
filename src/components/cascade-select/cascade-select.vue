@@ -11,7 +11,7 @@
                  :height="height"
                  :style="inputStyle"
                  radius="4"
-                 @change-visible="_getCategoryFirst"
+                 @change-visible="changeVisible"
                  @change="_selectCategoryFirst"
     >
     </base-select>
@@ -48,8 +48,13 @@
         type: String,
         default: 'pid'
       },
-      value:{
-        type: [String,Boolean,Number],
+      otherParams: {
+        type: String,
+        default: () => {
+        }
+      },
+      value: {
+        type: [String, Boolean, Number],
         default: ''
       },
       valueKey: {
@@ -105,25 +110,49 @@
       }
     },
     methods: {
-      // 获取一级分类
-      async _getCategoryFirst(val) {
-        if (!val) return false
-        let res = await this.getDataFunction()({
-          data: {[this.paramsKey]: -1},
-          loading: false
+      changeVisible(val) {
+        if (!val) return
+        this._getCategoryFirst()
+      },
+      getTwoVlaue() {
+        return [this.goodsCategoryFirst, this.goodsCategorySecond]
+      },
+      setValue(otherParams) {
+        this._getCategoryFirst(otherParams).then(res => {
+          let item = res.data.find(item => item.is_selected)
+          if (!item) return false
+          this.goodsCategoryFirst = item.id
+          this._selectCategoryFirst(otherParams).then(res2 => {
+            let item2 = res2.data.find(item => item.is_selected)
+            if (!item2) return false
+            this.goodsCategorySecond = item2 && item2.id
+            this._selectCategorySecond()
+          })
         })
-        this.goodsCategoryFirstList = res.isFail ? [] : res.data
+      },
+      // 获取一级分类
+      async _getCategoryFirst(otherParams = {}) {
+        return this.getDataFunction()({
+          data: {[this.paramsKey]: -1, ...otherParams},
+          loading: false
+        }).then(res => {
+          this.goodsCategoryFirstList = res.data || []
+          return res
+        })
       },
       // 选择第一分类
-      async _selectCategoryFirst() {
-        let res = await this.getDataFunction()({
-          data: {[this.paramsKey]: this.goodsCategoryFirst},
+      async _selectCategoryFirst(otherParams = {}) {
+        let res = await this.getDataFunction({
+          doctor() {
+          }
+        })({
+          data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
           loading: false
         })
-        if (res.isFail) return false
         this.goodsCategorySecond = ''
-        this.goodsCategorySecondList = res.isFail ? [] : res.data
+        this.goodsCategorySecondList = res.data || []
         this.goodsCategoryChange(this.goodsCategoryFirst)
+        return res
       },
       async _selectCategorySecond() {
         this.goodsCategoryChange(this.goodsCategorySecond)
