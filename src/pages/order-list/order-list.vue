@@ -51,7 +51,9 @@
                 <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
                 </div>
               </div>
-              <div class="list-item two-line">{{item.receiver_addresses ? item.receiver_addresses.address : ''}}</div>
+              <div class="list-item two-line" v-if="item.receiver_addresses">
+                {{`${item.receiver_addresses.province} ${item.receiver_addresses.city} ${item.receiver_addresses.district} ${item.receiver_addresses.address}`}}
+              </div>
               <div class="list-item">{{item.created_at}}</div>
               <div class="list-item">{{item.goods_amount}}</div>
               <div class="list-item">{{item.status_str}}</div>
@@ -124,7 +126,7 @@
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
-  const INFO_STATUS = 10
+  const INFO_STATUS = ''
   const EXCEL_URL = '/gateway/platform/platform-order/sub-order/export'
 
   export default {

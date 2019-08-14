@@ -4,15 +4,15 @@
       <div class="content-box">
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
           <div v-if="cms.code === 'banner'" :class="{'touch': cmsType === 'banner'}" class="carousel hand" @click="changeType('banner')">
-            <el-carousel height="127px" arrow="never" :interval="4000">
+            <el-carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
               <el-carousel-item v-for="(item, index) in bannerList" :key="index">
-                <img src="" class="carousel-image">
+                <img :src="item.detail.image_url" class="carousel-image">
               </el-carousel-item>
             </el-carousel>
           </div>
           <!--商品分类-->
-          <ul class="goods-classify-wrapper">
-            <template v-for="(item, index) in 6">
+          <ul v-if="cms.code === 'goods_category' && cms.detail && cms.detail.length" class="goods-classify-wrapper">
+            <template v-for="(item, index) in cms.detail">
               <li v-if="index < 10"
                   :key="item.id"
                   class="classify-item"
@@ -24,34 +24,34 @@
             </template>
           </ul>
           <!--热门-->
-          <div class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
+          <div v-if="cms.code === 'hot_goods'" class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
             <div class="hot-title">热门商品</div>
             <div class="scroll-wrapper">
-              <div v-for="(item, index) in 6" :key="index" class="hot-item">
-                <img src="" mode="aspectFill" class="hot-good-img">
-                <p class="hot-good-name">德沃仕电热水壶德沃仕电热水壶</p>
+              <div v-for="(item, index) in hotList" :key="index" class="hot-item">
+                <img :src="item.detail.image_url" class="hot-good-img">
+                <p class="hot-good-name">{{item.detail.title}}</p>
+              </div>
+            </div>
+          </div>
+          <!-- 推荐商品列表-->
+          <div v-if="cms.code === 'recommend' && cms.children && cms.children.length" class="recommend">
+            <div class="recommend-name">为你推荐</div>
+            <div class="recommend-goods">
+              <div v-for="(item, index) in cms.children" :key="index" class="goods-item">
+                <img :src="item.goods_cover_image" class="goods-img">
+                <p class="goods-name">{{item.name}}</p>
+                <div class="goods-mag">
+                  <div class="goods-tariff">
+                    <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
+                    <img src="./pic-member@2x.png" alt="" class="goods-member">
+                  </div>
+                  <div class="original-price">¥${{item.price}}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 推荐商品列表-->
-        <div class="recommend">
-          <div class="recommend-name">为你推荐</div>
-          <div class="recommend-goods">
-            <div v-for="(item, index) in hotList" :key="index" class="goods-item">
-              <img src="" mode="aspectFill" class="goods-img">
-              <p class="goods-name">名创优品MINISO 面包粒子枕U型枕名创优品MINISO 面包粒子枕U型枕</p>
-              <div class="goods-mag">
-                <div class="goods-tariff">
-                  <div class="goods-price"><span class="goods-unit">¥</span>620.5</div>
-                  <img src="./pic-member@2x.png" alt="" class="goods-member">
-                </div>
-                <div class="original-price">¥100.00</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -162,6 +162,7 @@
           min-width: @width
           border-radius: 3px
           display: block
+          object-fit: cover
         .hot-good-name
           text-align: center
           font-size: $font-size-14
@@ -228,6 +229,7 @@
         .goods-img
           height: 140px
           width: 100%
+          object-fit: cover
           background: $image-color
         .goods-name
           line-height: 20px

@@ -3,9 +3,8 @@
     <div class="box-tip">搜索</div>
     <base-input :value="value"
                 radius="4"
-                width="220"
-                height="32"
-                :inputStyle="{background: '#F4F8F9',border: '1px solid #F3F2F7'}"
+                :width="width"
+                :height="height"
                 :placeholder="placeholder"
                 @input="setValue"
                 @keydown="_enter"
@@ -41,7 +40,12 @@
       width: {
         // 输入框宽度
         type: Number,
-        default: 224
+        default: 220
+      },
+      height: {
+        // 输入框宽度
+        type: Number,
+        default: 32
       },
       boxStyle: {
         // 组件自定义样式
@@ -83,7 +87,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
   .base-search
@@ -98,35 +102,12 @@
     align-items: center
     overflow: hidden
     position relative
-
     &.small
       height: 28px
-
     .box-tip
       font-size: $font-size-12
       color: $color-text-main
       margin-right: 10px
-
-  .search-input
-    color: $color-text-main
-    font-family: $font-family-regular
-    font-size: $font-size-12
-    height: 100%
-    width: 100%
-    box-sizing: border-box
-    border: 0.5px solid #F3F2F7
-    border-radius: 4px
-    padding-left: 10px
-    transition: all 0.2s
-    background: #F4F8F9
-    &:hover
-      border: 0.5px solid #ACACAC
-    &::placeholder
-      font-family: $font-family-regular
-      color: $color-text-sub
-    &:focus
-      background: $color-white
-      border: 0.5px solid $color-main !important
 
   .search-icon-box
     width: 60px
@@ -140,7 +121,29 @@
     font-size: $font-size-12
     color: $color-white
     transition: 0.3s all
-
     &:hover
       opacity: 0.8
+
+  .base-search
+    .input__inner
+      background: #F4F8F9
+      width: 100%
+      height: 100%
+      border-radius 2px
+      border: 0.5px solid $color-line
+      color: $color-text-main
+      font-size $font-size-14
+      font-family $font-family-regular
+      padding-right 14px
+      transition: all 0.2s
+      padding-left 14px
+      box-sizing: border-box
+      &:hover
+        border: 0.5px solid #ACACAC
+      &::placeholder
+        font-family: $font-family-regular
+        color: $color-text-sub
+      &:focus
+        background: $color-white
+        border: 0.5px solid $color-main !important
 </style>

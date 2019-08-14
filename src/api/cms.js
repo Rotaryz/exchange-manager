@@ -36,5 +36,14 @@ export default {
   categoryList(args) {
     const url = `/gateway/platform/platform-goods/category/index`
     return request.get({url, ...args})
+  },
+  /**
+   * 删除模块
+   * @param args
+   * @returns {*}
+   */
+  delDestroy(args) {
+    const url = `/gateway/platform/content/module/destroy`
+    return request.delete({url, ...args})
   }
 }

@@ -130,12 +130,11 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .base-input
     display inline-block
     position relative
-
 
     &.zb-input--big
       height: 60px
@@ -180,10 +179,8 @@
       padding-right 14px
       padding-left 14px
       box-sizing: border-box
-
       &:hover
         border: 0.5px solid $color-border-hover
-
       &:focus
         border: 0.5px solid $color-main
 

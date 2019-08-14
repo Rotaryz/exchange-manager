@@ -18,9 +18,11 @@
                 <div class="advertisement-msg" @click="getIndex(index)">
                   <upload
                     :data.sync="item.detail.image_url"
-                    :isShowDel="false"
+                    :multiple="false"
                     :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
                     :indicatorPosition="false"
+                    :isShowDel="false"
+                    :isChange="true"
                     firstTag="更换图片"
                     @delete="deleteGoodsMainPic()"
                     @successImage="successImage"
@@ -41,10 +43,18 @@
               <div class="content-title">热门商品</div>
               <div class="content-sub">(最多添加5个热门商品，鼠标拖拽调整广告顺序)</div>
             </div>
-            <slick-list v-model="bannerList" :distance="30" lockAxis="y">
-              <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
-                <div class="advertisement-msg">
-                  <upload :data.sync="item.detail.image_url" :isShowDel="false" :addStyle="`margin:0 20px 0 0;;width:100px;height:100px;background-image: url('${addImage}')`" firstTag="更换图片" @delete="deleteGoodsMainPic()"></upload>
+            <slick-list v-model="hotList" :distance="30" lockAxis="y">
+              <slick-item v-for="(item, index) in hotList" :key="index" :index="index">
+                <div class="advertisement-msg" @click="getIndex(index)">
+                  <upload
+                    :data.sync="item.detail.image_url"
+                    :addStyle="`margin:0 20px 0 0;;width:100px;height:100px;background-image: url('${addImage}')`"
+                    :isShowDel="false"
+                    :isChange="true"
+                    firstTag="更换图片"
+                    @delete="deleteGoodsMainPic()"
+                    @successImage="successImage"
+                  ></upload>
                   <div class="advertisement-link">
                     <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
                     <p class="goods-title">{{item.style === '3004' || item.style === '3005' ? item.detail.url : item.detail.title}}</p>
@@ -105,7 +115,7 @@
             </div>
           </div>
           <div class="page-box">
-            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="7"></base-pagination>
+            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
           </div>
         </div>
         <!--商品分类-->
@@ -128,7 +138,6 @@
         </div>
       </div>
     </base-modal>
-
   </div>
 </template>
 
@@ -147,6 +156,9 @@
     {title: '商品分类', status: '3003'},
     {title: '小程序链接', status: '3005'},
     {title: 'H5链接', status: '3004'}
+  ]
+  const HOST_TYPE = [
+    {title: '商品详情', status: '3002'}
   ]
   const TEMPLATE_OBJ = {
     detail: {
@@ -198,7 +210,8 @@
         delId: '',
         delIndex: -1,
         classList: [],
-        cmsList: []
+        cmsList: [],
+        confirm: false
       }
     },
     computed: {
@@ -213,6 +226,18 @@
       },
       parentId() {
         this._getGoodsList()
+      },
+      type(news) {
+        switch (news) {
+        case 'banner':
+          this.typeList = TYPE_LIST
+          break
+        case 'hot':
+          this.typeList = HOST_TYPE
+          break
+        default:
+          break
+        }
       }
     },
     async created() {
@@ -241,7 +266,7 @@
                 break
               }
             })
-            console.log(this.bannerList, this.hotList)
+            // console.log(this.bannerList)
           })
       },
       // 判断
@@ -251,11 +276,13 @@
           if (!this.outHtml) {
             this.$toast.show('H5链接不能为空')
           }
-          break
+          return
         case '3005':
           if (!this.miniLink) {
             this.$toast.show('小程序链接不能为空')
           }
+          return
+        default:
           break
         }
         done()
@@ -302,7 +329,7 @@
           status: 1,
           keyword: this.keyword,
           category_id: this.parentId,
-          limit: 7,
+          limit: 6,
           page: this.goodsPage
         }
         let res = await API.Cms.goodsList({data})
@@ -319,7 +346,7 @@
       },
       selectCate(item, index) {
         this.showCateIndex = index
-        console.log(this.showCateIndex)
+        // console.log(this.showCateIndex)
       },
       selectGoods(item, index) {
         this.showSelectIndex = index
@@ -360,22 +387,39 @@
         this[this.dataName].push(TEMPLATE_OBJ)
       },
       submitBtn() {
+        let type = this.type === 'banner' ? '轮播图广告' : '热门商品'
+        if (!this[this.dataName].length) {
+          this.$toast.show(`${type}不能为空`, 1500)
+          return
+        } else {
+          for (let i = 0; i < this[this.dataName].length; i++) {
+            if (!this[this.dataName][i].detail.image_id) {
+              this.$toast.show(`第${i + 1}${type}图片不能为空`, 1500)
+              return
+            } else if (!this[this.dataName][i].detail.title && !this[this.dataName].detail.url) {
+              this.$toast.show(`第${i + 1}${type}不能为空`, 1500)
+              return
+            }
+          }
+        }
+        this.infoData()
         API.Cms.saveModuleData({data: {data: this[this.dataName]}})
           .then((res) => {
-            console.log(res)
+            this.moduleShow()
           })
-        console.log(arr)
       },
-      infoData(query, sort) {
-        // let obj = {
-        //   detail: {image_id: query.image_id, title: query.title, url: query.url, object_id: query.object_id},
-        //   style: query.style || '',
-        //   id: query.id || '',
-        //   parent_id: query.parent_id || '',
-        //   sort
-        // }
-        // return obj
+      infoData() {
+        this.cmsList.findIndex((item, index) => {
+          if (item.code.includes(this.type)) {
+            this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
+              cms.parent_id = item.id
+              cms.sort = cmsIndex
+              return cms
+            })
+          }
+        })
       },
+      //
       showConfirm(id, index) {
         this.delId = id
         this.delIndex = index
@@ -383,11 +427,19 @@
           this[this.dataName].splice(index, 1)
           return
         }
-        console.log('sdf')
-        // this.$refs.dialog.show('是否确定删除该广告？')
+        this.$confirm.confirm()
+          .then(() => {
+            API.Cms.delDestroy({data: {id: this.delId}})
+              .then((res) => {
+                this[this.dataName].splice(index, 1)
+              })
+          })
+          .catch(() => {
+          })
       },
       deleteGoodsMainPic() {
-
+        this[this.dataName][this.cmsIndex].detail.image_url = ''
+        this[this.dataName][this.cmsIndex].detail.image_id = ''
       }
     }
   }
@@ -629,7 +681,7 @@
 
   .goods-content
     border-radius: 4px
-    height: 420px
+    height: 405px
     .goods-list
       flex-wrap: wrap
       display: flex
