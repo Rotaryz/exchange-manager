@@ -28,11 +28,11 @@
 
   .zb-checkbox
     // 选择框样式
-    display: inline-block;
-    position: relative;
-    border-radius: 2px;
-    width: 18px;
-    height: 18px;
+    display: inline-block
+    position: relative
+    border-radius: 2px
+    width: 18px
+    height: 18px
     border: 1px solid #dcdfe6
     background-color: #fff
     &.default
