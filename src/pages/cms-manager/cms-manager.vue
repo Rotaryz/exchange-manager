@@ -449,9 +449,9 @@
   @import "~@design"
 
   .cms-manager
-    border-1px($color-line, 4px)
     overflow: hidden
-    border-radius: 4px
+    border-1px($color-line, 8px)
+    border-radius: 8px
     background: $color-white
     width: 100%
     max-height: 100%
@@ -588,13 +588,10 @@
     right: 20px
     white-space: nowrap
     font-size: $font-size-14
-    color: #3E77C3
     margin-left: 21px
     line-height: 1
     user-select: none
     transition: all 0.2s
-    &:hover
-      color: #06397E
 
   .shade-header
     display: flex
