@@ -39,9 +39,12 @@
       border: 1px solid #dcdfe6
       background-color: #fff
     &.checked
+      border: none
       icon-image('icon-pick')
     &.disable
+      border: none
       icon-image('icon-nopick')
     &.indeterminate
+      border: none
       icon-image('icon-bkpick')
 </style>
