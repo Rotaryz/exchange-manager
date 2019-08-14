@@ -95,7 +95,6 @@
       },
       _getDetail() {
         API.Goods.getGroupDetail({data: this.filter}).then(res => {
-          console.log('res', res)
           this.setData(res)
         })
       },
@@ -104,23 +103,17 @@
       },
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
-          console.log('确认 ')
-          await API.Goods.deleteGroupGoods({data: {goods_id: item.id, group_id: this.filter.id}})
+          await API.Goods.deleteGroupGoods({data: {goods_id: item.goods_id, group_id: this.filter.id},doctor() {}})
           this._getDetail()
-        }, () => {
-          console.log('取消 ')
         })
       },
       pageChange(val) {
-        console.log(this.filter.page)
         this._getDetail()
       },
       goBack() {
         this.$router.go(-1)
       },
       async _addGoods(arr) {
-        console.log(arr)
-        // todo 新增商品請求
         await API.Goods.addGroupGoods({data: {group_id: this.filter.id, goods_ids: arr}})
         this._getDetail()
       }

@@ -93,9 +93,6 @@
         currentGroup: {},
       }
     },
-    created() {
-
-    },
     methods: {
       _getTradeList() {
         return API.Goods.getTradeList({
@@ -122,8 +119,8 @@
         this.edit.industry_id = ''
         this.edit.id = ''
       },
-      showEditModal(){
-        this._getTradeList().then(res=>{
+      showEditModal() {
+        this._getTradeList().then(res => {
           this.editVisible = true
         })
       },
@@ -142,11 +139,9 @@
       },
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
-          console.log('确认 ')
-          await API.Goods.deleteGroup({data: item})
+          await API.Goods.deleteGroup({data: {id: item.id}})
           this._getList()
         }, () => {
-          console.log('取消 ')
         })
       },
       justifyAddGroup(done) {
@@ -161,20 +156,20 @@
       },
       async _addGroup() {
         if (this.edit.id) {
-          // todo 修改商品分组请求
-          await API.Goods.editGroup({data: this.edit})
+          await API.Goods.editGroup({data: this.edit,doctor() {}})
           this.list.find(item => {
             if (item.id === this.edit.id) item.name = this.edit.name
           })
         } else {
-          // todo 增加商品分组请求
-          await API.Goods.addGroup({data: this.edit})
+          await API.Goods.addGroup({
+            data: this.edit, doctor() {}
+          })
           this.list.push(this.edit)
         }
         this._getList()
       },
       async _addGoods(arr) {
-        await API.Goods.addGroupGoods({data:{group_id: this.currentGroup.id, goods_ids: arr}})
+        await API.Goods.addGroupGoods({data: {group_id: this.currentGroup.id, goods_ids: arr}})
         this._getList()
       }
     }

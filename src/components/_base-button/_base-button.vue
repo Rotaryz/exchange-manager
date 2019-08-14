@@ -68,9 +68,7 @@
     padding: 0px 12px
     min-width: 80px
     &:hover .add-icon
-      &:before
-      &:after
-        background: $color-white
+      bg-image('/design/icons/icon-addb')
 
   &.base-button--small
     height: 28px
