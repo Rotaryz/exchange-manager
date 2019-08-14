@@ -54,10 +54,10 @@
     justify-content center
     align-items center
     z-index: 20
-    & > button
+    & > .btn-box
       margin-right: 10px
-    &:last-child
-      margin-right 0
+      &:last-child
+        margin-right 0
 
   /*出现滚动条时展示滚动条*/
   @media screen and (max-width: $min-width) {

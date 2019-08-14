@@ -9,7 +9,6 @@
       <span v-if="addIcon" class="add-icon"></span>
     </button>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
