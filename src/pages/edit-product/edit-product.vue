@@ -10,7 +10,12 @@
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <cascade-select v-model="edit.category_id" valueKey="id" :inputStyle="{'min-width':'194px'}" size="middle" placeholder1="请选择分类"
+        <cascade-select ref="cascadeSelect"
+                        v-model="edit.category_id"
+                        valueKey="id"
+                        :inputStyle="{'min-width':'194px'}"
+                        size="middle"
+                        placeholder1="请选择分类"
                         placeholder2="请选择子分类"
         ></cascade-select>
       </base-form-item>
@@ -19,7 +24,7 @@
       </base-form-item>
       <base-form-item label="商品重量" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.weight" type="number"></base-input>
-        <span class="after-word">Kg</span>
+        <span class="after-word">g</span>
       </base-form-item>
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
@@ -140,6 +145,20 @@
       Radio,
       CascadeSelect
     },
+    beforeRouteEnter(to, from, next) {
+      if (to.query.id) {
+        API.Goods.getGoodsDetail({
+          data: {id: to.query.id},
+        }).then(res => {
+          next(vw => {
+            console.log('getGoodsDetail', res)
+            vw.setData(res)
+          })
+        })
+      } else {
+        next()
+      }
+    },
     data() {
       return {
         arrRes: [],
@@ -179,7 +198,7 @@
           ]
         }],
         goodsDetails: [],
-
+        id: 0,
         edit: {
           name: '',
           describe: '',
@@ -193,7 +212,8 @@
           specification_type: 0,
           price: '',
           discount_price: '',
-          inventory: ''
+          saleable: 0,
+          specId: 0
         },
       }
     },
@@ -205,7 +225,26 @@
         }
       }
     },
+    mounted() {
+      this.id = this.$route.query.id || 0
+      if (this.id) {
+        this.$refs.cascadeSelect.setValue({goods_id: this.id})
+      }
+    },
     methods: {
+      setData(res) {
+        this.edit = res.data
+        if (this.edit.specification_type) {
+          this.goodsSpecification = this.edit.specs_attrs
+          this.goodsDetails = this.getDetails(this.goodsSpecification)
+        } else {
+          let obj = res.data.goods_specs[0]
+          this.edit.saleable = obj.saleable
+          this.edit.discount_price = obj.discount_price
+          this.edit.price = obj.price
+          this.edit.specId = obj.spec_id
+        }
+      },
       deleteModule(idx) {
         this.goodsSpecification.splice(idx, 1)
       },
@@ -256,9 +295,11 @@
         })
       },
       getDetails(arr) {
+        console.log(arr, 'arr[0]')
         if (arr.length <= 0) return []
         let arrRes = []
         arr[0].values.forEach((val, i) => {
+          console.log(val, 'arr[0]')
           if (arr[1]) {
             arr[1].values.forEach((val1, j) => {
               // console.log('arr[2]------', arr[2])
@@ -279,6 +320,13 @@
                     obj.discount_price = 0
                     obj.saleable = 0
                     obj.spec_id = 0
+                    if (this.id) {
+                      let attrArr = [arr[0].attr_id + '_' + val.text, arr[1].attr_id + '_' + val1.text, arr[2].attr_id + '_' + val2.text]
+                      let item = this.edit.goods_specs.find(item => {
+                        return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
+                      })
+                      obj = {...obj, ...item}
+                    }
                     arrRes.push(obj)
                   }
                 })
@@ -292,6 +340,13 @@
                 obj.discount_price = 0
                 obj.saleable = 0
                 obj.spec_id = 0
+                if (this.id) {
+                  let attrArr = [arr[0].attr_id + '_' + val.text, arr[1].attr_id + '_' + val1.text]
+                  let item = this.edit.goods_specs.find(item => {
+                    return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
+                  })
+                  obj = {...obj, ...item}
+                }
                 arrRes.push(obj)
               }
             })
@@ -301,6 +356,13 @@
             obj.discount_price = 0
             obj.saleable = 0
             obj.spec_id = 0
+            if (this.id) {
+              let attrArr = [arr[0].attr_id + '_' + val.text]
+              let item = this.edit.goods_specs.find(item => {
+                return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
+              })
+              obj = {...obj, ...item}
+            }
             arrRes.push(obj)
           }
         })
@@ -323,12 +385,13 @@
           }
           if (over) break
         }
-        if(!over) this._addGoods()
+        if (!over) this._addGoods()
       },
       _addGoods() {
-        let {price, discount_price: discountPrice, saleable, ...params} = this.edit
+        let {price, discount_price: discountPrice, saleable, specId, ...params} = this.edit
         let specsAttrs = []
         let goodsSpecs = []
+        // 多规格
         if (this.edit.specification_type) {
           specsAttrs = this.goodsSpecification
           goodsSpecs = this.goodsDetails.map(item => {
@@ -336,8 +399,9 @@
             return item
           })
         } else {
+          // 同意规格
           goodsSpecs = [{
-            "spec_id": 0,
+            "spec_id": specId,
             "price": price,
             "discount_price": discountPrice,
             "saleable": saleable,
@@ -346,14 +410,15 @@
         let data = {
           ...params, specs_attrs: specsAttrs, goods_specs: goodsSpecs
         }
-        console.log('addGoods', data)
-        API.Goods.addGoods({
+        //  编辑 or 新增
+        let requestName = this.id ? 'editGoods' : 'addGoods'
+        if (this.id) data.id = this.id
+        API.Goods[requestName]({
           data
-        }).then(()=>{
+        }).then(() => {
           this.$router.go(-1)
         })
       }
-
     }
   }
 </script>

@@ -10,6 +10,10 @@ export default {
     const url = `/gateway/platform/platform-goods/goods/statistic`
     return request.get({url, ...args})
   },
+  getGoodsDetail(args){
+    const url = `/gateway/platform/platform-goods/goods/show`
+    return request.get({url, ...args})
+  },
   editGoods(args) {
     const url = `/gateway/platform/platform-goods/goods/update`
     return request.post({url, ...args})
