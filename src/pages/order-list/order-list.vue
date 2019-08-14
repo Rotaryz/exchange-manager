@@ -55,7 +55,7 @@
                 {{`${item.receiver_addresses.province} ${item.receiver_addresses.city} ${item.receiver_addresses.district} ${item.receiver_addresses.address}`}}
               </div>
               <div class="list-item">{{item.created_at}}</div>
-              <div class="list-item">{{item.goods_amount}}</div>
+              <div class="list-item">{{item.pay_amount}}</div>
               <div class="list-item">{{item.status_str}}</div>
               <div class="list-item">
                 <span class="list-operation" @click="deliver(item)">{{item.status === 10 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
