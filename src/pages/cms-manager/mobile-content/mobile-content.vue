@@ -166,7 +166,7 @@
         .hot-good-name
           text-align: center
           font-size: $font-size-14
-          color: $color-text-sub
+          color: #3F454B
           font-family: $font-family-medium
           margin-top: 16px
           no-wrap()
