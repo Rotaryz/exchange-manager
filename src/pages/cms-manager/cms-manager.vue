@@ -240,8 +240,29 @@
         }
       }
     },
+    beforeRouteEnter(to, from, next) {
+      API.Cms.moduleShow({data: {code: 'shop_index'}})
+        .then((res) => {
+          next(vx=>{
+            vx.cmsList = res.data.children
+            res.data.children.forEach((item) => {
+              // item.children.detail = JSON.parse(item.children.detail)
+              switch (item.code) {
+              case 'banner':
+                vx.bannerList = item.children
+                break
+              case 'hot_goods':
+                vx.hotList = item.children
+                break
+              }
+            })
+          })
+        })
+        .catch(() => {
+          next('404')
+        })
+    },
     async created() {
-      this.moduleShow()
       this.getCateList()
       await this._getGoodsList()
     },

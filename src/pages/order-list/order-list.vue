@@ -229,7 +229,7 @@
           })
       },
       // 获取订单列表
-      async getOrderList(loading = true) {
+      async getOrderList(loading = false) {
         await this._orderStatus()
         API.Order.getOrderList({
           data: this.paramObj,
