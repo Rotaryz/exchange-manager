@@ -9,23 +9,26 @@
           <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">{{val.name}}</div>
         </div>
         <div class="list">
-          <div v-for="(item,i) in list" :key="i" class="list-content list-box">
-            <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
-              <template v-if="val.type === 'operate'">
-                <span class="list-operation" @click="addBtn(item,i)">添加</span>
-                <span class="list-operation" @click="editBtn(item,i)">修改</span>
-                <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
-              </template>
-              <router-link v-else-if="val.type === 'router-link'" :to="{name:val.router.name,params:{id:item.id},query:{name:item.name}}" class="list-operation" append>
-                {{item[key] || 0}}
-              </router-link>
-              <template v-else>{{item[key]}}</template>
+          <template v-if="list.length">
+            <div v-for="(item,i) in list" :key="i" class="list-content list-box">
+              <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
+                <template v-if="val.type === 'operate'">
+                  <span class="list-operation" @click="addBtn(item,i)">添加</span>
+                  <span class="list-operation" @click="editBtn(item,i)">修改</span>
+                  <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
+                </template>
+                <router-link v-else-if="val.type === 'router-link'" :to="{name:val.router.name,params:{id:item.id},query:{name:item.name}}" class="list-operation" append>
+                  {{item[key] || 0}}
+                </router-link>
+                <template v-else>{{item[key]}}</template>
+              </div>
             </div>
-          </div>
+          </template>
+          <base-blank v-else></base-blank>
         </div>
-      </div>
-      <div class="pagination-box">
-        <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
+        <div class="pagination-box">
+          <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
+        </div>
       </div>
     </div>
     <goods-list-dialog v-if="visible" :visible.sync="visible" :otherParams="{group_id:currentGroup.id}" :limit="20" @submit="_addGoods"></goods-list-dialog>
@@ -156,13 +159,17 @@
       },
       async _addGroup() {
         if (this.edit.id) {
-          await API.Goods.editGroup({data: this.edit,doctor() {}})
+          await API.Goods.editGroup({
+            data: this.edit, doctor() {
+            }
+          })
           this.list.find(item => {
             if (item.id === this.edit.id) item.name = this.edit.name
           })
         } else {
           await API.Goods.addGroup({
-            data: this.edit, doctor() {}
+            data: this.edit, doctor() {
+            }
           })
           this.list.push(this.edit)
         }
