@@ -144,6 +144,7 @@
     border: 2px solid #4C84FF !important
 
   .hot-commodity
+    height: 187px
     border: 2px dashed #D9D9D9
     margin-top: 10px
     padding: 0 0 20px 5px
