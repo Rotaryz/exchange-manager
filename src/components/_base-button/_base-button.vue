@@ -94,13 +94,13 @@
     color: $color-text-main
 
     &:hover
-      color: $color-text-sub
-      border-color: $color-text-sub
+      border-color: $color-border-hover
 
   &.base-button--primary
     background: $color-main
     color: $color-white
-
+    &:hover
+      opacity: 0.8
   &.is-plain
     background: $color-white
     border: 1px solid $color-main
@@ -117,8 +117,7 @@
       border: 1px solid $color-border
       color: $color-text-disable
 
-  &:hover
-    opacity: 0.8
+
 
   &.disable
     cursor: not-allowed

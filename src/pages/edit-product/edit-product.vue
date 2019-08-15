@@ -34,14 +34,16 @@
       <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
-        <upload :data.sync="edit.goods_banner_images" :addStyle="`margin:0 0 14px 0`" multiple firstTag="封面图" tip="建议图片的尺寸：750*750，支持png，jpeg，jpg格式，最多可上传5张。"
+        <upload :data.sync="edit.goods_banner_images" :addStyle="`margin:0 0 14px 0`" multiple firstTag="封面图"
+                tip="建议图片的尺寸：750*750，支持png，jpeg，jpg格式，最多可上传5张。"
                 @successImage="getGoodsBannerImages"
         ></upload>
       </base-form-item>
       <base-form-item label="商品详情图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
-        <upload :data.sync="edit.goods_detail_images" :addStyle="`margin:0 0 14px 0`" multiple firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15"
+        <upload :data.sync="edit.goods_detail_images" :addStyle="`margin:0 0 14px 0`" multiple firstTag="详情图"
+                tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15"
                 @successImage="getGoodsDetailImages"
         ></upload>
       </base-form-item>
@@ -132,6 +134,7 @@
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
   import API from '@api'
+
   const PAGE_NAME = 'EDIT_PRODUCT'
   const TITLE = '新建商品'
 
