@@ -5,7 +5,7 @@
         <div v-if="showLoading" class="loading-mask">
           <img src="./loading.gif" class="loading">
         </div>
-        <img :src="data" class="image">
+        <img :src="data" class="image" :style="imgStyle">
         <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
         <input
           v-if="isChange"
@@ -31,7 +31,7 @@
     <div v-if="type === 'image' && multiple" class="edit-image image-more">
       <draggable v-if="data.length" v-model="list" class="draggable">
         <div v-for="(item, index) in data" :key="index" class="show-image hand">
-          <img :src="item.image_url ||item" class="image">
+          <img :src="item.image_url ||item" class="image" :style="imgStyle">
           <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
           <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
           <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
@@ -158,6 +158,10 @@
         //  是否可以点击更换图片
         type: Boolean,
         default: false
+      },
+      imgStyle:{
+        type: [String, Object],
+        default: null
       }
     },
     data() {

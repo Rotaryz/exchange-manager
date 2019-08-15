@@ -19,6 +19,7 @@
       <base-form-item v-if="!edit.pid" label="分类图标" labelWidth="84px" labelAlign="right">
         <upload :data="categoryImageUrl"
                 :multiple="false"
+                imgStyle="width:44px;height:44px"
                 tip="建议上传1:1、大小2M以下的图片"
                 inline
                 size="2"
@@ -108,8 +109,8 @@
         this.edit.image_id = res.data.id
         this.categoryImageUrl = res.data.url
       },
-      failFile(err) {
-        this.$toast(err)
+      failFile() {
+        this.$toast.show('上传失败')
       },
       addBtn() {
         this.categoryImageUrl = ''
@@ -180,12 +181,15 @@
     background-color $color-white
     display flex
     flex-direction column
+
     .base-table-tool-wrap
       flex-shrink 0
+
     .tree-wrap
       padding: 0px 20px 20px
       overflow: hidden
-      flex:1
+      flex: 1
+
   .upload-add-icon
     margin-right: 14px
 </style>

@@ -3,6 +3,7 @@
               :titleTip="titleTip"
               :footerTopLine="true"
               :submitBefore="beforeAdd"
+              height="667px"
               title="选择商品" confirmText="添加" class="goods-list-dialog"
               @submit="addSubmit"
   >
@@ -63,7 +64,8 @@
     props: {
       otherParams: {
         type: Object,
-        default: () => {}
+        default: () => {
+        }
       },
       selectKey: {
         type: String,
@@ -111,7 +113,7 @@
           page: 1,
           category_id: '',
           keyword: '',
-          status:''
+          status: ''
         },
         list: [], // 弹框商品列表
         selectGoods: [] // 单次选择的商品
@@ -133,7 +135,7 @@
       allCheckType: {
         get() {
           if (this.list.length === 0) return ''
-          let arr = this.list.map(item => {
+          let arr = this.list.filter(item => item.selecteStatus !== 'disable').map(item => {
             return this.selectGoods.findIndex(goods => item[this.selectKey] === goods[this.selectKey])
           })
           arr = arr.filter(newItem => newItem < 0)
@@ -151,7 +153,7 @@
       // 获取商品列表
       _getGoodsList() {
         API.Goods.getGoodsList({
-          data: {...this.goodsListFilter,...this.otherParams},
+          data: {...this.goodsListFilter, ...this.otherParams},
           loading: true
         }).then(res => {
           if (res.isFail) return
@@ -242,6 +244,7 @@
   .goods-list-dialog
     .big-list
       margin-top: 20px
+      flex: 1
 
     .operate-box
       display flex
