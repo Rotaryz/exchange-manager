@@ -341,7 +341,7 @@
       },
       // 获取分类
       getCateList() {
-        let data = {pid: 0, goods_id: '', get_goods_count: '', limit: 0}
+        let data = {pid: 0, goods_id: '', get_goods_count: 1, limit: 0}
         API.Cms.categoryList({data})
           .then((res) => {
             this.goodsCate = JSON.parse(JSON.stringify(res.data))
@@ -357,8 +357,7 @@
           keyword: this.keyword,
           category_id: this.parentId,
           limit: 6,
-          page: this.goodsPage,
-          get_goods_count: 1
+          page: this.goodsPage
         }
         let res = await API.Cms.goodsList({data})
         this.total = res.meta.total
