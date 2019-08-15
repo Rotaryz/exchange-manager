@@ -10,7 +10,7 @@ export default {
    * @returns {*}
    */
   logisticsList(args) {
-    const url = `/gateway/platform/logistics/template/index`
+    const url = `/exchange-platform/platform/logistics/template/index`
     return request.get({url, ...args})
   },
 }

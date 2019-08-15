@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   logIn(args) {
-    const url = `/gateway/platform/manager/auth/post-login`
+    const url = `/exchange-platform/platform/manager/auth/post-login`
     return HTTP.post({url, ...args})
   },
   /**
@@ -15,7 +15,7 @@ export default {
    * @returns {*}
    */
   validate(args) {
-    let url = '/gateway/platform/manager/auth/token-validate'
+    let url = '/exchange-platform/platform/manager/auth/token-validate'
     return HTTP.get({url, ...args})
   }
 }

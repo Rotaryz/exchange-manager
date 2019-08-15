@@ -127,7 +127,7 @@
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
   const INFO_STATUS = ''
-  const EXCEL_URL = '/gateway/platform/platform-order/sub-order/export'
+  const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
 
   export default {
     name: PAGE_NAME,

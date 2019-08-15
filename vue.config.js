@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 let builded = process.argv.some(val => val === 'build')
 let optimization = {}
 const splitChunks = {}
-if (builded){
+if (builded) {
   splitChunks.cacheGroups = {
     vendors: {
       name: 'chunk-vendors',
@@ -55,6 +55,14 @@ module.exports = {
   },
   chainWebpack(config) {
     config.plugins.delete('prefetch')
+    config.module
+      .rule(/\.(png|jpeg|jpg|gif|svg|ttf|woff|woff2)(\?\S*)?$/)
+      .use('file-loader')
+      .loader('file-loader')
+      .tap(options => {
+        // 修改它的选项...
+        return options
+      })
     return config
   },
   css: {
@@ -72,21 +80,21 @@ module.exports = {
     port: 3959,
     ...(process.env.VUE_APP_API
       ? // 代理生产地址.
-        {
-          proxy: {
-            '/gateway': {
-              target: process.env.VUE_APP_API
-            }
+      {
+        proxy: {
+          '/exchange-platform': {
+            target: process.env.VUE_APP_API
           }
         }
+      }
       : // 代理本地地址.
-        {
-          proxy: {
-            '/api': {
-              target: '/'
-            }
+      {
+        proxy: {
+          '/api': {
+            target: '/'
           }
-        })
+        }
+      })
     // { before: require('./tests/mock-api') }),
   }
 }
