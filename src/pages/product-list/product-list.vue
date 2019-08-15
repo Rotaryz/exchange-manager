@@ -1,7 +1,7 @@
 <template>
   <div class="product-list normal-box table">
     <base-layout class="layout-top">
-      <base-form-item label="分类筛选" :required="false">
+      <base-form-item label="分类筛选" labelSize="12px" :required="false">
         <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">
@@ -42,7 +42,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 

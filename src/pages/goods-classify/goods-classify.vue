@@ -19,6 +19,7 @@
       <base-form-item v-if="!edit.pid" label="分类图标" labelWidth="84px" labelAlign="right">
         <upload :data="categoryImageUrl"
                 :multiple="false"
+                imgStyle="width:44px;height:44px"
                 tip="建议上传1:1、大小2M以下的图片"
                 inline
                 size="2"
