@@ -55,11 +55,14 @@ module.exports = {
   },
   chainWebpack(config) {
     config.plugins.delete('prefetch')
-    config.module
-      .rule(/\.(png|jpeg|jpg|gif|svg|ttf|woff|woff2)(\?\S*)?$/)
+    config
+      .module
+      .rule('file')
       .use('file-loader')
       .loader('file-loader')
       .tap(options => {
+        // options.test = /.(png|gif|jpg|svg|ttf)$/
+        console.log(options)
         // 修改它的选项...
         return options
       })
