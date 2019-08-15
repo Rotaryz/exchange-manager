@@ -94,6 +94,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  img
+    object-fit: cover
+
   // 结构布局
   .mobile-content
     float: left
