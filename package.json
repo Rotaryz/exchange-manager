@@ -27,7 +27,7 @@
   "dependencies": {
     "browserslist": "^4.6.0",
     "caniuse-lite": "^1.0.30000969",
-    "element-ui": "^2.11.1",
+    "element-ui": "2.11.1",
     "flyio": "^0.6.14",
     "lodash": "^4.17.11",
     "nprogress": "^0.2.0",
