@@ -31,15 +31,15 @@
     left: 0
     width: 100%
     height: 100%
-    position: absolute
+    /*position: absolute*/
     display: flex
     align-items: center
     flex-direction: column
     user-select: none
     .blank-img
-      width: 88px
+      width: 168px
       display: block
-      margin-top: 15%
+      margin-top: 13%
     .blank-text
       color: $color-text-assist
       margin-top: 20px
