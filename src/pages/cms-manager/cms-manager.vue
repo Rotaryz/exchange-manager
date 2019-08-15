@@ -243,7 +243,7 @@
     beforeRouteEnter(to, from, next) {
       API.Cms.moduleShow({data: {code: 'shop_index'}})
         .then((res) => {
-          next(vx=>{
+          next(vx => {
             vx.cmsList = res.data.children
             res.data.children.forEach((item) => {
               // item.children.detail = JSON.parse(item.children.detail)
@@ -435,7 +435,7 @@
             if (!this[this.dataName][i].detail.image_id) {
               this.$toast.show(`第${i + 1}${type}图片不能为空`, 1500)
               return
-            } else if (!this[this.dataName][i].detail.title && !this[this.dataName].detail.url) {
+            } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
               this.$toast.show(`第${i + 1}${type}不能为空`, 1500)
               return
             }
