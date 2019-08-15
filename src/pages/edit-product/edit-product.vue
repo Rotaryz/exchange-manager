@@ -41,7 +41,11 @@
       <base-form-item label="商品详情图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
-        <upload :data.sync="edit.goods_detail_images" :addStyle="`margin:0 0 14px 0`" multiple firstTag="详情图" tip="上传图片的格式png，jpeg，jpg，最多可上传15张。" :limit="15"
+        <upload :data.sync="edit.goods_detail_images"
+                :addStyle="`margin:0 0 14px 0`" multiple
+                firstTag="详情图"
+                tip="上传图片的格式png，jpeg，jpg，最多可上传15张。"
+                :limit="15"
                 @successImage="getGoodsDetailImages"
         ></upload>
       </base-form-item>
