@@ -45,7 +45,7 @@
               </div>
               <div class="list-item">{{item.detail ? item.detail.goods_num : ''}}</div>
               <!--单价todo-->
-              <div v-if="item.detail && item.detail.goods_spec" class="list-item">{{item.detail.goods_spec.discount_price}}</div>
+              <div v-if="item.detail && item.detail.goods_spec" class="list-item">{{item.detail.goods_spec.sale_price}}</div>
               <div class="list-item list-double-row">
                 <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
                 <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
