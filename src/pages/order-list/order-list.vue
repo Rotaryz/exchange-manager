@@ -3,7 +3,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search placeholder="订单号/客户名字/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search placeholder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
@@ -44,8 +44,8 @@
                 </span>
               </div>
               <div class="list-item">{{item.detail ? item.detail.goods_num : ''}}</div>
-              <!--单价-->
-              <div class="list-item">{{item.detail ? item.detail.goods_name : ''}}</div>
+              <!--单价todo-->
+              <div v-if="item.detail && item.detail.goods_spec" class="list-item">{{item.detail.goods_spec.discount_price}}</div>
               <div class="list-item list-double-row">
                 <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
                 <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
@@ -436,5 +436,9 @@
         max-width: 58px
         min-width: 58px
         padding: 0
+      &:nth-child(9)
+        flex: 0.8
+      &:nth-child(4), &:nth-child(10)
+        flex: 0.4
 
 </style>
