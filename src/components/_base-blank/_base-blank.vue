@@ -37,7 +37,7 @@
     flex-direction: column
     user-select: none
     .blank-img
-      width: 88px
+      width: 168px
       display: block
       margin-top: 15%
     .blank-text

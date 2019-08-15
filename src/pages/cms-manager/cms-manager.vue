@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <base-modal ref="goods" :width="1000" :visible.sync="showModal" @submit="miniGoods" :submitBefore="justifyForm">
+    <base-modal ref="goods" :width="1000" :visible.sync="showModal" :submitBefore="justifyForm" @submit="miniGoods">
       <div class="model">
         <div class="shade-header">
           <div class="shade-tab-type">
@@ -78,7 +78,7 @@
           <!--<div class="shade-title">选择商品</div>-->
           <span class="close hand" @click="hideGoods"></span>
         </div>
-        <div class="good-modal" v-if="tabIndex === 0">
+        <div v-if="tabIndex === 0" class="good-modal">
           <div class="shade-tab">
             <base-select
               placeholder="请选择分类"
@@ -194,7 +194,7 @@
         showModal: false,
         tabIndex: 0,
         typeList: TYPE_LIST,
-        choiceGoods: [{name: 'sadsadsadsadsadsadsadsad', original_price: 545, num: 5456}],
+        choiceGoods: [],
         showSelectIndex: -1,
         goodsPage: 1,
         total: 0,
@@ -240,8 +240,29 @@
         }
       }
     },
+    beforeRouteEnter(to, from, next) {
+      API.Cms.moduleShow({data: {code: 'shop_index'}})
+        .then((res) => {
+          next(vx=>{
+            vx.cmsList = res.data.children
+            res.data.children.forEach((item) => {
+              // item.children.detail = JSON.parse(item.children.detail)
+              switch (item.code) {
+              case 'banner':
+                vx.bannerList = item.children
+                break
+              case 'hot_goods':
+                vx.hotList = item.children
+                break
+              }
+            })
+          })
+        })
+        .catch(() => {
+          next('404')
+        })
+    },
     async created() {
-      this.moduleShow()
       this.getCateList()
       await this._getGoodsList()
     },
@@ -295,7 +316,6 @@
       },
       // 弹窗确定选择链接
       miniGoods() {
-        console.log('sada')
         let index = this.bannerIndex
         this[this.dataName][index].style = this.outLink
         switch (this.outLink) {
@@ -337,7 +357,8 @@
           keyword: this.keyword,
           category_id: this.parentId,
           limit: 6,
-          page: this.goodsPage
+          page: this.goodsPage,
+          get_goods_count: 1
         }
         let res = await API.Cms.goodsList({data})
         this.total = res.meta.total
@@ -391,7 +412,18 @@
           break
 
         }
-        this[this.dataName].push(TEMPLATE_OBJ)
+        let obj = {
+          detail: {
+            object_id: '',
+            url: '',
+            title: '',
+            image_url: '',
+            image_id: '',
+            add_icon: ADD_IMAGE
+          },
+          style: ''
+        }
+        this[this.dataName].push(obj)
       },
       submitBtn() {
         let type = this.type === 'banner' ? '轮播图广告' : '热门商品'

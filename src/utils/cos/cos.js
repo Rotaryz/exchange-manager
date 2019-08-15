@@ -7,7 +7,7 @@ import storage from 'storage-controller'
  * @returns {Promise.<*>}
  */
 function _saveFile(data) {
-  const url = `/gateway/common/file/image/create`
+  const url = `/exchange-platform/common/file/image/create`
   return request.post({url, data})
 }
 
@@ -24,7 +24,7 @@ function _getAuthorization(options, callback) {
   const pathname = key
   const Authorization = storage.get('auth.token')
   const url =
-    '/gateway/common/file/image/get-upload-sign?image=' + encodeURIComponent(pathname)
+    '/exchange-platform/common/file/image/get-upload-sign?image=' + encodeURIComponent(pathname)
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)

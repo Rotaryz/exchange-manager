@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   goodsList(args) {
-    const url = `/gateway/platform/platform-goods/goods/index`
+    const url = `/exchange-platform/platform/platform-goods/goods/index`
     return request.get({url, ...args})
   },
   /**
@@ -16,7 +16,7 @@ export default {
    * @returns {*}
    */
   saveModuleData(args) {
-    const url = `/gateway/platform/content/module/save-module-data`
+    const url = `/exchange-platform/platform/content/module/save-module-data`
     return request.post({url, ...args})
   },
   /**
@@ -25,7 +25,7 @@ export default {
    * @returns {*}
    */
   moduleShow(args) {
-    const url = `/gateway/platform/content/module/page`
+    const url = `/exchange-platform/platform/content/module/page`
     return request.post({url, ...args})
   },
   /**
@@ -34,7 +34,7 @@ export default {
    * @returns {*}
    */
   categoryList(args) {
-    const url = `/gateway/platform/platform-goods/category/index`
+    const url = `/exchange-platform/platform/platform-goods/category/index`
     return request.get({url, ...args})
   },
   /**
@@ -43,7 +43,7 @@ export default {
    * @returns {*}
    */
   delDestroy(args) {
-    const url = `/gateway/platform/content/module/destroy`
+    const url = `/exchange-platform/platform/content/module/destroy`
     return request.delete({url, ...args})
   }
 }

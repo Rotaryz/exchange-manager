@@ -121,7 +121,7 @@
     },
     methods: {
       // 获取客户列表
-      async getCustomerList(loading = true) {
+      async getCustomerList(loading = false) {
         API.Customer.getCustomerList({
           data: this.paramObj,
           loading,
