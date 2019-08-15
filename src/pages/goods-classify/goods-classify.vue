@@ -109,8 +109,8 @@
         this.edit.image_id = res.data.id
         this.categoryImageUrl = res.data.url
       },
-      failFile(err) {
-        this.$toast(err)
+      failFile() {
+        this.$toast.show('上传失败')
       },
       addBtn() {
         this.categoryImageUrl = ''
@@ -181,12 +181,15 @@
     background-color $color-white
     display flex
     flex-direction column
+
     .base-table-tool-wrap
       flex-shrink 0
+
     .tree-wrap
       padding: 0px 20px 20px
       overflow: hidden
-      flex:1
+      flex: 1
+
   .upload-add-icon
     margin-right: 14px
 </style>
