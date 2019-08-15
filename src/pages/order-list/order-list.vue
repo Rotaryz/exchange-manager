@@ -51,12 +51,14 @@
                 <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
                 </div>
               </div>
-              <div class="list-item two-line">{{item.receiver_addresses ? item.receiver_addresses.address : ''}}</div>
+              <div class="list-item two-line" v-if="item.receiver_addresses">
+                {{`${item.receiver_addresses.province} ${item.receiver_addresses.city} ${item.receiver_addresses.district} ${item.receiver_addresses.address}`}}
+              </div>
               <div class="list-item">{{item.created_at}}</div>
-              <div class="list-item">{{item.goods_amount}}</div>
+              <div class="list-item">{{item.pay_amount}}</div>
               <div class="list-item">{{item.status_str}}</div>
               <div class="list-item">
-                <span class="list-operation" @click="deliver(item)">{{item.status === -1 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
+                <span class="list-operation" @click="deliver(item)">{{item.status === 10 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
                 {{item.status === 0 || item.status === -1 ? '——' : ''}}
               </div>
             </div>
@@ -85,7 +87,8 @@
             :defaultLabel="logisticsObj.shipping_name"
             :data="arr"
             :valueKey="valueKey"
-            inputStyle="width:416px;height:44px"
+            :width="416"
+            :height="44"
             type="input"
             labelKey="name"
             :disabled="disable"
@@ -102,7 +105,8 @@
           <base-input
             v-model="logisticsObj.logistics_sn"
             placeholder="请输入快递单号"
-            inputStyle="width:416px;height:44px"
+            :width="416"
+            :height="44"
             type="input"
             inputType="number"
             :disabled="disable"
@@ -122,7 +126,7 @@
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
-  const INFO_STATUS = 10
+  const INFO_STATUS = ''
   const EXCEL_URL = '/gateway/platform/platform-order/sub-order/export'
 
   export default {
@@ -160,12 +164,10 @@
         .then((res) => {
           API.Order.orderStatus({data: null, loading: true, toast: true})
             .then((status) => {
-              console.log(status)
               next(vx => {
                 vx.statusList = status.data
                 vx.orderList = res.data
                 vx.total = res.meta.total
-                console.log(vx.orderList)
               })
             })
         })
@@ -243,14 +245,14 @@
       },
       // 获取订单状态
       async _orderStatus() {
-        let res = await API.Order.orderStatus({data: null, loading: false, toast: false})
+        let res = await API.Order.orderStatus({data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''}, loading: false, toast: false})
         if (res.error_code === this.$ERR_OK) {
           this.statusList = res.data
         }
       },
       // 搜索
       search(keyword) {
-        this.keyword = keyword
+        this.keyword = keyword || ''
       },
       // 导出Excel
       downExcel() {
@@ -266,7 +268,6 @@
         }
         this.logisticsObj.sub_order_id = item.id
         if (item.status === 20 || item.status === 100) {
-          this.visible = true
           this.disable = true
           this._getLogisticsDetail()
           return
@@ -279,7 +280,7 @@
         if (this.disable) {
           return
         }
-        await API.Order.logisticsDetail(
+        await API.Order.setLogistics(
           {
             data: this.logisticsObj,
             loading: true,
@@ -293,12 +294,13 @@
         let res = await API.Order.logisticsDetail(
           {
             data: {sub_order_id: this.logisticsObj.sub_order_id},
-            loading: false,
-            toast: false
+            loading: true,
+            toast: true
           }
         )
         if (res.error_code === this.$ERR_OK) {
           this.logisticsObj = res.data
+          this.visible = true
         }
       },
       //  弹窗限制

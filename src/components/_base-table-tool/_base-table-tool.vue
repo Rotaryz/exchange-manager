@@ -48,6 +48,10 @@
     box-sizing: border-box
     padding: 0 20px
     flex-shrink 0
+    border-top-right-radius: 4px
+    border-top-left-radius: 4px
+    border: 0.5px solid $color-line
+    border-bottom: transparent
     .title-wrap
       display: flex
       align-items: center

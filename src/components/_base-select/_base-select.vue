@@ -145,11 +145,7 @@
         if (this.disabled) {
           return
         }
-        console.log(this.visible)
-
         this.visible = !this.visible
-        console.log(this.visible)
-
         this.$emit('change-visible', true)
       },
       setValue(value, index) {

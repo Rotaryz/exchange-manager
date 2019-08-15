@@ -206,4 +206,7 @@
     transition: all 0.5s
 
 
+  .cms-manager
+    .modal-footer
+      border-top-1px($color-line)
 </style>

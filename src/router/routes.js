@@ -38,7 +38,7 @@ export default [
         meta: {
           type: 'first_menu', // 一级标示
           title: '商品管理',
-          icon: require('./icon-goods_pressed@2x.png'),
+          icon: require('./icon-goods@2x.png'),
           iconSelected: '',
         },
         component: {render: h => h('router-view')},

@@ -1,12 +1,14 @@
 <template>
-  <button class="base-button"
-          :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
-          :style="buttonStyle"
-          @click="$emit('click',$event)"
-  >
-    <slot></slot>
-    <span v-if="addIcon" class="add-icon"></span>
-  </button>
+  <div class="btn-box">
+    <button class="base-button"
+            :class="['base-button--'+type ,'base-button--'+ size,{disable:disable,'is-plain':plain}]"
+            :style="buttonStyle"
+            @click="$emit('click',$event)"
+    >
+      <slot></slot>
+      <span v-if="addIcon" class="add-icon"></span>
+    </button>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -51,38 +53,39 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  .btn-box
+    display: inline-block
 
   .base-button
-    display: inline
+    display: flex
+    text-align: center
+    align-items: center
+    justify-content: center
     cursor: pointer
     box-sizing: border-box
     height: 32px
-    line-height 32px
     font-size: $font-size-14
     white-space: nowrap
-    text-align: center
     border-radius: 4px
     outline: none
     transition: .1s
     user-select: none
     padding: 0px 12px
     min-width: 80px
+    line-height: 1
     &:hover .add-icon
       bg-image('./icon-addb')
 
   &.base-button--small
     height: 28px
-    line-height 28px
     min-width: 50px
 
   &.base-button--middle
     height: 32px
-    line-height 32px
     min-width: 80px
 
   &.base-button--big
     height: 42px
-    line-height 42px
     min-width: 80px
 
   &.base-button--default

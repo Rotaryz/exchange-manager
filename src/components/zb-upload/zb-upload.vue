@@ -2,22 +2,33 @@
   <div :class="{inline:inline}">
     <div v-if="type === 'image' && !multiple" class="image-one">
       <div v-if="data" class="show-image hand">
-        <img :src="data" class="image">
-        <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
-        <div v-if="firstTag && !index" class="tag">{{firstTag}}</div>
-        <div v-if="otherTag && index" class="tag">{{otherTag}}</div>
-      </div>
-      <div v-else class="hand upload-wrap">
-        <slot name="icon">
-          <div :style="addStyle" class="add-image"></div>
-        </slot>
-        <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
         <div v-if="showLoading" class="loading-mask">
           <img src="./loading.gif" class="loading">
         </div>
+        <img :src="data" class="image">
+        <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
+        <input
+          v-if="isChange"
+          type="file"
+          :multiple="multiple"
+          class="sendImage"
+          accept="image/*"
+          @change="getFiles($event)"
+        >
+        <div v-if="firstTag" class="tag">{{firstTag}}</div>
+      </div>
+      <div v-else class="hand upload-wrap">
+        <slot name="icon">
+          <div :style="addStyle" class="add-image">
+            <div v-if="showLoading" class="loading-mask">
+              <img src="./loading.gif" class="loading">
+            </div>
+          </div>
+        </slot>
+        <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
       </div>
     </div>
-    <div v-if="type === 'image' && multiple" class="edit-image">
+    <div v-if="type === 'image' && multiple" class="edit-image image-more">
       <draggable v-if="data.length" v-model="list" class="draggable">
         <div v-for="(item, index) in data" :key="index" class="show-image hand">
           <img :src="item.image_url ||item" class="image">
@@ -28,17 +39,18 @@
       </draggable>
       <div v-if="data.length<limit" class="hand upload-wrap">
         <slot name="icon">
-          <div :style="addStyle" class="add-image"></div>
+          <div :style="addStyle" class="add-image">
+            <div v-if="showLoading" class="loading-mask">
+              <img src="./loading.gif" class="loading">
+            </div>
+          </div>
         </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
-        <div v-if="showLoading" class="loading-mask">
-          <img src="./loading.gif" class="loading">
-        </div>
       </div>
     </div>
     <div v-if="type === 'video'" class="edit-image">
       <template v-if="data || data.length>0">
-        <draggable v-if="multiple" v-model="list" class="draggable" @update="_setSort()">
+        <draggable v-if="multiple" v-model="list" class="draggable">
           <div v-for="(item, index) in data" :key="index" width="90px" class="show-image hand">
             <video class="video-tag" :src="item.image_url ||item"></video>
             <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
@@ -51,12 +63,13 @@
       </template>
       <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">
         <slot name="icon">
-          <div :style="addStyle" class="add-image"></div>
+          <div :style="addStyle" class="add-image">
+            <div v-if="showLoading" class="loading-mask">
+              <img src="./loading.gif" class="loading">
+            </div>
+          </div>
         </slot>
         <input type="file" :multiple="multiple" class="sendImage hand" accept="video/*" @change="getFiles($event)">
-        <div v-if="showLoading" class="loading-mask">
-          <img src="./loading.gif" class="loading">
-        </div>
       </div>
     </div>
     <div class="tip">{{tip}}</div>
@@ -137,8 +150,14 @@
         default: ''
       },
       isShowDel: {
+        // 是否展示删除
         type: Boolean,
         default: true
+      },
+      isChange: {
+        //  是否可以点击更换图片
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -185,7 +204,6 @@
       async _addPic(files) {
         this.showLoading = true
         await cos('image', files).then(arr => {
-          console.log('_addPic', arr)
           this.showLoading = false
           let item = arr.find(item => item.error_code !== this.$ERR_OK)
           if (item) this.$emit('failFile', item.message)
@@ -223,14 +241,13 @@
     display flex
     align-items center
 
-    .tip
-      margin-left: 10px
-
   .edit-image
     flex-wrap: wrap
     display: flex
 
     .draggable
+      margin: 0
+      padding: 0
       flex-wrap: wrap
       display: flex
 
@@ -241,7 +258,7 @@
     position: relative
     border-radius: 2px
     overflow: hidden
-    margin-bottom: 14px
+    margin: 0
 
   .upload-wrap
     position relative
@@ -261,7 +278,6 @@
 
   .show-image
     margin-right: 20px
-    margin-bottom: 14px
     position: relative
 
     /*&:last-child*/
@@ -280,16 +296,15 @@
 
   .tag
     position absolute
-    bottom 0
+    bottom 3px
     right: 0
     left: 0
-    background: rgb(30, 35, 51)
+    background: rgba(30, 35, 51, 0.5)
     border-radius: 0 0 1px 1px
     height: 20px
     line-height 20px
     text-align center
     color: $color-white
-    opacity 0.5
     font-size $font-size-14
     font-family $font-family-regular
 
@@ -307,6 +322,7 @@
     height: 100%
     position: absolute
     top: 0
+    z-index: 999
     left: 0
     background: rgba(30, 35, 51, .5)
 
@@ -318,4 +334,9 @@
   .tip
     color: $color-text-sub
     font-size $font-size-14
+
+  .image-more
+    display: flex
+    .show-image
+      margin-bottom: 14px
 </style>

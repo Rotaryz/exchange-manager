@@ -13,8 +13,8 @@
         </span>
       </section>
       <section class="userInfo-wrapper" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
-        <!--<p class="name">你好: {{currentUser && currentUser.manager_info.username}}</p>-->
-        <div class="log-out"></div>
+        <p class="name">你好: {{currentUser && currentUser.username}}</p>
+        <div class="log-out" @click="_logOut"></div>
         <!--<transition name="fade">-->
         <!--<div v-show="showTooltip" class="tooltip-con">-->
         <!--<div class="show-hide-box">-->
@@ -35,7 +35,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {globalComputed} from '@state/helpers'
+  import {authComputed, globalComputed, authMethods} from '@state/helpers'
 
   const COMPONENT_NAME = 'TOP_BAR'
   const DEFAULT_AVATAR = `https://zhidian-img.jkweixin.com/2018%2F11%2F23%2F1542945169074-logo.jpg`
@@ -49,14 +49,15 @@
       return {
         showTooltip: false,
         showLogout: false,
-        defaultAvatar: DEFAULT_AVATAR,
-        currentUser: {}
+        defaultAvatar: DEFAULT_AVATAR
       }
     },
     computed: {
       ...globalComputed,
+      ...authComputed
     },
     methods: {
+      ...authMethods,
       _modifyPassword() {
         // this.$router.push(`/modify-password`)
       },
@@ -65,7 +66,6 @@
       },
       _logOut() {
         this.logOut()
-        // this.$router.replace({name: 'login', query: {redirectFrom: this.$route.fullPath}})
         this.$router.replace({name: 'login'})
       },
       goRouter(value, index) {
@@ -90,7 +90,6 @@
             return item
           }
         })
-        console.log(current)
         this.$router.push(current.path)
       }
     }

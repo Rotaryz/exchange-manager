@@ -1,7 +1,7 @@
 <template>
   <div class="customer-list normal-box table">
     <div class="down-content">
-      <base-search placeHolder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-search boxStyle="margin: 0" placeholder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -10,17 +10,20 @@
           <div v-for="(item, index) in listHeader" :key="index" class="list-item">{{item}}</div>
         </div>
         <div class="list">
-          <div v-for="(item, index) in customerList" :key="index" class="list-content list-box">
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">1</div>
-            <div class="list-item">
-              <span class="list-operation" @click="showSet">设置</span>
+          <div v-if="customerList.length">
+            <div v-for="(item, index) in customerList" :key="index" class="list-content list-box">
+              <div class="list-item">{{item.truename}}</div>
+              <div class="list-item">{{item.mobile}}</div>
+              <div class="list-item">{{item.name}}</div>
+              <div class="list-item">{{item.industry_name}}</div>
+              <div class="list-item">{{`${item.province} ${item.city} ${item.district}`}}</div>
+              <div class="list-item">{{item.shop_level_name}}</div>
+              <div class="list-item">
+                <span class="list-operation" @click="showSet(item)">设置</span>
+              </div>
             </div>
           </div>
+          <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
           <!--:pageDetail="contentClassPage"-->
@@ -40,9 +43,12 @@
         >
           <base-select
             :value.sync="grade"
+            :defaultLabel="defaultLabel"
             :data="arr"
-            inputStyle="width:416px;height:44px"
+            :width="416"
+            :height="44"
             :valueKey="valueKey"
+            labelKey="name"
             type="input"
           ></base-select>
         </base-form-item>
@@ -69,7 +75,7 @@
         listHeader: LIST_HEADER,
         visible: false,
         grade: '',
-        arr: [{id: 111, label: 'ajsdf'}],
+        arr: [],
         valueKey: 'id',
         currentPage: 1,
         gradeText: '',
@@ -77,7 +83,8 @@
         customerList: [],
         page: 1,
         keyword: '',
-        total: 1
+        total: 1,
+        defaultLabel: ''
       }
     },
     computed: {
@@ -88,21 +95,34 @@
     },
     watch: {
       async page() {
-        await this.getOrderList()
+        await this.getCustomerList()
       },
       async keyword() {
         this.page = 1
-        await this.getOrderList()
+        await this.getCustomerList()
       }
     },
     async created() {
       this.currentPage = this.page
       await this._getGrade()
     },
+    beforeRouteEnter(to, from, next) {
+      let data = {page: 1, keyword: ''}
+      API.Customer.getCustomerList({data, loading: true, toast: true})
+        .then((res) => {
+          next(vx => {
+            vx.customerList = res.data
+            vx.total = res.meta.total
+          })
+        })
+        .catch(() => {
+          next('404')
+        })
+    },
     methods: {
       // 获取客户列表
       async getCustomerList(loading = true) {
-        API.Order.getOrderList({
+        API.Customer.getCustomerList({
           data: this.paramObj,
           loading,
           toast: true,
@@ -115,24 +135,29 @@
           })
       },
       async _getGrade() {
-        // let res = await API.Customer.getCustomerGrade({data:{},loading:false,toast:true,doctor(){}})
-        // this.arr = res.error===this.$ERR_OK ? res.data : []
-        // this.grade = this.arr[0].name
+        let res = await API.Customer.getCustomerGrade({
+          data: {}, loading: false, toast: true, doctor() {
+          }
+        })
+        this.arr = res.error_code === this.$ERR_OK ? res.data : []
       },
-      showSet(id) {
-        this.customerId = id
+      showSet(item) {
+        this.customerId = item.id
+        this.grade = item.shop_level_id
         this.visible = true
+        this.defaultLabel = item.shop_level_name
       },
       // 设置等级
-      setGrade() {
-        // let data = {grade: this.grade}
-        // let res = await API.Customer.setCustomerGrade(this.customerId, {data,loading:false,toast:true,doctor(){}})
-        // res.error===this.$ERR_OK && this.getCustomerList()
-        // this.grade = this.arr[0].name
-        console.log(this.grade)
+      async setGrade() {
+        let data = {shop_id: this.customerId, shop_level_id: this.grade}
+        let res = await API.Customer.setCustomerGrade({
+          data, loading: false, toast: true, doctor() {
+          }
+        })
+        res.error_code === this.$ERR_OK && this.getCustomerList()
       },
       search(keyword) {
-        this.keyword = keyword
+        this.keyword = keyword || ''
       },
       //  弹窗限制
       justifyForm(done) {
@@ -159,7 +184,7 @@
         flex: 1.6
         min-width: 140px
       &:last-child
-        max-width: 98px
-        min-width: 98px
+        max-width: 58px
+        min-width: 58px
         padding: 0
 </style>

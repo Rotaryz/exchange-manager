@@ -16,11 +16,11 @@
 
 <script type="text/ecmascript-6">
   import {authMethods, authComputed} from '@state/helpers'
-  // import store from '@state/store'
+  import storage from 'storage-controller'
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
-  const INFO_PATH = '/order-manager/order/order-list'
+  const INFO_PATH = 'mall/goods/product-list'
   export default {
     name: PAGE_NAME,
     page: {
@@ -42,10 +42,12 @@
         }
       }
     },
-    // beforeRouteEnter(to, from, next) {
-    // let path = store.getters['auth/loggedIn'] ? INFO_PATH : '/login'
-    // next({path})
-    // },
+    beforeRouteEnter(to, from, next) {
+      if (storage.get('auth.token', '')) {
+        return next({path: INFO_PATH})
+      }
+      return next()
+    },
     methods: {
       ...authMethods,
       tryToLogIn() {
