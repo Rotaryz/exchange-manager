@@ -1,6 +1,6 @@
 <template>
   <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom}">
-    <div class="label-text" :style="{width:labelWidth,color:labelColor,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
+    <div class="label-text" :style="{width:labelWidth,color:labelColor,'font-size':labelSize,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
       <span v-if="required" class="required-mask">*</span>
       {{label}}
     </div>
@@ -48,9 +48,13 @@
       },
       labelMarginRight: {
         default: 10,
-        type: [Number,String]
+        type: [Number, String]
       },
-      marginBottom:{
+      labelSize: {
+        default: '',
+        type: [Number, String]
+      },
+      marginBottom: {
         default: '',
         type: String
       },
@@ -66,19 +70,25 @@
 
   .base-form-item
     margin-bottom: 24px
+
     &.inline
       display flex
+
       &.top
         align-items flex-start
+
       &.center
         align-items center
+
       &.bottom
         align-items flex-end
+
     .required-mask
       color: $color-error
+
     .label-text
       font-family: $font-family-regular
-      font-size: $font-size-12
+      font-size: $font-size-14
       color: $color-text-main
       white-space: nowrap
       margin-right: 10px
