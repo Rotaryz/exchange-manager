@@ -194,7 +194,7 @@
         showModal: false,
         tabIndex: 0,
         typeList: TYPE_LIST,
-        choiceGoods: [{name: 'sadsadsadsadsadsadsadsad', original_price: 545, num: 5456}],
+        choiceGoods: [],
         showSelectIndex: -1,
         goodsPage: 1,
         total: 0,
@@ -336,7 +336,8 @@
           keyword: this.keyword,
           category_id: this.parentId,
           limit: 6,
-          page: this.goodsPage
+          page: this.goodsPage,
+          get_goods_count: 1
         }
         let res = await API.Cms.goodsList({data})
         this.total = res.meta.total
