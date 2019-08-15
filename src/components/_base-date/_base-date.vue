@@ -2,7 +2,7 @@
   <div class="base-date" :style="dateStyle">
     <div class="block">
       <span v-if="showTextName" class="demonstration">{{textName}}</span>
-      <el-date-picker
+      <date-picker
         v-model="times"
         style="height:32px; width: 280px"
         :type="dateType"
@@ -12,16 +12,20 @@
         :startPlaceholder="startPlaceholder"
         :endPlaceholder="endPlaceholder"
       >
-      </el-date-picker>
+      </date-picker>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {DatePicker} from 'element-ui'
   const COMPONENT_NAME = 'BASE_DATE'
 
   export default {
     name: COMPONENT_NAME,
+    components: {
+      DatePicker
+    },
     props: {
       textName: {
         type: String,

@@ -4,11 +4,11 @@
       <div class="content-box">
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
           <div v-if="cms.code === 'banner'" :class="{'touch': cmsType === 'banner'}" class="carousel hand" @click="changeType('banner')">
-            <el-carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
-              <el-carousel-item v-for="(item, index) in bannerList" :key="index">
+            <carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
+              <carousel-item v-for="(item, index) in bannerList" :key="index">
                 <img :src="item.detail.image_url" class="carousel-image">
-              </el-carousel-item>
-            </el-carousel>
+              </carousel-item>
+            </carousel>
           </div>
           <!--商品分类-->
           <ul v-if="cms.code === 'goods_category' && cms.detail && cms.detail.length" class="goods-classify-wrapper">
@@ -58,10 +58,16 @@
 </template>
 
 <script>
+  import {Carousel, CarouselItem} from 'element-ui'
+
   const PAGE_NAME = 'mobile-content'
 
   export default {
     name: PAGE_NAME,
+    components: {
+      Carousel,
+      CarouselItem
+    },
     props: {
       cmsType: {
         type: String,

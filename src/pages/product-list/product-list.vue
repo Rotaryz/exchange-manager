@@ -19,7 +19,7 @@
         <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
         </div>
-        <div  class="list">
+        <div class="list">
           <template v-if="list.length">
             <div v-for="(item,i) in list" :key="i" class="list-content list-box">
               <div v-for="(val,key) in listHeader" :key="key" class="list-item">

@@ -51,7 +51,7 @@
                 <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
                 </div>
               </div>
-              <div class="list-item two-line" v-if="item.receiver_addresses">
+              <div v-if="item.receiver_addresses" class="list-item two-line">
                 {{`${item.receiver_addresses.province} ${item.receiver_addresses.city} ${item.receiver_addresses.district} ${item.receiver_addresses.address}`}}
               </div>
               <div class="list-item">{{item.created_at}}</div>

@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <base-modal ref="goods" :width="1000" :visible.sync="showModal" @submit="miniGoods" :submitBefore="justifyForm">
+    <base-modal ref="goods" :width="1000" :visible.sync="showModal" :submitBefore="justifyForm" @submit="miniGoods">
       <div class="model">
         <div class="shade-header">
           <div class="shade-tab-type">
@@ -78,7 +78,7 @@
           <!--<div class="shade-title">选择商品</div>-->
           <span class="close hand" @click="hideGoods"></span>
         </div>
-        <div class="good-modal" v-if="tabIndex === 0">
+        <div v-if="tabIndex === 0" class="good-modal">
           <div class="shade-tab">
             <base-select
               placeholder="请选择分类"

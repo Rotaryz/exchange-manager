@@ -55,17 +55,6 @@ module.exports = {
   },
   chainWebpack(config) {
     config.plugins.delete('prefetch')
-    config
-      .module
-      .rule('file')
-      .use('file-loader')
-      .loader('file-loader')
-      .tap(options => {
-        // options.test = /.(png|gif|jpg|svg|ttf)$/
-        console.log(options)
-        // 修改它的选项...
-        return options
-      })
     return config
   },
   css: {
@@ -76,7 +65,7 @@ module.exports = {
     // css预设器配置项
     loaderOptions: {},
     // 启用 CSS modules for all css / pre-processor files.
-    modules: builded
+    modules: false
   },
   productionSourceMap: !builded,
   devServer: {
