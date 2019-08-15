@@ -238,6 +238,10 @@
         default:
           break
         }
+      },
+      showModal(news) {
+        this.tabIndex = 0
+        this.left = 0
       }
     },
     beforeRouteEnter(to, from, next) {
