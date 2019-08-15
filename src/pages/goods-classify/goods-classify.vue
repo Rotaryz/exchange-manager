@@ -1,14 +1,16 @@
 <template>
   <div class="goods-classify">
-    <base-table-tool title="商品分类" :iconUrl="require('./icon-goods_classify@2x.png')">
+    <base-table-tool class="base-table-tool-wrap" title="商品分类" :iconUrl="require('./icon-goods_classify@2x.png')">
       <base-button plain addIcon @click="addBtn">新建分类</base-button>
     </base-table-tool>
     <div class="tree-wrap">
-      <zb-tree :data="list"
+      <zb-tree v-if="list.length"
+               :data="list"
                @edit-item="editItem"
                @delete-item="deleteItem"
                @add-item="addChildBtn"
       ></zb-tree>
+      <base-blank v-else></base-blank>
     </div>
     <base-modal :visible.sync="editVisible" :title="editTitle" :submitBefore="justifyForm">
       <base-form-item label="分类名称" labelWidth="84px" labelAlign="right">
@@ -52,6 +54,14 @@
       ZbTree,
       Upload
     },
+    beforeRouteEnter(to, from, next) {
+      API.Goods.getCategory({data: {pid: -1}}).then(res => {
+        // console.log(res)
+        next(vw => {
+          vw.setData(res)
+        })
+      })
+    },
     data() {
       return {
         editVisible: false,
@@ -77,9 +87,12 @@
       this.getList()
     },
     methods: {
+      setData(res) {
+        this.list = res.data
+      },
       getList() {
         API.Goods.getCategory({data: {pid: -1}}).then(res => {
-          this.list = res.data
+          this.setData(res)
         })
       },
       deleteBtn() {
@@ -165,10 +178,14 @@
     width: 100%
     flex: 1
     background-color $color-white
-
+    display flex
+    flex-direction column
+    .base-table-tool-wrap
+      flex-shrink 0
     .tree-wrap
       padding: 0px 20px 20px
       overflow: hidden
+      flex:1
   .upload-add-icon
     margin-right: 14px
 </style>

@@ -192,6 +192,8 @@
 
     .add-icon
       margin-right: 6px
+      width: 12px
+      height: @width
 
     .text
       font-size: $font-size-14

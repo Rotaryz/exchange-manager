@@ -5,30 +5,35 @@
       <base-button class="go-back-btn" @click="goBack">返回</base-button>
     </base-table-tool>
     <div class="table-content">
-      <div class="big-list">
+      <div v-if="list.length" class="big-list">
         <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">{{val.name}}</div>
         </div>
         <div class="list">
-          <div v-for="(item,i) in list" :key="i" class="list-content list-box">
-            <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
-              <template v-if="val.type === 'operate'">
-                <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
-              </template>
-              <template v-else-if="val.type === 'status'" class="list-operation">
-                <i :class="['status-dot',item[key] ? 'success':'error']"></i> {{item.status ? '已上架' :'未上架'}}
-              </template>
-              <template v-else>
-                <img v-if="val.before&& val.before.img" :src="item[val.before.img]" alt="" class="list-img">
-                <span>{{item[key]}}</span>
-              </template>
+          <template v-if="list.length">
+            <div v-for="(item,i) in list" :key="i" class="list-content list-box">
+              <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
+                <template v-if="val.type === 'operate'">
+                  <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
+                </template>
+                <template v-else-if="val.type === 'status'" class="list-operation">
+                  <i :class="['status-dot',item[key] ? 'success':'error']"></i> {{item.status ? '已上架' :'未上架'}}
+                </template>
+                <template v-else>
+                  <img v-if="val.before&& val.before.img" :src="item[val.before.img]" alt="" class="list-img">
+                  <span>{{item[key]}}</span>
+                </template>
+              </div>
             </div>
-          </div>
+          </template>
+          <base-blank v-else></base-blank>
+        </div>
+        <div class="pagination-box">
+          <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
-      <div class="pagination-box">
-        <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
-      </div>
+      <base-blank v-else></base-blank>
+
     </div>
     <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id}" :visible.sync="visible" :limit="20" @submit="_addGoods"></goods-list-dialog>
   </div>
@@ -95,7 +100,6 @@
       },
       _getDetail() {
         API.Goods.getGroupDetail({data: this.filter}).then(res => {
-          console.log('res', res)
           this.setData(res)
         })
       },
@@ -104,23 +108,20 @@
       },
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
-          console.log('确认 ')
-          await API.Goods.deleteGroupGoods({data: {goods_id: item.id, group_id: this.filter.id}})
+          await API.Goods.deleteGroupGoods({
+            data: {goods_id: item.goods_id, group_id: this.filter.id}, doctor() {
+            }
+          })
           this._getDetail()
-        }, () => {
-          console.log('取消 ')
         })
       },
       pageChange(val) {
-        console.log(this.filter.page)
         this._getDetail()
       },
       goBack() {
         this.$router.go(-1)
       },
       async _addGoods(arr) {
-        console.log(arr)
-        // todo 新增商品請求
         await API.Goods.addGroupGoods({data: {group_id: this.filter.id, goods_ids: arr}})
         this._getDetail()
       }

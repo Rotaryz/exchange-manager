@@ -1,12 +1,14 @@
 <template>
   <div class="edit-product">
-    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" title="新建商品"></base-table-tool>
+    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" :title="(id ?'编辑':'新建')+'商品'"></base-table-tool>
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="商品名称" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.name"></base-input>
       </base-form-item>
-      <base-form-item label="商品描述" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+      <base-form-item label="商品描述" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                      verticalAlign="top"
+      >
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
@@ -78,7 +80,9 @@
           </div>
         </div>
       </base-form-item>
-      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                      verticalAlign="top"
+      >
         <div>
           <div class="big-list">
             <div class="list-header list-box">
@@ -127,10 +131,7 @@
   import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
-
-  // import * as Helpers from './helpers'
   import API from '@api'
-
   const PAGE_NAME = 'EDIT_PRODUCT'
   const TITLE = '新建商品'
 
@@ -215,13 +216,15 @@
           saleable: 0,
           specId: 0
         },
+        zum: [],
+        k_ruledata: []
       }
     },
     watch: {
       goodsSpecification: {
         deep: true,
         handler(val) {
-          this.goodsDetails = this.getDetails(val)
+          this.getGoodsDetials()
         }
       }
     },
@@ -236,7 +239,7 @@
         this.edit = res.data
         if (this.edit.specification_type) {
           this.goodsSpecification = this.edit.specs_attrs
-          this.goodsDetails = this.getDetails(this.goodsSpecification)
+          this.getGoodsDetials()
         } else {
           let obj = res.data.goods_specs[0]
           this.edit.saleable = obj.saleable
@@ -294,80 +297,75 @@
           ]
         })
       },
-      getDetails(arr) {
-        console.log(arr, 'arr[0]')
-        if (arr.length <= 0) return []
-        let arrRes = []
-        arr[0].values.forEach((val, i) => {
-          console.log(val, 'arr[0]')
-          if (arr[1]) {
-            arr[1].values.forEach((val1, j) => {
-              // console.log('arr[2]------', arr[2])
-              if (arr[2]) {
-                arr[2].values.forEach((val2, k) => {
-                  // console.log('arr[3]------', arr[3])
-                  if (arr[3]) {
-                    return false
-                  } else {
-                    let obj = {}
-                    obj.specs_attrs = [{
-                      attr_id: arr[0].attr_id, attr_name: arr[0].name, attr_value: val.text, attr_detail_id: 0
-                    }, {
-                      attr_id: arr[1].attr_id, attr_name: arr[1].name, attr_value: val1.text, attr_detail_id: 0
-                    }, {
-                      attr_id: arr[2].attr_id, attr_name: arr[2].name, attr_value: val2.text, attr_detail_id: 0
-                    }]
-                    obj.discount_price = 0
-                    obj.saleable = 0
-                    obj.spec_id = 0
-                    if (this.id) {
-                      let attrArr = [arr[0].attr_id + '_' + val.text, arr[1].attr_id + '_' + val1.text, arr[2].attr_id + '_' + val2.text]
-                      let item = this.edit.goods_specs.find(item => {
-                        return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
-                      })
-                      obj = {...obj, ...item}
-                    }
-                    arrRes.push(obj)
-                  }
-                })
-              } else {
-                let obj = {}
-                obj.specs_attrs = [{
-                  attr_id: arr[0].attr_id, attr_name: arr[0].name, attr_value: val.text, attr_detail_id: 0
-                }, {
-                  attr_id: arr[1].attr_id, attr_name: arr[1].name, attr_value: val1.text, attr_detail_id: 0
-                }]
-                obj.discount_price = 0
-                obj.saleable = 0
-                obj.spec_id = 0
-                if (this.id) {
-                  let attrArr = [arr[0].attr_id + '_' + val.text, arr[1].attr_id + '_' + val1.text]
-                  let item = this.edit.goods_specs.find(item => {
-                    return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
-                  })
-                  obj = {...obj, ...item}
+      getGoodsDetials() {
+        this.goodsDetails = [];
+        for (let index in this.goodsSpecification) {
+          this.getData(this.goodsDetails, this.goodsSpecification[index])
+        }
+      },
+      getData(zum, first) {
+        // 公共存的集合  第一个集合
+        if (zum.length !== 0) {
+          let item = first.values;
+          let zumto = [];
+          // 已经存在的
+          for (let index in zum) {
+            // 下一个规格
+            for (let to in item) {
+              let specsAttrs = [
+                ...zum[index].specs_attrs,
+                {
+                  attr_id: first.attr_id,
+                  attr_name: first.name,
+                  attr_value: item[to].text,
+                  attr_detail_id: 0
                 }
-                arrRes.push(obj)
+              ]
+              if (this.id) {
+                // console.log('this.edit.goods_specs', this.edit.goods_specs)
+                let newAttrs = specsAttrs.map(item => item.attr_id + '_' + item.attr_value)
+                // console.log(newAttrs)
+                let res = this.edit.goods_specs.find(item => {
+                  return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
+                })
+                // console.log('filter', res)
+                if (res) {
+                  zum[index].discount_price = res.discount_price
+                  zum[index].saleable = res.saleable
+                }
               }
-            })
-          } else {
-            let obj = {}
-            obj.specs_attrs = [{attr_id: arr[0].attr_id, attr_name: arr[0].name, attr_value: val.text, attr_detail_id: 0}]
-            obj.discount_price = 0
-            obj.saleable = 0
-            obj.spec_id = 0
-            if (this.id) {
-              let attrArr = [arr[0].attr_id + '_' + val.text]
-              let item = this.edit.goods_specs.find(item => {
-                return item.attr_details.filter(v => attrArr.includes(v)).length === item.attr_details.length
-              })
-              obj = {...obj, ...item}
+              zumto.push({...zum[index], specs_attrs: specsAttrs})
             }
-            arrRes.push(obj)
           }
-        })
-        console.log('arrRes:', arrRes)
-        return arrRes
+
+          this.goodsDetails = zumto
+        } else {
+          let item = first.values;
+          for (let index in item) {
+            let ss = {
+              saleable: 0,
+              discount_price: 0,
+              specs_attrs: [{
+                attr_id: first.attr_id,
+                attr_name: first.name,
+                attr_value: item[index].text,
+                attr_detail_id: 0
+              }]
+            }
+            if (this.id) {
+              console.log('this.edit.goods_specs', this.edit.goods_specs)
+              let newAttrs = ss.specs_attrs.map(item => item.attr_id + '_' + item.attr_value)
+              console.log(newAttrs)
+              let res = this.edit.goods_specs.find(item => {
+                return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
+              })
+              console.log('filter', res)
+            }
+            zum.push(ss);
+          }
+
+          this.goodsDetails = zum;
+        }
       },
       submitBtn() {
         let over = false
@@ -399,7 +397,7 @@
             return item
           })
         } else {
-          // 同意规格
+          // 統一规格
           goodsSpecs = [{
             "spec_id": specId,
             "price": price,

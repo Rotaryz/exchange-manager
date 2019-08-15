@@ -74,9 +74,7 @@
     min-width: 80px
     line-height: 1
     &:hover .add-icon
-      &:before
-      &:after
-        background: $color-white
+      bg-image('./icon-addb')
 
   &.base-button--small
     height: 28px

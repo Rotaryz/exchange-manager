@@ -19,26 +19,30 @@
         <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
         </div>
-        <div class="list">
-          <div v-for="(item,i) in list" :key="i" class="list-content list-box">
-            <div v-for="(val,key) in listHeader" :key="key" class="list-item">
-              <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
-              <div v-else-if="val.type === 'operate'">
-                <router-link tag="span" :to="{path:'edit-product',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
-                <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
+        <div  class="list">
+          <template v-if="list.length">
+            <div v-for="(item,i) in list" :key="i" class="list-content list-box">
+              <div v-for="(val,key) in listHeader" :key="key" class="list-item">
+                <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
+                <div v-else-if="val.type === 'operate'">
+                  <router-link tag="span" :to="{path:'edit-product',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
+                  <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
+                </div>
+                <template v-else>
+                  <img v-if="val.before && val.before.img" class="list-img" :src="item[val.before.img]">
+                  <div>{{item[key]}}</div>
+                </template>
               </div>
-              <template v-else>
-                <img v-if="val.before && val.before.img" class="list-img" :src="item[val.before.img]">
-                <div>{{item[key]}}</div>
-              </template>
             </div>
-          </div>
+          </template>
+          <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
           <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -70,6 +74,7 @@
           category_id: ''
         }
       })]).then(res => {
+        // console.log(res)
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])
@@ -140,12 +145,9 @@
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGoods({data: {id: item.id}})
           this._getList()
-        }, () => {
-          console.log('取消 ')
         })
       },
       async changeSwitch(item) {
-        console.log(item)
         await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
         this._getList()
       },
