@@ -39,7 +39,7 @@
     .blank-img
       width: 168px
       display: block
-      margin-top: 13%
+      margin-top: 15%
     .blank-text
       color: $color-text-assist
       margin-top: 20px
