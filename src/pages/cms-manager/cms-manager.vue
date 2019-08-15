@@ -295,7 +295,6 @@
       },
       // 弹窗确定选择链接
       miniGoods() {
-        console.log('sada')
         let index = this.bannerIndex
         this[this.dataName][index].style = this.outLink
         switch (this.outLink) {
@@ -391,7 +390,18 @@
           break
 
         }
-        this[this.dataName].push(TEMPLATE_OBJ)
+        let obj = {
+          detail: {
+            object_id: '',
+            url: '',
+            title: '',
+            image_url: '',
+            image_id: '',
+            add_icon: ADD_IMAGE
+          },
+          style: ''
+        }
+        this[this.dataName].push(obj)
       },
       submitBtn() {
         let type = this.type === 'banner' ? '轮播图广告' : '热门商品'
