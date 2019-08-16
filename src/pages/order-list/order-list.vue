@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <base-modal :visible.sync="visible" height="268px" title="设置账号等级" :submitBefore="justifyForm" @submit="setLogistics">
+    <base-modal :visible.sync="visible" height="268px" :title="title" :submitBefore="justifyForm" @submit="setLogistics">
       <div class="set-box">
         <base-form-item
           label="快递公司"
@@ -155,7 +155,8 @@
         time: [],
         statusList: [],
         deliverId: '',
-        disable: false
+        disable: false,
+        title: '订单发货'
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -269,9 +270,11 @@
         this.logisticsObj.sub_order_id = item.id
         if (item.status === 20 || item.status === 100) {
           this.disable = true
+          this.title = '查看物流'
           this._getLogisticsDetail()
           return
         }
+        this.title = '订单发货'
         this.visible = true
         this.disable = false
       },
