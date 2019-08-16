@@ -31,7 +31,7 @@
                   <!--@click=""-->
                   <div class="advertisement-link">
                     <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                    <p class="goods-title">{{item.style === '3004' || item.style === '3005' ? item.detail.url : item.detail.title}}</p>
+                    <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                   </div>
                   <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                 </div>
@@ -57,7 +57,7 @@
                   ></upload>
                   <div class="advertisement-link">
                     <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                    <p class="goods-title">{{item.style === '3004' || item.style === '3005' ? item.detail.url : item.detail.title}}</p>
+                    <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                   </div>
                   <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                 </div>
@@ -152,10 +152,10 @@
   const TITLE = '页面管理'
   const ADD_IMAGE = require('./pic-add_img@2x.png')
   const TYPE_LIST = [
-    {title: '商品详情', status: '3002'},
-    {title: '商品分类', status: '3003'},
-    {title: '小程序链接', status: '3005'},
-    {title: 'H5链接', status: '3004'}
+    {title: '商品详情', status: 3002},
+    {title: '商品分类', status: 3003},
+    {title: '小程序链接', status: 3005},
+    {title: 'H5链接', status: 3004}
   ]
   const HOST_TYPE = [
     {title: '商品详情', status: '3002'}
@@ -298,13 +298,13 @@
       justifyForm(done) {
         let msg = ''
         switch (this.outLink) {
-        case '3004':
+        case 3004:
           if (!this.outHtml) {
             msg = 'H5链接不能为空'
             this.$toast.show('')
           }
           break
-        case '3005':
+        case 3005:
           if (!this.miniLink) {
             msg = '小程序链接不能为空'
           }
@@ -323,20 +323,20 @@
         let index = this.bannerIndex
         this[this.dataName][index].style = this.outLink
         switch (this.outLink) {
-        case '3004':
+        case 3004:
           this[this.dataName][index].detail.url = this.outHtml
           this[this.dataName][index].detail.title = ''
           break
-        case '3005':
+        case 3005:
           this[this.dataName][index].detail.url = this.miniLink
           this[this.dataName][index].detail.title = ''
           break
-        case '3002':
+        case 3002:
           this[this.dataName][index].detail.object_id = this.choiceGoods[this.showSelectIndex].id
           this[this.dataName][index].detail.url = ''
           this[this.dataName][index].detail.title = this.choiceGoods[this.showSelectIndex].name
           break
-        case '3003':
+        case 3003:
           this[this.dataName][index].detail.object_id = this.goodsCate[this.showCateIndex].id
           this[this.dataName][index].detail.url = ''
           this[this.dataName][index].detail.title = this.goodsCate[this.showCateIndex].name
@@ -372,8 +372,8 @@
         this.showModal = true
         this.bannerIndex = index
         this.goodsId = id
-        this.showSelectIndex = this.outLink === '3005' ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
-        this.showCateIndex = this.outLink === '3004' ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
+        this.showSelectIndex = this.outLink === 3005 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
+        this.showCateIndex = this.outLink === 3004 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
       },
       selectCate(item, index) {
         this.showCateIndex = index
