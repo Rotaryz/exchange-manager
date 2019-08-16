@@ -98,7 +98,9 @@ function checkStatus(response) {
     return response.data || {}
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
-
+  return {
+    message: '网络开小差'
+  }
 }
 
 export default HTTP.getInstance()
