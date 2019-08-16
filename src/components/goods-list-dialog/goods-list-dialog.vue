@@ -113,7 +113,7 @@
           page: 1,
           category_id: '',
           keyword: '',
-          status: ''
+          status: 1
         },
         list: [], // 弹框商品列表
         selectGoods: [] // 单次选择的商品
