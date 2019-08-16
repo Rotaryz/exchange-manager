@@ -133,11 +133,13 @@
         })
       },
       changeGategory(val) {
+        this.filter.page = 1
         this.filter.category_id = val
         this._getList()
         this._getStatus()
       },
       statusChange(val) {
+        this.filter.page = 1
         this._getList()
       },
       deleteBtn(item, idx) {
@@ -151,6 +153,7 @@
         this._getList()
       },
       searchBtn(val) {
+        this.filter.page = 1
         this._getList()
         this._getStatus()
       },
@@ -177,6 +180,7 @@
 
   .list-item
     display flex
+
     .item-text
       text-overflow: ellipsis;
       overflow: hidden;

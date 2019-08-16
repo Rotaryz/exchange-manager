@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <base-pagination :total="total" :currentPage.sync="goodsListFilter.page" class="page-wrap" @pageChange="pageChange"></base-pagination>
+    <base-pagination :total="total" :currentPage.sync="goodsListFilter.page" :pageSize="goodsListFilter.limit" class="page-wrap" @pageChange="pageChange"></base-pagination>
   </base-modal>
 </template>
 
