@@ -57,7 +57,6 @@ class HTTP {
     return this.http.request(url, data, {
       method
     }).then((response) => {
-      console.log(response)
       return checkStatus(response)
     }).then(res => {
       if (typeof this.callback.responseFulfilled === 'function') {
@@ -88,15 +87,19 @@ class HTTP {
 
 // 检查http状态码
 function checkStatus(response) {
+  console.log(response)
+  // 异常状态下，把错误信息返回去
+  if (response.message === 'Network Error') {
+    return {
+      message: '网络开小差'
+    }
+  }
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status < 400)) {
     return response.data || {}
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
-  // 异常状态下，把错误信息返回去
-  return {
-    message: '网络开小差'
-  }
+
 }
 
 export default HTTP.getInstance()
