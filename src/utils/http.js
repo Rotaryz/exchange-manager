@@ -83,6 +83,7 @@ function checkStatus(response) {
     return response.data || {}
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
+  console.log(response)
   // 异常状态下，把错误信息返回去
   return {
     message: '网络开小差'
