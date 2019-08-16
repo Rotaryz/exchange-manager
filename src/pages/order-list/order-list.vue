@@ -268,7 +268,6 @@
           shipping_name: ''
         }
         this.logisticsObj.sub_order_id = item.id
-        console.log(item)
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
