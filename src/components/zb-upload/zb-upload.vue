@@ -29,14 +29,14 @@
       </div>
     </div>
     <div v-if="type === 'image' && multiple" class="edit-image image-more">
-      <draggable  v-model="list" class="draggable">
+      <draggable v-model="list" class="draggable">
         <div v-for="(item, index) in data" :key="index" class="show-image hand">
           <img :src="item.image_url ||item" class="image" :style="imgStyle">
           <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
           <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
           <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
         </div>
-        <div v-if="data.length<limit" class="hand upload-wrap">
+        <div v-if="data.length<limit" class="hand upload-wrap" draggable="false" @dragstart.stop>
           <slot name="icon">
             <div :style="addStyle" class="add-image">
               <div v-if="showLoading" class="loading-mask">
@@ -159,7 +159,7 @@
         type: Boolean,
         default: false
       },
-      imgStyle:{
+      imgStyle: {
         type: [String, Object],
         default: null
       }
@@ -341,6 +341,7 @@
 
   .image-more
     display: flex
+
     .show-image
       margin-bottom: 14px
 </style>
