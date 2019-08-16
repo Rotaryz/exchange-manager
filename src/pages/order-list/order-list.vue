@@ -125,7 +125,7 @@
 
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
-  const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '买家', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
+  const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '姓名', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
   const INFO_STATUS = ''
   const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
 
@@ -268,6 +268,7 @@
           shipping_name: ''
         }
         this.logisticsObj.sub_order_id = item.id
+        console.log(item)
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
@@ -441,7 +442,10 @@
         padding: 0
       &:nth-child(9)
         flex: 0.8
+      &:nth-child(1), &:nth-child(2)
+        min-width: 165px
       &:nth-child(4), &:nth-child(10)
+        min-width: 62px
         flex: 0.4
 
 </style>

@@ -9,6 +9,7 @@
     </div>
     <base-input :value="valueLabel"
                 :placeholder="placeholder"
+                :disabled="disabled"
                 handIcon="pointer"
                 type="text"
                 autocomplete="off"
@@ -120,7 +121,7 @@
           let re = this.valueKey ? item[this.valueKey] === this.value : item === this.value
           return re
         })
-        return res ? res[this.labelKey] : this.defaultLabel ? this.defaultLabel:''
+        return res ? res[this.labelKey] : this.defaultLabel ? this.defaultLabel : ''
       }
     },
     mounted() {
@@ -176,8 +177,8 @@
     min-width: 200px
     /*min-height:32px*/
     .inner-value
-      padding-left:14px
-      padding-right:30px
+      padding-left: 14px
+      padding-right: 30px
       visibility hidden
       cursor pointer
     .select-child
@@ -221,7 +222,6 @@
       .select-child
         top: 60px
 
-
     &:hover
       border-color: $color-border-hover
 
@@ -235,14 +235,14 @@
 
     .inner-input
       width: 100%
-      height:100%
-      min-height:32px
+      height: 100%
+      min-height: 32px
       position absolute
-      top:0
-      right:0
+      top: 0
+      right: 0
       bottom 0
-      left:0
-      z-index:20
+      left: 0
+      z-index: 20
       cursor pointer
       display: flex
 

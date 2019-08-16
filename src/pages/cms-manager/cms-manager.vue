@@ -436,10 +436,10 @@
         } else {
           for (let i = 0; i < this[this.dataName].length; i++) {
             if (!this[this.dataName][i].detail.image_id) {
-              this.$toast.show(`第${i + 1}${type}图片不能为空`, 1500)
+              this.$toast.show(`第${i + 1}${type}个图片不能为空`, 1500)
               return
             } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
-              this.$toast.show(`第${i + 1}${type}不能为空`, 1500)
+              this.$toast.show(`第${i + 1}${type}个不能为空`, 1500)
               return
             }
           }

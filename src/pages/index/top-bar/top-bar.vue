@@ -99,7 +99,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
-  $common-height = 40px
+  $common-height = 50px
   $width-triangle = 4px
   $menu-width = 200px
 
@@ -118,7 +118,7 @@
       display: flex
       align-items: center
       position: relative
-      height: 40px
+      height: 50px
       .name
         margin-left: 10px
         font-size: $font-size-14
@@ -139,7 +139,7 @@
         color: $color-text-main
     .title-wrapper-item
       font-size: $font-size-12
-      line-height: 1
+      line-height: 50px
       .title-line
         font-size: 14px
         display: inline-block
