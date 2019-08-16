@@ -26,7 +26,7 @@
               <div class="list-item">
                 <!--商品样式-->
                 <img :src="item.detail ? item.detail.goods_cover_image : ''" class="item-img">
-                <p class="goods-name">{{item.detail ? item.detail.goods_name : ''}}</p>
+                <p class="goods-name two-line">{{item.detail ? item.detail.goods_name : ''}}</p>
                 <span v-if="false" class="show-more hand">
                   <transition name="fade">
                     <div class="goods-box">
