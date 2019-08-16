@@ -73,7 +73,7 @@
       },
       openBtn(index) {
         this.$set(this.selects, index, !this.selects[index])
-        console.log(this.selects)
+        // console.log(this.selects)
       },
       addChild(item, index) {
         this.$emit('add-item', {item, index})

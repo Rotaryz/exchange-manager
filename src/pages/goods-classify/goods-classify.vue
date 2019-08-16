@@ -84,28 +84,20 @@
         return `${this.edit.id ? '修改' : '新建'}商品${this.childItem ? '子' : ''}分类`
       }
     },
-    created() {
-      this.getList()
-    },
     methods: {
       setData(res) {
         this.list = res.data
       },
-      getList() {
-        API.Goods.getCategory({data: {pid: -1}}).then(res => {
+      getList(other) {
+        API.Goods.getCategory({data: {pid: -1},...other}).then(res => {
           this.setData(res)
         })
-      },
-      deleteBtn() {
-        this.edit.image_id = ''
-        this.categoryImageUrl = ''
       },
       categoryImageDelete() {
         this.edit.image_id = 0
         this.categoryImageUrl = ''
       },
       successImage(res) {
-        console.log('successImage', res)
         this.edit.image_id = res.data.id
         this.categoryImageUrl = res.data.url
       },
@@ -124,7 +116,7 @@
         }
       },
       editItem(obj) {
-        console.log(obj)
+        // console.log(obj)
         this.editVisible = true
         let {index = null, item = {}, childItem = {}, childIndex = null} = obj
         this.currentIndex = index
@@ -145,7 +137,7 @@
         let {item, childItem = null} = obj
         this.$confirm.confirm().then(() => {
           API.Goods.deleteCategory({data: {id: childItem ? childItem.id : item.id}}).then(res => {
-            this.getList()
+            this.getList({loading:false})
           })
         })
       },
@@ -155,14 +147,13 @@
         this.edit.pid = item.id
       },
       justifyForm(done) {
-        console.log(this.edit)
         let msg = null
         if (!this.edit.name) msg = '请输入分类名称'
         else if (!this.edit.pid && !this.edit.image_id) msg = '请上传分类图标'
         if (!msg) {
           this.editSubmit().then(() => {
             done()
-            this.getList()
+            this.getList({loading:false})
           })
         } else {
           this.$toast.show(msg)

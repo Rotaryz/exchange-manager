@@ -155,7 +155,7 @@
           data: {id: to.query.id},
         }).then(res => {
           next(vw => {
-            console.log('getGoodsDetail', res)
+            // console.log('getGoodsDetail', res)
             vw.setData(res)
           })
         })
@@ -258,7 +258,7 @@
         this.goodsSpecification[idx].values.splice(i, 1)
       },
       getGoodsBannerImages(arr) {
-        console.log(arr, 'getGoodsBannerImages')
+        // console.log(arr, 'getGoodsBannerImages')
         arr.forEach(item => {
           item = item.data
           this.edit.goods_banner_images.push({
@@ -356,13 +356,13 @@
               }]
             }
             if (this.id) {
-              console.log('this.edit.goods_specs', this.edit.goods_specs)
+              // console.log('this.edit.goods_specs', this.edit.goods_specs)
               let newAttrs = ss.specs_attrs.map(item => item.attr_id + '_' + item.attr_value)
-              console.log(newAttrs)
+              // console.log(newAttrs)
               let res = this.edit.goods_specs.find(item => {
                 return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
               })
-              console.log('filter', res)
+              // console.log('filter', res)
             }
             zum.push(ss);
           }

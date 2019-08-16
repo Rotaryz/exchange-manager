@@ -109,9 +109,9 @@
         this.list = res.data
         this.total = res.meta.total
       },
-      _getList() {
+      _getList(other) {
         API.Goods.getGroupList({
-          data: this.filter,
+          data: this.filter,...other
         }).then(res => {
           this.setData(res)
         })
@@ -128,7 +128,7 @@
         })
       },
       pageChange(val) {
-        this._getList()
+        this._getList({loading:false})
       },
       editBtn(item, i) {
         this.edit.id = item.id
@@ -143,7 +143,7 @@
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGroup({data: {id: item.id}})
-          this._getList()
+          this._getList({loading:false})
         }, () => {
         })
       },
@@ -177,7 +177,7 @@
       },
       async _addGoods(arr) {
         await API.Goods.addGroupGoods({data: {group_id: this.currentGroup.id, goods_ids: arr}})
-        this._getList()
+        this._getList({loading:false})
       }
     }
   }
