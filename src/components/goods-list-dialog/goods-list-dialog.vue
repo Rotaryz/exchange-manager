@@ -3,13 +3,13 @@
               :titleTip="titleTip"
               :footerTopLine="true"
               :submitBefore="beforeAdd"
-              height="667px"
+              height="730px"
               title="选择商品" confirmText="添加" class="goods-list-dialog"
               @submit="addSubmit"
   >
     <div class="operate-box">
       <cascade-select size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
-      <base-search v-model="goodsListFilter.keyword" placeHolder="请输入商品名称" @search="searchBtn"></base-search>
+      <base-search v-model="goodsListFilter.keyword" placeholder="请输入商品名称" @search="searchBtn"></base-search>
     </div>
     <div class="big-list">
       <div class="list-header list-box">
@@ -273,4 +273,7 @@
 
   .list .list-box
     height: 60px
+
+  .list-box .list-item:nth-child(2)
+    flex: 3
 </style>
