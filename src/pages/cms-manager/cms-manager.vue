@@ -403,11 +403,12 @@
         this[this.dataName][this.cmsIndex].detail.image_id = res.data.id
       },
       newCms() {
+        let type = this.type === 'banner' ? '轮播图广告' : '热门商品'
         switch (this.type) {
         case 'banner':
         case 'hot':
           if (this[this.dataName].length >= 5) {
-            this.$toast.show('最多添加5个')
+            this.$toast.show('最多添加5个' + type)
             return
           }
           break
@@ -427,6 +428,10 @@
           style: ''
         }
         this[this.dataName].push(obj)
+        let ele = document.querySelector('.box')
+        setTimeout(() => {
+          ele.scrollTop = ele.scrollHeight
+        }, 100)
       },
       submitBtn() {
         let type = this.type === 'banner' ? '轮播图广告' : '热门商品'
