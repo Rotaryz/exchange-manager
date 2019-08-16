@@ -8,6 +8,7 @@
                 :placeholder="placeholder"
                 @input="setValue"
                 @keydown="_enter"
+                inputName="search"
     ></base-input>
     <div class="search-icon-box hand" @click="_search">搜索</div>
   </div>
@@ -76,7 +77,7 @@
         this.$emit('input', val)
       },
       _search() {
-        let e = document.querySelector('.input__inner')
+        let e = document.querySelector('.search')
         this.$emit('search', e.value)
       },
       _enter(e) {

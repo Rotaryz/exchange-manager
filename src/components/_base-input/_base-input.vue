@@ -20,6 +20,7 @@
               @keydown="keydown"
     ></textarea>
     <input v-else
+           :class="inputName"
            :value="value"
            :style="[inputStyle,{'cursor':handIcon}]"
            :placeholder="placeholder"
@@ -99,6 +100,10 @@
         type: [String, Number]
       },
       handIcon: {
+        default: '',
+        type: String
+      },
+      inputName: {
         default: '',
         type: String
       }
