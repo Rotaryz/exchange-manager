@@ -27,7 +27,7 @@
         </div>
         <div class="pagination-box">
           <!--:pageDetail="contentClassPage"-->
-          <base-pagination ref="pages" :currentPage.sync="currentPage" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
         </div>
       </div>
     </div>
@@ -103,7 +103,6 @@
       }
     },
     async created() {
-      this.currentPage = this.page
       await this._getGrade()
     },
     beforeRouteEnter(to, from, next) {
