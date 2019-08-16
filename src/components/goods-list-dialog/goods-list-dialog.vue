@@ -3,7 +3,7 @@
               :titleTip="titleTip"
               :footerTopLine="true"
               :submitBefore="beforeAdd"
-              height="730px"
+              height="670px"
               title="选择商品" confirmText="添加" class="goods-list-dialog"
               @submit="addSubmit"
   >
@@ -109,7 +109,7 @@
         },
         total: 0,
         goodsListFilter: {
-          limit: 7,
+          limit: 6,
           page: 1,
           category_id: '',
           keyword: '',
