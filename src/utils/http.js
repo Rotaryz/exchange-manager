@@ -87,7 +87,6 @@ class HTTP {
 
 // 检查http状态码
 function checkStatus(response) {
-  console.log(response)
   // 异常状态下，把错误信息返回去
   if (response.message === 'Network Error') {
     return {
