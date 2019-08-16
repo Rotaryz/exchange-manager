@@ -23,7 +23,7 @@
             </template>
           </div>
         </div>
-        <div class="list">
+        <div v-if="list.length" class="list">
           <div v-for="(item,i) in list" :key="i" class="list-box">
             <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
               <template v-if="val.type === 'select'">
@@ -43,6 +43,7 @@
             </div>
           </div>
         </div>
+        <base-blank v-else></base-blank>
       </div>
       <base-pagination :total="total" :currentPage.sync="goodsListFilter.page" :pageSize="goodsListFilter.limit" class="page-wrap" @pageChange="pageChange"></base-pagination>
     </div>
@@ -272,10 +273,12 @@
 
   .page-wrap
     margin: 20px 0 30px
+
   .body-inner
     height: 100%
     display flex
     flex-direction column
+
   .list .list-box
     height: 60px
 
