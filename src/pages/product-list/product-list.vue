@@ -38,7 +38,7 @@
           <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
-          <base-pagination :total="total" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
+          <base-pagination :total="total" :pageSize="filter.limit" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -120,14 +120,14 @@
           data: {
             keyword: this.filter.keyword,
             category_id: this.filter.category_id
-          }
+          }, loading: false
         }).then(res => {
           this.statusList = res.data
         })
       },
-      _getList() {
+      _getList(other) {
         API.Goods.getGoodsList({
-          data: this.filter,
+          data: this.filter, ...other
         }).then(res => {
           this.setData(res)
         })
@@ -140,17 +140,17 @@
       },
       statusChange(val) {
         this.filter.page = 1
-        this._getList()
+        this._getList({loading: false})
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
-          await API.Goods.deleteGoods({data: {id: item.id}})
+          await API.Goods.deleteGoods({data: {id: item.id}, loading: false})
           this._getList()
         })
       },
       async changeSwitch(item) {
         await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
-        this._getList()
+        this._getList({loading: false})
       },
       searchBtn(val) {
         this.filter.page = 1
@@ -158,7 +158,7 @@
         this._getStatus()
       },
       pageChange(val) {
-        this._getList()
+        this._getList({loading: false})
       }
     }
 

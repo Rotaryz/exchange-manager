@@ -113,7 +113,7 @@
           page: 1,
           category_id: '',
           keyword: '',
-          status: ''
+          status: 1
         },
         list: [], // 弹框商品列表
         selectGoods: [] // 单次选择的商品
@@ -187,7 +187,7 @@
       },
       // 勾选商品
       selectGoodsBtn(item, index) {
-        console.log(item.selecteStatus)
+        // console.log(item.selecteStatus)
         /* eslint-disable */
         switch (item.selecteStatus) {
           case 'disable':
@@ -206,7 +206,7 @@
             }
             this.list[index].selecteStatus = 'checked'
             this.selectGoods.push(item)
-            console.log(item)
+            // console.log(item)
             break
         }
       },
