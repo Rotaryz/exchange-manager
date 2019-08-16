@@ -146,6 +146,7 @@
       statusChange(val) {
         this.filter.page = 1
         this._getList({loading: false})
+        this._getStatus()
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
