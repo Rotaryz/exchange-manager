@@ -30,7 +30,7 @@
                 </div>
                 <template v-else>
                   <img v-if="val.before && val.before.img" class="list-img" :src="item[val.before.img]">
-                  <div>{{item[key]}}</div>
+                  <div class="item-text">{{item[key]}}</div>
                 </template>
               </div>
             </div>
@@ -177,4 +177,8 @@
 
   .list-item
     display flex
+    .item-text
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap
 </style>
