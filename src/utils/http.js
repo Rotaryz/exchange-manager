@@ -7,6 +7,7 @@ class HTTP {
     }
     return this.instance
   }
+
   constructor() {
     this.http = new Fly()
     this.callback = {}
@@ -31,18 +32,23 @@ class HTTP {
       }
     )
   }
+
   get(args) {
     return this._formatRequestData(args, {method: 'GET'})
   }
+
   post(args) {
     return this._formatRequestData(args, {method: 'POST'})
   }
+
   put(args) {
     return this._formatRequestData(args, {method: 'PUT'})
   }
+
   delete(args) {
     return this._formatRequestData(args, {method: 'DELETE'})
   }
+
   _formatRequestData(args, {method}) {
     const {url, data} = args
     if (typeof this.callback.beforeRequest === 'function') {
@@ -51,6 +57,7 @@ class HTTP {
     return this.http.request(url, data, {
       method
     }).then((response) => {
+      console.log(response)
       return checkStatus(response)
     }).then(res => {
       if (typeof this.callback.responseFulfilled === 'function') {
@@ -60,16 +67,19 @@ class HTTP {
       }
     })
   }
+
   // 设置回调函数
   setCallback(callback) {
     this.callback = {...this.callback, ...callback}
   }
+
   // 设置头部信息
   setHeaders(args = {}) {
     for (let [key, value] of Object.entries(args)) {
       this.http.config.headers[key] = value
     }
   }
+
   // 初始化函数
   init(fn) {
     fn && fn(this.http)
@@ -83,7 +93,6 @@ function checkStatus(response) {
     return response.data || {}
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }
-  console.log(response)
   // 异常状态下，把错误信息返回去
   return {
     message: '网络开小差'
