@@ -362,7 +362,7 @@
               let res = this.edit.goods_specs.find(item => {
                 return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
               })
-              // console.log('filter', res)
+              console.log('filter', res)
             }
             zum.push(ss);
           }
