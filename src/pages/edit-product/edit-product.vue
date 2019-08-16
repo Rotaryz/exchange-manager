@@ -362,7 +362,11 @@
               let res = this.edit.goods_specs.find(item => {
                 return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
               })
-              console.log('filter', res)
+              if (res) {
+                zum[index].discount_price = res.discount_price
+                zum[index].saleable = res.saleable
+              }
+              // console.log('filter', res)
             }
             zum.push(ss);
           }
