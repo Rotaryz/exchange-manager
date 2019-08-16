@@ -156,6 +156,7 @@
       async changeSwitch(item) {
         await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
         this._getList({loading: false})
+        this._getStatus()
       },
       searchBtn(val) {
         this.filter.page = 1
