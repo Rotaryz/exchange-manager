@@ -58,7 +58,6 @@
     },
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
-      console.log(1111)
       Promise.all([API.Goods.getGoodsList({
         data: {
           keyword: '',
