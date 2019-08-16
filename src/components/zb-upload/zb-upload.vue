@@ -29,24 +29,24 @@
       </div>
     </div>
     <div v-if="type === 'image' && multiple" class="edit-image image-more">
-      <draggable v-if="data.length" v-model="list" class="draggable">
+      <draggable  v-model="list" class="draggable">
         <div v-for="(item, index) in data" :key="index" class="show-image hand">
           <img :src="item.image_url ||item" class="image" :style="imgStyle">
           <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
           <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
           <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
         </div>
-      </draggable>
-      <div v-if="data.length<limit" class="hand upload-wrap">
-        <slot name="icon">
-          <div :style="addStyle" class="add-image">
-            <div v-if="showLoading" class="loading-mask">
-              <img src="./loading.gif" class="loading">
+        <div v-if="data.length<limit" class="hand upload-wrap">
+          <slot name="icon">
+            <div :style="addStyle" class="add-image">
+              <div v-if="showLoading" class="loading-mask">
+                <img src="./loading.gif" class="loading">
+              </div>
             </div>
-          </div>
-        </slot>
-        <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
-      </div>
+          </slot>
+          <input type="file" :multiple="multiple" class="sendImage hand" accept="image/*" @change="getFiles($event)">
+        </div>
+      </draggable>
     </div>
     <div v-if="type === 'video'" class="edit-image">
       <template v-if="data || data.length>0">
