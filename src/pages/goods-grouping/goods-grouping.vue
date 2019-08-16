@@ -1,6 +1,6 @@
 <template>
   <div class="goods-grouping normal-box table">
-    <base-table-tool title="商品分组" :iconUrl="require('./icon-product_list@2x.png')">
+    <base-table-tool title="商品分组" :iconUrl="require('./icon-product_fz@2x.png')">
       <base-button plain addIcon @click="addGroupBtn">添加分组</base-button>
     </base-table-tool>
     <div class="table-content">

@@ -51,13 +51,6 @@
 
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
-  const params = {
-    keyword: '',
-    category_id: '',
-    status: '',
-    page: 1,
-    limit: 10
-  }
   export default {
     name: PAGE_NAME,
     page: {
@@ -66,7 +59,13 @@
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
       Promise.all([API.Goods.getGoodsList({
-        data: params
+        data: {
+          keyword: '',
+          category_id: '',
+          status: '',
+          page: 1,
+          limit: 10
+        }
       }), API.Goods.getGoodsListStatus({
         data: {
           keyword: '',
@@ -86,7 +85,13 @@
         statusList: [],
         inputValue: '1122',
         total: 0,
-        filter: params,
+        filter: {
+          keyword: '',
+          category_id: '',
+          status: '',
+          page: 1,
+          limit: 10
+        },
         listHeader: {
           name: {
             name: '商品名称', before: {

@@ -7,43 +7,45 @@
               title="选择商品" confirmText="添加" class="goods-list-dialog"
               @submit="addSubmit"
   >
-    <div class="operate-box">
-      <cascade-select size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
-      <base-search v-model="goodsListFilter.keyword" placeholder="请输入商品名称" @search="searchBtn"></base-search>
-    </div>
-    <div class="big-list">
-      <div class="list-header list-box">
-        <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
-          <template v-if="val.type === 'select'">
-            <zb-checkbox :type="allCheckType" @click="selectAllGoodsBtn"></zb-checkbox>
-          </template>
-          <template v-else>
-            {{val.name}}
-          </template>
-        </div>
+    <div class="body-inner">
+      <div class="operate-box">
+        <cascade-select size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
+        <base-search v-model="goodsListFilter.keyword" placeholder="请输入商品名称" @search="searchBtn"></base-search>
       </div>
-      <div class="list">
-        <div v-for="(item,i) in list" :key="i" class="list-box">
+      <div class="big-list">
+        <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
             <template v-if="val.type === 'select'">
-              <zb-checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></zb-checkbox>
+              <zb-checkbox :type="allCheckType" @click="selectAllGoodsBtn"></zb-checkbox>
             </template>
             <template v-else>
-              <template v-if="val.before">
-                <template v-if="val.before.text">{{val.before.text}}</template>
-                <div v-if="val.before.image" class="goods-image-wrap">
-                  <img :src="item[val.before.image]" class="goods-image">
-                </div>
-              </template>
-            </template>
-            <template>
-              {{item[key]}}
+              {{val.name}}
             </template>
           </div>
         </div>
+        <div class="list">
+          <div v-for="(item,i) in list" :key="i" class="list-box">
+            <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
+              <template v-if="val.type === 'select'">
+                <zb-checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></zb-checkbox>
+              </template>
+              <template v-else>
+                <template v-if="val.before">
+                  <template v-if="val.before.text">{{val.before.text}}</template>
+                  <div v-if="val.before.image" class="goods-image-wrap">
+                    <img :src="item[val.before.image]" class="goods-image">
+                  </div>
+                </template>
+              </template>
+              <template>
+                {{item[key]}}
+              </template>
+            </div>
+          </div>
+        </div>
       </div>
+      <base-pagination :total="total" :currentPage.sync="goodsListFilter.page" :pageSize="goodsListFilter.limit" class="page-wrap" @pageChange="pageChange"></base-pagination>
     </div>
-    <base-pagination :total="total" :currentPage.sync="goodsListFilter.page" :pageSize="goodsListFilter.limit" class="page-wrap" @pageChange="pageChange"></base-pagination>
   </base-modal>
 </template>
 
@@ -270,10 +272,13 @@
 
   .page-wrap
     margin: 20px 0 30px
-
+  .body-inner
+    height: 100%
+    display flex
+    flex-direction column
   .list .list-box
     height: 60px
 
-  .list-box .list-item:nth-child(2)
-    flex: 3
+  .list-box .list-item:nth-child(3)
+    max-width: 90px
 </style>
