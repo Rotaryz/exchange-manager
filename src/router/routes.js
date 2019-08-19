@@ -202,7 +202,7 @@ export default [
           {
             path: 'b-mall',
             name: 'b-mall',
-            text: '订单',
+            text: '内容',
             component: {render: h => h('router-view')},
             children: [
               // 订单列表
