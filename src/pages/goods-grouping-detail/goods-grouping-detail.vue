@@ -113,6 +113,7 @@
             }
           })
           this._getDetail()
+          this.$emit('update')
         })
       },
       pageChange(val) {
@@ -124,6 +125,7 @@
       async _addGoods(arr) {
         await API.Goods.addGroupGoods({data: {group_id: this.filter.id, goods_ids: arr}})
         this._getDetail()
+        this.$emit('update')
       }
     }
   }
