@@ -412,7 +412,7 @@
             }
           }
           for (let j in this.goodsDetails) {
-            if (!this.goodsDetails[j].sale_price) {
+            if (!this.goodsDetails[j].discount_price) {
               this.$toast.show(`会员价不能为空`)
               over = true
               return
