@@ -52,7 +52,7 @@
     <div class="container">
       <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
         <div>
-          <radio v-model="edit.specification_type" :list="specList"></radio>
+          <radio v-model="edit.specification_type" :list="specList" @change="getGoodsDetials"></radio>
           <div v-if="edit.specification_type === 1">
             <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
@@ -98,7 +98,9 @@
                   {{spec.attr_value}}
                 </div>
                 <div class="list-item">
-                  <base-input v-model="item.discount_price" type="number" size="mini" clear class="value-input">
+                  <base-input v-if="item.discount_price!==undefined" v-model="item.discount_price" type="number" size="mini" clear
+                              class="value-input"
+                  >
                   </base-input>
                 </div>
                 <div class="list-item">
@@ -217,10 +219,9 @@
           price: '',
           discount_price: '',
           saleable: 0,
-          specId: 0
-        },
-        zum: [],
-        k_ruledata: []
+          specId: 0,
+          goods_specs: []
+        }
       }
     },
     watch: {
@@ -327,14 +328,18 @@
               if (this.id) {
                 // console.log('this.edit.goods_specs', this.edit.goods_specs)
                 let newAttrs = specsAttrs.map(item => item.attr_id + '_' + item.attr_value)
-                // console.log(newAttrs)
-                let res = this.edit.goods_specs.find(item => {
-                  return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
+                // console.log('newAttrs', newAttrs)
+                let res = this.edit.goods_specs.find(goodsSpec => {
+                  return goodsSpec.attr_details.length > 0 && goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length
                 })
                 // console.log('filter', res)
                 if (res) {
                   zum[index].discount_price = res.discount_price
                   zum[index].saleable = res.saleable
+                } else {
+                  // console.log('1111111')
+                  zum[index].discount_price = 0
+                  zum[index].saleable = 0
                 }
               }
               zumto.push({...zum[index], specs_attrs: specsAttrs})
@@ -344,6 +349,7 @@
           this.goodsDetails = zumto
         } else {
           let item = first.values;
+          // console.log('first.values', item)
           for (let index in item) {
             let ss = {
               saleable: 0,
@@ -355,16 +361,21 @@
                 attr_detail_id: 0
               }]
             }
+            // console.log('ss', ss)
             if (this.id) {
-              // console.log('this.edit.goods_specs', this.edit.goods_specs)
               let newAttrs = ss.specs_attrs.map(item => item.attr_id + '_' + item.attr_value)
-              // console.log(newAttrs)
-              let res = this.edit.goods_specs.find(item => {
-                return item.attr_details.filter(v => newAttrs.includes(v)).length === item.attr_details.length
+              // console.log('newAttrs', newAttrs)
+              // console.log('this.edit.goods_specs', this.edit.goods_specs)
+              let res = this.edit.goods_specs.find(goodsSpec => {
+                return goodsSpec.attr_details.length > 0 && (goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length)
               })
+              // console.log('filter', res)
               if (res) {
-                zum[index].discount_price = res.discount_price
-                zum[index].saleable = res.saleable
+                ss.discount_price = res.discount_price
+                ss.saleable = res.saleable
+              } else {
+                zum[index].discount_price = 0
+                zum[index].saleable = 0
               }
               // console.log('filter', res)
             }
