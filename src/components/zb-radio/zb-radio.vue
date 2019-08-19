@@ -36,6 +36,8 @@
       changeValue(item) {
         if(item[this.valueKey] === this.value) return false
         this.$emit('input', item[this.valueKey])
+        this.$emit('change', item[this.valueKey])
+
       }
     }
   }
