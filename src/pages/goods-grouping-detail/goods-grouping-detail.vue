@@ -21,7 +21,7 @@
                 </template>
                 <template v-else>
                   <img v-if="val.before&& val.before.img" :src="item[val.before.img]" alt="" class="list-img">
-                  <span>{{item[key]}}</span>
+                  <span class="list-text">{{item[key]}}</span>
                 </template>
               </div>
             </div>
@@ -141,7 +141,14 @@
     left: 0
     bottom: 0
     right: 0
-
+   .list-box  .list-item:nth-child(1)
+      flex:2
+    .list-item
+      display flex
+      .list-text
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
     .go-back-btn
       margin-left 10px
 

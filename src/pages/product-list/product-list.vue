@@ -184,7 +184,8 @@
 
   .type-frist
     margin-right: 10px
-
+  .list-box  .list-item:nth-child(1)
+    flex:2
   .list-item
     display flex
 
