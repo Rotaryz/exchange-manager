@@ -52,7 +52,7 @@
     <div class="container">
       <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
         <div>
-          <radio v-model="edit.specification_type" :list="specList" @change="getGoodsDetials"></radio>
+          <radio v-model="edit.specification_type" :list="specList" @change="changeType"></radio>
           <div v-if="edit.specification_type === 1">
             <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
@@ -239,6 +239,11 @@
       }
     },
     methods: {
+      changeType(val) {
+        if (this.edit.specification_type) {
+          this.getGoodsDetials()
+        }
+      },
       setData(res) {
         this.edit = res.data
         if (this.edit.specification_type) {
@@ -326,18 +331,18 @@
                 }
               ]
               if (this.id) {
-                // console.log('this.edit.goods_specs', this.edit.goods_specs)
+                console.log('this.edit.goods_specs', this.edit.goods_specs)
                 let newAttrs = specsAttrs.map(item => item.attr_id + '_' + item.attr_value)
-                // console.log('newAttrs', newAttrs)
+                console.log('newAttrs', newAttrs)
                 let res = this.edit.goods_specs.find(goodsSpec => {
                   return goodsSpec.attr_details.length > 0 && goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length
                 })
-                // console.log('filter', res)
+                console.log('filter', res)
                 if (res) {
                   zum[index].discount_price = res.discount_price
                   zum[index].saleable = res.saleable
                 } else {
-                  // console.log('1111111')
+                  console.log('1111111')
                   zum[index].discount_price = 0
                   zum[index].saleable = 0
                 }
@@ -361,10 +366,10 @@
                 attr_detail_id: 0
               }]
             }
-            // console.log('ss', ss)
+            console.log('ss', ss)
             if (this.id) {
               let newAttrs = ss.specs_attrs.map(item => item.attr_id + '_' + item.attr_value)
-              // console.log('newAttrs', newAttrs)
+              // console.log('newAttrs', newAttrs)/
               // console.log('this.edit.goods_specs', this.edit.goods_specs)
               let res = this.edit.goods_specs.find(goodsSpec => {
                 return goodsSpec.attr_details.length > 0 && (goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length)
@@ -374,8 +379,8 @@
                 ss.discount_price = res.discount_price
                 ss.saleable = res.saleable
               } else {
-                zum[index].discount_price = 0
-                zum[index].saleable = 0
+                zum.discount_price = 0
+                zum.saleable = 0
               }
               // console.log('filter', res)
             }
