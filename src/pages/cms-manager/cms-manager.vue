@@ -206,7 +206,7 @@
         choicePage: 1,
         keyword: '',
         parentId: '',
-        outLink: '3002',
+        outLink: 3002,
         delId: '',
         delIndex: -1,
         classList: [],
@@ -622,6 +622,7 @@
       align-items: center
       .goods-title
         margin-left: 18px
+        no-wrap()
         font-family: $font-family-regular
         color: $color-text-main
         font-size: $font-size-14
