@@ -40,7 +40,7 @@
         <base-select v-model="edit.industry_id" :data="tradeList" labelKey="name" width="400" height="44"></base-select>
       </base-form-item>
     </base-modal>
-    <router-view></router-view>
+    <router-view @update="_getList({loading:false})"></router-view>
   </div>
 </template>
 
@@ -111,7 +111,7 @@
       },
       _getList(other) {
         API.Goods.getGroupList({
-          data: this.filter,...other
+          data: this.filter, ...other
         }).then(res => {
           this.setData(res)
         })
@@ -128,7 +128,7 @@
         })
       },
       pageChange(val) {
-        this._getList({loading:false})
+        this._getList({loading: false})
       },
       editBtn(item, i) {
         this.edit.id = item.id
@@ -143,7 +143,7 @@
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGroup({data: {id: item.id}})
-          this._getList({loading:false})
+          this._getList({loading: false})
         }, () => {
         })
       },
@@ -177,7 +177,7 @@
       },
       async _addGoods(arr) {
         await API.Goods.addGroupGoods({data: {group_id: this.currentGroup.id, goods_ids: arr}})
-        this._getList({loading:false})
+        this._getList({loading: false})
       }
     }
   }
