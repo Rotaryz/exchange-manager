@@ -98,7 +98,7 @@
                   {{spec.attr_value}}
                 </div>
                 <div class="list-item">
-                  <base-input v-if="item.discount_price!==undefined" v-model="item.discount_price" type="number" size="mini" clear
+                  <base-input v-model="item.discount_price" type="number" size="mini" clear
                               class="value-input"
                   >
                   </base-input>
@@ -315,80 +315,68 @@
       getData(zum, first) {
         // 公共存的集合  第一个集合
         if (zum.length !== 0) {
-          let item = first.values;
           let zumto = [];
-          // 已经存在的
-          for (let index in zum) {
-            // 下一个规格
-            for (let to in item) {
-              let specsAttrs = [
-                ...zum[index].specs_attrs,
-                {
-                  attr_id: first.attr_id,
-                  attr_name: first.name,
-                  attr_value: item[to].text,
-                  attr_detail_id: 0
-                }
-              ]
+          zum.forEach(zu => {
+            first.values.forEach(item => {
+              console.log(zu.specs_attrs,)
+              let newZu = [...zu.specs_attrs, {
+                attr_id: first.attr_id,
+                attr_name: first.name,
+                attr_value: item.text,
+                attr_detail_id: item.attr_detail_id
+              }]
+              let obj = {}
               if (this.id) {
-                console.log('this.edit.goods_specs', this.edit.goods_specs)
-                let newAttrs = specsAttrs.map(item => item.attr_id + '_' + item.attr_value)
-                console.log('newAttrs', newAttrs)
-                let res = this.edit.goods_specs.find(goodsSpec => {
-                  return goodsSpec.attr_details.length > 0 && goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length
-                })
-                console.log('filter', res)
-                if (res) {
-                  zum[index].discount_price = res.discount_price
-                  zum[index].saleable = res.saleable
-                } else {
-                  console.log('1111111')
-                  zum[index].discount_price = 0
-                  zum[index].saleable = 0
-                }
+                obj = this.getGoodsSpec(zu, this.edit.goods_specs, newZu)
+                console.log(obj)
+              } else {
+                obj = {...zu, specs_attrs: newZu}
               }
-              zumto.push({...zum[index], specs_attrs: specsAttrs})
-            }
-          }
+              zumto.push(obj)
+            })
+          })
 
           this.goodsDetails = zumto
         } else {
-          let item = first.values;
-          // console.log('first.values', item)
-          for (let index in item) {
+          first.values.forEach(item => {
             let ss = {
+              spec_id: 0,
               saleable: 0,
               discount_price: 0,
               specs_attrs: [{
                 attr_id: first.attr_id,
                 attr_name: first.name,
-                attr_value: item[index].text,
+                attr_value: item.text,
                 attr_detail_id: 0
               }]
             }
-            console.log('ss', ss)
             if (this.id) {
-              let newAttrs = ss.specs_attrs.map(item => item.attr_id + '_' + item.attr_value)
-              // console.log('newAttrs', newAttrs)/
-              // console.log('this.edit.goods_specs', this.edit.goods_specs)
-              let res = this.edit.goods_specs.find(goodsSpec => {
-                return goodsSpec.attr_details.length > 0 && (goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length)
-              })
-              // console.log('filter', res)
-              if (res) {
-                ss.discount_price = res.discount_price
-                ss.saleable = res.saleable
-              } else {
-                zum.discount_price = 0
-                zum.saleable = 0
-              }
-              // console.log('filter', res)
+              ss = this.getGoodsSpec(ss, this.edit.goods_specs, ss.specs_attrs)
             }
             zum.push(ss);
-          }
-
+          })
           this.goodsDetails = zum;
         }
+      },
+      getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs) {
+        // console.log(newSpecsAttrs, 'newSpecsAttrs')
+        let newAttrs = newSpecsAttrs.map(item => item.attr_id + '_' + item.attr_value)
+        let res = oldGoodsSpecs.find(goodsSpec => {
+          return goodsSpec.attr_details.length > 0 && goodsSpec.attr_details.length === newAttrs.length && (goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length)
+        })
+        let newGoodsSpec = {}
+        if (res) {
+          newGoodsSpec.discount_price = res.discount_price
+          newGoodsSpec.saleable = res.saleable
+          newGoodsSpec.spec_id = res.spec_id
+          // console.log('res', res)
+        } else {
+          newGoodsSpec.discount_price = 0
+          newGoodsSpec.saleable = 0
+          newGoodsSpec.spec_id = 0
+        }
+        newGoodsSpec.specs_attrs = newSpecsAttrs
+        return newGoodsSpec
       },
       submitBtn() {
         let over = false
