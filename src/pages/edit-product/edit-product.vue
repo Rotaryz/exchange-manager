@@ -394,6 +394,36 @@
           }
           if (over) break
         }
+        if (this.edit.specification_type) {
+          let msg = ''
+          // 规格
+          for (let i in this.goodsSpecification) {
+            if (!this.goodsSpecification[i].name) {
+              this.$toast.show(`规格名不能为空`)
+              over = true
+              return
+            }
+            for (let j in this.goodsSpecification[i].values) {
+              if (!this.goodsSpecification[i].values[j].text) {
+                this.$toast.show(`规格值不能为空`)
+                over = true
+                return
+              }
+            }
+          }
+          for (let j in this.goodsDetails) {
+            if (!this.goodsDetails[j].sale_price) {
+              this.$toast.show(`会员价不能为空`)
+              over = true
+              return
+            }
+            if (!this.goodsDetails[j].saleable) {
+              this.$toast.show(`库存不能为空`)
+              over = true
+              return
+            }
+          }
+        }
         if (!over) this._addGoods()
       },
       _addGoods() {
