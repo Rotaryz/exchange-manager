@@ -292,31 +292,31 @@ export default [
                 meta: {
                   title: '代理商提现', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['代理商提现'] // 面包屑标题
+                  crumbs: ['代理商提现'],// 面包屑标题
+                  style: {margin: 0}
                 },
-                children:[// 收支明细
+                children: [// 收支明细
                   {
-                    path: '/finance-manager/account/agent-withdrawal/income-expenses-detail',
+                    path: '/finance-manager/account/agent-withdrawal/income-expenses-detail/:id',
                     name: 'income-expenses-detail',
                     component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
                     meta: {
                       title: '收支明细', // 页面标题
-                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
+                      crumbs: ['代理商提现', '收支明细'] // 面包屑标题
                     }
                   },
-
                   // 提现详情
                   {
-                    path: '/finance-manager/account/agent-withdrawal/withdraw-detial',
-                    name: 'withdraw-detial',
-                    component: () => import('@pages/withdraw-detial/withdraw-detial'),
+                    path: '/finance-manager/account/agent-withdrawal/withdrawal-detail/:id',
+                    name: 'withdrawal-detail',
+                    component: () => import('@pages/withdrawal-detail/withdrawal-detail'),
                     meta: {
                       title: '收支明细', // 页面标题
-                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
+                      crumbs: ['代理商提现', '收支明细'] // 面包屑标题
                     }
-                  }]
+                  }
+                ]
               },
-
             ]
           }
         ],
