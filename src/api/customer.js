@@ -27,5 +27,15 @@ export default {
   setCustomerGrade(args) {
     const url = `/exchange-platform/platform/shop/shop-manager/set-level`
     return request.post({url, ...args})
-  }
+  },
+  /**
+   * 交易记录
+   * @param args
+   * @returns {*}
+   */
+  // todo ammy
+  getTradingRecord(args) {
+    const url = `/exchange-platform/platform/shop/level/index`
+    return request.get({url, ...args})
+  },
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="base-search" :style="boxStyle">
-    <div class="box-tip">搜索</div>
+    <div v-if="isShowTip" class="box-tip">搜索</div>
+    <slot></slot>
     <base-input :value="value"
                 radius="4"
                 :width="width"

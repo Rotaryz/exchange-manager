@@ -65,8 +65,7 @@
         this._infoFirst(type)
       },
       menuIndex(news) {
-        this.navList = JSON.parse(JSON.stringify(this.menuData[news].children))
-        this.$router.push(this.navList[0].children[0].path)
+        // todo 待优化
       }
     },
     created() {
@@ -78,6 +77,8 @@
       changMenu(index) {
         if (index === this.menuIndex) return
         this.menuIndex = index
+        this.navList = JSON.parse(JSON.stringify(this.menuData[index].children))
+        this.$router.push(this.navList[0].children[0].path)
       },
       _infoFirst(type) {
         this.menuIndex = this.menuData.findIndex((item) => item.type === type)

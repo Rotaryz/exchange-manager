@@ -1,7 +1,7 @@
 <template>
   <div class="base-select"
        :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,radius ? 'border-radius--'+ radius:'']"
-       :style="[{ width:width+'px',height:height+'px'}]"
+       :style="[{ 'min-width':width+'px',height:height+'px'}]"
        @click.stop="selectType"
   >
     <div class="inner-value">
@@ -39,7 +39,7 @@
   export default {
     props: {
       width: {
-        default: '',
+        default: '200',
         type: [String, Number]
       },
       height: {
@@ -174,7 +174,7 @@
     transition: all 0.2s
     text-indent: 10px
     padidng-riggh 15px
-    min-width: 200px
+    width: 200px
     /*min-height:32px*/
     .inner-value
       padding-left: 14px
@@ -193,7 +193,7 @@
     &.base-select--middle
       height: 44px
       line-height: 44px
-      min-width: 200px
+      width: 200px
 
       .select-child
         top: 44px
@@ -201,7 +201,7 @@
     &.base-select--small
       height: 32px
       line-height: 32px
-      min-width: 120px
+      width: 120px
 
       .select-child
         top: 32px
@@ -209,7 +209,7 @@
     &.base-select--mini
       height: 28px
       line-height: 28px
-      min-width: 218px
+      width: 218px
 
       .select-child
         top: 28px
@@ -217,7 +217,7 @@
     &.base-select--big
       height: 60px
       line-height: 60px
-      min-width: 60px
+      width: 60px
 
       .select-child
         top: 60px
