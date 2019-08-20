@@ -1,24 +1,23 @@
 <template>
   <div class="order-list normal-box table">
-    <top-data-bar></top-data-bar>
+    <top-data-bar :topData="topData"></top-data-bar>
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time"></base-date>
-      <base-search placeholder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search placeholder="订单号/交易号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-business@2x.png')" title="交易明细"></base-table-tool>
     <div class="table-content">
       <div class="big-list">
         <div class="list-header list-box">
-          <div v-for="(item, index) in listHeader" :key="index" class="list-item">{{item}}</div>
+          <div v-for="(head, index) in listHeader" :key="index" :class="head.class" class="list-item">{{head.title}}</div>
         </div>
         <div class="list">
           <div v-if="orderList.length">
             <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
-              <div class="list-item">{{item.order ? item.order.order_sn : ''}}</div>
-              <div class="list-item">{{item.sub_order_sn}}</div>
-              <div class="list-item">{{item.sub_order_sn}}</div>
-              <div class="list-item">{{item.sub_order_sn}}</div>
+              <div v-for="(head, idx) in listHeader" :key="idx" :class="head.class" class="list-item">
+                {{item[head.key]}}
+              </div>
             </div>
           </div>
           <base-blank v-else></base-blank>
@@ -38,8 +37,13 @@
 
   const PAGE_NAME = 'BUSINESS_LIST'
   const TITLE = '订单列表'
-  const LIST_HEADER = ['支付时间', '关联订单号', '交易号', '交易金额']
-  const INFO_STATUS = ''
+  const LIST_HEADER = [
+    {title: '支付时间', key: 'time', class: 'width-1'},
+    {title: '关联订单号', key: 'order', class: 'width-1'},
+    {title: '交易号', key: 'order', class: 'width-3'},
+    {title: '交易金额', key: 'price', class: 'width-4'}
+  ]
+  const TOP_DATA = [{img: require('./icon-zfze@2x.png'), title: '支付总额(元)', value: '99234.33'}]
 
   export default {
     name: PAGE_NAME,
@@ -51,35 +55,30 @@
     },
     data() {
       return {
+        topData: TOP_DATA,
         listHeader: LIST_HEADER,
-        visible: false,
-        valueKey: 'id',
-        arr: [{id: 111, label: '顺丰'}],
-        logisticsObj: {
-          sub_order_id: '',
-          logistics_id: '',
-          logistics_sn: '',
-          shipping_name: ''
-        },
         currentPage: 1,
         page: 1,
         orderList: [],
         keyword: '',
         total: 21,
-        status: INFO_STATUS,
-        time: [],
-        statusList: [],
-        deliverId: '',
-        disable: false,
-        title: '订单发货'
+        time: []
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: '', status: INFO_STATUS}
+      let data = {page: 1, keyword: ''}
       API.Order.getOrderList({data, loading: true, toast: true})
         .then((res) => {
           next(vx => {
-            vx.orderList = res.data
+            // vx.orderList = res.data
+            // vx.total = res.meta.total
+            vx.orderList = [
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'}
+            ]
             vx.total = res.meta.total
           })
         })
@@ -89,7 +88,7 @@
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, status: this.status, start_at: this.time[0] || '', end_at: this.time[1] || ''}
+        let data = {page: this.page, keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''}
         return data
       }
     },
@@ -101,10 +100,6 @@
         this.page = 1
         await this.getOrderList()
       },
-      async status() {
-        this.page = 1
-        await this.getOrderList()
-      },
       async time() {
         this.page = 1
         await this.getOrderList()
@@ -113,7 +108,6 @@
     methods: {
       // 获取订单列表
       async getOrderList(loading = false) {
-        await this._orderStatus()
         API.Order.getOrderList({
           data: this.paramObj,
           loading,
@@ -140,23 +134,14 @@
   .list-box
     overflow: visible
     .list-item
-      &:nth-child(3)
-        flex: 1.6
-        min-width: 276px
-        white-space: normal
-        display: flex
-        align-items: center
-        overflow: visible
-      &:last-child
-        max-width: 58px
-        min-width: 58px
-        padding: 0
-      &:nth-child(9)
-        flex: 0.8
-      &:nth-child(1), &:nth-child(2)
+      &.width-1
+        flex: 1
         min-width: 165px
-      &:nth-child(4), &:nth-child(10)
-        min-width: 62px
-        flex: 0.4
+      &.width-3
+        flex: 1.8
+        min-width: 276px
+      &.width-4
+        max-width: 140px
+        flex: 0.5
 
 </style>

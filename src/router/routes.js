@@ -251,7 +251,7 @@ export default [
                 meta: {
                   title: '交易记录', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['财务管理', '交易记录'] // 面包屑标题
+                  crumbs: ['交易记录'] // 面包屑标题
                 }
               }
             ]

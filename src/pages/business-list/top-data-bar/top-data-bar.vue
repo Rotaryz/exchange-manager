@@ -1,8 +1,10 @@
 <template>
   <div class="top-data-bar">
-    <div class="data-item">
-      <div class="img-con">
-
+    <div v-for="(item, index) in topData" :key="index" class="data-item">
+      <img v-if="item.img" :src="item.img" class="item-img">
+      <div class="data-con">
+        <div class="title">{{item.title}}</div>
+        <div class="value">{{item.value}}</div>
       </div>
     </div>
   </div>
@@ -14,19 +16,7 @@
   export default {
     name: PAGE_NAME,
     props: {
-      cmsType: {
-        type: String,
-        default: 'banner'
-      },
-      bannerList: {
-        type: Array,
-        default: () => []
-      },
-      hotList: {
-        type: Array,
-        default: () => []
-      },
-      cmsList: {
+      topData: {
         type: Array,
         default: () => []
       }
@@ -49,9 +39,33 @@
     padding: 0 30px
     margin-bottom: 20px
     background: #ffffff
-    display: flex
-    flex-direction: row
+    layout(row)
     align-items: center
     border: 0.5px solid $color-line
     border-radius: 4px
+    .data-item
+      layout(row)
+      align-items: center
+      margin-right: 30px
+      .item-img
+        width: 58px
+        height: @width
+        margin-right: 20px
+      .data-con
+        line-height: 1
+        layout()
+        align-items: center
+        .title
+          width: 100%
+          margin-bottom: 10px
+          font-family: $font-family-regular
+          font-size: 14px
+          color: $color-text-main
+        .value
+          width: 100%
+          font-family: $font-family-din-bold
+          font-size: 32px
+          color: $color-text-main
+  .a
+    display: none
 </style>
