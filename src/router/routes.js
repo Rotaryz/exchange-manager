@@ -152,8 +152,6 @@ export default [
                     }
                   }
                 ]
-              },
-                }
               },  // 交易记录
               {
                 path: '/client/customer/trading-record',
@@ -163,6 +161,17 @@ export default [
                   title: '交易记录', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['交易记录'] // 面包屑标题
+                }
+              },
+              // 等级管理
+              {
+                path: '/client/customer/level-manager',
+                name: 'level-manager',
+                component: () => import('@pages/level-manager/level-manager'),
+                meta: {
+                  title: '等级管理', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['等级管理'] // 面包屑标题
                 }
               }
             ]
