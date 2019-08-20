@@ -1,10 +1,10 @@
 <template>
   <div class="order-list normal-box table">
+    <base-tab-select :tabStatus="tabStatus" @getStatusTab="_changeTopTab"></base-tab-select>
     <top-data-bar :topData="topData"></top-data-bar>
-    <base-tab-select></base-tab-select>
     <div class="down-content">
-      <base-date datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time"></base-date>
-      <base-search placeholder="订单号/交易号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-date datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time" @changeDate="_changeDate"></base-date>
+      <base-search placeholder="订单号/交易号" boxStyle="margin-left: 20px" @search="_search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-business@2x.png')" title="交易明细"></base-table-tool>
     <div class="table-content">
@@ -24,7 +24,7 @@
         </div>
         <div class="pagination-box">
           <!---->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="_changePage"></base-pagination>
         </div>
       </div>
     </div>
@@ -44,6 +44,7 @@
     {title: '交易金额', key: 'price', class: 'width-4'}
   ]
   const TOP_DATA = [{img: require('./icon-zfze@2x.png'), title: '支付总额(元)', value: '99234.33'}]
+  const TAB_CONFIG = [{text: '销售业务', status: 'sell'}, {text: '采购订单', status: 'order'}]
 
   export default {
     name: PAGE_NAME,
@@ -55,6 +56,7 @@
     },
     data() {
       return {
+        tabStatus: TAB_CONFIG,
         topData: TOP_DATA,
         listHeader: LIST_HEADER,
         currentPage: 1,
@@ -77,9 +79,9 @@
               {time: '2019-01-01', order:'dd234557577', price:'12.1'},
               {time: '2019-01-01', order:'dd234557577', price:'12.1'},
               {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
               {time: '2019-01-01', order:'dd234557577', price:'12.1'}
             ]
-            vx.total = res.meta.total
           })
         })
         .catch(() => {
@@ -92,20 +94,17 @@
         return data
       }
     },
-    watch: {
-      async page() {
-        await this.getOrderList()
-      },
-      async keyword() {
-        this.page = 1
-        await this.getOrderList()
-      },
-      async time() {
-        this.page = 1
-        await this.getOrderList()
-      }
-    },
     methods: {
+      _initParams() {
+        this.page = 1
+        this.keyword = ''
+        this.time = []
+        this.getOrderList()
+      },
+      // 切换顶部tab
+      _changeTopTab(select) {
+        this._initParams()
+      },
       // 获取订单列表
       async getOrderList(loading = false) {
         API.Order.getOrderList({
@@ -116,13 +115,30 @@
           }
         })
           .then((res) => {
+            res.data = [
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1'}
+            ]
             this.orderList = res.data
             this.total = res.meta.total
           })
       },
-      // 搜索
-      search(keyword) {
+      _search(keyword) {
         this.keyword = keyword || ''
+        this.page = 1
+        this.getOrderList()
+      },
+      _changePage(page) {
+        this.page = page || 1
+        this.getOrderList()
+      },
+      _changeDate() {
+        this.page = 1
+        this.getOrderList()
       }
     }
   }
