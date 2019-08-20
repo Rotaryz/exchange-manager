@@ -97,7 +97,6 @@ export default [
                     name: 'mall-goods-goods-grouping-detail',
                     component: () => import('@pages/goods-grouping-detail/goods-grouping-detail'),
                     meta: {
-                      type: 'sec-menu', // 二级标识
                       crumbs: ['商品分组', '详情']
                     }
                   }]
@@ -285,7 +284,39 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['财务管理', '交易记录'] // 面包屑标题
                 }
-              }
+              },// 代理商提现
+              {
+                path: '/finance-manager/account/agent-withdrawal',
+                name: 'agent-withdrawal',
+                component: () => import('@pages/agent-withdrawal/agent-withdrawal'),
+                meta: {
+                  title: '代理商提现', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['代理商提现'] // 面包屑标题
+                },
+                children:[// 收支明细
+                  {
+                    path: '/finance-manager/account/agent-withdrawal/income-expenses-detail',
+                    name: 'income-expenses-detail',
+                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    meta: {
+                      title: '收支明细', // 页面标题
+                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
+                    }
+                  },
+
+                  // 提现详情
+                  {
+                    path: '/finance-manager/account/agent-withdrawal/withdraw-detial',
+                    name: 'withdraw-detial',
+                    component: () => import('@pages/withdraw-detial/withdraw-detial'),
+                    meta: {
+                      title: '收支明细', // 页面标题
+                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
+                    }
+                  }]
+              },
+
             ]
           }
         ],
