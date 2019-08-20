@@ -230,6 +230,44 @@ export default [
             ]
           }
         ],
+      },
+
+      /**
+       *
+       *财务管理
+       *
+       */
+      {
+        path: '/finance-manager',
+        name: 'finance-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '财务管理',
+          icon: require('./icon-finance@2x.png'),
+          iconSelected: '',
+        },
+        component: {render: h => h('router-view')},
+        children: [
+          {
+            path: 'account',
+            name: 'account',
+            text: '账户',
+            component: {render: h => h('router-view')},
+            children: [
+              // 交易记录
+              {
+                path: '/finance-manager/account/business-list',
+                name: 'business-list',
+                component: () => import('@pages/business-list/business-list'),
+                meta: {
+                  title: '交易记录', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['财务管理', '交易记录'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ],
       }
     ]
   },
