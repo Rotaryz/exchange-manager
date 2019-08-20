@@ -276,47 +276,34 @@ export default [
             children: [
               // 交易记录
               {
-                path: '/finance-manager/account/business-list',
-                name: 'business-list',
-                component: () => import('@pages/business-list/business-list'),
+                path: '/finance-manager/account/trading-list',
+                name: 'trading-list',
+                component: () => import('@pages/trading-list/trading-list'),
                 meta: {
                   title: '交易记录', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['交易记录'] // 面包屑标题
                 }
-              },// 代理商提现
+              }
+            ]
+          },
+          {
+            path: 'agent',
+            name: 'agent',
+            text: '代理商结算',
+            component: {render: h => h('router-view')},
+            children: [
+              // 交易记录
               {
-                path: '/finance-manager/account/agent-withdrawal',
-                name: 'agent-withdrawal',
-                component: () => import('@pages/agent-withdrawal/agent-withdrawal'),
+                path: '/finance-manager/agent/subsidy-list',
+                name: 'subsidy-list',
+                component: () => import('@pages/subsidy-list/subsidy-list'),
                 meta: {
-                  title: '代理商提现', // 页面标题
+                  title: '补贴记录', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['代理商提现'] // 面包屑标题
-                },
-                children:[// 收支明细
-                  {
-                    path: '/finance-manager/account/agent-withdrawal/income-expenses-detail',
-                    name: 'income-expenses-detail',
-                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
-                    meta: {
-                      title: '收支明细', // 页面标题
-                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
-                    }
-                  },
-
-                  // 提现详情
-                  {
-                    path: '/finance-manager/account/agent-withdrawal/withdraw-detial',
-                    name: 'withdraw-detial',
-                    component: () => import('@pages/withdraw-detial/withdraw-detial'),
-                    meta: {
-                      title: '收支明细', // 页面标题
-                      crumbs: ['代理商提现','收支明细'] // 面包屑标题
-                    }
-                  }]
-              },
-
+                  crumbs: ['补贴记录'] // 面包屑标题
+                }
+              }
             ]
           }
         ],
