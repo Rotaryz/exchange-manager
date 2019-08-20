@@ -153,6 +153,18 @@ export default [
                   }
                 ]
               },
+                }
+              },  // 交易记录
+              {
+                path: '/client/customer/trading-record',
+                name: 'trading-record',
+                component: () => import('@pages/trading-record/trading-record'),
+                meta: {
+                  title: '交易记录', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['交易记录'] // 面包屑标题
+                }
+              }
             ]
           },
         ],
