@@ -1,5 +1,4 @@
 export default [
-
   {
     path: '/',
     redirect: '/login'
@@ -22,7 +21,6 @@ export default [
   {
     path: '/',
     name: 'index',
-    redirect: '/mall/goods/product-list',
     component: () => import('@pages/index/index'),
     meta: {
       authRequired: true
@@ -141,7 +139,19 @@ export default [
                   title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['客户列表'] // 面包屑标题
-                }
+                },
+                children: [
+                  // 等级设置
+                  {
+                    path: '/client/customer/customer-list/level-setting',
+                    name: 'level-setting',
+                    component: () => import('@pages/level-setting/level-setting'),
+                    meta: {
+                      title: '等级设置', // 页面标题
+                      crumbs: ['客户列表', '客户设置'] // 面包屑标题
+                    }
+                  }
+                ]
               },  // 交易记录
               {
                 path: '/client/customer/trading-record',
@@ -152,9 +162,20 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['交易记录'] // 面包屑标题
                 }
+              },
+              // 等级管理
+              {
+                path: '/client/customer/level-manager',
+                name: 'level-manager',
+                component: () => import('@pages/level-manager/level-manager'),
+                meta: {
+                  title: '等级管理', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['等级管理'] // 面包屑标题
+                }
               }
             ]
-          }
+          },
         ],
       },
       /**

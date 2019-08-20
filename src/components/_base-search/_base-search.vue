@@ -9,6 +9,7 @@
                 :placeholder="placeholder"
                 @input="setValue"
                 @keydown="_enter"
+                inputName="search"
     ></base-input>
     <div class="search-icon-box hand" @click="_search">搜索</div>
   </div>

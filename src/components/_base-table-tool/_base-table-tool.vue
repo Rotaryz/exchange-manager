@@ -1,5 +1,5 @@
 <template>
-  <div class="base-table-tool">
+  <div class="base-table-tool" :class="{'base-table-tool-border': isBorder}">
     <div class="title-wrap">
       <img v-if="iconUrl" :src="iconUrl" class="title-icon">
       <p v-if="title" class="title-name">{{title}}</p>
@@ -27,6 +27,10 @@
       title: {
         default: '列表',
         type: String
+      },
+      isBorder: {
+        default: true,
+        type: Boolean
       }
     },
     data() {
@@ -37,6 +41,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  .base-table-tool-border
+    border: 0.5px solid $color-line
+    border-bottom: transparent
 
   .base-table-tool
     width: 100%
@@ -50,8 +57,6 @@
     flex-shrink 0
     border-top-right-radius: 4px
     border-top-left-radius: 4px
-    border: 0.5px solid $color-line
-    border-bottom: transparent
     .title-wrap
       display: flex
       align-items: center

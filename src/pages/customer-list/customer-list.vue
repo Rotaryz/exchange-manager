@@ -1,7 +1,10 @@
 <template>
   <div class="customer-list normal-box table">
     <div class="down-content">
-      <base-search boxStyle="margin: 0" placeholder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-form-item :required="false" labelSize="12px" label="筛选" marginBottom="0">
+        <base-select boxStyle="margin: 0" :width="120" :height="32" defaultLabel="账号等级"></base-select>
+      </base-form-item>
+      <base-search boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -19,7 +22,7 @@
               <div class="list-item">{{`${item.province} ${item.city} ${item.district}`}}</div>
               <div class="list-item">{{item.shop_level_name}}</div>
               <div class="list-item">
-                <span class="list-operation" @click="showSet(item)">设置</span>
+                <router-link tag="span" :to="`level-setting?id=${item.id}`" append class="list-operation">设置</router-link>
               </div>
             </div>
           </div>
@@ -54,6 +57,7 @@
         </base-form-item>
       </div>
     </base-modal>
+    <router-view @update="getCustomerList({loading:false})"></router-view>
   </div>
 </template>
 
@@ -141,10 +145,12 @@
         this.arr = res.error_code === this.$ERR_OK ? res.data : []
       },
       showSet(item) {
-        this.customerId = item.id
-        this.grade = item.shop_level_id
-        this.visible = true
-        this.defaultLabel = item.shop_level_name
+        this.$router.push(`/client/customer/customer-list/`)
+        console.log(`/client/customer/customer-list/level-setting/${item.id}`)
+        // this.customerId = item.id
+        // this.grade = item.shop_level_id
+        // this.visible = true
+        // this.defaultLabel = item.shop_level_name
       },
       // 设置等级
       async setGrade() {
