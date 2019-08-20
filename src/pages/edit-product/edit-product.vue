@@ -395,7 +395,6 @@
           if (over) break
         }
         if (this.edit.specification_type) {
-          let msg = ''
           // 规格
           for (let i in this.goodsSpecification) {
             if (!this.goodsSpecification[i].name) {

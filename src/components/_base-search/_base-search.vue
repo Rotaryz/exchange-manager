@@ -1,6 +1,7 @@
 <template>
   <div class="base-search" :style="boxStyle">
-    <div class="box-tip">搜索</div>
+    <div v-if="isShowTip" class="box-tip">搜索</div>
+    <slot></slot>
     <base-input :value="value"
                 radius="4"
                 :width="width"
@@ -8,7 +9,6 @@
                 :placeholder="placeholder"
                 @input="setValue"
                 @keydown="_enter"
-                inputName="search"
     ></base-input>
     <div class="search-icon-box hand" @click="_search">搜索</div>
   </div>
