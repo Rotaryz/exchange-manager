@@ -1,7 +1,10 @@
 <template>
   <div class="customer-list normal-box table">
     <div class="down-content">
-      <base-search boxStyle="margin: 0" placeholder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-form-item :required="false" labelSize="12px" label="筛选" marginBottom="0">
+        <base-select boxStyle="margin: 0" :width="120" :height="32" defaultLabel="账号等级"></base-select>
+      </base-form-item>
+      <base-search boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
