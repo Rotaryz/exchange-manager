@@ -21,7 +21,6 @@ export default [
   {
     path: '/',
     name: 'index',
-    redirect: '/mall/goods/product-list',
     component: () => import('@pages/index/index'),
     meta: {
       authRequired: true
@@ -140,10 +139,22 @@ export default [
                   title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['客户列表'] // 面包屑标题
-                }
-              }
+                },
+                children: [
+                  // 等级设置
+                  {
+                    path: '/client/customer/customer-list/level-setting',
+                    name: 'level-setting',
+                    component: () => import('@pages/level-setting/level-setting'),
+                    meta: {
+                      title: '等级设置', // 页面标题
+                      crumbs: ['客户列表', '客户设置'] // 面包屑标题
+                    }
+                  }
+                ]
+              },
             ]
-          }
+          },
         ],
       },
       /**

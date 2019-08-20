@@ -19,7 +19,7 @@
               <div class="list-item">{{`${item.province} ${item.city} ${item.district}`}}</div>
               <div class="list-item">{{item.shop_level_name}}</div>
               <div class="list-item">
-                <span class="list-operation" @click="showSet(item)">设置</span>
+                <router-link tag="span" :to="`level-setting?id=${item.id}`" append class="list-operation">设置</router-link>
               </div>
             </div>
           </div>
@@ -54,6 +54,7 @@
         </base-form-item>
       </div>
     </base-modal>
+    <router-view @update="getCustomerList({loading:false})"></router-view>
   </div>
 </template>
 
@@ -141,10 +142,12 @@
         this.arr = res.error_code === this.$ERR_OK ? res.data : []
       },
       showSet(item) {
-        this.customerId = item.id
-        this.grade = item.shop_level_id
-        this.visible = true
-        this.defaultLabel = item.shop_level_name
+        this.$router.push(`/client/customer/customer-list/`)
+        console.log(`/client/customer/customer-list/level-setting/${item.id}`)
+        // this.customerId = item.id
+        // this.grade = item.shop_level_id
+        // this.visible = true
+        // this.defaultLabel = item.shop_level_name
       },
       // 设置等级
       async setGrade() {
