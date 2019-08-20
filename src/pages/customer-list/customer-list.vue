@@ -57,7 +57,7 @@
         </base-form-item>
       </div>
     </base-modal>
-    <router-view @update="getCustomerList({loading:false})"></router-view>
+    <router-view @update="getCustomerList()"></router-view>
   </div>
 </template>
 
