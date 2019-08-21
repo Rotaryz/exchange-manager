@@ -1,8 +1,8 @@
 <template>
   <div class="level-manager normal-box table">
     <base-table-tool :iconUrl="require('./icon-djgl@2x.png')" title="等级管理">
-      <base-button plain buttonStyle="width: 92px" @click="downExcel">
-        导出Excel
+      <base-button plain buttonStyle="width: 92px" @click="newLevel">
+        新建等级<span class="add-icon"></span>
       </base-button>
     </base-table-tool>
     <div class="table-content">
@@ -17,7 +17,7 @@
               <div class="list-item">sdfsdf</div>
               <div class="list-item">sdfsdf</div>
               <div class="list-item">
-                <span class="list-operation">编辑</span>
+                <router-link tag="span" :to="`edit-level?id=`" append class="list-operation">编辑</router-link>
                 <span class="list-operation" @click="delLevel">删除</span>
               </div>
             </div>
@@ -120,8 +120,8 @@
           })
       },
       // 导出Excel
-      downExcel() {
-        window.open(this.excelUrl, '_blank')
+      newLevel() {
+        this.$router.push('/client/customer/level-manager/edit-level')
       },
     }
   }
@@ -136,7 +136,6 @@
       &:nth-child(1), &:nth-child(2)
         flex: 1.5
       &:nth-child(4)
-        min-width: 138px
-        max-width: 138px
-        padding: 0
+        min-width: 118px
+        max-width: 118px
 </style>

@@ -21,7 +21,7 @@
     ></textarea>
     <input v-else
            :value="value"
-           :style="[inputStyle,{'cursor':handIcon}]"
+           :style="inputStyle"
            :placeholder="placeholder"
            :type="type"
            :readonly="readonly || disabled"
