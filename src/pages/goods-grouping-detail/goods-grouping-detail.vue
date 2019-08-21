@@ -60,7 +60,7 @@
           page: 1,
           limit: 10
         }
-      }).then(res => {
+      }).then((res) => {
         next((vw) => {
           vw.setData(res)
         })
@@ -71,7 +71,8 @@
         visible: false,
         listHeader: {
           name: {
-            name: '商品名称', before: {
+            name: '商品名称',
+            before: {
               img: 'goods_cover_image'
             }
           },
@@ -79,8 +80,8 @@
           saleable: {name: '库存'},
           price: {name: '零售价'},
           discount_price: {name: '会员价'},
-          status: {name: '状态', type: "status"},
-          operate_text: {name: '操作', type: "operate", style: 'max-width:80px'}
+          status: {name: '状态', type: 'status'},
+          operate_text: {name: '操作', type: 'operate', style: 'max-width:80px'}
         },
         total: 0,
         list: [],
@@ -99,7 +100,7 @@
         this.name = this.$route.query.name
       },
       _getDetail() {
-        API.Goods.getGroupDetail({data: this.filter}).then(res => {
+        API.Goods.getGroupDetail({data: this.filter}).then((res) => {
           this.setData(res)
         })
       },
@@ -109,8 +110,8 @@
       deleteBtn(item, i) {
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGroupGoods({
-            data: {goods_id: item.goods_id, group_id: this.filter.id}, doctor() {
-            }
+            data: {goods_id: item.goods_id, group_id: this.filter.id},
+            doctor() {}
           })
           this._getDetail()
           this.$emit('update')

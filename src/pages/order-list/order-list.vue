@@ -119,13 +119,25 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   import storage from 'storage-controller'
 
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
-  const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '姓名', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
+  const LIST_HEADER = [
+    '主单号',
+    '子单号',
+    '商品',
+    '数量',
+    '单价(元)',
+    '姓名',
+    '收货地址',
+    '下单时间',
+    '实付款(元)',
+    '状态',
+    '操作'
+  ]
   const INFO_STATUS = ''
   const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
 
@@ -160,17 +172,16 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: '', status: INFO_STATUS}
+      let data = {page: 1, keyword: '', status: INFO_STATUS, start_at: '', end_at: ''}
       API.Order.getOrderList({data, loading: true, toast: true})
         .then((res) => {
-          API.Order.orderStatus({data: null, loading: true, toast: true})
-            .then((status) => {
-              next(vx => {
-                vx.statusList = status.data
-                vx.orderList = res.data
-                vx.total = res.meta.total
-              })
+          API.Order.orderStatus({data: null, loading: true, toast: true}).then((status) => {
+            next((vx) => {
+              vx.statusList = status.data
+              vx.orderList = res.data
+              vx.total = res.meta.total
             })
+          })
         })
         .catch(() => {
           next('404')
@@ -193,7 +204,13 @@
         return url
       },
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, status: this.status, start_at: this.time[0] || '', end_at: this.time[1] || ''}
+        let data = {
+          page: this.page,
+          keyword: this.keyword,
+          status: this.status,
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || ''
+        }
         return data
       }
     },
@@ -224,10 +241,9 @@
           limit: 0,
           loading: false,
           toast: true
+        }).then((res) => {
+          this.arr = res.data
         })
-          .then((res) => {
-            this.arr = res.data
-          })
       },
       // 获取订单列表
       async getOrderList(loading = false) {
@@ -236,17 +252,19 @@
           data: this.paramObj,
           loading,
           toast: true,
-          doctor() {
-          }
+          doctor() {}
+        }).then((res) => {
+          this.orderList = res.data
+          this.total = res.meta.total
         })
-          .then((res) => {
-            this.orderList = res.data
-            this.total = res.meta.total
-          })
       },
       // 获取订单状态
       async _orderStatus() {
-        let res = await API.Order.orderStatus({data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''}, loading: false, toast: false})
+        let res = await API.Order.orderStatus({
+          data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''},
+          loading: false,
+          toast: false
+        })
         if (res.error_code === this.$ERR_OK) {
           this.statusList = res.data
         }
@@ -283,24 +301,20 @@
         if (this.disable) {
           return
         }
-        await API.Order.setLogistics(
-          {
-            data: this.logisticsObj,
-            loading: true,
-            toast: true
-          }
-        )
+        await API.Order.setLogistics({
+          data: this.logisticsObj,
+          loading: true,
+          toast: true
+        })
         await this.getOrderList(false)
       },
       // 查看发货详情
       async _getLogisticsDetail() {
-        let res = await API.Order.logisticsDetail(
-          {
-            data: {sub_order_id: this.logisticsObj.sub_order_id},
-            loading: true,
-            toast: true
-          }
-        )
+        let res = await API.Order.logisticsDetail({
+          data: {sub_order_id: this.logisticsObj.sub_order_id},
+          loading: true,
+          toast: true
+        })
         if (res.error_code === this.$ERR_OK) {
           this.logisticsObj = res.data
           this.visible = true

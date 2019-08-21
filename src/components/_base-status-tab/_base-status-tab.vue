@@ -62,10 +62,11 @@
     },
     methods: {
       getStyle() {
-        this.statusList.length > 0 && this.$nextTick(() => {
-          let el = this.$refs['tab-item' + this.value][0]
-          this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
-        })
+        this.statusList.length > 0 &&
+          this.$nextTick(() => {
+            let el = this.$refs['tab-item' + this.value][0]
+            this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+          })
       },
       checkStatus(index, item) {
         this.$emit('update:value', item[this.valueKey])

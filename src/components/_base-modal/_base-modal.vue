@@ -44,7 +44,8 @@
         type: String,
         default: ''
       },
-      showClose: { // 可sync
+      showClose: {
+        // 可sync
         type: Boolean,
         default: true
       },
@@ -52,11 +53,12 @@
         type: String,
         default: ''
       },
-      titleTip:{
+      titleTip: {
         type: String,
         default: ''
       },
-      visible: { // 可sync
+      visible: {
+        // 可sync
         type: Boolean,
         default: false
       },
@@ -66,7 +68,7 @@
       },
       closeBefore: {
         type: Function,
-        default: function (done) {
+        default: function(done) {
           done()
         }
       },

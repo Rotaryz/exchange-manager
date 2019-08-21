@@ -10,7 +10,7 @@ export default {
     const url = `/exchange-platform/platform/platform-goods/goods/statistic`
     return request.get({url, ...args})
   },
-  getGoodsDetail(args){
+  getGoodsDetail(args) {
     const url = `/exchange-platform/platform/platform-goods/goods/show`
     return request.get({url, ...args})
   },

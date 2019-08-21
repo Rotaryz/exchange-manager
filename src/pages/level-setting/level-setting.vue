@@ -39,8 +39,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
-  // import API from '@api'
+// import * as Helpers from './modules/helpers'
+// import API from '@api'
   import Upload from '../../components/zb-upload/zb-upload.vue'
 
   const PAGE_NAME = 'LEVEL_SETTING'
@@ -75,8 +75,7 @@
         this.edit.image_url = ''
         this.edit.image_id = ''
       },
-      failFile() {
-      }
+      failFile() {}
     }
   }
 </script>

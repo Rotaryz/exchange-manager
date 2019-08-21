@@ -34,7 +34,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   const PAGE_NAME = 'INCOME_EXPENSES_DETAIL'
   const TITLE = '收支明细'
@@ -50,31 +50,35 @@
           page: 1,
           limit: 10
         }
-      }).then(res => {
-        next(vw => {
+      }).then((res) => {
+        next((vw) => {
           console.log('111')
-          // vw.setData(res)
+        // vw.setData(res)
         })
       })
     },
     data() {
       return {
-        totalList: [{
-          iconClass: 'total-income-icon',
-          name: '收入总额(元)',
-          valueKey: "total_income"
-        }, {
-          iconClass: 'balance-icon',
-          name: '账户余额(元)',
-          valueKey: "balance_money"
-        }, {
-          iconClass: 'withdraw-icon',
-          name: '已提现总额(元)',
-          valueKey: "withdraw_money"
-        }],
+        totalList: [
+          {
+            iconClass: 'total-income-icon',
+            name: '收入总额(元)',
+            valueKey: 'total_income'
+          },
+          {
+            iconClass: 'balance-icon',
+            name: '账户余额(元)',
+            valueKey: 'balance_money'
+          },
+          {
+            iconClass: 'withdraw-icon',
+            name: '已提现总额(元)',
+            valueKey: 'withdraw_money'
+          }
+        ],
         money: {
           withdraw_money: '398447.00',
-          balance_money:' 398447.00',
+          balance_money: ' 398447.00',
           total_income: '398447.00'
         },
         filter: {
@@ -89,21 +93,24 @@
           channels: {name: '余额 '},
           update_time: {name: '提现单号 '}
         },
-        list: [{
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18'
-        }, {
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18'
-        }],
+        list: [
+          {
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18'
+          },
+          {
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18'
+          }
+        ],
         total: 11
       }
     },
@@ -117,7 +124,7 @@
         this.list = res.data
       },
       _getList() {
-        API.Customer.getTradingRecord({data: this.filter, loading: false}).then(res => {
+        API.Customer.getTradingRecord({data: this.filter, loading: false}).then((res) => {
           this.setData(res)
         })
       },

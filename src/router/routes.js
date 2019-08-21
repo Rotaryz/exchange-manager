@@ -38,15 +38,15 @@ export default [
           type: 'first_menu', // 一级标示
           title: '商品管理',
           icon: require('./icon-goods@2x.png'),
-          iconSelected: '',
+          iconSelected: ''
         },
-        component: {render: h => h('router-view')},
+        component: {render: (h) => h('router-view')},
         children: [
           {
             path: 'goods',
             name: 'goods',
             text: '商品',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               {
                 path: '/mall/goods/goods-list',
@@ -95,7 +95,8 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['商品分组']
                 },
-                children: [ // 商品分组详情
+                children: [
+                  // 商品分组详情
                   {
                     path: '/mall/goods/goods-grouping/goods-grouping-detail/:id',
                     name: 'mall-goods-goods-grouping-detail',
@@ -103,13 +104,12 @@ export default [
                     meta: {
                       crumbs: ['商品分组', '详情']
                     }
-                  }]
+                  }
+                ]
               }
-
             ]
-
           }
-        ],
+        ]
       },
       /**
        *
@@ -123,15 +123,15 @@ export default [
           type: 'first_menu', // 一级标示
           title: '客户管理',
           icon: require('./icon-client@2x.png'),
-          iconSelected: '',
+          iconSelected: ''
         },
-        component: {render: h => h('router-view')},
+        component: {render: (h) => h('router-view')},
         children: [
           {
             path: 'customer',
             name: 'customer',
             text: '客户',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               // 客户列表
               {
@@ -155,7 +155,7 @@ export default [
                     }
                   }
                 ]
-              },  // 交易记录
+              }, // 交易记录
               {
                 path: '/client/customer/trading-record',
                 name: 'trading-record',
@@ -164,6 +164,17 @@ export default [
                   title: '交易记录', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['交易记录'] // 面包屑标题
+                }
+              },
+              // 代理申请
+              {
+                path: '/client/customer/application-agency',
+                name: 'application-agency',
+                component: () => import('@pages/application-agency/application-agency'),
+                meta: {
+                  title: '代理申请', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['代理申请'] // 面包屑标题
                 }
               },
               // 等级管理
@@ -191,8 +202,8 @@ export default [
                 ]
               }
             ]
-          },
-        ],
+          }
+        ]
       },
       /**
        *
@@ -206,15 +217,15 @@ export default [
           type: 'first_menu', // 一级标示
           title: '订单管理',
           icon: require('./icon-order@2x.png'),
-          iconSelected: '',
+          iconSelected: ''
         },
-        component: {render: h => h('router-view')},
+        component: {render: (h) => h('router-view')},
         children: [
           {
             path: 'order',
             name: 'order',
             text: '订单',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               // 订单列表
               {
@@ -229,7 +240,7 @@ export default [
               }
             ]
           }
-        ],
+        ]
       },
       /**
        *
@@ -243,15 +254,15 @@ export default [
           type: 'first_menu', // 一级标示
           title: '内容管理',
           icon: require('./icon-content@2x.png'),
-          iconSelected: '',
+          iconSelected: ''
         },
-        component: {render: h => h('router-view')},
+        component: {render: (h) => h('router-view')},
         children: [
           {
             path: 'b-mall',
             name: 'b-mall',
             text: '内容',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               // 订单列表
               {
@@ -266,7 +277,7 @@ export default [
               }
             ]
           }
-        ],
+        ]
       },
 
       /**
@@ -281,15 +292,15 @@ export default [
           type: 'first_menu', // 一级标示
           title: '财务管理',
           icon: require('./icon-finance@2x.png'),
-          iconSelected: '',
+          iconSelected: ''
         },
-        component: {render: h => h('router-view')},
+        component: {render: (h) => h('router-view')},
         children: [
           {
             path: 'account',
             name: 'account',
             text: '账户',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               // 交易记录
               {
@@ -308,7 +319,7 @@ export default [
             path: 'agent',
             name: 'agent',
             text: '代理商结算',
-            component: {render: h => h('router-view')},
+            component: {render: (h) => h('router-view')},
             children: [
               // 交易记录
               {
@@ -329,10 +340,11 @@ export default [
                 meta: {
                   title: '代理商提现', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['代理商提现'],// 面包屑标题
+                  crumbs: ['代理商提现'], // 面包屑标题
                   style: {margin: 0}
                 },
-                children: [// 收支明细
+                children: [
+                  // 收支明细
                   {
                     path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
                     name: 'income-expenses-detail',
@@ -353,10 +365,10 @@ export default [
                     }
                   }
                 ]
-              },
+              }
             ]
           }
-        ],
+        ]
       }
     ]
   },

@@ -67,8 +67,7 @@
     props: {
       otherParams: {
         type: Object,
-        default: () => {
-        }
+        default: () => {}
       },
       selectKey: {
         type: String,
@@ -100,15 +99,17 @@
             type: 'select'
           },
           name: {
-            name: '商品名称', before: {
+            name: '商品名称',
+            before: {
               image: 'goods_cover_image'
             }
           },
           price: {
-            name: '零售价', before: {
+            name: '零售价',
+            before: {
               text: '¥'
             }
-          },
+          }
         },
         total: 0,
         goodsListFilter: {
@@ -138,10 +139,10 @@
       allCheckType: {
         get() {
           if (this.list.length === 0) return ''
-          let arr = this.list.filter(item => item.selecteStatus !== 'disable').map(item => {
-            return this.selectGoods.findIndex(goods => item[this.selectKey] === goods[this.selectKey])
+          let arr = this.list.filter((item) => item.selecteStatus !== 'disable').map((item) => {
+            return this.selectGoods.findIndex((goods) => item[this.selectKey] === goods[this.selectKey])
           })
-          arr = arr.filter(newItem => newItem < 0)
+          arr = arr.filter((newItem) => newItem < 0)
           return arr.length === 0 ? 'checked' : arr.length < this.list.length ? 'indeterminate' : ''
         },
         set(newValue) {
@@ -158,13 +159,13 @@
         API.Goods.getGoodsList({
           data: {...this.goodsListFilter, ...this.otherParams},
           loading: true
-        }).then(res => {
+        }).then((res) => {
           if (res.isFail) return
           this.total = res.meta.total
           this.list = res.data.map((item, index) => {
             let isInList = this.selects.findIndex((items) => items[this.selectKey] === item[this.selectKey])
             let isSelect = this.selectGoods.findIndex((select) => select[this.selectKey] === item[this.selectKey])
-            item.selecteStatus = isSelect !== -1 ? 'checked' : (isInList !== -1 || item.is_selected ? 'disable' : '')
+            item.selecteStatus = isSelect !== -1 ? 'checked' : isInList !== -1 || item.is_selected ? 'disable' : ''
             // '' 没有选择 checked 选择高亮  disable 原本已存在
             return item
           })
@@ -192,54 +193,54 @@
       selectGoodsBtn(item, index) {
         // console.log(item.selecteStatus)
         /* eslint-disable */
-        switch (item.selecteStatus) {
-          case 'disable':
-            break
-          case 'checked':
-            this.list[index].selecteStatus = ''
-            let idx = this.selectGoods.findIndex((items) => items[this.selectKey] === item[this.selectKey])
-            if (idx !== -1) {
-              this.selectGoods.splice(idx, 1)
-            }
-            break
-          default:
-            if (this.limit && this.selects.length + this.selectGoods.length >= this.limit) {
-              this.$toast.show(`选择商品数量不能超过${this.limit}个`)
-              return
-            }
-            this.list[index].selecteStatus = 'checked'
-            this.selectGoods.push(item)
-            // console.log(item)
-            break
-        }
-      },
-      //全选
-      selectAllGoodsBtn() {
-        if (this.allCheckType !== 'checked') {
-          this.list.forEach((item, i) => {
-            if (!item.selecteStatus) {
-              this.selectGoodsBtn(item, i)
-            }
-          })
-        } else {
-          this.list.forEach((item, i) => {
-            if (item.selecteStatus === 'checked') {
-              this.selectGoodsBtn(item, i)
-            }
-          })
-        }
-      },
-      beforeAdd(done) {
-        if (this.selectGoods.length === 0) this.$toast.show('请选择需要添加的商品')
-        else done()
-      },
-      // 批量添加
-      addSubmit() {
-        let res = this.valueKey ? this.selectGoods.map(item => item[this.valueKey]) : this.selectGoods
-        this.$emit('submit', res)
+      switch (item.selecteStatus) {
+        case 'disable':
+          break
+        case 'checked':
+          this.list[index].selecteStatus = ''
+          let idx = this.selectGoods.findIndex((items) => items[this.selectKey] === item[this.selectKey])
+          if (idx !== -1) {
+            this.selectGoods.splice(idx, 1)
+          }
+          break
+        default:
+          if (this.limit && this.selects.length + this.selectGoods.length >= this.limit) {
+            this.$toast.show(`选择商品数量不能超过${this.limit}个`)
+            return
+          }
+          this.list[index].selecteStatus = 'checked'
+          this.selectGoods.push(item)
+          // console.log(item)
+          break
       }
+    },
+    //全选
+    selectAllGoodsBtn() {
+      if (this.allCheckType !== 'checked') {
+        this.list.forEach((item, i) => {
+          if (!item.selecteStatus) {
+            this.selectGoodsBtn(item, i)
+          }
+        })
+      } else {
+        this.list.forEach((item, i) => {
+          if (item.selecteStatus === 'checked') {
+            this.selectGoodsBtn(item, i)
+          }
+        })
+      }
+    },
+    beforeAdd(done) {
+      if (this.selectGoods.length === 0) this.$toast.show('请选择需要添加的商品')
+      else done()
+    },
+    // 批量添加
+    addSubmit() {
+      let res = this.valueKey ? this.selectGoods.map((item) => item[this.valueKey]) : this.selectGoods
+      this.$emit('submit', res)
     }
   }
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

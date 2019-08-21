@@ -133,8 +133,8 @@
 <script type="text/ecmascript-6">
   import Upload from '../../components/zb-upload/zb-upload.vue'
   import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
-  import TitleLine from "../../components/title-line/title-line"
-  import Radio from "../../components/zb-radio/zb-radio"
+  import TitleLine from '../../components/title-line/title-line'
+  import Radio from '../../components/zb-radio/zb-radio'
   import API from '@api'
 
   const PAGE_NAME = 'EDIT_PRODUCT'
@@ -154,9 +154,9 @@
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
         API.Goods.getGoodsDetail({
-          data: {id: to.query.id},
-        }).then(res => {
-          next(vw => {
+          data: {id: to.query.id}
+        }).then((res) => {
+          next((vw) => {
             // console.log('getGoodsDetail', res)
             vw.setData(res)
           })
@@ -169,40 +169,66 @@
       return {
         arrRes: [],
         specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
-        justifyItems: [{
-          key: 'name', rules: [{require: true, text: '请输入商品名称'}]
-        }, {
-          key: 'describe', rules: [{require: false, text: '请输入商品描述'}]
-        }, {
-          key: 'category_id', rules: [{require: true, text: '请选择商品分类'}]
-        }, {
-          key: 'serial_number', rules: [{require: true, text: '请输入商品编码'}]
-        }, {
-          key: 'weight', rules: [{require: true, text: '请输入商品重量'}]
-        }, {
-          key: 'manufacturer', rules: [{require: true, text: '请输入生产商'}]
-        }, {
-          key: 'goods_banner_images', rules: [{minLength: 1, text: '请上传商品主图'}, {maxLength: 5, text: '商品主图不可超过5张'}]
-        }, {
-          key: 'goods_detail_images', rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
-        }, {
-          key: 'price', rules: [{require: true, text: '请输入商品价格'}]
-        }],
-        otherJustfy: [{
-          key: 'discount_price', rules: [{require: true, text: '请输入商品会员价'}]
-        }, {
-          key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
-        }],
-        goodsSpecification: [{
-          "name": "",
-          "attr_id": 0,
-          "values": [
-            {
-              "text": "",
-              "attr_detail_id": 0
-            }
-          ]
-        }],
+        justifyItems: [
+          {
+            key: 'name',
+            rules: [{require: true, text: '请输入商品名称'}]
+          },
+          {
+            key: 'describe',
+            rules: [{require: false, text: '请输入商品描述'}]
+          },
+          {
+            key: 'category_id',
+            rules: [{require: true, text: '请选择商品分类'}]
+          },
+          {
+            key: 'serial_number',
+            rules: [{require: true, text: '请输入商品编码'}]
+          },
+          {
+            key: 'weight',
+            rules: [{require: true, text: '请输入商品重量'}]
+          },
+          {
+            key: 'manufacturer',
+            rules: [{require: true, text: '请输入生产商'}]
+          },
+          {
+            key: 'goods_banner_images',
+            rules: [{minLength: 1, text: '请上传商品主图'}, {maxLength: 5, text: '商品主图不可超过5张'}]
+          },
+          {
+            key: 'goods_detail_images',
+            rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
+          },
+          {
+            key: 'price',
+            rules: [{require: true, text: '请输入商品价格'}]
+          }
+        ],
+        otherJustfy: [
+          {
+            key: 'discount_price',
+            rules: [{require: true, text: '请输入商品会员价'}]
+          },
+          {
+            key: 'saleable',
+            rules: [{require: true, text: '请输入商品库存'}]
+          }
+        ],
+        goodsSpecification: [
+          {
+            name: '',
+            attr_id: 0,
+            values: [
+              {
+                text: '',
+                attr_detail_id: 0
+              }
+            ]
+          }
+        ],
         goodsDetails: [],
         id: 0,
         edit: {
@@ -265,23 +291,22 @@
       },
       getGoodsBannerImages(arr) {
         // console.log(arr, 'getGoodsBannerImages')
-        arr.forEach(item => {
+        arr.forEach((item) => {
           item = item.data
           this.edit.goods_banner_images.push({
             id: 0,
             image_url: item.url,
-            image_id: item.id,
+            image_id: item.id
           })
         })
-
       },
       getGoodsDetailImages(arr) {
-        arr.forEach(item => {
+        arr.forEach((item) => {
           item = item.data
           this.edit.goods_detail_images.push({
             id: 0,
             image_url: item.url,
-            image_id: item.id,
+            image_id: item.id
           })
         })
       },
@@ -290,24 +315,24 @@
       },
       addSpecValue(idx) {
         this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, {
-          "text": "",
-          "attr_detail_id": 0
+          text: '',
+          attr_detail_id: 0
         })
       },
       addSpecModule() {
         this.$set(this.goodsSpecification, this.goodsSpecification.length, {
-          name: "",
+          name: '',
           attr_id: 0,
           values: [
             {
-              text: "",
+              text: '',
               attr_detail_id: 0
             }
           ]
         })
       },
       getGoodsDetials() {
-        this.goodsDetails = [];
+        this.goodsDetails = []
         for (let index in this.goodsSpecification) {
           this.getData(this.goodsDetails, this.goodsSpecification[index])
         }
@@ -315,16 +340,19 @@
       getData(zum, first) {
         // 公共存的集合  第一个集合
         if (zum.length !== 0) {
-          let zumto = [];
-          zum.forEach(zu => {
-            first.values.forEach(item => {
-              console.log(zu.specs_attrs,)
-              let newZu = [...zu.specs_attrs, {
-                attr_id: first.attr_id,
-                attr_name: first.name,
-                attr_value: item.text,
-                attr_detail_id: item.attr_detail_id
-              }]
+          let zumto = []
+          zum.forEach((zu) => {
+            first.values.forEach((item) => {
+              console.log(zu.specs_attrs)
+              let newZu = [
+                ...zu.specs_attrs,
+                {
+                  attr_id: first.attr_id,
+                  attr_name: first.name,
+                  attr_value: item.text,
+                  attr_detail_id: item.attr_detail_id
+                }
+              ]
               let obj = {}
               if (this.id) {
                 obj = this.getGoodsSpec(zu, this.edit.goods_specs, newZu)
@@ -338,38 +366,44 @@
 
           this.goodsDetails = zumto
         } else {
-          first.values.forEach(item => {
+          first.values.forEach((item) => {
             let ss = {
               spec_id: 0,
               saleable: 0,
               discount_price: 0,
-              specs_attrs: [{
-                attr_id: first.attr_id,
-                attr_name: first.name,
-                attr_value: item.text,
-                attr_detail_id: 0
-              }]
+              specs_attrs: [
+                {
+                  attr_id: first.attr_id,
+                  attr_name: first.name,
+                  attr_value: item.text,
+                  attr_detail_id: 0
+                }
+              ]
             }
             if (this.id) {
               ss = this.getGoodsSpec(ss, this.edit.goods_specs, ss.specs_attrs)
             }
-            zum.push(ss);
+            zum.push(ss)
           })
-          this.goodsDetails = zum;
+          this.goodsDetails = zum
         }
       },
       getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs) {
         // console.log(newSpecsAttrs, 'newSpecsAttrs')
-        let newAttrs = newSpecsAttrs.map(item => item.attr_id + '_' + item.attr_value)
-        let res = oldGoodsSpecs.find(goodsSpec => {
-          return goodsSpec.attr_details.length > 0 && goodsSpec.attr_details.length === newAttrs.length && (goodsSpec.attr_details.filter(v => newAttrs.includes(v)).length === newAttrs.length)
+        let newAttrs = newSpecsAttrs.map((item) => item.attr_id + '_' + item.attr_value)
+        let res = oldGoodsSpecs.find((goodsSpec) => {
+          return (
+            goodsSpec.attr_details.length > 0 &&
+            goodsSpec.attr_details.length === newAttrs.length &&
+            goodsSpec.attr_details.filter((v) => newAttrs.includes(v)).length === newAttrs.length
+          )
         })
         let newGoodsSpec = {}
         if (res) {
           newGoodsSpec.discount_price = res.discount_price
           newGoodsSpec.saleable = res.saleable
           newGoodsSpec.spec_id = res.spec_id
-          // console.log('res', res)
+        // console.log('res', res)
         } else {
           newGoodsSpec.discount_price = 0
           newGoodsSpec.saleable = 0
@@ -385,7 +419,10 @@
           for (let j = 0; j < item.rules.length; j++) {
             let rule = item.rules[j]
             let value = this.edit[item.key]
-            let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
+            let rulesRes =
+              (rule.require && !value) ||
+              (rule.maxLength && value.length > rule.maxLength) ||
+              (rule.minLength && value.length < rule.minLength)
             if (rulesRes) {
               this.$toast.show(rule.text)
               over = true
@@ -432,21 +469,25 @@
         // 多规格
         if (this.edit.specification_type) {
           specsAttrs = this.goodsSpecification
-          goodsSpecs = this.goodsDetails.map(item => {
+          goodsSpecs = this.goodsDetails.map((item) => {
             item.price = price
             return item
           })
         } else {
           // 統一规格
-          goodsSpecs = [{
-            "spec_id": specId,
-            "price": price,
-            "discount_price": discountPrice,
-            "saleable": saleable,
-          }]
+          goodsSpecs = [
+            {
+              spec_id: specId,
+              price: price,
+              discount_price: discountPrice,
+              saleable: saleable
+            }
+          ]
         }
         let data = {
-          ...params, specs_attrs: specsAttrs, goods_specs: goodsSpecs
+          ...params,
+          specs_attrs: specsAttrs,
+          goods_specs: goodsSpecs
         }
         //  编辑 or 新增
         let requestName = this.id ? 'editGoods' : 'addGoods'

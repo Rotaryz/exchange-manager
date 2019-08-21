@@ -3,7 +3,7 @@ import {app as APP} from '../main'
 import {ERR_OK, TIME_OUT} from '@utils/config'
 import storage from 'storage-controller'
 
-HTTP.init(http => {
+HTTP.init((http) => {
   http.config.timeout = TIME_OUT
   http.config.headers = {Authorization: storage.get('auth.token', '')}
 })
@@ -57,12 +57,12 @@ HTTP.setCallback({
 // 错误码处理
 function errorCodeHandle(code) {
   switch (code) {
-  case 10000: // token失效
-    break
-  case 13005:
-    break
-  default:
-    break
+    case 10000: // token失效
+      break
+    case 13005:
+      break
+    default:
+      break
   }
 }
 

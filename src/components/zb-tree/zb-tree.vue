@@ -32,7 +32,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
   const COMPONENT_NAME = 'ZB_TREE'
 
   export default {
@@ -58,22 +57,20 @@
         type: String,
         default: 'list'
       }
-
     },
     data() {
       return {
-        selects: [],
+        selects: []
       }
     },
-    created() {
-    },
+    created() {},
     methods: {
       _sort(a, b) {
         return b.sort - a.sort
       },
       openBtn(index) {
         this.$set(this.selects, index, !this.selects[index])
-        // console.log(this.selects)
+      // console.log(this.selects)
       },
       addChild(item, index) {
         this.$emit('add-item', {item, index})
@@ -89,7 +86,7 @@
       },
       deleteChildBtn(item, index, childItem, childIndex) {
         this.$emit('delete-item', {item, index, childItem, childIndex})
-      },
+      }
     }
   }
 </script>

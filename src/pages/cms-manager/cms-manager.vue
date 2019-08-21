@@ -142,7 +142,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   import MobileContent from './mobile-content/mobile-content'
   import {SlickList, SlickItem, HandleDirective} from 'vue-slicksort'
@@ -157,9 +157,7 @@
     {title: '小程序链接', status: 3005},
     {title: 'H5链接', status: 3004}
   ]
-  const HOST_TYPE = [
-    {title: '商品详情', status: '3002'}
-  ]
+  const HOST_TYPE = [{title: '商品详情', status: '3002'}]
   const TEMPLATE_OBJ = {
     detail: {
       object_id: '',
@@ -247,7 +245,7 @@
     beforeRouteEnter(to, from, next) {
       API.Cms.moduleShow({data: {code: 'shop_index'}})
         .then((res) => {
-          next(vx => {
+          next((vx) => {
             vx.cmsList = res.data.children
             res.data.children.forEach((item) => {
               // item.children.detail = JSON.parse(item.children.detail)
@@ -277,22 +275,21 @@
       },
       // 获取页面详情
       moduleShow() {
-        API.Cms.moduleShow({data: {code: 'shop_index'}})
-          .then((res) => {
-            this.cmsList = res.data.children
-            res.data.children.forEach((item) => {
-              // item.children.detail = JSON.parse(item.children.detail)
-              switch (item.code) {
-              case 'banner':
-                this.bannerList = item.children
-                break
-              case 'hot_goods':
-                this.hotList = item.children
-                break
-              }
-            })
-            // console.log(this.bannerList)
+        API.Cms.moduleShow({data: {code: 'shop_index'}}).then((res) => {
+          this.cmsList = res.data.children
+          res.data.children.forEach((item) => {
+            // item.children.detail = JSON.parse(item.children.detail)
+            switch (item.code) {
+            case 'banner':
+              this.bannerList = item.children
+              break
+            case 'hot_goods':
+              this.hotList = item.children
+              break
+            }
           })
+        // console.log(this.bannerList)
+        })
       },
       // 判断
       justifyForm(done) {
@@ -346,13 +343,12 @@
       // 获取分类
       getCateList() {
         let data = {pid: 0, goods_id: '', get_goods_count: 1, limit: 0}
-        API.Cms.categoryList({data})
-          .then((res) => {
-            this.goodsCate = JSON.parse(JSON.stringify(res.data))
-            let arr = JSON.parse(JSON.stringify(res.data))
-            arr.unshift({name: '全部', id: ''})
-            this.classList = arr
-          })
+        API.Cms.categoryList({data}).then((res) => {
+          this.goodsCate = JSON.parse(JSON.stringify(res.data))
+          let arr = JSON.parse(JSON.stringify(res.data))
+          arr.unshift({name: '全部', id: ''})
+          this.classList = arr
+        })
       },
       // 获取商品列表
       async _getGoodsList() {
@@ -377,7 +373,7 @@
       },
       selectCate(item, index) {
         this.showCateIndex = index
-        // console.log(this.showCateIndex)
+      // console.log(this.showCateIndex)
       },
       selectGoods(item, index) {
         this.showSelectIndex = index
@@ -414,7 +410,6 @@
           break
         default:
           break
-
         }
         let obj = {
           detail: {
@@ -450,10 +445,9 @@
           }
         }
         this.infoData()
-        API.Cms.saveModuleData({data: {data: this[this.dataName]}})
-          .then((res) => {
-            this.moduleShow()
-          })
+        API.Cms.saveModuleData({data: {data: this[this.dataName]}}).then((res) => {
+          this.moduleShow()
+        })
       },
       infoData() {
         this.cmsList.findIndex((item, index) => {
@@ -474,15 +468,14 @@
           this[this.dataName].splice(index, 1)
           return
         }
-        this.$confirm.confirm()
+        this.$confirm
+          .confirm()
           .then(() => {
-            API.Cms.delDestroy({data: {id: this.delId}})
-              .then((res) => {
-                this[this.dataName].splice(index, 1)
-              })
+            API.Cms.delDestroy({data: {id: this.delId}}).then((res) => {
+              this[this.dataName].splice(index, 1)
+            })
           })
-          .catch(() => {
-          })
+          .catch(() => {})
       },
       deleteGoodsMainPic() {
         this[this.dataName][this.cmsIndex].detail.image_url = ''

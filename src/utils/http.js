@@ -54,17 +54,20 @@ class HTTP {
     if (typeof this.callback.beforeRequest === 'function') {
       this.callback.beforeRequest(args)
     }
-    return this.http.request(url, data, {
-      method
-    }).then((response) => {
-      return checkStatus(response)
-    }).then(res => {
-      if (typeof this.callback.responseFulfilled === 'function') {
-        return this.callback.responseFulfilled(res, args)
-      } else {
-        return res
-      }
-    })
+    return this.http
+      .request(url, data, {
+        method
+      })
+      .then((response) => {
+        return checkStatus(response)
+      })
+      .then((res) => {
+        if (typeof this.callback.responseFulfilled === 'function') {
+          return this.callback.responseFulfilled(res, args)
+        } else {
+          return res
+        }
+      })
   }
 
   // 设置回调函数
@@ -94,7 +97,7 @@ function checkStatus(response) {
     }
   }
   // 如果http状态码正常，则直接返回数据
-  if (response && (response.status < 400)) {
+  if (response && response.status < 400) {
     return response.data || {}
     // 如果不需要除了data之外的数据，可以直接 return response.data
   }

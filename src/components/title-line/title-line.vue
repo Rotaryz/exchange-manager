@@ -21,17 +21,15 @@
         type: String,
         default: ''
       },
-      title:{
+      title: {
         type: String,
         default: ''
       }
     },
     data() {
-      return {
-      }
+      return {}
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 

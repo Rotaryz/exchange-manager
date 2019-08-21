@@ -38,7 +38,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   import ZbTree from '@components/zb-tree/zb-tree'
   import Upload from '../../components/zb-upload/zb-upload.vue'
@@ -56,9 +56,9 @@
       Upload
     },
     beforeRouteEnter(to, from, next) {
-      API.Goods.getCategory({data: {pid: -1}}).then(res => {
+      API.Goods.getCategory({data: {pid: -1}}).then((res) => {
         // console.log(res)
-        next(vw => {
+        next((vw) => {
           vw.setData(res)
         })
       })
@@ -89,7 +89,7 @@
         this.list = res.data
       },
       getList(other) {
-        API.Goods.getCategory({data: {pid: -1},...other}).then(res => {
+        API.Goods.getCategory({data: {pid: -1}, ...other}).then((res) => {
           this.setData(res)
         })
       },
@@ -136,8 +136,8 @@
       deleteItem(obj) {
         let {item, childItem = null} = obj
         this.$confirm.confirm().then(() => {
-          API.Goods.deleteCategory({data: {id: childItem ? childItem.id : item.id}}).then(res => {
-            this.getList({loading:false})
+          API.Goods.deleteCategory({data: {id: childItem ? childItem.id : item.id}}).then((res) => {
+            this.getList({loading: false})
           })
         })
       },
@@ -153,7 +153,7 @@
         if (!msg) {
           this.editSubmit().then(() => {
             done()
-            this.getList({loading:false})
+            this.getList({loading: false})
           })
         } else {
           this.$toast.show(msg)

@@ -47,10 +47,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
-  // import API from '@api'
-  import TitleLine from "@components/title-line/title-line"
-  import Radio from "../../components/zb-radio/zb-radio"
+// import * as Helpers from './modules/helpers'
+// import API from '@api'
+  import TitleLine from '@components/title-line/title-line'
+  import Radio from '../../components/zb-radio/zb-radio'
   import Upload from '../../components/zb-upload/zb-upload.vue'
 
   const PAGE_NAME = 'WITHDRAWAL_DETAIL'
@@ -102,9 +102,7 @@
         this.checkVisible = true
       },
       // 确认打款
-      sureRemitBtn() {
-
-      }
+      sureRemitBtn() {}
     }
   }
 </script>

@@ -74,8 +74,8 @@ export const actions = {
    * @param obj
    */
   getMoreCustomerList({state, commit, dispatch}, obj) {
-    typeof (obj.page) !== 'undefined' && commit('SET_PAGE', obj.page)
-    typeof (obj.keyword) !== 'undefined' && commit('SET_KEYWORD', obj.keyword)
+    typeof obj.page !== 'undefined' && commit('SET_PAGE', obj.page)
+    typeof obj.keyword !== 'undefined' && commit('SET_KEYWORD', obj.keyword)
     dispatch('getCustomerList')
   }
 }

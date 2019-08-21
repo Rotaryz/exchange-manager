@@ -50,11 +50,9 @@ router.beforeEach((routeTo, routeFrom, next) => {
     // 跳转到登录页面并且把当前的路由信息传递给登录页面
     next({name: 'login', query: {redirectFrom: routeTo.fullPath}})
   }
-
 })
 
 router.beforeResolve(async (routeTo, routeFrom, next) => {
-  console.log(routeTo.matched)
   try {
     for (const route of routeTo.matched) {
       await new Promise((resolve, reject) => {

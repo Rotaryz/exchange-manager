@@ -54,7 +54,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   import storage from 'storage-controller'
 
@@ -74,21 +74,24 @@
         start_time: '',
         end_time: '',
         keyword: '',
-        status: '',
+        status: ''
       }
-      Promise.all([API.Finance.getWithdrawalList({
-        data: {
-          ...params,
-          page: 1,
-          limit: 10,
-        }
-      }), API.Finance.getWithdrawalStatus({
-        data: params
-      })]).then(res => {
+      Promise.all([
+        API.Finance.getWithdrawalList({
+          data: {
+            ...params,
+            page: 1,
+            limit: 10
+          }
+        }),
+        API.Finance.getWithdrawalStatus({
+          data: params
+        })
+      ]).then((res) => {
         // console.log(res)
-        next(vw => {
-          // vw.setData(res[0])
-          // vw.setStatus(res[1])
+        next((vw) => {
+        // vw.setData(res[0])
+        // vw.setStatus(res[1])
         })
       })
     },
@@ -114,25 +117,30 @@
           operate_icon: {name: '打款凭证 ', iconClass: 'icon-certificate', imgUrlKey: 'image'},
           operate_text: {name: '操作 '}
         },
-        list: [{
-          id: 0,
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18',
-          image: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F08%2F06%2F1565065823684-%E7%89%9B%E6%B2%B9%E6%9E%9C.png'
-        }, {
-          id: 1,
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18',
-          image: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F08%2F06%2F1565065823684-%E7%89%9B%E6%B2%B9%E6%9E%9C.png'
-        }],
+        list: [
+          {
+            id: 0,
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18',
+            image:
+              'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F08%2F06%2F1565065823684-%E7%89%9B%E6%B2%B9%E6%9E%9C.png'
+          },
+          {
+            id: 1,
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18',
+            image:
+              'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F08%2F06%2F1565065823684-%E7%89%9B%E6%B2%B9%E6%9E%9C.png'
+          }
+        ],
         total: 11,
         visible: false,
         photoCertificatesUrl: ''
@@ -176,14 +184,15 @@
           data: {
             keyword: this.filter.keyword,
             category_id: this.filter.category_id
-          }, loading: false
-        }).then(res => {
+          },
+          loading: false
+        }).then((res) => {
           this.statusList = res.data
         })
       },
       // 获取列表
       _getList() {
-        API.Finance.getWithdrawalStatus({data: this.filter, loading: false}).then(res => {
+        API.Finance.getWithdrawalStatus({data: this.filter, loading: false}).then((res) => {
           this.setData(res)
         })
       },
@@ -211,11 +220,19 @@
       },
       // 收支明细
       goIncomeExpenses(item, i) {
-        this.$router.push({name: 'income-expenses-detail', params: {id: item.id}, query: {name: this.tabList[this.filter.type].text}})
+        this.$router.push({
+          name: 'income-expenses-detail',
+          params: {id: item.id},
+          query: {name: this.tabList[this.filter.type].text}
+        })
       },
       // 详情
       goDetail(item, i) {
-        this.$router.push({name: 'withdrawal-detail', params: {id: item.id}, query: {name: this.tabList[this.filter.type].text}})
+        this.$router.push({
+          name: 'withdrawal-detail',
+          params: {id: item.id},
+          query: {name: this.tabList[this.filter.type].text}
+        })
       },
       // 分页
       pageChange(val) {
@@ -227,7 +244,6 @@
       },
       // 时间选择
       changeDate() {
-
         this._getList()
       },
       // 状态改变

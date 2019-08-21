@@ -64,9 +64,9 @@
         data: {
           page: 1,
           limit: 10
-        },
-      }).then(res => {
-        next(vw => {
+        }
+      }).then((res) => {
+        next((vw) => {
           vw.setData(res)
         })
       })
@@ -76,9 +76,13 @@
         tradeList: [],
         listHeader: {
           name: {name: '分组名称'},
-          goods_num: {name: '商品数量', type: 'router-link', router: {name: 'mall-goods-goods-grouping-detail', params: {id: 'id'}}},
+          goods_num: {
+            name: '商品数量',
+            type: 'router-link',
+            router: {name: 'mall-goods-goods-grouping-detail', params: {id: 'id'}}
+          },
           created_at: {name: '创建时间'},
-          operate_text: {name: '操作', type: 'operate', style: 'max-width:150px'},
+          operate_text: {name: '操作', type: 'operate', style: 'max-width:150px'}
         },
         total: 0,
         list: [],
@@ -93,14 +97,14 @@
           name: '',
           industry_id: ''
         },
-        currentGroup: {},
+        currentGroup: {}
       }
     },
     methods: {
       _getTradeList() {
         return API.Goods.getTradeList({
           data: {limit: 0}
-        }).then(res => {
+        }).then((res) => {
           this.tradeList = res.data
           return res
         })
@@ -111,8 +115,9 @@
       },
       _getList(other) {
         API.Goods.getGroupList({
-          data: this.filter, ...other
-        }).then(res => {
+          data: this.filter,
+          ...other
+        }).then((res) => {
           this.setData(res)
         })
       },
@@ -123,7 +128,7 @@
         this.edit.id = ''
       },
       showEditModal() {
-        this._getTradeList().then(res => {
+        this._getTradeList().then((res) => {
           this.editVisible = true
         })
       },
@@ -141,11 +146,13 @@
         this.visible = true
       },
       deleteBtn(item, i) {
-        this.$confirm.confirm().then(async () => {
-          await API.Goods.deleteGroup({data: {id: item.id}})
-          this._getList({loading: false})
-        }, () => {
-        })
+        this.$confirm.confirm().then(
+          async () => {
+            await API.Goods.deleteGroup({data: {id: item.id}})
+            this._getList({loading: false})
+          },
+          () => {}
+        )
       },
       justifyAddGroup(done) {
         let msg = ''
@@ -160,16 +167,16 @@
       async _addGroup() {
         if (this.edit.id) {
           await API.Goods.editGroup({
-            data: this.edit, doctor() {
-            }
+            data: this.edit,
+            doctor() {}
           })
-          this.list.find(item => {
+          this.list.find((item) => {
             if (item.id === this.edit.id) item.name = this.edit.name
           })
         } else {
           await API.Goods.addGroup({
-            data: this.edit, doctor() {
-            }
+            data: this.edit,
+            doctor() {}
           })
           this.list.push(this.edit)
         }

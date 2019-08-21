@@ -67,11 +67,13 @@
         </base-form-item>
         <div v-if="jurisdictionValue === 1">
           <base-form-item marginBottom="40px" verticalAlign="top" label="业务提成" labelMarginRight="30.9" labelWidth="92px"
-                          labelAlign="right">
+                          labelAlign="right"
+          >
             <div>
               <div class="more-item-wrap">
                 <base-form-item marginBottom="0" :required="false" labelColor="#868DAA" label="标准版" labelMarginRight="20"
-                                labelWidth="42px" labelAlign="right">
+                                labelWidth="42px" labelAlign="right"
+                >
                   <base-select
                     defaultLabel="提成方式"
                     :width="164"
@@ -86,7 +88,8 @@
 
               <div class="more-item-wrap">
                 <base-form-item verticalAlign="top" marginBottom="0" labelHeight="40px" :required="false" labelColor="#868DAA"
-                                label="全能版" labelWidth="42px" labelAlign="right" labelMarginRight="20">
+                                label="全能版" labelWidth="42px" labelAlign="right" labelMarginRight="20"
+                >
                   <div>
                     <base-select
                       defaultLabel="阶梯价"
@@ -95,7 +98,8 @@
                     ></base-select>
                     <div class="input-content">
                       <base-form-item marginBottom="20px" :required="false" label="销售" labelWidth="28px" labelAlign="right"
-                                      labelMarginRight="12">
+                                      labelMarginRight="12"
+                      >
                         <base-input :width="100" :height="40"></base-input>
                         <div class="after-word">个</div>
                         <base-input :width="164" :height="40"></base-input>
@@ -109,7 +113,8 @@
 
               <div class="more-item-wrap">
                 <base-form-item marginBottom="0" :required="false" labelColor="#868DAA" label="合伙版" labelMarginRight="20"
-                                labelWidth="42px" labelAlign="right">
+                                labelWidth="42px" labelAlign="right"
+                >
                   <base-select
                     defaultLabel="固定金额"
                     :width="164"
@@ -128,7 +133,8 @@
           </base-form-item>
           <div class="more-item-wrap more-item-block">
             <base-form-item marginBottom="0" :required="false" labelColor="#868DAA" label="标准版" labelMarginRight="50"
-                            labelWidth="42px" labelAlign="right">
+                            labelWidth="42px" labelAlign="right"
+            >
               <span class="after-word">商品差价</span>
               <base-input :width="164" :height="40" placeholder="请输入商品差价"></base-input>
               <span class="after-word">%</span>
@@ -136,7 +142,8 @@
           </div>
           <div class="more-item-wrap more-item-block">
             <base-form-item marginBottom="0" :required="false" labelColor="#868DAA" label="全能版" labelMarginRight="50"
-                            labelWidth="42px" labelAlign="right">
+                            labelWidth="42px" labelAlign="right"
+            >
               <span class="after-word">商品差价</span>
               <base-input :width="164" :height="40" placeholder="请输入商品差价"></base-input>
               <span class="after-word">%</span>
@@ -144,7 +151,8 @@
           </div>
           <div class="more-item-wrap more-item-block">
             <base-form-item marginBottom="0" :required="false" labelColor="#868DAA" label="合伙版" labelMarginRight="50"
-                            labelWidth="42px" labelAlign="right">
+                            labelWidth="42px" labelAlign="right"
+            >
               <span class="after-word">商品差价</span>
               <base-input :width="164" :height="40" placeholder="请输入商品差价"></base-input>
               <span class="after-word">%</span>
@@ -161,10 +169,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
-  // import API from '@api'
-  import TitleLine from "@components/title-line/title-line"
-  import Radio from "@components/zb-radio/zb-radio"
+// import * as Helpers from './modules/helpers'
+// import API from '@api'
+  import TitleLine from '@components/title-line/title-line'
+  import Radio from '@components/zb-radio/zb-radio'
 
   const PAGE_NAME = 'EDIT_LEVEL'
   const TITLE = '等级'
@@ -186,17 +194,12 @@
       }
     },
     methods: {
-      cancelBtn() {
-      },
-      submitBtn() {
-      },
+      cancelBtn() {},
+      submitBtn() {},
       // 选择是否赠送账号
-      changeValue() {
-      },
+      changeValue() {},
       // 切换权限
-      changeType() {
-
-      }
+      changeType() {}
     }
   }
 </script>

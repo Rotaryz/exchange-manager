@@ -1,16 +1,13 @@
 import request from '@utils/http'
 
-/**
- * 物流api
- */
 export default {
   /**
-   * 获取订单列表
+   * 代理商列表
    * @param args
    * @returns {*}
    */
-  logisticsList(args) {
-    const url = `/exchange-platform/platform/logistics/template/index`
+  getApplicationList(args) {
+    const url = `/exchange-platform/platform/shop/shop-manager/index`
     return request.get({url, ...args})
   }
 }
