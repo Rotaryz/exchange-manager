@@ -62,7 +62,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
 
   const PAGE_NAME = 'CUSTOMER_LIST'
@@ -113,7 +113,7 @@
       let data = {page: 1, keyword: ''}
       API.Customer.getCustomerList({data, loading: true, toast: true})
         .then((res) => {
-          next(vx => {
+          next((vx) => {
             vx.customerList = res.data
             vx.total = res.meta.total
           })
@@ -129,35 +129,37 @@
           data: this.paramObj,
           loading,
           toast: true,
-          doctor() {
-          }
+          doctor() {}
+        }).then((res) => {
+          this.customerList = res.data
+          this.total = res.meta.total
         })
-          .then((res) => {
-            this.customerList = res.data
-            this.total = res.meta.total
-          })
       },
       async _getGrade() {
         let res = await API.Customer.getCustomerGrade({
-          data: {}, loading: false, toast: true, doctor() {
-          }
+          data: {},
+          loading: false,
+          toast: true,
+          doctor() {}
         })
         this.arr = res.error_code === this.$ERR_OK ? res.data : []
       },
       showSet(item) {
         this.$router.push(`/client/customer/customer-list/`)
         console.log(`/client/customer/customer-list/level-setting/${item.id}`)
-        // this.customerId = item.id
-        // this.grade = item.shop_level_id
-        // this.visible = true
-        // this.defaultLabel = item.shop_level_name
+      // this.customerId = item.id
+      // this.grade = item.shop_level_id
+      // this.visible = true
+      // this.defaultLabel = item.shop_level_name
       },
       // 设置等级
       async setGrade() {
         let data = {shop_id: this.customerId, shop_level_id: this.grade}
         let res = await API.Customer.setCustomerGrade({
-          data, loading: false, toast: true, doctor() {
-          }
+          data,
+          loading: false,
+          toast: true,
+          doctor() {}
         })
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },

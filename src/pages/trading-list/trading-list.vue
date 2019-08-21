@@ -71,16 +71,16 @@
       let data = {page: 1, keyword: ''}
       API.Order.getOrderList({data, loading: true, toast: true})
         .then((res) => {
-          next(vx => {
+          next((vx) => {
             // vx.orderList = res.data
             // vx.total = res.meta.total
             vx.orderList = [
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'}
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+              {time: '2019-01-01', order: 'dd234557577', price: '12.1'}
             ]
           })
         })
@@ -111,21 +111,19 @@
           data: this.paramObj,
           loading,
           toast: true,
-          doctor() {
-          }
+          doctor() {}
+        }).then((res) => {
+          res.data = [
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'},
+            {time: '2019-01-01', order: 'dd234557577', price: '12.1'}
+          ]
+          this.orderList = res.data
+          this.total = res.meta.total
         })
-          .then((res) => {
-            res.data = [
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'}
-            ]
-            this.orderList = res.data
-            this.total = res.meta.total
-          })
       },
       _search(keyword) {
         this.keyword = keyword || ''

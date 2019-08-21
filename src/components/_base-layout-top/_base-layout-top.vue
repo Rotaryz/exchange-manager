@@ -13,7 +13,7 @@
     props: {
       layoutType: {
         type: String,
-        default: 'flex-start-center'  // flex-start flex-between flex-between-center flex-around flex-around-center
+        default: 'flex-start-center' // flex-start flex-between flex-between-center flex-around flex-around-center
       },
       padding: {
         type: String,

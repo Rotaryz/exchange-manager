@@ -13,8 +13,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './helpers'
-  // import API from '@api'
+// import * as Helpers from './helpers'
+// import API from '@api'
   import NavigationMenu from './navigation-menu/navigation-menu'
   import TopBar from './top-bar/top-bar'
 

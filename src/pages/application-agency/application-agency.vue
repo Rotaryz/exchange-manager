@@ -40,7 +40,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
   import storage from 'storage-controller'
 
@@ -67,7 +67,13 @@
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, level: this.level, start_at: this.time[0] || '', end_at: this.time[1] || ''}
+        let data = {
+          page: this.page,
+          keyword: this.keyword,
+          level: this.level,
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || ''
+        }
         return data
       },
       excelUrl() {
@@ -78,7 +84,7 @@
         }
         let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
         return url
-      },
+      }
     },
     watch: {
       page() {
@@ -126,13 +132,11 @@
           data: this.paramObj,
           loading,
           toast: true,
-          doctor() {
-          }
+          doctor() {}
+        }).then((res) => {
+          this.applicationList = res.data
+          this.total = res.meta.total
         })
-          .then((res) => {
-            this.applicationList = res.data
-            this.total = res.meta.total
-          })
       }
     }
   }

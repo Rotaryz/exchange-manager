@@ -1,7 +1,7 @@
 const appConfig = require('./src/app.config')
 const TerserPlugin = require('terser-webpack-plugin')
 
-let builded = process.argv.some(val => val === 'build')
+let builded = process.argv.some((val) => val === 'build')
 let optimization = {}
 const splitChunks = {}
 if (builded) {
@@ -14,7 +14,7 @@ if (builded) {
       minChunks: 1,
       maxInitialRequests: 5,
       minSize: 1024 * 244,
-      maxSize: 1024 * 1024 / 2
+      maxSize: (1024 * 1024) / 2
     },
     common: {
       name: 'chunk-common',
@@ -24,8 +24,8 @@ if (builded) {
       reuseExistingChunk: true,
       maxInitialRequests: 5,
       minSize: 1024 * 244,
-      maxSize: 1024 * 1024 / 2
-    },
+      maxSize: (1024 * 1024) / 2
+    }
   }
   optimization = {
     concatenateModules: true,
@@ -34,10 +34,10 @@ if (builded) {
         include: /src/,
         test: /\.js(\?.*)?$/i,
         parallel: true
-      }),
+      })
     ],
     runtimeChunk: {
-      name: 'manifest',
+      name: 'manifest'
     },
     splitChunks
   }
@@ -72,21 +72,21 @@ module.exports = {
     port: 3959,
     ...(process.env.VUE_APP_API
       ? // 代理生产地址.
-      {
-        proxy: {
-          '/exchange-platform': {
-            target: process.env.VUE_APP_API
+        {
+          proxy: {
+            '/exchange-platform': {
+              target: process.env.VUE_APP_API
+            }
           }
         }
-      }
       : // 代理本地地址.
-      {
-        proxy: {
-          '/api': {
-            target: '/'
+        {
+          proxy: {
+            '/api': {
+              target: '/'
+            }
           }
-        }
-      })
+        })
     // { before: require('./tests/mock-api') }),
   }
 }

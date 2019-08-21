@@ -78,8 +78,7 @@
         type: [String, Boolean]
       },
       inputStyle: {
-        default: () => {
-        },
+        default: () => {},
         type: [Object, String]
       },
       radius: {
@@ -110,12 +109,11 @@
       style() {
         return {
           width: this.width && this.width + 'px',
-          height: this.height && this.height + 'px',
+          height: this.height && this.height + 'px'
         }
       }
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
       clearBtn() {
         this.$emit('input', '')

@@ -12,7 +12,7 @@
     name: COMPONENT_NAME,
     props: {
       status: {
-        type: [Number,Boolean],
+        type: [Number, Boolean],
         default: 1
       },
       width: {
@@ -54,8 +54,8 @@
     methods: {
       _changeSwitch() {
         let res = !this.status
-        this.$emit('update:status',res)
-        this.$emit('changeSwitch',res)
+        this.$emit('update:status', res)
+        this.$emit('changeSwitch', res)
       }
     }
   }

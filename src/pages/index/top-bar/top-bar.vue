@@ -59,7 +59,7 @@
     methods: {
       ...authMethods,
       _modifyPassword() {
-        // this.$router.push(`/modify-password`)
+      // this.$router.push(`/modify-password`)
       },
       _confirmLogOut() {
         this.$refs.confirm.show('确定退出当前系统吗？')
@@ -72,7 +72,7 @@
         if (index === this.currentTitles.length - 1) return
         // 面包屑跳转
         let url = this.$route.fullPath
-        let type = (url.slice(1, -1)).split('/')
+        let type = url.slice(1, -1).split('/')
         let r = this.$router.options.routes.find((r) => r.name === 'index')
         let routerArr = [...r.children]
         let item = routerArr.find((item) => item.name === type[0])
@@ -83,7 +83,9 @@
             if (this.$route.query.complete || this.$route.params.complete) {
               item.meta.crumbs[item.meta.crumbs.length - 1] = SUCCESS_TEXT
             } else {
-              item.meta.crumbs[item.meta.crumbs.length - 1] = (this.$route.query.id || this.$route.params.id ? EDIT_TEXT : ADD_TEXT) + item.meta.crumbs[item.meta.crumbs.length - 1]
+              item.meta.crumbs[item.meta.crumbs.length - 1] =
+                (this.$route.query.id || this.$route.params.id ? EDIT_TEXT : ADD_TEXT) +
+                item.meta.crumbs[item.meta.crumbs.length - 1]
             }
           }
           if (item.meta.crumbs[item.meta.crumbs.length - 1] === value) {

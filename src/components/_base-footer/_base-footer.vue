@@ -14,15 +14,15 @@
     props: {
       addIcon: {
         type: [Boolean, String],
-        default: false,
+        default: false
       },
       size: {
         type: String,
-        default: 'middle', // small middle big
+        default: 'middle' // small middle big
       },
       footerStyle: {
         type: String,
-        default: '', // small middle big
+        default: '' // small middle big
       },
       isSeize: {
         type: Boolean,

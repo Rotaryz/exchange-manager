@@ -50,8 +50,7 @@
       },
       otherParams: {
         type: String,
-        default: () => {
-        }
+        default: () => {}
       },
       value: {
         type: [String, Boolean, Number],
@@ -91,7 +90,7 @@
       },
       inputStyle: {
         default: '',
-        type: [String, Object],
+        type: [String, Object]
       },
       size: {
         default: 'small',
@@ -118,12 +117,12 @@
         return [this.goodsCategoryFirst, this.goodsCategorySecond]
       },
       setValue(otherParams) {
-        this._getCategoryFirst(otherParams).then(res => {
-          let item = res.data.find(item => item.is_selected)
+        this._getCategoryFirst(otherParams).then((res) => {
+          let item = res.data.find((item) => item.is_selected)
           if (!item) return false
           this.goodsCategoryFirst = item.id
-          this._selectCategoryFirst(otherParams).then(res2 => {
-            let item2 = res2.data.find(item => item.is_selected)
+          this._selectCategoryFirst(otherParams).then((res2) => {
+            let item2 = res2.data.find((item) => item.is_selected)
             if (!item2) return false
             this.goodsCategorySecond = item2 && item2.id
             this._selectCategorySecond()
@@ -135,7 +134,7 @@
         return this.getDataFunction()({
           data: {[this.paramsKey]: -1, ...otherParams},
           loading: false
-        }).then(res => {
+        }).then((res) => {
           this.goodsCategoryFirstList = res.data || []
           return res
         })
@@ -143,8 +142,7 @@
       // 选择第一分类
       async _selectCategoryFirst(otherParams = {}) {
         let res = await this.getDataFunction({
-          doctor() {
-          }
+          doctor() {}
         })({
           data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
           loading: false
@@ -162,7 +160,7 @@
         this.$emit('update:value', value)
         this.$emit('input', value)
         this.$emit('change', value)
-      },
+      }
     }
   }
 </script>

@@ -1,6 +1,5 @@
 export default {
-  methods: {
-  },
+  methods: {},
   beforeDestroy() {
     this.$loading.hide()
   }

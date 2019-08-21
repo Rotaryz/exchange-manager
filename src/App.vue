@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  /** eslint-disable **/
+/** eslint-disable **/
   import appConfig from '@src/app.config'
 
   export default {

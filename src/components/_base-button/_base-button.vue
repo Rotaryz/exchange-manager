@@ -19,11 +19,11 @@
     props: {
       addIcon: {
         type: [Boolean, String],
-        default: false,
+        default: false
       },
       size: {
         type: String,
-        default: 'middle', // small middle big
+        default: 'middle' // small middle big
       },
       type: {
         type: String,
@@ -37,13 +37,12 @@
       },
       disable: {
         type: [Boolean, String],
-        default: false,
+        default: false
       },
       buttonStyle: {
         type: String,
-        default: '',
+        default: ''
       }
-
     },
     data() {
       return {}

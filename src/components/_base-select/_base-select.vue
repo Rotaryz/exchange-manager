@@ -46,7 +46,8 @@
         default: '32',
         type: [String, Number]
       },
-      radius: {// 2 4
+      radius: {
+        // 2 4
         default: null,
         type: String
       },
@@ -98,26 +99,26 @@
       // 每一行
       itemStyle: {
         default: '',
-        type: [String, Object],
+        type: [String, Object]
       },
       inputStyle: {
         default: '',
-        type: [String, Object],
+        type: [String, Object]
       },
       top: {
         default: '',
-        type: String,
+        type: String
       }
     },
     data() {
       return {
         visible: false,
-        setTime: '',
+        setTime: ''
       }
     },
     computed: {
       valueLabel() {
-        let res = this.data.find(item => {
+        let res = this.data.find((item) => {
           let re = this.valueKey ? item[this.valueKey] === this.value : item === this.value
           return re
         })

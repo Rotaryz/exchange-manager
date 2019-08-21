@@ -4,7 +4,7 @@ import {app as APP} from '../../main'
 import HTTP from '@utils/http'
 
 export const state = {
-  currentUser: storage.get('auth.currentUser', 0), // 用户信息
+  currentUser: storage.get('auth.currentUser', 0) // 用户信息
 }
 
 export const getters = {
@@ -35,15 +35,14 @@ export const actions = {
       return dispatch('validate')
     }
     let data = {username: username, password}
-    return API.Auth.logIn({data})
-      .then((res) => {
-        if (res.error_code !== APP.$ERR_OK) {
-          return null
-        }
-        const user = res.data.manager_info
-        commit('SET_CURRENT_USER', {user, token: res.data.access_token})
-        return user
-      })
+    return API.Auth.logIn({data}).then((res) => {
+      if (res.error_code !== APP.$ERR_OK) {
+        return null
+      }
+      const user = res.data.manager_info
+      commit('SET_CURRENT_USER', {user, token: res.data.access_token})
+      return user
+    })
   },
   // 退出
   logOut({commit}) {

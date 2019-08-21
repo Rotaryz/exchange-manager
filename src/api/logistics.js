@@ -12,5 +12,5 @@ export default {
   logisticsList(args) {
     const url = `/exchange-platform/platform/logistics/template/index`
     return request.get({url, ...args})
-  },
+  }
 }

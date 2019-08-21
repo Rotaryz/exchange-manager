@@ -70,7 +70,7 @@
         type: String,
         default: ''
       },
-      gapWidth:{
+      gapWidth: {
         // 高亮与字体占宽左右的差距
         type: String,
         default: '10px'
@@ -102,7 +102,7 @@
     methods: {
       getId(item, idx) {
         // console.log(typeof (this.valueKey))
-        return typeof (this.valueKey) === 'number' ? idx : item[this.valueKey]
+        return typeof this.valueKey === 'number' ? idx : item[this.valueKey]
       },
       getWidthAndPositon(id) {
         let el = this.$refs['activeTab' + id][0]

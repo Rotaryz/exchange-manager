@@ -36,8 +36,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
-  // import API from '@api'
+// import * as Helpers from './modules/helpers'
+// import API from '@api'
   import storage from 'storage-controller'
 
   const PAGE_NAME = 'LEVEL_MANAGER'
@@ -95,34 +95,34 @@
     },
     methods: {
       _getLevelList(loading = false) {
-        // API.Order.getOrderList({
-        //   data: {page: this.page},
-        //   loading,
-        //   toast: true,
-        //   doctor() {
-        //   }
-        // })
-        //   .then((res) => {
-        //     this.orderList = res.data
-        //     this.total = res.meta.total
-        //   })
+      // API.Order.getOrderList({
+      //   data: {page: this.page},
+      //   loading,
+      //   toast: true,
+      //   doctor() {
+      //   }
+      // })
+      //   .then((res) => {
+      //     this.orderList = res.data
+      //     this.total = res.meta.total
+      //   })
       },
       delLevel(item) {
         this.delId = item.id
-        this.$confirm.confirm()
+        this.$confirm
+          .confirm()
           .then(() => {
-            // API.Cms.delDestroy({data: {id: this.delId}})
-            //   .then((res) => {
-            //     this[this.dataName].splice(index, 1)
-            //   })
+          // API.Cms.delDestroy({data: {id: this.delId}})
+          //   .then((res) => {
+          //     this[this.dataName].splice(index, 1)
+          //   })
           })
-          .catch(() => {
-          })
+          .catch(() => {})
       },
       // 导出Excel
       newLevel() {
         this.$router.push('/client/customer/level-manager/edit-level')
-      },
+      }
     }
   }
 </script>

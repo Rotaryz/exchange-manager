@@ -22,11 +22,11 @@
     props: {
       paramsKey: {
         type: String,
-        default: '',
+        default: ''
       },
       buttonSize: {
         type: String,
-        default: '', // small middle big
+        default: '' // small middle big
       },
       placeholder: {
         // 默认文字

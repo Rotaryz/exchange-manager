@@ -61,16 +61,16 @@
           return
         }
         let url = newVal.fullPath
-        let type = (url.slice(1, -1)).split('/')[0]
+        let type = url.slice(1, -1).split('/')[0]
         this._infoFirst(type)
       },
       menuIndex(news) {
-        // todo 待优化
+      // todo 待优化
       }
     },
     created() {
       let url = this.$route.fullPath
-      let type = (url.slice(1, -1)).split('/')[0]
+      let type = url.slice(1, -1).split('/')[0]
       this._infoFirst(type)
     },
     methods: {
@@ -110,8 +110,7 @@
         })
         return menu
       },
-      setChildActive() {
-      }
+      setChildActive() {}
     }
   }
 </script>

@@ -32,7 +32,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
+// import * as Helpers from './modules/helpers'
   import API from '@api'
 
   const PAGE_NAME = 'TRADING_RECORD'
@@ -51,10 +51,10 @@
           page: 1,
           limit: 10
         }
-      }).then(res => {
-        next(vw => {
+      }).then((res) => {
+        next((vw) => {
           console.log('111')
-          // vw.setData(res)
+        // vw.setData(res)
         })
       })
     },
@@ -74,21 +74,24 @@
           channels: {name: '升级渠道 '},
           update_time: {name: '升级时间 '}
         },
-        list: [{
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18'
-        }, {
-          name: '刘强东',
-          level: '标准版',
-          price: 123.00,
-          referrer: '李力',
-          channels: '线下',
-          update_time: '2019-09-18'
-        }],
+        list: [
+          {
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18'
+          },
+          {
+            name: '刘强东',
+            level: '标准版',
+            price: 123.0,
+            referrer: '李力',
+            channels: '线下',
+            update_time: '2019-09-18'
+          }
+        ],
         total: 11
       }
     },
@@ -97,7 +100,7 @@
         this.list = res.data
       },
       _getList() {
-        API.Customer.getTradingRecord({data: this.filter, loading: false}).then(res => {
+        API.Customer.getTradingRecord({data: this.filter, loading: false}).then((res) => {
           this.setData(res)
         })
       },

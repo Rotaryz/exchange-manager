@@ -37,5 +37,5 @@ export default {
   getTradingRecord(args) {
     const url = `/exchange-platform/platform/shop/level/index`
     return request.get({url, ...args})
-  },
+  }
 }

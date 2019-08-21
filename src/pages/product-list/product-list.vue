@@ -58,22 +58,25 @@
     },
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
-      Promise.all([API.Goods.getGoodsList({
-        data: {
-          keyword: '',
-          category_id: '',
-          status: '',
-          page: 1,
-          limit: 10
-        }
-      }), API.Goods.getGoodsListStatus({
-        data: {
-          keyword: '',
-          category_id: ''
-        }
-      })]).then(res => {
+      Promise.all([
+        API.Goods.getGoodsList({
+          data: {
+            keyword: '',
+            category_id: '',
+            status: '',
+            page: 1,
+            limit: 10
+          }
+        }),
+        API.Goods.getGoodsListStatus({
+          data: {
+            keyword: '',
+            category_id: ''
+          }
+        })
+      ]).then((res) => {
         // console.log(res)
-        next(vw => {
+        next((vw) => {
           vw.setData(res[0])
           vw.setStatus(res[1])
         })
@@ -94,7 +97,8 @@
         },
         listHeader: {
           name: {
-            name: '商品名称', before: {
+            name: '商品名称',
+            before: {
               img: 'goods_cover_image'
             }
           },
@@ -102,8 +106,8 @@
           saleable: {name: '库存'},
           price: {name: '零售价'},
           discount_price: {name: '会员价'},
-          status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate"}
+          status: {name: '状态', type: 'switch'},
+          operate_text: {name: '操作', type: 'operate'}
         },
         list: []
       }
@@ -125,15 +129,17 @@
           data: {
             keyword: this.filter.keyword,
             category_id: this.filter.category_id
-          }, loading: false
-        }).then(res => {
+          },
+          loading: false
+        }).then((res) => {
           this.statusList = res.data
         })
       },
       _getList(other) {
         API.Goods.getGoodsList({
-          data: this.filter, ...other
-        }).then(res => {
+          data: this.filter,
+          ...other
+        }).then((res) => {
           this.setData(res)
         })
       },
@@ -168,7 +174,6 @@
         this._getList({loading: false})
       }
     }
-
   }
 </script>
 
