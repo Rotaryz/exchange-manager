@@ -103,6 +103,7 @@
       changeTab(val) {
         // console.log(val)
         this.getWidthAndPositon(val)
+        this.$emit('update:value', val)
         this.$emit('change', val)
       }
     }
