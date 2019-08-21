@@ -2,35 +2,37 @@
   <div class="level-setting child-router normal-box">
     <base-table-tool :isBorder="false" :iconUrl="require('./icon-new_commodity@2x.png')" title="客户设置"></base-table-tool>
     <div class="edit">
-      <base-form-item label="客户账号" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
-        <base-input placeholder="请输入客户账户"></base-input>
-      </base-form-item>
-      <base-form-item label="账号等级" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
-        <base-select
-          placeholder="请选择等级"
-          :width="416"
-          :height="44"
-        ></base-select>
-      </base-form-item>
-      <base-form-item label="角色金额" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
-        <div class="money">54565</div>
-      </base-form-item>
-      <base-form-item label="操作人" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
-        <base-input placeholder="请输入操作人"></base-input>
-      </base-form-item>
-      <base-form-item label="收款凭证" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
-        <upload :multiple="false"
-                :addStyle="`margin:0 20px 0 0;width:90px;height:90px`"
-                :data.sync="edit.image_url"
-                inline
-                size="2"
-                @delete="categoryImageDelete"
-                @successImage="successImage"
-                @failFile="failFile"
-        >
-          <!--<div slot="icon" class="upload-add-icon"></div>-->
-        </upload>
-      </base-form-item>
+      <div class="edit-content">
+        <base-form-item label="客户账号" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
+          <base-input placeholder="请输入客户账户"></base-input>
+        </base-form-item>
+        <base-form-item label="账号等级" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
+          <base-select
+            placeholder="请选择等级"
+            :width="400"
+            :height="40"
+          ></base-select>
+        </base-form-item>
+        <base-form-item label="角色金额" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
+          <div class="money">54565</div>
+        </base-form-item>
+        <base-form-item label="操作人" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
+          <base-input placeholder="请输入操作人"></base-input>
+        </base-form-item>
+        <base-form-item label="收款凭证" labelMarginRight="40.9" labelWidth="68px" labelAlign="right">
+          <upload :multiple="false"
+                  :addStyle="`margin:0 20px 0 0;width:90px;height:90px`"
+                  :data.sync="edit.image_url"
+                  inline
+                  size="2"
+                  @delete="categoryImageDelete"
+                  @successImage="successImage"
+                  @failFile="failFile"
+          >
+            <!--<div slot="icon" class="upload-add-icon"></div>-->
+          </upload>
+        </base-form-item>
+      </div>
     </div>
 
   </div>
@@ -88,13 +90,18 @@
     background: $color-white
 
   .edit
-    padding: 24px 20px 0 57.5px
+    border-top-1px($color-line)
+    padding-top: 24px
+    margin: 0 20px
     box-sizing: border-box
+    .edit-content
+      box-sizing: border-box
+      padding-left: 37.5px
 
   .money
     font-family: $font-family-regular
     color: $color-text-main
-    line-height: 44px
+    line-height: 40px
     font-size: $font-size-14
 
 </style>

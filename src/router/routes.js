@@ -171,7 +171,20 @@ export default [
                   title: '等级管理', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['等级管理'] // 面包屑标题
-                }
+                },
+                children: [
+                  // 等级
+                  {
+                    path: '/client/customer/level-manager/edit-level',
+                    name: 'edit-level',
+                    component: () => import('@pages/edit-level/edit-level'),
+                    meta: {
+                      title: '等级管理', // 页面标题
+                      variableIndex: 1,
+                      crumbs: ['等级管理', '等级'] // 面包屑标题
+                    }
+                  }
+                ]
               }
             ]
           },
