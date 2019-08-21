@@ -9,8 +9,8 @@
         <span v-if="isShowMark" class="idx-mark">{{idx +1}}</span>
         <span class="text">{{flow.text}}</span>
       </li>
-      <div class="tab-active-line-wrap" :style="{'left': activeLine.left + 'px', width: activeLine.lineWidth + 'px', background: activeColor}">
-        <div class="tab-active-line"></div>
+      <div class="tab-active-line-wrap" :style="{'left': activeLine.left + 'px', width: activeLine.lineWidth + 'px', background: activeColor,'padding-left':gapWidth,'padding-right':gapWidth}">
+        <div class="tab-active-line" :style="{width:activeLineWidth}"></div>
       </div>
     </ul>
   </div>
@@ -65,6 +65,16 @@
         type: Boolean,
         default: false
       },
+      activeLineWidth: {
+        // 高亮寬度
+        type: String,
+        default: ''
+      },
+      gapWidth:{
+        // 高亮与字体占宽左右的差距
+        type: String,
+        default: '10px'
+      }
     },
     data() {
       return {
