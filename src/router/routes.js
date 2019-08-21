@@ -49,27 +49,31 @@ export default [
             component: {render: h => h('router-view')},
             children: [
               {
-                path: '/mall/goods/product-list',
-                name: 'mall-goods-product-list',
-                component: () => import('@pages/product-list/product-list'),
+                path: '/mall/goods/goods-list',
+                name: 'mall-goods-goods-list',
+                component: () => import('@pages/goods-list/goods-list'),
                 meta: {
                   title: '商品列表',
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['商品列表']
+                  crumbs: ['商品列表'],
+                  style:{margin:0}
                 },
+                children:[
+                  // 新建商品
+                  {
+                    path: '/mall/goods/goods-list/goods-edit',
+                    name: 'mall-goods-edit',
+                    component: () => import('@pages/goods-edit/goods-edit'),
+                    meta: {
+                      type: '',
+                      title: '编辑商品',
+                      variableIndex: 1,
+                      crumbs: ['商品列表', '商品']
+                    }
+                  },
+                ]
               },
-              // 新建商品
-              {
-                path: '/mall/goods/product-list/edit-product',
-                name: 'mall-goods-product-list-edit',
-                component: () => import('@pages/edit-product/edit-product'),
-                meta: {
-                  type: '',
-                  title: '编辑商品',
-                  variableIndex: 1,
-                  crumbs: ['商品列表', '商品']
-                }
-              },
+
               // 商品分类
               {
                 path: '/mall/goods/goods-classify',

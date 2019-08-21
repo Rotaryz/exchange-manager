@@ -103,7 +103,7 @@
           status: '',
           page: 1,
           limit: 10,
-          type: this.$route.query.type || 0
+          type: this.$route.query.type || '0'
         },
         listHeader: {
           name: {name: '提现单号'},
@@ -247,6 +247,7 @@
     width: 100%
     display flex
     flex-direction column
+
     .content-wrap
       flex: 1
       padding: 20px
