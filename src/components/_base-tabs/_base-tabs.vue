@@ -1,7 +1,7 @@
 <template>
   <div :class="['tab-wrap',tabAlign]">
     <ul :class="['tab-list',tabAlign]">
-      <li v-for="(flow,idx) in data" :key="flow.text" :ref="'activeTab'+idx"
+      <li v-for="(flow,idx) in data" :key="flow.text" :ref="'activeTab'+getId(flow,idx)"
           :class="['tab-item', {'tab-item-active':value===getId(flow,idx)}]"
           :style="{color:defaultColor,padding:padding,margin:margin}"
           @click.capture="changeTab(getId(flow,idx),$event)"
@@ -43,7 +43,7 @@
       margin: {
         // 样式margin
         type: String,
-        default: '0px'
+        default: '0 20px'
       },
       tabAlign: {
         // 文字样式
@@ -58,7 +58,7 @@
       defaultColor: {
         // 默认颜色
         type: String,
-        default: ''
+        default: '#333333'
       },
       isShowMark: {
         // 是否后面有标记
@@ -105,13 +105,14 @@
         return typeof (this.valueKey) === 'number' ? idx : item[this.valueKey]
       },
       getWidthAndPositon(id) {
+        console.log(this.$refs['activeTab' + id])
         let el = this.$refs['activeTab' + id][0]
         if (!el) return
         this.activeLine.lineWidth = el.offsetWidth
         this.activeLine.left = el.offsetLeft
       },
       changeTab(val) {
-        // console.log(val)
+        console.log(val)
         this.getWidthAndPositon(val)
         this.$emit('update:value', val)
         this.$emit('change', val)
@@ -129,7 +130,6 @@
     display: flex;
     justify-content: center
     background-color: $color-white
-
     &.center
       justify-content: center
 
