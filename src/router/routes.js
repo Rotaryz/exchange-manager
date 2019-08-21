@@ -97,7 +97,6 @@ export default [
                     name: 'mall-goods-goods-grouping-detail',
                     component: () => import('@pages/goods-grouping-detail/goods-grouping-detail'),
                     meta: {
-                      type: 'sec-menu', // 二级标识
                       crumbs: ['商品分组', '详情']
                     }
                   }]
@@ -290,13 +289,32 @@ export default [
             children: [
               // 交易记录
               {
-                path: '/finance-manager/account/business-list',
-                name: 'business-list',
-                component: () => import('@pages/business-list/business-list'),
+                path: '/finance-manager/account/trading-list',
+                name: 'trading-list',
+                component: () => import('@pages/trading-list/trading-list'),
                 meta: {
                   title: '交易记录', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['财务管理', '交易记录'] // 面包屑标题
+                  crumbs: ['交易记录'] // 面包屑标题
+                }
+              }
+            ]
+          },
+          {
+            path: 'agent',
+            name: 'agent',
+            text: '代理商结算',
+            component: {render: h => h('router-view')},
+            children: [
+              // 交易记录
+              {
+                path: '/finance-manager/agent/subsidy-list',
+                name: 'subsidy-list',
+                component: () => import('@pages/subsidy-list/subsidy-list'),
+                meta: {
+                  title: '补贴记录', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['补贴记录'] // 面包屑标题
                 }
               }
             ]

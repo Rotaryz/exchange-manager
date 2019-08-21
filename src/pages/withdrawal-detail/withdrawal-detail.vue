@@ -1,0 +1,143 @@
+<template>
+  <div class="withdrawal-detail">
+    <!--:iconUrl="require('./icon-order_list@2x.png')" -->
+    <base-table-tool :title="title"></base-table-tool>
+    <title-line title="基本信息"></title-line>
+    <div class="base-info-wrap info-wrap">
+      <base-form-item label="提现单号:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="申请时间:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="客户名称:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="状态:" :required="false" class="info-item">123213213 <span class="explain">(我就是不给你它能够给)</span></base-form-item>
+    </div>
+    <title-line title="提现信息"></title-line>
+    <div class="withdrawal-info-wrap info-wrap">
+      <base-form-item label="提现金额:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="手续费:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="预计到账金额:" :required="false" class="info-item">123213213</base-form-item>
+    </div>
+    <title-line title="收款信息"></title-line>
+    <div class="give-money-info-wrap info-wrap">
+      <base-form-item label="收款人:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="收款银行:" :required="false" class="info-item">123213213</base-form-item>
+      <base-form-item label="收款账号:" :required="false" class="info-item">123213213</base-form-item>
+    </div>
+    <title-line title="打款凭证"></title-line>
+    <div class="certificate-wrap info-wrap">
+      <base-form-item label="凭证流水:" :required="false" verticalAlign="top" class="info-item">
+        <upload></upload>
+        <div class="empty-line">----</div>
+      </base-form-item>
+    </div>
+    <base-footer>
+      <base-button @click="cancelBtn">取消</base-button>
+      <base-button type="primary" @click="checkBtn">审核</base-button>
+      <base-button type="primary" @click="sureRemitBtn">确认打款</base-button>
+    </base-footer>
+    <base-modal :visible="checkVisible" width="534px" height="234px" title="审核" @close="checkVisible=false"
+                @submit="checkSubmit"
+    >
+      <base-form-item label="选择审核结果" labelWidth="106px">
+        <radio v-model="edit.result" :list="radioList"></radio>
+      </base-form-item>
+      <base-form-item v-if="!edit.result" label="不通过原因" labelWidth="106px">
+        <base-input v-model="edit.reason" width="388"></base-input>
+      </base-form-item>
+    </base-modal>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  // import * as Helpers from './modules/helpers'
+  // import API from '@api'
+  import TitleLine from "@components/title-line/title-line"
+  import Radio from "../../components/zb-radio/zb-radio"
+  import Upload from '../../components/zb-upload/zb-upload.vue'
+
+  const PAGE_NAME = 'WITHDRAWAL_DETAIL'
+  const TITLE = '提现详情'
+
+  export default {
+    name: PAGE_NAME,
+    page: {
+      title: TITLE
+    },
+    components: {
+      TitleLine,
+      Upload,
+      Radio
+    },
+    data() {
+      return {
+        checkVisible: false,
+        detail: {
+          status: ''
+        },
+        radioList: [{label: '审核不通过', id: 0}, {label: '审核通过', id: 1}],
+        edit: {
+          result: 0,
+          reason: ''
+        }
+      }
+    },
+    computed: {
+      title() {
+        return `${this.$route.query.name}-提现详情`
+      }
+    },
+    methods: {
+      // 确认审核
+      checkSubmit() {
+        if (!this.edit.result && !this.edit.reason) {
+          this.$toast.show('请输入拒绝原因')
+          return
+        }
+        this.checkVisible = false
+      },
+      // 取消
+      cancelBtn() {
+        this.$router.go(-1)
+      },
+      // 审核
+      checkBtn() {
+        this.checkVisible = true
+      },
+      // 确认打款
+      sureRemitBtn() {
+
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~@design"
+
+  .withdrawal-detail
+    position absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background $color-white
+    z-index: 10
+
+    .empty-line
+      height: 14px
+      line-height: 14px
+
+    .info-wrap
+      padding: 30px 20px 26px
+      display flex
+      flex-wrap wrap
+
+      .info-item
+        flex-shrink 0
+        min-width: 280px
+        padding-right: 60px
+        font-size $font-size-14
+        color: $color-text-main
+        .explain
+          color:$color-text-assist
+          opacity: 0.8
+          margin-left 10px
+</style>

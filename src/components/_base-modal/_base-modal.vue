@@ -2,7 +2,7 @@
   <transition name="fade-modal">
     <section v-show="visible" class="default-modal__wrap">
       <transition name="scale-modal">
-        <div v-show="visible" class="default-modal" :style="{height:height,top:top}">
+        <div v-show="visible" class="default-modal" :style="{height:height,top:top,width:width}">
           <div v-if="title" class="modal-title">
             <span class="text">
               <span>{{title}}</span>
@@ -37,6 +37,10 @@
         default: ''
       },
       height: {
+        type: String,
+        default: ''
+      },
+      width: {
         type: String,
         default: ''
       },
