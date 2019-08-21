@@ -57,7 +57,7 @@
       marginBottom: {
         default: '',
         type: String
-      },
+      }
     },
     data() {
       return {}

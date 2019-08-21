@@ -1,7 +1,7 @@
 <template>
   <div class="base-select"
        :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,radius ? 'border-radius--'+ radius:'']"
-       :style="[{ 'min-width':width+'px',height:height+'px'}]"
+       :style="[{ 'min-width':width+'px',height:height+'px',width: width+'px'}]"
        @click.stop="selectType"
   >
     <div class="inner-value">
@@ -274,7 +274,7 @@
       margin-top: 10px
       max-height: 350px
       overflow-y: auto
-      min-width: 100%
+      width: 100%
 
       &::-webkit-scrollbar
         width: 8px

@@ -34,7 +34,7 @@
     },
     methods: {
       changeValue(item) {
-        if(item[this.valueKey] === this.value) return false
+        if (item[this.valueKey] === this.value) return false
         this.$emit('input', item[this.valueKey])
         this.$emit('change', item[this.valueKey])
 
@@ -45,23 +45,21 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-
-  .zb-radio
-    .ratio-item
-      cursor: pointer;
+   .ratio-item
+      cursor: pointer
       display: inline-block
-      white-space: nowrap;
-      outline: none;
+      white-space: nowrap
+      outline: none
       font-size: 14px
       margin-right: 60px
 
       .radio__input
-        white-space: nowrap;
-        cursor: pointer;
-        outline: none;
-        display: inline-block;
-        line-height: 1;
-        position: relative;
+        white-space: nowrap
+        cursor: pointer
+        outline: none
+        display: inline-block
+        line-height: 1
+        position: relative
         vertical-align: middle
         margin-right: 10px
 
@@ -83,14 +81,14 @@
           position: relative
 
         .radio-input__original
-          opacity: 0;
-          outline: none;
-          position: absolute;
-          z-index: -1;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          margin: 0;
+          opacity: 0
+          outline: none
+          position: absolute
+          z-index: -1
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          margin: 0
 
 </style>
