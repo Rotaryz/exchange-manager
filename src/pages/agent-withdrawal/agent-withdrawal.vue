@@ -10,10 +10,10 @@
                @change="tabChange"
     ></base-tabs>
     <div class="content-wrap">
-      <base-layout class="layout-top">
+      <base-layout-top>
         <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="creatTime" class="date-wrap" @changeDate="changeDate"></base-date>
         <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" @search="searchBtn"></base-search>
-      </base-layout>
+      </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="提现列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
         <base-button plain @click="exportExcel">导出Excel</base-button>
@@ -247,8 +247,6 @@
     width: 100%
     display flex
     flex-direction column
-    .layout-top
-     margin-bottom 20px
     .content-wrap
       flex: 1
       padding: 20px

@@ -1,13 +1,13 @@
 <template>
   <div class="product-list normal-box table">
-    <base-layout class="layout-top">
+    <base-layout-top>
       <base-form-item label="分类筛选" labelSize="12px" :required="false">
         <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
       </base-form-item>
       <base-form-item :inline="true" :required="false" verticalAlign="center">
         <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
       </base-form-item>
-    </base-layout>
+    </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
       <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
       <router-link tag="div" to="edit-product" append>
@@ -177,10 +177,6 @@
 
   .product-list
     width: 100%
-
-  .layout-top
-    padding: 24px
-    margin-bottom: 20px
 
   .type-frist
     margin-right: 10px

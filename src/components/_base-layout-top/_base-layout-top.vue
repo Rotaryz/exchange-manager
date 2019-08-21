@@ -1,5 +1,5 @@
 <template>
-  <div class="base-layout" :class="layoutType" :style="{padding:padding}">
+  <div class="base-layout-top" :class="layoutType" :style="{padding:padding}">
     <slot>
     </slot>
   </div>
@@ -28,13 +28,15 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-  .base-layout
+  .base-layout-top
     border: 0.5px solid $color-line
     background-color $color-white
     width: 100%
-    padding: 24px
+    padding: 24px 20px
     border-radius: 4px
-
+    margin-bottom:20px
+    .base-form-item
+      margin-bottom:0
   .flex-start
   .flex-start-center
     display flex

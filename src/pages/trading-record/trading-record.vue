@@ -1,11 +1,11 @@
 <template>
   <div class="trading-record">
-    <base-layout class="layout-top">
+    <base-layout-top>
       <base-form-item :inline="true" :required="false" verticalAlign="center" label="搜索" labelSize="12px">
         <base-select v-model="filter.level" placeholder="账号等级" width="120" radius="2"></base-select>
         <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
       </base-form-item>
-    </base-layout>
+    </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-jyjl@2x.png')" title="交易记录">
     </base-table-tool>
     <div class="table-content">
