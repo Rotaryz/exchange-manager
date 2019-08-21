@@ -17,9 +17,7 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
-        <router-link tag="div" to="mall-goods-list-edit" append>
-          <base-button type="primary" plain addIcon>新建商品</base-button>
-        </router-link>
+        <router-link tag="div" :to="{path:'goods-edit',query:{type:filter.type}}" append> <base-button type="primary" plain addIcon>新建商品</base-button></router-link>
       </base-table-tool>
       <div class="table-content">
         <div class="big-list">
@@ -32,7 +30,7 @@
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
+                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -104,7 +102,7 @@
           status: '',
           page: 1,
           limit: 10,
-          type: this.$route.query.type || '0'
+          type: this.$route.query.type || '1'
         },
         listHeader: {
           name: {
