@@ -1,7 +1,7 @@
 <template>
   <div class="agent-withdrawal">
     <base-tabs :data="tabList"
-               :value="filter.type"
+               :value.sync="filter.type"
                valueKey="type"
                tabAlign="left"
                margin="0 20px"
@@ -159,7 +159,7 @@
     methods: {
       // 顶部类型切换
       tabChange(val) {
-        this.filter.type = val
+        // this.filter.type = val
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
       },
       // 设置页面数据
