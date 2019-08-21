@@ -171,7 +171,7 @@
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGoods({data: {id: item.id}, loading: false})
-          this._getList()
+          this.updatePage()
         })
       },
       async changeSwitch(item) {
