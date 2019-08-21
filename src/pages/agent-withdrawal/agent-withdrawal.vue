@@ -1,8 +1,8 @@
 <template>
   <div class="agent-withdrawal">
-    <base-tabs :tabList="tabList"
-               :defaultTab="filter.type"
-               :isShowMark="false"
+    <base-tabs :data="tabList"
+               :value="filter.type"
+               valueKey="type"
                tabAlign="left"
                margin="0 20px"
                defaultColor="#333333"
@@ -68,6 +68,7 @@
     },
     beforeRouteEnter(to, from, next) {
       let type = to.query.type
+      console.log(type, 'type')
       let params = {
         type: type,
         start_time: '',
@@ -93,7 +94,7 @@
     },
     data() {
       return {
-        tabList: [{text: '业务补贴', type: 0}, {text: '商品补贴', type: 1}],
+        tabList: [{text: '业务补贴', type: '0'}, {text: '商品补贴', type: '1'}],
         statusList: [],
         filter: {
           start_time: '',
@@ -152,9 +153,13 @@
         }
       }
     },
+    mounted() {
+      console.log('dskf;')
+    },
     methods: {
       // 顶部类型切换
       tabChange(val) {
+        this.filter.type = val
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
       },
       // 设置页面数据
@@ -206,11 +211,11 @@
       },
       // 收支明细
       goIncomeExpenses(item, i) {
-        this.$router.push({path: '/finance-manager/account/agent-withdrawal/income-expenses-detail/' + item.id, query: {name: this.tabList[this.filter.type].text}})
+        this.$router.push({name: 'income-expenses-detail', params: {id: item.id}, query: {name: this.tabList[this.filter.type].text}})
       },
       // 详情
       goDetail(item, i) {
-        this.$router.push({path: '/finance-manager/account/agent-withdrawal/withdrawal-detail/' + item.id, query: {name: this.tabList[this.filter.type].text}})
+        this.$router.push({name: 'withdrawal-detail', params: {id: item.id}, query: {name: this.tabList[this.filter.type].text}})
       },
       // 分页
       pageChange(val) {

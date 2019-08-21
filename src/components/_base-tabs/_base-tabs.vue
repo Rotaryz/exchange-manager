@@ -1,15 +1,15 @@
 <template>
   <div :class="['tab-wrap',tabAlign]">
     <ul :class="['tab-list',tabAlign]">
-      <li v-for="(flow,idx) in tabList" :key="flow.text" :ref="'activeTab'+idx"
-          :class="['tab-item', defaultTab===getId(flow,idx) ?'tab-item-active':'']"
+      <li v-for="(flow,idx) in data" :key="flow.text" :ref="'activeTab'+idx"
+          :class="['tab-item', {'tab-item-active':value===getId(flow,idx)}]"
           :style="{color:defaultColor,padding:padding,margin:margin}"
           @click.capture="changeTab(getId(flow,idx),$event)"
       >
         <span v-if="isShowMark" class="idx-mark">{{idx +1}}</span>
         <span class="text">{{flow.text}}</span>
       </li>
-      <div class="tab-active-line-wrap" :style="{'left': activeLine.left + 'px', width: activeLine.lineWidth + 'px',background:activeColor}">
+      <div class="tab-active-line-wrap" :style="{'left': activeLine.left + 'px', width: activeLine.lineWidth + 'px', background: activeColor}">
         <div class="tab-active-line"></div>
       </div>
     </ul>
@@ -20,6 +20,21 @@
   export default {
     name: COMPONENT_NAME,
     props: {
+      value: {
+        // Tab选中值
+        type: [Number, String],
+        default: 0
+      },
+      valueKey: {
+        // Tab选中值
+        type: [Number, String],
+        default: 0
+      },
+      data: {
+        // tab数据
+        type: Array,
+        default: () => []
+      },
       padding: {
         // 高亮线条样式padding
         type: String,
@@ -35,16 +50,6 @@
         type: String,
         default: 'center'
       },
-      defaultTab: {
-        // Tab选中值
-        type: [Number, String],
-        default: 0
-      },
-      tabList: {
-        // tab数据
-        type: Array,
-        default: () => []
-      },
       activeColor: {
         // 高亮颜色
         type: String,
@@ -58,36 +63,36 @@
       isShowMark: {
         // 是否后面有标记
         type: Boolean,
-        default: true
+        default: false
       },
-      id: {
-        // 需要键值
-        type: [String, Number],
-        default: ''
-      }
     },
     data() {
       return {
-        // activeIdx: 0,
         activeLine: {
           left: '',
           lineWidth: 100
         }
       }
     },
+    watch: {
+      value(val) {
+        console.log('value', val)
+      }
+    },
     mounted() {
       window.onresize = () => {
         return (() => {
-          this.getWidthAndPositon(this.defaultTab)
+          this.getWidthAndPositon(this.value)
         })()
       }
-      if (this.tabList.length) {
-        this.getWidthAndPositon(this.defaultTab)
+      if (this.data.length) {
+        this.getWidthAndPositon(this.value)
       }
     },
     methods: {
       getId(item, idx) {
-        return this.id ? item[this.id] : idx
+        // console.log(typeof (this.valueKey))
+        return typeof (this.valueKey) === 'number' ? idx : item[this.valueKey]
       },
       getWidthAndPositon(id) {
         let el = this.$refs['activeTab' + id][0]
@@ -95,9 +100,10 @@
         this.activeLine.lineWidth = el.offsetWidth
         this.activeLine.left = el.offsetLeft
       },
-      changeTab(idx) {
-        this.getWidthAndPositon(idx)
-        this.$emit('change', idx)
+      changeTab(val) {
+        // console.log(val)
+        this.getWidthAndPositon(val)
+        this.$emit('change', val)
       }
     }
   }
