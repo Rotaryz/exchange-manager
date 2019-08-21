@@ -316,7 +316,40 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['补贴记录'] // 面包屑标题
                 }
-              }
+              },
+              // 代理商提现
+              {
+                path: '/finance-manager/agent/agent-withdrawal',
+                name: 'agent-withdrawal',
+                component: () => import('@pages/agent-withdrawal/agent-withdrawal'),
+                meta: {
+                  title: '代理商提现', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['代理商提现'],// 面包屑标题
+                  style: {margin: 0}
+                },
+                children: [// 收支明细
+                  {
+                    path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
+                    name: 'income-expenses-detail',
+                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    meta: {
+                      title: '收支明细', // 页面标题
+                      crumbs: ['代理商提现', '收支明细'] // 面包屑标题
+                    }
+                  },
+                  // 提现详情
+                  {
+                    path: '/finance-manager/agent/agent-withdrawal/withdrawal-detail/:id',
+                    name: 'withdrawal-detail',
+                    component: () => import('@pages/withdrawal-detail/withdrawal-detail'),
+                    meta: {
+                      title: '收支明细', // 页面标题
+                      crumbs: ['代理商提现', '收支明细'] // 面包屑标题
+                    }
+                  }
+                ]
+              },
             ]
           }
         ],

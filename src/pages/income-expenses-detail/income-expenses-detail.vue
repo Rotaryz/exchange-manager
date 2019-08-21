@@ -1,6 +1,6 @@
 <template>
   <div class="income-expenses-detail">
-    <base-layout class="money-info-wrap">
+    <base-layout-top class="money-info-wrap">
       <div v-for="item in totalList" :key="item.valueKey" class="money-item">
         <div :class="['type-icon',item.iconClass]"></div>
         <div>
@@ -8,7 +8,7 @@
           <div class="money">{{money[item.valueKey]}}</div>
         </div>
       </div>
-    </base-layout>
+    </base-layout-top>
     <base-table-tool :title="title" :iconUrl="require('./icon-order_list@2x.png')"></base-table-tool>
     <div class="table-content">
       <div class="big-list">
