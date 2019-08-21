@@ -247,7 +247,8 @@
     width: 100%
     display flex
     flex-direction column
-
+    .layout-top
+     margin-bottom 20px
     .content-wrap
       flex: 1
       padding: 20px
