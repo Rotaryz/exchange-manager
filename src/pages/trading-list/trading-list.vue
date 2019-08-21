@@ -1,6 +1,8 @@
 <template>
-  <div class="order-list normal-box table">
-    <base-tab-select :tabStatus="tabStatus" @getStatusTab="_changeTopTab"></base-tab-select>
+  <div class="trading-list">
+    <base-tabs :data="tabList" :value.sync="tabIndex" valueKey="type" tabAlign="left" margin="0 20px"
+               defaultColor="#4E5983" class="tab-top" @change="_changeTopTab"
+    ></base-tabs>
     <top-data-bar :topData="topData"></top-data-bar>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time" @changeDate="_changeDate"></base-date>
@@ -44,7 +46,7 @@
     {title: '交易金额', key: 'price', class: 'width-4'}
   ]
   const TOP_DATA = [{img: require('./icon-zfze@2x.png'), title: '支付总额(元)', value: '99234.33'}]
-  const TAB_CONFIG = [{text: '销售业务', status: 'sell'}, {text: '采购订单', status: 'order'}]
+  const TAB_CONFIG = [{text: '销售业务', type: 0}, {text: '采购订单', type: 1}]
 
   export default {
     name: PAGE_NAME,
@@ -56,7 +58,8 @@
     },
     data() {
       return {
-        tabStatus: TAB_CONFIG,
+        tabIndex: 0,
+        tabList: TAB_CONFIG,
         topData: TOP_DATA,
         listHeader: LIST_HEADER,
         currentPage: 1,
@@ -147,6 +150,14 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
+  .trading-list
+    width: 100%
+    padding-top: 50px
+    .tab-top
+      position: fixed
+      top: 50px
+      left: 200px
+      z-index: 99
   .list-box
     overflow: visible
     .list-item

@@ -1,6 +1,8 @@
 <template>
-  <div class="order-list normal-box table">
-    <base-tab-select :tabStatus="tabStatus" @getStatusTab="_changeTopTab"></base-tab-select>
+  <div class="subsidy-list">
+    <base-tabs :data="tabStatus" :value.sync="tabIndex" valueKey="type" tabAlign="left" margin="0 20px"
+               defaultColor="#4E5983" class="tab-top" @change="_changeTopTab"
+    ></base-tabs>
     <top-data-bar :topData="topData"></top-data-bar>
     <base-tab-select></base-tab-select>
     <div class="down-content">
@@ -39,7 +41,7 @@
   const PAGE_NAME = 'SUBSIDY_LIST'
   const TITLE = '订单列表'
   const DEFAULT_TAB = 0
-  const TAB_CONFIG = [{text: '业务补贴', status: 'business'}, {text: '商品补贴', status: 'goods'}]
+  const TAB_CONFIG = [{text: '业务补贴', type: 0}, {text: '商品补贴', type: 1}]
   const LIST_CONFIG = [
     [
       {title: '创建时间', key: 'time', class: 'width-1'},
@@ -74,6 +76,7 @@
     },
     data() {
       return {
+        tabIndex: DEFAULT_TAB,
         tabStatus: TAB_CONFIG,
         topData: TOP_DATA[DEFAULT_TAB],
         listHeader: LIST_CONFIG[DEFAULT_TAB],
@@ -121,10 +124,10 @@
         this.getOrderList()
       },
       // 切换顶部tab
-      _changeTopTab(select, index) {
-        this.topData = TOP_DATA[index]
-        this.listHeader = LIST_CONFIG[index]
-        this.tabName = TAB_CONFIG[index].text
+      _changeTopTab(select) {
+        this.topData = TOP_DATA[select]
+        this.listHeader = LIST_CONFIG[select]
+        this.tabName = TAB_CONFIG[select].text
         this._initParams()
       },
       // 获取订单列表
@@ -138,12 +141,11 @@
         })
           .then((res) => {
             res.data = [
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1'}
+              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
+              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'}
             ]
             this.orderList = res.data
             this.total = res.meta.total
@@ -169,6 +171,14 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
+  .subsidy-list
+    width: 100%
+    padding-top: 50px
+    .tab-top
+      position: fixed
+      top: 50px
+      left: 200px
+      z-index: 99
   .list-box
     overflow: visible
     .list-item
