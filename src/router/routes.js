@@ -162,6 +162,17 @@ export default [
                   crumbs: ['交易记录'] // 面包屑标题
                 }
               },
+              // 代理申请
+              {
+                path: '/client/customer/application-agency',
+                name: 'application-agency',
+                component: () => import('@pages/application-agency/application-agency'),
+                meta: {
+                  title: '代理申请', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['代理申请'] // 面包屑标题
+                }
+              },
               // 等级管理
               {
                 path: '/client/customer/level-manager',

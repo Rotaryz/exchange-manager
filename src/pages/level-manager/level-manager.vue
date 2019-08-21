@@ -131,7 +131,6 @@
   @import "~@design"
 
   .list-box
-    overflow: visible
     .list-item
       &:nth-child(1), &:nth-child(2)
         flex: 1.5

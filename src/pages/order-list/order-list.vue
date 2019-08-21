@@ -160,7 +160,7 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: '', status: INFO_STATUS}
+      let data = {page: 1, keyword: '', status: INFO_STATUS, start_at: '', end_at: ''}
       API.Order.getOrderList({data, loading: true, toast: true})
         .then((res) => {
           API.Order.orderStatus({data: null, loading: true, toast: true})
