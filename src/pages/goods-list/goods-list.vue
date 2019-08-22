@@ -9,7 +9,7 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item label="分类筛选" labelSize="12px" :required="false">
-          <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
+          <cascade-select ref="selects" size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
         </base-form-item>
         <base-form-item :inline="true" :required="false" verticalAlign="center">
           <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
@@ -17,7 +17,9 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
-        <router-link tag="div" :to="{path:'goods-edit',query:{type:filter.type}}" append> <base-button type="primary" plain addIcon>新建商品</base-button></router-link>
+        <router-link tag="div" :to="{path:'goods-edit',query:{type:filter.type}}" append>
+          <base-button type="primary" plain addIcon>新建商品</base-button>
+        </router-link>
       </base-table-tool>
       <div class="table-content">
         <div class="big-list">
@@ -124,13 +126,17 @@
       this.updatePage()
     },
     methods: {
-      updatePage(){
-        this._getList({loading:false})
+      updatePage() {
+        this._getList({loading: false})
         this._getStatus()
       },
       // 顶部类型切换
       tabChange(val) {
-        // this.filter.type = val
+        this.filter.category_id = ''
+        this.$refs.selects.clearValues()
+        this.filter.keyword = ''
+        this.filter.status = ''
+        this.filter.page = 1
         this.$router.push({name: 'mall-goods-goods-list', query: {type: val}})
         this.updatePage()
       },
@@ -144,7 +150,7 @@
       _getStatus() {
         API.Goods.getGoodsListStatus({
           data: {
-            type:this.filter.type,
+            type: this.filter.type,
             keyword: this.filter.keyword,
             category_id: this.filter.category_id
           }, loading: false

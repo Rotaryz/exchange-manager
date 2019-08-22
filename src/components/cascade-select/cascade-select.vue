@@ -50,7 +50,8 @@
       },
       otherParams: {
         type: String,
-        default: () => {}
+        default: () => {
+        }
       },
       value: {
         type: [String, Boolean, Number],
@@ -109,6 +110,10 @@
       }
     },
     methods: {
+      clearValues(){
+        this.goodsCategoryFirst = ''
+        this.goodsCategorySecond = ''
+      },
       changeVisible(val) {
         if (!val) return
         this._getCategoryFirst()
@@ -142,7 +147,8 @@
       // 选择第一分类
       async _selectCategoryFirst(otherParams = {}) {
         let res = await this.getDataFunction({
-          doctor() {}
+          doctor() {
+          }
         })({
           data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
           loading: false
