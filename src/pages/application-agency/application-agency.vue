@@ -40,7 +40,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
+  // import * as Helpers from './modules/helpers'
   import API from '@api'
   import storage from 'storage-controller'
 
@@ -132,7 +132,8 @@
           data: this.paramObj,
           loading,
           toast: true,
-          doctor() {}
+          doctor() {
+          }
         }).then((res) => {
           this.applicationList = res.data
           this.total = res.meta.total

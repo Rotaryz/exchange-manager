@@ -36,8 +36,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
-// import API from '@api'
+  // import * as Helpers from './modules/helpers'
+  import API from '@api'
   import storage from 'storage-controller'
 
   const PAGE_NAME = 'LEVEL_MANAGER'
@@ -61,15 +61,12 @@
     },
     // beforeRouteEnter(to, from, next) {
     //   let data = {page: 1}
-    //   API.Order.getOrderList({data, loading: true, toast: true})
+    //   API.Level.getLevelList({data, loading: true, toast: true})
     //     .then((res) => {
-    //       API.Order.orderStatus({data: null, loading: true, toast: true})
-    //         .then((status) => {
-    //           next(vx => {
-    //             vx.levelList = res.data
-    //             vx.total = res.meta.total
-    //           })
-    //         })
+    //       next(vx => {
+    //         vx.levelList = res.data
+    //         vx.total = res.meta.total
+    //       })
     //     })
     //     .catch(() => {
     //       next('404')
@@ -94,30 +91,33 @@
       }
     },
     methods: {
+      // 获取等级列表
       _getLevelList(loading = false) {
-      // API.Order.getOrderList({
-      //   data: {page: this.page},
-      //   loading,
-      //   toast: true,
-      //   doctor() {
-      //   }
-      // })
-      //   .then((res) => {
-      //     this.orderList = res.data
-      //     this.total = res.meta.total
-      //   })
+        API.Level.getLevelList({
+          data: {page: this.page},
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            this.levelList = res.data
+            this.total = res.meta.total
+          })
       },
+      // 删除等级
       delLevel(item) {
         this.delId = item.id
         this.$confirm
           .confirm()
           .then(() => {
-          // API.Cms.delDestroy({data: {id: this.delId}})
-          //   .then((res) => {
-          //     this[this.dataName].splice(index, 1)
-          //   })
+            API.Level.delLevel({data: {id: this.delId}})
+              .then((res) => {
+                this._getLevelList()
+              })
           })
-          .catch(() => {})
+          .catch(() => {
+          })
       },
       // 导出Excel
       newLevel() {
