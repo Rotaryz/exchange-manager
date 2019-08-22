@@ -1,5 +1,8 @@
 <template>
   <div class="order-list normal-box table">
+    <base-tabs :data="tabList" :value.sync="tabIndex" valueKey="type" tabAlign="left" margin="0 20px"
+               defaultColor="#4E5983" class="tab-top" @change="_changeTopTab"
+    ></base-tabs>
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
@@ -16,50 +19,53 @@
     <div class="table-content">
       <div class="big-list">
         <div class="list-header list-box">
-          <div v-for="(item, index) in listHeader" :key="index" class="list-item">{{item}}</div>
+          <div v-for="(head, headIdx) in listHeader" :key="headIdx" :class="head.class" class="list-item">{{head.title}}</div>
         </div>
         <div class="list">
           <div v-if="orderList.length">
             <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
-              <div class="list-item">{{item.order ? item.order.order_sn : ''}}</div>
-              <div class="list-item">{{item.sub_order_sn}}</div>
-              <div class="list-item">
-                <!--商品样式-->
-                <img :src="item.detail ? item.detail.goods_cover_image : ''" class="item-img">
-                <p class="goods-name two-line">{{item.detail ? item.detail.goods_name : ''}}</p>
-                <span v-if="false" class="show-more hand">
-                  <transition name="fade">
-                    <div class="goods-box">
-                      <span class="tooltip__arrow"></span>
-                      <ul class="more-goods">
-                        <li class="goods-item">
-                          <img src="" alt="" class="goods-img">
-                          <p class="two-line">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                          <p class="goods-num">x10</p>
-                          <p class="goods-price">238.00</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </transition>
-                </span>
-              </div>
-              <div class="list-item">{{item.detail ? item.detail.goods_num : ''}}</div>
-              <!--单价todo-->
-              <div v-if="item.detail && item.detail.goods_spec" class="list-item">{{item.detail.goods_spec.sale_price}}</div>
-              <div class="list-item list-double-row">
-                <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
-                <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
-                </div>
-              </div>
-              <div v-if="item.receiver_addresses" class="list-item two-line">
-                {{`${item.receiver_addresses.province} ${item.receiver_addresses.city} ${item.receiver_addresses.district} ${item.receiver_addresses.address}`}}
-              </div>
-              <div class="list-item">{{item.created_at}}</div>
-              <div class="list-item">{{item.pay_amount}}</div>
-              <div class="list-item">{{item.status_str}}</div>
-              <div class="list-item">
-                <span class="list-operation" @click="deliver(item)">{{item.status === 10 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
-                {{item.status === 0 || item.status === -1 ? '——' : ''}}
+              <div v-for="(head, headIdx) in listHeader" :key="headIdx" :class="head.class" class="list-item">
+                <template v-if="head.type==='keyArr'">
+                  <template v-if="head.key.length===2">
+                    {{item[head.key[0]] ? item[head.key[0]][head.key[1]] : ''}}
+                  </template>
+                  <template v-if="head.key.length===3">
+                    {{item[head.key[0]] ? item[head.key[0]][head.key[1]][head.key[2]] : ''}}
+                  </template>
+                </template>
+                <template v-if="head.type==='normal'">{{item[head.key]}}</template>
+                <template v-if="head.type==='goods'">
+                  <!--商品样式-->
+                  <img :src="item.detail ? item.detail.goods_cover_image : ''" class="item-img">
+                  <p class="goods-name two-line">{{item.detail ? item.detail.goods_name : ''}}</p>
+                  <span v-if="false" class="show-more hand">
+                    <transition name="fade">
+                      <div class="goods-box">
+                        <span class="tooltip__arrow"></span>
+                        <ul class="more-goods">
+                          <li class="goods-item">
+                            <img src="" alt="" class="goods-img">
+                            <p class="two-line">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
+                            <p class="goods-num">x10</p>
+                            <p class="goods-price">238.00</p>
+                          </li>
+                        </ul>
+                      </div>
+                    </transition>
+                  </span>
+                </template>
+                <template v-if="head.type==='user'">
+                  <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
+                  <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
+                  </div>
+                </template>
+                <template v-if="head.type==='address'">
+                  {{`${item.receiver_addresses.province}${item.receiver_addresses.city}${item.receiver_addresses.district}${item.receiver_addresses.address}`}}
+                </template>
+                <template v-if="head.type==='option'">
+                  <span class="list-operation" @click="deliver(item)">{{item.status === 10 ? '发货' : item.status === 20 || item.status === 100 ? '查看' : ''}}</span>
+                  {{item.status === 0 || item.status === -1 ? '——' : ''}}
+                </template>
               </div>
             </div>
           </div>
@@ -125,9 +131,37 @@
 
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
-  const LIST_HEADER = ['主单号', '子单号', '商品', '数量', '单价(元)', '姓名', '收货地址', '下单时间', '实付款(元)', '状态', '操作']
   const INFO_STATUS = ''
   const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
+  const TAB_CONFIG = [{text: '采集订单', type: 0}, {text: '赞播优品订单', type: 1}]
+  const LIST_CONFIG = [
+    [
+      {title: '主单号', key: ['order','order_sn'], class: 'width-3', type: 'keyArr'},
+      {title: '子单号', key: 'sub_order_sn', class: 'width-3', type: 'normal'},
+      {title: '商品', key: '', class: 'goods-item', type: 'goods'},
+      {title: '数量', key: ['detail','goods_num'], class: 'width-1', type: 'keyArr'},
+      {title: '单价(元)', key: ['detail','goods_spec','price'], class: 'width-1', type: 'keyArr'},
+      {title: '姓名', key: '', class: 'width-2 list-double-row', type: 'user'},
+      {title: '收货地址', key: '', class: 'width-3 two-line', type: 'address'},
+      {title: '下单时间', key: 'created_at', class: 'width-3', type: 'normal'},
+      {title: '实付款(元)', key: 'pay_amount', class: 'width-1', type: 'normal'},
+      {title: '状态', key: 'status_str', class: 'width-1', type: 'normal'},
+      {title: '操作', key: '', class: 'option-item', type: 'option'},
+    ],
+    [
+      {title: '主单号', key: ['order','order_sn'], class: 'width-3', type: 'keyArr'},
+      {title: '商品', key: '', class: 'goods-item', type: 'goods'},
+      {title: '数量', key: ['detail','goods_num'], class: 'width-1', type: 'keyArr'},
+      {title: '单价(元)', key: ['detail','goods_spec','price'], class: 'width-1', type: 'keyArr'},
+      {title: '姓名', key: '', class: 'width-2 list-double-row', type: 'user'},
+      {title: '收货地址', key: '', class: 'width-3 two-line', type: 'address'},
+      {title: '下单时间', key: 'created_at', class: 'width-3', type: 'normal'},
+      {title: '实付款(元)', key: 'pay_amount', class: 'width-1', type: 'normal'},
+      {title: '状态', key: 'status_str', class: 'width-1', type: 'normal'},
+      {title: '操作', key: '', class: 'option-item', type: 'option'},
+    ]
+  ]
+  const TEST_ORDER = [{"id":1,"sub_order_sn":"Z1908081837365775","goods_price":"31.05","goods_amount":"0.03","freight_amount":"34","pay_amount":"34.03","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-08 18:37:36","order":{"id":1,"order_sn":"C1908081837366641"},"detail":{"id":1,"goods_id":1,"goods_name":"测试的商品1测试的商品1测试的商品1测试的商品1","goods_describe":"测试的商品描述1","goods_category_id":1,"goods_serial_number":"1234567891","goods_weight":2400,"goods_num":3,"goods_manufacturer":"赞播集团出品","goods_spec_id":1,"goods_spec":{"id":"1","goods_id":"1","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":1,"address_id":1,"name":"程赐明1","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":2,"sub_order_sn":"Z1908081837362193","goods_price":"20.7","goods_amount":"0.02","freight_amount":"26","pay_amount":"26.02","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-08 18:37:36","order":{"id":1,"order_sn":"C1908081837366641"},"detail":{"id":2,"goods_id":2,"goods_name":"测试的商品2","goods_describe":"测试的商品描述2","goods_category_id":1,"goods_serial_number":"1234567892","goods_weight":2400,"goods_num":2,"goods_manufacturer":"赞播集团出品","goods_spec_id":2,"goods_spec":{"id":"2","goods_id":"2","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":1,"address_id":1,"name":"程赐明1","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":3,"sub_order_sn":"Z1908081925438406","goods_price":"31.05","goods_amount":"0.03","freight_amount":"34","pay_amount":"34.03","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-08 19:25:43","order":{"id":3,"order_sn":"C1908081925435464"},"detail":{"id":3,"goods_id":1,"goods_name":"测试的商品1","goods_describe":"测试的商品描述1","goods_category_id":1,"goods_serial_number":"1234567891","goods_weight":2400,"goods_num":3,"goods_manufacturer":"赞播集团出品","goods_spec_id":1,"goods_spec":{"id":"1","goods_id":"1","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":3,"address_id":1,"name":"程赐明2","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":4,"sub_order_sn":"Z1908081925433029","goods_price":"20.7","goods_amount":"0.02","freight_amount":"26","pay_amount":"26.02","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-08 19:25:43","order":{"id":3,"order_sn":"C1908081925435464"},"detail":{"id":4,"goods_id":2,"goods_name":"测试的商品2","goods_describe":"测试的商品描述2","goods_category_id":1,"goods_serial_number":"1234567892","goods_weight":2400,"goods_num":2,"goods_manufacturer":"赞播集团出品","goods_spec_id":2,"goods_spec":{"id":"2","goods_id":"2","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":3,"address_id":1,"name":"程赐明2","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":7,"sub_order_sn":"Z1908091200145828","goods_price":"31.05","goods_amount":"0.03","freight_amount":"34","pay_amount":"34.03","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:00:14","order":{"id":7,"order_sn":"C1908091200146131"},"detail":{"id":7,"goods_id":1,"goods_name":"测试的商品1","goods_describe":"测试的商品描述1","goods_category_id":1,"goods_serial_number":"1234567891","goods_weight":2400,"goods_num":3,"goods_manufacturer":"赞播集团出品","goods_spec_id":1,"goods_spec":{"id":"1","goods_id":"1","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":7,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":8,"sub_order_sn":"Z1908091200147377","goods_price":"20.7","goods_amount":"0.02","freight_amount":"26","pay_amount":"26.02","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:00:14","order":{"id":7,"order_sn":"C1908091200146131"},"detail":{"id":8,"goods_id":2,"goods_name":"测试的商品2","goods_describe":"测试的商品描述2","goods_category_id":1,"goods_serial_number":"1234567892","goods_weight":2400,"goods_num":2,"goods_manufacturer":"赞播集团出品","goods_spec_id":2,"goods_spec":{"id":"2","goods_id":"2","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":7,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":13,"sub_order_sn":"Z1908091203041712","goods_price":"31.05","goods_amount":"0.03","freight_amount":"34","pay_amount":"34.03","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:03:04","order":{"id":10,"order_sn":"C1908091203042053"},"detail":{"id":13,"goods_id":1,"goods_name":"测试的商品1","goods_describe":"测试的商品描述1","goods_category_id":1,"goods_serial_number":"1234567891","goods_weight":2400,"goods_num":3,"goods_manufacturer":"赞播集团出品","goods_spec_id":1,"goods_spec":{"id":"1","goods_id":"1","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":10,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":14,"sub_order_sn":"Z1908091203043757","goods_price":"20.7","goods_amount":"0.02","freight_amount":"26","pay_amount":"26.02","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:03:04","order":{"id":10,"order_sn":"C1908091203042053"},"detail":{"id":14,"goods_id":2,"goods_name":"测试的商品2","goods_describe":"测试的商品描述2","goods_category_id":1,"goods_serial_number":"1234567892","goods_weight":2400,"goods_num":2,"goods_manufacturer":"赞播集团出品","goods_spec_id":2,"goods_spec":{"id":"2","goods_id":"2","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":10,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":17,"sub_order_sn":"Z1908091206001827","goods_price":"31.05","goods_amount":"0.03","freight_amount":"34","pay_amount":"34.03","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:06:00","order":{"id":12,"order_sn":"C1908091206001526"},"detail":{"id":17,"goods_id":1,"goods_name":"测试的商品1","goods_describe":"测试的商品描述1","goods_category_id":1,"goods_serial_number":"1234567891","goods_weight":2400,"goods_num":3,"goods_manufacturer":"赞播集团出品","goods_spec_id":1,"goods_spec":{"id":"1","goods_id":"1","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":12,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}},{"id":18,"sub_order_sn":"Z1908091206007812","goods_price":"20.7","goods_amount":"0.02","freight_amount":"26","pay_amount":"26.02","status":0,"status_str":"待付款","pay_status":0,"pay_status_str":"待支付","ship_status":0,"ship_status_str":"待发货","created_at":"2019-08-09 12:06:00","order":{"id":12,"order_sn":"C1908091206001526"},"detail":{"id":18,"goods_id":2,"goods_name":"测试的商品2","goods_describe":"测试的商品描述2","goods_category_id":1,"goods_serial_number":"1234567892","goods_weight":2400,"goods_num":2,"goods_manufacturer":"赞播集团出品","goods_spec_id":2,"goods_spec":{"id":"2","goods_id":"2","price":10.35,"discount_price":0.01}},"receiver_addresses":{"id":12,"address_id":1,"name":"程赐明","mobile":"13711458538","province":"广东省","city":"广州市","district":"海珠区","address":"海珠唯品同创会F5栋"}}]
 
   export default {
     name: PAGE_NAME,
@@ -136,7 +170,9 @@
     },
     data() {
       return {
-        listHeader: LIST_HEADER,
+        tabIndex: 0,
+        tabList: TAB_CONFIG,
+        listHeader: LIST_CONFIG[0],
         visible: false,
         valueKey: 'id',
         arr: [{id: 111, label: '顺丰'}],
@@ -166,6 +202,7 @@
           API.Order.orderStatus({data: null, loading: true, toast: true})
             .then((status) => {
               next(vx => {
+                res.data = TEST_ORDER
                 vx.statusList = status.data
                 vx.orderList = res.data
                 vx.total = res.meta.total
@@ -218,6 +255,17 @@
       this.getLogisticsList()
     },
     methods: {
+      _initParams() {
+        this.page = 1
+        this.keyword = ''
+        this.time = []
+        this.getOrderList()
+      },
+      _changeTopTab(index) {
+        this.tabIndex = index
+        this.listHeader = LIST_CONFIG[index]
+        // this._initParams()
+      },
       // 获取物流列表
       getLogisticsList() {
         API.Logistics.logisticsList({
@@ -240,6 +288,7 @@
           }
         })
           .then((res) => {
+            res.data = TEST_ORDER
             this.orderList = res.data
             this.total = res.meta.total
           })
@@ -327,6 +376,14 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
+  .order-list
+    width: 100%
+    padding-top: 50px
+    .tab-top
+      position: fixed
+      top: 50px
+      left: 200px
+      z-index: 99
   .list-box
     overflow: visible
     .two-line
@@ -334,13 +391,26 @@
       font-size: $font-size-14
       line-height: 18px
       font-family: $font-family-regular
-      max-width: 142px
+      max-width: 240px
       white-space: normal !important
-      no-wrap-plus()
+      no-wrap-plus(2)
     .list-item
-      &:nth-child(3)
+      &.option-item
+        max-width: 58px
+        min-width: 58px
+        padding: 0
+      &.width-1
+        min-width: 66px
+        flex: 0.6
+      &.width-2
+        min-width: 110px
+        flex: 1
+      &.width-3
         flex: 1.6
-        min-width: 276px
+        min-width: 176px
+      &.goods-item
+        flex: 2
+        min-width: 220px
         white-space: normal
         display: flex
         align-items: center
@@ -434,17 +504,5 @@
                 no-wrap-plus()
               .goods-num, .goods-price
                 margin-left: 30px
-
-      &:last-child
-        max-width: 58px
-        min-width: 58px
-        padding: 0
-      &:nth-child(9)
-        flex: 0.8
-      &:nth-child(1), &:nth-child(2)
-        min-width: 165px
-      &:nth-child(4), &:nth-child(10)
-        min-width: 62px
-        flex: 0.4
 
 </style>
