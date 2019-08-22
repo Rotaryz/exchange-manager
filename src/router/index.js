@@ -28,6 +28,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   if (routeFrom.name !== null) {
     NProgress.start()
   }
+
   // 判断该路由是否需要检验用户信息
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
 
