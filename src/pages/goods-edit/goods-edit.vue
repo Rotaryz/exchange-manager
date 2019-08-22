@@ -587,11 +587,9 @@
   @import "~@design"
   .icon-delete-wrap
     position absolute
-    top: 50%
-    transform translateY(-50%)
-    right: 0px
+    top: -14px
+    right: -13px
     padding: 10px
-    background white
 
     .icon-delete
       width: 13px
