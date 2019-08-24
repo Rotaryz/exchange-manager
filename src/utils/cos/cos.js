@@ -53,7 +53,7 @@ function _getAuthorization(options, callback) {
  * @param processCallBack 进度条回调方法let
  * @returns {Promise<any>}
  */
-export function uploadFiles(fileType, files, showProcess, processCallBack) {
+export function uploadFiles(fileType = 'image', files, showProcess, processCallBack) {
   if (!files.map) {
     throw new Error('please use Array')
   }
@@ -90,7 +90,7 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
           }
           xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 206) {
-              _saveFile({path: '/' + encodeURIComponent(info.pathname), type: 'image'}).then((resp) => {
+              _saveFile({path: '/' + encodeURIComponent(info.pathname), type: fileType}).then((resp) => {
                 resolve(resp)
               })
             } else {
