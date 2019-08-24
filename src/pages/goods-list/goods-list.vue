@@ -9,7 +9,7 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item label="分类筛选" labelSize="12px" :required="false">
-          <cascade-select size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
+          <cascade-select ref="selects" size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
         </base-form-item>
         <base-form-item :inline="true" :required="false" verticalAlign="center">
           <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
@@ -17,7 +17,7 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
-        <router-link tag="div" to="mall-goods-list-edit" append>
+        <router-link tag="div" :to="{path:'goods-edit',query:{type:filter.type}}" append>
           <base-button type="primary" plain addIcon>新建商品</base-button>
         </router-link>
       </base-table-tool>
@@ -32,7 +32,7 @@
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
+                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -104,7 +104,7 @@
           status: '',
           page: 1,
           limit: 10,
-          type: this.$route.query.type || '0'
+          type: this.$route.query.type || '1'
         },
         listHeader: {
           name: {
@@ -126,13 +126,17 @@
       this.updatePage()
     },
     methods: {
-      updatePage(){
-        this._getList({loading:false})
+      updatePage() {
+        this._getList({loading: false})
         this._getStatus()
       },
       // 顶部类型切换
       tabChange(val) {
-        // this.filter.type = val
+        this.filter.category_id = ''
+        this.$refs.selects.clearValues()
+        this.filter.keyword = ''
+        this.filter.status = ''
+        this.filter.page = 1
         this.$router.push({name: 'mall-goods-goods-list', query: {type: val}})
         this.updatePage()
       },
@@ -146,7 +150,7 @@
       _getStatus() {
         API.Goods.getGoodsListStatus({
           data: {
-            type:this.filter.type,
+            type: this.filter.type,
             keyword: this.filter.keyword,
             category_id: this.filter.category_id
           }, loading: false
@@ -173,7 +177,7 @@
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
           await API.Goods.deleteGoods({data: {id: item.id}, loading: false})
-          this._getList()
+          this.updatePage()
         })
       },
       async changeSwitch(item) {
