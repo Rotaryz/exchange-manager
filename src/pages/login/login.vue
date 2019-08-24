@@ -20,7 +20,7 @@
 
   const PAGE_NAME = 'LOGIN'
   const TITLE = '登录'
-  const INFO_PATH = 'mall/goods/product-list'
+  const INFO_PATH = '/mall/goods/goods-list'
   export default {
     name: PAGE_NAME,
     page: {
@@ -66,7 +66,7 @@
             this.$router.push(this.$route.query.redirectFrom || INFO_PATH)
           })
           .catch(() => {
-          // console.error(error.message)
+            // console.error(error.message)
           })
           .finally(() => {
             this.tryingToLogIn = false
