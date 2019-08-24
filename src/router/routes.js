@@ -106,6 +106,28 @@ export default [
                     }
                   }
                 ]
+              },
+              // 品牌列表
+              {
+                path: '/mall/goods/brand-list',
+                name: 'goods-brand-list',
+                component: () => import('@pages/brand-list/brand-list'),
+                meta: {
+                  title: '品牌列表',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['品牌列表']
+                },
+                children: [
+                  // 品牌详情
+                  {
+                    path: '/mall/goods/brand-list/brand-edit',
+                    name: 'goods-brand-edit',
+                    component: () => import('@pages/brand-edit/brand-edit'),
+                    meta: {
+                      crumbs: ['品牌列表', '创作品牌']
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -119,8 +141,7 @@ export default [
       {
         path: '/client',
         name: 'client',
-        meta: {
-          type: 'first_menu', // 一级标示
+        meta: {type: 'first_menu', // 一级标示
           title: '客户管理',
           icon: require('./icon-client@2x.png'),
           iconSelected: ''
@@ -274,7 +295,30 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['首页配置'] // 面包屑标题
                 }
+              },
+              {
+                path: '/cms/b-mall/content-list',
+                name: 'content-list',
+                component: () => import('@pages/content-list/content-list'),
+                meta: {
+                  title: '内容列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['内容列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/cms/b-mall/content-list/content-edit',
+                    name: 'content-edit',
+                    component: () => import('@pages/content-edit/content-edit'),
+                    meta: {
+                      title: '创作文章', // 页面标题
+                      variableIndex: 1,
+                      crumbs: ['内容列表', '创作文章'] // 面包屑标题
+                    }
+                  }
+                ]
               }
+
             ]
           }
         ]
