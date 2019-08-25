@@ -199,14 +199,29 @@
           }
         })
         if (this.type.includes('image')) {
-          this._addPic(files)
+          this._action(files)
         } else {
-          this._addVideo(files)
+          // this._addVideo(files) todo
+          this._action(files, 'video/mp4')
         }
       },
-      async _addPic(files) {
+      async _addPic(files, fileType = 'image') {
         this.showLoading = true
-        await cos('image', files)
+        await cos(fileType, files)
+          .then((arr) => {
+            this.showLoading = false
+            let item = arr.find((item) => item.error_code !== this.$ERR_OK)
+            if (item) this.$emit('failFile', item.message)
+            else this.$emit('successImage', Array.isArray(this.data) ? arr : arr[0])
+          })
+          .catch((err) => {
+            this.$emit('failFile', err)
+            this.showLoading = false
+          })
+      },
+      async _action(files, fileType = 'image') {
+        this.showLoading = true
+        await cos(fileType, files)
           .then((arr) => {
             this.showLoading = false
             let item = arr.find((item) => item.error_code !== this.$ERR_OK)
