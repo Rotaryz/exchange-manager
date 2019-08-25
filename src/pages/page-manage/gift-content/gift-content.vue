@@ -2,37 +2,36 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-
+        <span @click="changeType('category')">类目</span>
+        <span @click="changeType('brand')">品牌</span>
+        <span @click="changeType('goods')">商品</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {Carousel, CarouselItem} from 'element-ui'
 
   const PAGE_NAME = 'mobile-content'
 
   export default {
     name: PAGE_NAME,
     components: {
-      Carousel,
-      CarouselItem
     },
     props: {
       cmsType: {
         type: String,
-        default: 'banner'
+        default: 'category'
       },
-      bannerList: {
+      categoryList: {
         type: Array,
         default: () => []
       },
-      hotList: {
+      brandList: {
         type: Array,
         default: () => []
       },
-      cmsList: {
+      goodsList: {
         type: Array,
         default: () => []
       }
@@ -43,7 +42,7 @@
     methods: {
       changeType(type) {
         this.$emit('update:cmsType', type)
-        this.$emit('changeType', type)
+        // this.$emit('changeType', type)
       }
     }
   }
