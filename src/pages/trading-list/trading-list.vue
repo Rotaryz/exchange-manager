@@ -26,7 +26,7 @@
         </div>
         <div class="pagination-box">
           <!---->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="_changePage"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
         </div>
       </div>
     </div>
