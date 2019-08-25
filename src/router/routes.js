@@ -296,6 +296,17 @@ export default [
                   crumbs: ['首页配置'] // 面包屑标题
                 }
               },
+              // 礼品馆、品牌馆
+              {
+                path: '/cms/b-mall/page-manage',
+                name: 'page-manage',
+                component: () => import('@pages/page-manage/page-manage'),
+                meta: {
+                  title: '页面管理', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['页面管理'] // 面包屑标题
+                }
+              },
               {
                 path: '/cms/b-mall/content-list',
                 name: 'content-list',

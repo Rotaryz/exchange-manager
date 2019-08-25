@@ -72,6 +72,27 @@
         <input type="file" :multiple="multiple" class="sendImage hand" accept="video/*" @change="getFiles($event)">
       </div>
     </div>
+
+    <div v-if="type === 'image-custom'" class="custom-item edit-image">
+      <div v-if="showLoading" class="loading-mask">
+        <img src="./loading.gif" class="loading">
+      </div>
+      <input :multiple="multiple" type="file" class="sendImage hand" accept="image/*" @change="getFiles($event)">
+      <slot>
+        上传图片
+      </slot>
+    </div>
+
+    <div v-if="type === 'video-custom'" class="custom-item edit-image">
+      <div v-if="showLoading" class="loading-mask">
+        <img src="./loading.gif" class="loading">
+      </div>
+      <input type="file" class="sendImage hand" accept="video/*" @change="getFiles($event)">
+      <slot>
+        上传视频
+      </slot>
+    </div>
+
     <div class="tip">{{tip}}</div>
   </div>
 </template>
@@ -273,6 +294,9 @@
       flex-wrap: wrap
       display: flex
 
+  .custom-item
+    position: relative
+
   .add-image
     icon-image('pic-picture1')
     height: 90px
@@ -331,7 +355,7 @@
     font-family $font-family-regular
 
   .close
-    icon-image('pic-delete')
+    icon-image('icon-del')
     width: 15px
     height: 15px
     position: absolute

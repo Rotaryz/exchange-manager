@@ -255,7 +255,7 @@
                 <div>文本</div>
               </div>
               <div class="add-cont-type-item  hand">
-                <zb-upload type="image" :multiple="true" @getPic="addImageItem">
+                <zb-upload type="image-custom" :multiple="true" @getPic="addImageItem">
                   <div class="add-cont-type-item">
                     <div class="icon icon-img"></div>
                     <div>图片</div>
@@ -263,7 +263,7 @@
                 </zb-upload>
               </div>
               <div class="add-cont-type-item hand">
-                <zb-upload type="video" @successVideo="addVideoItem">
+                <zb-upload type="video-custom" @successVideo="addVideoItem">
                   <div class="add-cont-type-item  hand">
                     <div class="icon icon-video"></div>
                     <div>视频</div>
@@ -314,10 +314,14 @@
         <div>
           <input v-model="addCategoryText" placeholder="长度不能超过4个字" maxlength="4" type="text" class="edit-input add-category-input">
         </div>
-        <div class="back">
+        <base-footer :isSeize="false">
+          <base-button plain @click="$refs.addCategory.hideModal()">取消</base-button>
+          <base-button type="primary" @click="_submitCategory">确定</base-button>
+        </base-footer>
+        <!--<div class="back">
           <div class="back-cancel back-btn hand" @click="$refs.addCategory.hideModal()">取消</div>
           <div class="back-btn back-submit hand" @click="_submitCategory">确定</div>
-        </div>
+        </div>-->
       </div>
     </default-modal>
     <!--添加文字-->
@@ -1197,7 +1201,53 @@
             right: 10px
             top: 10px
 
+    .shade-box
+      box-shadow: 0 0 5px 0 rgba(12, 6, 14, 0.60)
+      border-radius: 2px
+      background: $color-white
+      height: 675px
+      max-width: 1000px
+      width: 1000px
+      position: relative
+      overflow-x: hidden
+      overflow-y: auto
+      flex-wrap: wrap
+      padding: 0 20px
+      box-sizing: border-box
 
+      &.add-category-box
+        width: 380px
+        height: 213px
+        .add-category-input
+          width: 340px
+          margin-top: 7px
+      .title-box
+        display: flex
+        box-sizing: border-box
+        padding: 23px 0
+        align-items: center
+        justify-content: space-between
+
+        .title
+          font-size: $font-size-16
+          font-family: $font-family-medium
+          line-height: 1
+          color: $color-text-main
+
+      .back
+        border-top-1px($color-line)
+        position: absolute
+        left: 0
+        right: 0
+        bottom: 0
+        background: $color-white
+        justify-content: flex-end
+        height: 70px
+        border-none()
+  .close
+    width: 12px
+    height: @width
+    icon-image('icon-close')
 
     .add-text-dialog
       height:300px

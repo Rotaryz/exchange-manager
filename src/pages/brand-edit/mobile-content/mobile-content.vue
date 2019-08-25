@@ -39,7 +39,7 @@
   // 结构布局
   .mobile-content
     float: left
-    margin: 3.8% 76px 0 91px
+    margin: 32px 76px 0 91px
     box-sizing: border-box
     display: flex
     justify-content: center

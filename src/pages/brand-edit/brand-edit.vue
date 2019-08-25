@@ -1,27 +1,95 @@
 <template>
   <div class="goods-brand-edit child-router">
-    <mobile-content></mobile-content>
+    <div class="edit-page-title">
+      <img src="./icon-new_commodity@2x.png" class="edit-title-icon">
+      <p class="edit-title-name">创作品牌</p>
+    </div>
+    <div class="wrap-container">
+      <mobile-content></mobile-content>
+      <div class="edit-right-box">
+        <!--品牌首图 -->
+        <base-form-item label="品牌首图"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <image-upload :data.sync="msg.brand_banner_images"
+                        :addStyle="`margin:0 0 14px 0`"
+                        multiple
+                        @successImage="getBrandBannerImages"
+          ></image-upload>
+          <p class="tip-text">请添加不大于10M的清晰图片</p>
+        </base-form-item>
+
+        <!--品牌Logo -->
+        <base-form-item label="品牌Logo"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <image-upload :data.sync="msg.brand_banner_images"
+                        :addStyle="`margin:0 0 14px 0`"
+                        multiple
+                        @successImage="getBrandBannerImages"
+          ></image-upload>
+          <p class="tip-text">请添加不大于10M的清晰图片</p>
+        </base-form-item>
+
+        <!--所属行业 -->
+        <base-form-item label="所属行业"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <base-drop-down :width="400" :height="44" :select="tradeList" @setValue="_selectTrade"></base-drop-down>
+          <p class="add-trade hand" @click="_showAddTrade">添加行业</p>
+        </base-form-item>
+
+        <!--品牌名称 -->
+        <base-form-item label="品牌名称"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <base-input v-model="msg.brand_name" size="middle"></base-input>
+        </base-form-item>
+
+        <!--品牌介绍 -->
+        <base-form-item label="品牌介绍"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <base-input v-model="msg.introduce" size="middle" type="textarea" width="400" height="94"></base-input>
+        </base-form-item>
+      </div>
+    </div>
+
+
+    <base-modal :visible.sync="tradeVisible" title="添加行业" :submitBefore="justifyAddTrade" @submit="_addTrade">
+      <base-input v-model="trade" placeholder="长度不能超过4个字" limit="4" width="100%" height="100%"></base-input>
+    </base-modal>
+
     <base-footer :isSeize="false">
       <base-button plain @click="back">返回</base-button>
       <base-button type="primary" @click="submitBtn">确定</base-button>
     </base-footer>
-    <div class="edit-modular">
-      <div class="box">
-        <div class="small">
-          <div class="banner">
-            <div class="content-header">
-              <div class="content-title">轮播图设置</div>
-              <div class="content-sub">(最多添加5个广告，鼠标拖拽调整广告顺序)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import MobileContent from './mobile-content/mobile-content'
+  import ImageUpload from '../../components/zb-upload/zb-upload.vue'
 
   const PAGE_NAME = 'GOODS_BRAND_EDIT'
   const TITLE = '新建品牌'
@@ -31,17 +99,61 @@
       title: TITLE
     },
     components: {
-      MobileContent
+      MobileContent,
+      ImageUpload
     },
     beforeRouteEnter(to, from, next) {
       next()
     },
     data() {
       return {
-
+        msg: {
+          brand_banner_images: []
+        },
+        tradeVisible: false,
+        trade: '',
+        tradeList: {
+          check: false,
+          show: false,
+          content: '全部',
+          type: 'default',
+          data: [{name: '服装', id: '1'}, {name: '鞋子', id: '2'}] // 格式：{name: '55'}
+        }
       }
     },
     methods: {
+      getBrandBannerImages(arr) {
+        arr.forEach(item => {
+          item = item.data
+          this.msg.brand_banner_images.push({
+            id: 0,
+            image_url: item.url,
+            image_id: item.id,
+          })
+        })
+      },
+      _selectTrade(item) {
+        console.log(item)
+        this.msg.trade = item.name
+      },
+      _showAddTrade() {
+        this.tradeVisible = true
+      },
+      justifyAddTrade(done) {
+        if (!this.trade) {
+          this.$toast.show('请填写分类')
+        } else {
+          done()
+        }
+      },
+      _addTrade() {
+        this.msg.trade = this.trade
+        setTimeout(() => {
+          this.trade = ''
+        }, 300)
+      },
+
+
       back() {
         this.$router.back()
       },
@@ -64,65 +176,39 @@
     max-height: 100%
     box-sizing: border-box
 
-    .edit-modular
-      height: 100%
-      max-height: 100%
-      box-sizing: border-box
-      overflow-y: hidden
-      position: relative
-      .box
-        top: 0
-        left: 0
-        bottom: 0px
-        width: 100%
-        overflow-x: hidden
-        position: absolute
-        padding: 81px 20px 60px 0
-        box-sizing: border-box
-        &::-webkit-scrollbar
-          width: 4px
-          height: 4px
-          opacity: 0
-          transition: all 0.2s
-        &::-webkit-scrollbar-thumb
-          background-color: rgba(0, 0, 0, .05)
-          border-radius: 10px
-        &::-webkit-scrollbar-thumb:hover
-          background-color: rgba(0, 0, 0, .1)
-        &::-webkit-scrollbar-track
-          box-shadow: inset 0 0 6px rgba(0, 0, 0, .05)
-          border-radius: 10px
-      .content-header
-        border-bottom-1px($color-line)
-        display: flex
-        align-items: center
-        position: relative
-        box-sizing: border-box
-        padding-bottom: 16px
-        line-height: 1
-        .excel
-          margin-left: 20px
-          &:hover
-            color: $color-white
-        &:before
-          content: ''
-          position: absolute
-          width: 3px
-          height: 16px
-          background: $color-main
-          border-radius: 2px
-          top: 0
-          left: 0
-        .content-title
-          text-indent: 13.5px
-          color: $color-text-main
-          font-family: $font-family-regular
-          font-size: $font-size-16
-        .content-sub
-          margin-left: 10px
-          color: #868DAA
-          font-family: $font-family-regular
-          font-size: $font-size-12
+    .edit-page-title
+      height: 48px
+      display: flex
+      align-items: center
+      padding-left: 20px
+      .edit-title-icon
+        width: 14px
+        height: 14px
+      .edit-title-name
+        font-size: 16px
+        color: $color-text-main
+        font-family: $font-family-regular
+        margin-left: 4px
+    .wrap-container
+      display: flex
+      font-family: $font-family-regular
+      padding-right: 20px
+    .edit-right-box
+      padding-top: 60px
+      flex: 1
+      .tip-text
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-text-sub
+        margin-left: 14px
+        margin-top: 38px
+      .add-trade
+        margin-left: 14px
+        line-height: 44px
+        font-size: $font-size-14
+        font-family: $font-family-regular
+        color: $color-main
+        text-decoration: underline
 
 
 </style>
