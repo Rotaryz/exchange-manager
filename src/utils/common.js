@@ -68,3 +68,12 @@ export function objDeepCopy(source) {
   }
   return sourceCopy
 }
+
+// 优惠券金额处理
+export function formatCouponMoney(money = '') {
+  const arr = ('' + money).split('.')
+  return {
+    int: arr[0],
+    dec: +arr[1] ? '.' + arr[1] : ''
+  }
+}
