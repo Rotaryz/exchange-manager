@@ -8,7 +8,7 @@ import storage from 'storage-controller'
  */
 function _saveFile(data) {
   const url = `/exchange-platform/common/file/image/create`
-  return request.post({url, data})
+  return request.post({url, data, loading: false})
 }
 
 /**
@@ -53,13 +53,16 @@ function _getAuthorization(options, callback) {
  * @param processCallBack 进度条回调方法let
  * @returns {Promise<any>}
  */
-export function uploadFiles(fileType = 'image', files, showProcess, processCallBack) {
+export function uploadFiles(fileType, files, showProcess, processCallBack) {
   if (!files.map) {
     throw new Error('please use Array')
   }
   showProcess && showProcess()
   return new Promise((resolve, reject) => {
-    let requests = files.map((file) => {
+    const requests = files.map((file) => {
+      const FileTypes = file.type && file.type.split('/') || []
+      const originFileType = FileTypes[1] ? '.' + FileTypes[1] : ''
+      fileType = fileType || FileTypes[0] || 'image'
       let Key =
         Date.now() +
         '-' +
@@ -67,6 +70,7 @@ export function uploadFiles(fileType = 'image', files, showProcess, processCallB
           .toString()
           .split('.')[1]
           .substr(0, 6)
+      + originFileType
       return new Promise((resolve, reject) => {
         _getAuthorization({Method: 'PUT', Key: Key}, (err, info) => {
           if (err) {

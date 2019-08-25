@@ -198,14 +198,15 @@
             return false
           }
         })
-        if (this.type.includes('image')) {
-          this._action(files)
-        } else {
-          // this._addVideo(files) todo
-          this._action(files, 'video/mp4')
-        }
+        this._action(files)
+        // if (this.type.includes('image')) {
+        //   this._action(files)
+        // } else {
+        //   // this._addVideo(files) todo
+        //   this._action(files, 'video/mp4')
+        // }
       },
-      async _addPic(files, fileType = 'image') {
+      async _action(files, fileType) {
         this.showLoading = true
         await cos(fileType, files)
           .then((arr) => {
@@ -219,7 +220,8 @@
             this.showLoading = false
           })
       },
-      async _action(files, fileType = 'image') {
+      // todo del
+      async _addPic(files, fileType = 'image') {
         this.showLoading = true
         await cos(fileType, files)
           .then((arr) => {
