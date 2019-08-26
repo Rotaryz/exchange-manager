@@ -204,10 +204,11 @@
       },
       // 收支明细
       goIncomeExpenses(item) {
+        const curTab = this.tabList[this.filter.type]
         this.$router.push({
           name: 'income-expenses-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.filter.type].text}
+          query: {name: curTab.text, type: curTab.type}
         })
       },
       // 详情

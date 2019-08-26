@@ -45,15 +45,16 @@
       title: TITLE
     },
     beforeRouteEnter(to, from, next) {
-      API.Customer.getTradingRecord({
+      const id = to.params.id
+      API.Finance.getAccountDetails({
         data: {
-          page: 1,
-          limit: 10
+          target_id: id,
+          page: 1
         }
       }).then((res) => {
         next((vw) => {
-          console.log('111')
-        // vw.setData(res)
+          vw.setData(res)
+          vw._getStatistic()
         })
       })
     },
@@ -63,54 +64,33 @@
           {
             iconClass: 'total-income-icon',
             name: '收入总额(元)',
-            valueKey: 'total_income'
+            valueKey: 'total_remaining'
           },
           {
             iconClass: 'balance-icon',
             name: '账户余额(元)',
-            valueKey: 'balance_money'
+            valueKey: 'remaining'
           },
           {
             iconClass: 'withdraw-icon',
             name: '已提现总额(元)',
-            valueKey: 'withdraw_money'
+            valueKey: 'already_remaining'
           }
         ],
-        money: {
-          withdraw_money: '398447.00',
-          balance_money: ' 398447.00',
-          total_income: '398447.00'
-        },
+        money: {total_remaining: '—', remaining: '—', already_remaining: '—'},
         filter: {
           page: 1,
-          limit: 10
+          target_id: this.$route.params.id
         },
         listHeader: {
-          name: {name: '申请时间'},
-          level: {name: '类型'},
-          price: {name: '收入 '},
-          referrer: {name: '支出 '},
-          channels: {name: '余额 '},
-          update_time: {name: '提现单号 '}
+          settlement_at: {name: '申请时间'},
+          order_type_text: {name: '类型'},
+          income: {name: '收入'},
+          expend: {name: '支出'},
+          after_remaining: {name: '余额'},
+          order_sn: {name: '提现单号'}
         },
-        list: [
-          {
-            name: '刘强东',
-            level: '标准版',
-            price: 123.0,
-            referrer: '李力',
-            channels: '线下',
-            update_time: '2019-09-18'
-          },
-          {
-            name: '刘强东',
-            level: '标准版',
-            price: 123.0,
-            referrer: '李力',
-            channels: '线下',
-            update_time: '2019-09-18'
-          }
-        ],
+        list: [],
         total: 11
       }
     },
@@ -121,17 +101,38 @@
     },
     methods: {
       setData(res) {
+        res.data = [
+          {
+            "id": 1,
+            "type": 1,
+            "title": "全能版",
+            "money": 30,
+            "after_remaining": 0,
+            "order_type": 40,
+            "order_type_text": "业务补贴",
+            "order_sn": "xxxx",
+            "status": 1,
+            "settlement_at": "2019-08-24 14:31:54"
+          }
+        ]
+        // 格式化收入和支出
+        res.data.forEach((item) => {
+          item.income = item.money > 0 ? item.money : '—'
+          item.expend = item.money < 0 ? item.money : '—'
+        })
         this.list = res.data
       },
+      _getStatistic() {
+        API.Finance.accountDetailsTotal({data: {target_id: this.filter.target_id, type: this.$route.query.type}, loading: false}).then((res) => {
+          this.money = res.data
+        })
+      },
       _getList() {
-        API.Customer.getTradingRecord({data: this.filter, loading: false}).then((res) => {
+        API.Finance.getAccountDetails({data: this.filter, loading: false}).then((res) => {
           this.setData(res)
         })
       },
       pageChange(val) {
-        this._getList()
-      },
-      searchBtn() {
         this._getList()
       }
     }
