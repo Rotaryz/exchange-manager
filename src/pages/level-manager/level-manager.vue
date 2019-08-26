@@ -1,7 +1,7 @@
 <template>
   <div class="level-manager normal-box table">
     <base-table-tool :iconUrl="require('./icon-djgl@2x.png')" title="等级管理">
-      <base-button plain buttonStyle="width: 92px" @click="newLevel">
+      <base-button v-if="false" plain buttonStyle="width: 92px" @click="newLevel">
         新建等级<span class="add-icon"></span>
       </base-button>
     </base-table-tool>
@@ -18,7 +18,7 @@
               <div class="list-item">sdfsdf</div>
               <div class="list-item">
                 <router-link tag="span" :to="`edit-level?id=`" append class="list-operation">编辑</router-link>
-                <span class="list-operation" @click="delLevel">删除</span>
+                <span v-if="false" class="list-operation" @click="delLevel">删除</span>
               </div>
             </div>
           </div>
@@ -31,7 +31,6 @@
       </div>
     </div>
     <router-view @update="_getLevelList()"></router-view>
-
   </div>
 </template>
 
@@ -126,7 +125,6 @@
     }
   }
 </script>
-
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
