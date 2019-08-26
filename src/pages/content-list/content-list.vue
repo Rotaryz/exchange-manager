@@ -1,8 +1,5 @@
 <template>
   <div class="content-list">
-    <!--    <router-link tag="div" :to="{path:'content-edit', query:{type: 'common'}}" append>-->
-    <!--      <base-button type="primary" plain addIcon>创作文章</base-button>-->
-    <!--    </router-link>-->
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
@@ -120,16 +117,6 @@
         this._getList({loading: false})
         this._getStatus()
       },
-      // // 顶部类型切换
-      // tabChange(val) {
-      //   this.filter.category_id = ''
-      //   this.$refs.selects.clearValues()
-      //   this.filter.keyword = ''
-      //   this.filter.status = ''
-      //   this.filter.page = 1
-      //   this.$router.push({name: 'mall-goods-goods-list', query: {type: val}})
-      //   this.updatePage()
-      // },
       setData(res) {
         this.list = res.data
         this.total = res.meta.total
@@ -155,11 +142,6 @@
           this.setData(res)
         })
       },
-      // changeGategory(val) {
-      //   this.filter.page = 1
-      //   this.filter.category_id = val
-      //   this.updatePage()
-      // },
       statusChange(val) {
         this.filter.page = 1
         this.updatePage()
