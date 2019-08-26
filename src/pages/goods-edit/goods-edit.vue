@@ -21,6 +21,9 @@
                         placeholder2="请选择子分类"
         ></cascade-select>
       </base-form-item>
+      <base-form-item label="所属品牌" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <base-drop-down :width="400" :height="44" :select="brandList" @setValue="_selectBrand"></base-drop-down>
+      </base-form-item>
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
       </base-form-item>
@@ -266,8 +269,16 @@
           discount_price: '',
           // 赞播优品商品
           cash_price: 0,
-          bean_price: 0,
+          bean_price: 0
+        },
+        brandList: {
+          check: false,
+          show: false,
+          content: '选择品牌',
+          type: 'default',
+          data: [] // 格式：{title: '55'}}
         }
+
       }
     },
     computed: {
@@ -307,13 +318,14 @@
           }]
         }
       },
+      _selectBrand(item) {
+        console.log(item)
+      },
       setData(res) {
         let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, ...edit} = res.data
         this.goodsSpecification = specsAttrs
         this.detailGoodsSpec = goodsSpecs
-        console.log(this.goodsDetails, 'goodsDetails')
         this.edit = edit
-        console.log(this.edit, 'this.edit')
         if (!this.edit.specification_type) {
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable

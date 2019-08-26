@@ -184,6 +184,7 @@
     justify-content: center
     width: 300px
     flex-shrink: 0
+    float: left
     .phone
       position: fixed
       z-index: 200

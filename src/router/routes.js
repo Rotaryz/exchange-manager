@@ -286,16 +286,16 @@ export default [
             component: {render: (h) => h('router-view')},
             children: [
               // 订单列表
-              {
-                path: '/cms/b-mall/cms-manager',
-                name: 'cms-manager',
-                component: () => import('@pages/cms-manager/cms-manager'),
-                meta: {
-                  title: '首页配置', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['首页配置'] // 面包屑标题
-                }
-              },
+              // {
+              //   path: '/cms/b-mall/cms-manager',
+              //   name: 'cms-manager',
+              //   component: () => import('@pages/cms-manager/cms-manager'),
+              //   meta: {
+              //     title: '首页配置', // 页面标题
+              //     type: 'sec-menu', // 二级标识
+              //     crumbs: ['首页配置'] // 面包屑标题
+              //   }
+              // },
               // 礼品馆、品牌馆
               {
                 path: '/cms/b-mall/page-manage',
@@ -323,7 +323,6 @@ export default [
                     component: () => import('@pages/content-edit/content-edit'),
                     meta: {
                       title: '创作文章', // 页面标题
-                      variableIndex: 1,
                       crumbs: ['内容列表', '创作文章'] // 面包屑标题
                     }
                   }

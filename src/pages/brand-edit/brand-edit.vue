@@ -152,7 +152,7 @@
       },
       justifyAddTrade(done) {
         if (!this.trade) {
-          this.$toast.show('请填写分类')
+          this.$toast.show('请填写行业')
         } else {
           done()
         }

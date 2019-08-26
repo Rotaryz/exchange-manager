@@ -98,7 +98,6 @@
 </template>
 <script>
   import Draggable from 'vuedraggable'
-  import {uploadFiles as vod} from '@utils/vod/vod'
   import {uploadFiles as cos} from '@utils/cos/cos'
 
   const EDIT_IMAGE = 'BASE_EDIT_IMAGE'
@@ -220,12 +219,6 @@
           }
         })
         this._action(files)
-        // if (this.type.includes('image')) {
-        //   this._action(files)
-        // } else {
-        //   // this._addVideo(files) todo
-        //   this._action(files, 'video/mp4')
-        // }
       },
       async _action(files, fileType) {
         this.showLoading = true
@@ -239,40 +232,6 @@
           .catch((err) => {
             this.$emit('failFile', err)
             this.showLoading = false
-          })
-      },
-      // todo del
-      async _addPic(files, fileType = 'image') {
-        this.showLoading = true
-        await cos(fileType, files)
-          .then((arr) => {
-            this.showLoading = false
-            let item = arr.find((item) => item.error_code !== this.$ERR_OK)
-            if (item) this.$emit('failFile', item.message)
-            else this.$emit('successImage', Array.isArray(this.data) ? arr : arr[0])
-          })
-          .catch((err) => {
-            this.$emit('failFile', err)
-            this.showLoading = false
-          })
-      },
-      _addVideo(files) {
-        // todo 还未使用过 ，使用第一次可自行修改此处，修改后请删除此注释
-        this.$loading.show('视频上传中...')
-        vod(files[0], (curr) => {
-          this.$loading.showCurr(curr)
-        })
-          .then((res) => {
-            this.$loading.hide()
-            if (res.error !== this.$ERR_OK) {
-              this.$emit('failFile', res.message)
-              return
-            }
-            this.$emit('successVideo', res.data)
-          })
-          .catch((err) => {
-            this.$loading.hide()
-            this.$emit('failFile', err)
           })
       }
     }
