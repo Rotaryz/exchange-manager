@@ -65,6 +65,10 @@
       isShowTip: {
         type: Boolean,
         default: true
+      },
+      tipStyle: {
+        type: String,
+        default: ''
       }
     },
     data() {
