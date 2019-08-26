@@ -107,20 +107,6 @@
         })
       },
       setData(res) {
-        res.data = [
-          {
-            "id": 1,
-            "type": 1,
-            "title": "全能版",
-            "money": 30,
-            "after_remaining": 0,
-            "order_type": 40,
-            "order_type_text": "业务补贴",
-            "order_sn": "xxxx",
-            "status": 1,
-            "settlement_at": "2019-08-24 14:31:54"
-          }
-        ]
         // 格式化收入和支出
         res.data.forEach((item) => {
           item.income = item.money > 0 ? item.money : '—'

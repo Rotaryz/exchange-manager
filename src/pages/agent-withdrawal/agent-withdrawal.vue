@@ -133,7 +133,8 @@
       ]).then((res) => {
         console.log(res)
         next((vw) => {
-          vw.setData(res[0])
+          vw.list = res[0].data
+          vw.total = res[0].meta.total
           vw.statusList = res[1].data
         })
       })
@@ -150,27 +151,6 @@
         this.status = ''
         this.page = 1
       },
-      // 设置页面数据
-      setData(res) {
-        res.data = [
-          {
-            "id": 1,
-            "withdraw_id": 1,
-            "withdraw_sn": "W1908251748135306",
-            "created_at": "2019-08-25 17:48",
-            "withdrawal_name": "黄锦冰111",
-            "shop_name": "杂货铺子",
-            "poundage": "1元",
-            "total": "1元",
-            "status": 1,
-            "status_text": "待打款",
-            "image_url": "https://exchange-platform-img.jkweixin.com/prod%2F2019%2F08%2F19%2F1566216158349-883671",
-            "note": "xx"
-          }
-        ]
-        this.list = res.data
-        this.total = res.meta.total
-      },
       _getData() {
         this._getWithdrawalList()
         this._getStatistics()
@@ -181,7 +161,8 @@
           data: {...this.filter, page: this.page, status: this.status},
           loading: false
         }).then((res) => {
-          this.setData(res)
+          this.list = res.data
+          this.total = res.meta.total
         })
       },
       // 获取提现状态统计

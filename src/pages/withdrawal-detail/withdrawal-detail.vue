@@ -92,23 +92,6 @@
       const id = to.params.id
       API.Finance.getWithdrawalDetail({data: {id: id}}).then((res) => {
         next((vx) => {
-          res.data = {
-            "id": 1,
-            "withdraw_id": 1,
-            "withdraw_sn": "W1908251748135306",
-            "shop_name": "杂货铺子",
-            "created_at": "2019-08-25 17:48",
-            "status": 2,
-            "status_text": "已拒绝",
-            "total": "1元",
-            "poundage": "1元",
-            "arrival_total": 0,
-            "withdrawal_name": "黄锦冰111",
-            "withdrawal_bank": "工商银行",
-            "withdrawal_bank_card": "6464983134646463",
-            "image_url": "https://exchange-platform-img.jkweixin.com/prod%2F2019%2F08%2F19%2F1566216192640-183799",
-            "note": "不给"
-          }
           vx.recordId = id
           vx.info = res.data
         })
