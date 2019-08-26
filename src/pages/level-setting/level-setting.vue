@@ -106,7 +106,6 @@
         })
           .then((res) => {
             this.selectList = res.data
-            console.log(res.data)
           })
       },
       successImage(res) {
@@ -147,16 +146,13 @@
         }).catch(() => {
           this.isSubmit = false
         })
-        console.log(222)
       },
       setData(res) {
-        console.log(res)
         this.msg = res.data
       },
       getSelectData(item, value) {
         this.msgData.level_id = item
         this.msgData.amount = value.agent_amount
-        console.log(item, value)
       }
     }
   }
