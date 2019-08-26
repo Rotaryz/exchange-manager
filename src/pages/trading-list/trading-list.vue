@@ -72,7 +72,7 @@
     },
     beforeRouteEnter(to, from, next) {
       let data = {page: 1, keyword: ''}
-      API.Trading.getSellList({data, loading: true, toast: true})
+      API.Finance.getSellList({data, loading: true, toast: true})
         .then((res) => {
           next((vx) => {
             vx.listData = res.data
@@ -119,7 +119,7 @@
       // 获取总额
       _getTradingTotal(loading = false) {
         const apiArr = ['getSellTotal', 'getPurchaseTotal']
-        API.Trading[apiArr[this.tabIndex]]({
+        API.Finance[apiArr[this.tabIndex]]({
           data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''},
           loading
         }).then((res) => {
@@ -129,7 +129,7 @@
       // 获取订单列表
       async _getListData(loading = false) {
         const apiArr = ['getSellList', 'getPurchaseList']
-        API.Trading[apiArr[this.tabIndex]]({
+        API.Finance[apiArr[this.tabIndex]]({
           data: this.paramObj,
           loading,
           toast: true,

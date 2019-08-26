@@ -139,7 +139,7 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      API.Subsidy.getSubsidyList({data: {type: DEFAULT_TAB + 1, target_type: 2, page: 1,}, loading: true, toast: true})
+      API.Finance.getSubsidyList({data: {type: DEFAULT_TAB + 1, target_type: 2, page: 1,}, loading: true, toast: true})
         .then((res) => {
           next(vx => {
             res = TEST_DATA
@@ -178,7 +178,7 @@
         this._initParams()
       },
       _getSubsidyTotal() {
-        API.Subsidy.getSubsidyTotal({
+        API.Finance.getSubsidyTotal({
           data: { type: this.tabIndex + 1, target_type: 2 },
           loading: false,
         })
@@ -188,7 +188,7 @@
       },
       // 获取订单列表
       _getListData(loading = false) {
-        API.Subsidy.getSubsidyList({
+        API.Finance.getSubsidyList({
           data: this.paramObj,
           loading,
           toast: true,
