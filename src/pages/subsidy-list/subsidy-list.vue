@@ -16,10 +16,14 @@
           <div v-for="(head, index) in listHeader" :key="index" :class="head.class" class="list-item">{{head.title}}</div>
         </div>
         <div class="list">
-          <div v-if="orderList.length">
-            <div v-for="(item, index) in orderList" :key="index" class="list-content list-box">
+          <div v-if="listData.length">
+            <div v-for="(item, index) in listData" :key="index" class="list-content list-box">
               <div v-for="(head, idx) in listHeader" :key="idx" :class="head.class" class="list-item">
-                {{item[head.key]}}
+                <template v-if="Array.isArray(head.key)">
+                  <div class="item-text">{{item[head.key[0]]}}</div>
+                  <div class="item-text">{{item[head.key[1]]}}</div>
+                </template>
+                <template v-else>{{item[head.key]}}</template>
               </div>
             </div>
           </div>
@@ -44,27 +48,72 @@
   const TAB_CONFIG = [{text: '业务补贴', type: 0}, {text: '商品补贴', type: 1}]
   const LIST_CONFIG = [
     [
-      {title: '创建时间', key: 'time', class: 'width-1'},
-      {title: '客户名称', key: 'name', class: 'width-2'},
-      {title: '被推荐人', key: 'name', class: 'width-2'},
-      {title: '等级类型', key: 'type', class: 'width-2'},
-      {title: '升级金额', key: 'price', class: 'width-3'},
-      {title: '补贴比例', key: 'ratio', class: 'width-2'},
-      {title: '补贴金额', key: 'price', class: 'width-3'},
-      {title: '关联单号', key: 'order', class: 'width-1'}
+      {title: '创建时间', key: 'settlement_at', class: 'width-1'},
+      {title: '客户名称', key: ['target_shop_truename', 'target_shop_level_name'], class: 'width-3'},
+      {title: '被推荐人', key: 'source_shop_truename', class: 'width-3'},
+      {title: '升级类型', key: 'source_shop_level_name', class: 'width-2'},
+      {title: '升级金额', key: 'total', class: 'width-2'},
+      {title: '补贴方式', key: ['commission_way_text', 'commission_value'], class: 'width-3'},
+      {title: '补贴金额', key: 'commission_money', class: 'width-2'},
+      {title: '关联单号', key: 'order_sn', class: 'width-1'}
     ],
     [
-      {title: '创建时间', key: 'time', class: 'width-3'},
-      {title: '客户名称', key: 'name', class: 'width-2'},
-      {title: '订单金额', key: 'price', class: 'width-2'},
-      {title: '补贴金额', key: 'price', class: 'width-2'},
-      {title: '关联单号', key: 'order', class: 'width-3'}
+      {title: '创建时间', key: 'settlement_at', class: 'width-1'},
+      {title: '客户名称', key: ['target_shop_truename', 'target_shop_level_name'], class: 'width-3'},
+      {title: '被推荐人', key: ['source_shop_truename', 'source_shop_level_name'], class: 'width-3'},
+      {title: '订单类型', key: 'order_type_text', class: 'width-2'},
+      {title: '订单金额', key: 'total', class: 'width-2'},
+      {title: '补贴方式', key: 'commission_way_text', class: 'width-2'},
+      {title: '补贴比例', key: 'commission_value', class: 'width-2'},
+      {title: '补贴金额', key: 'commission_money', class: 'width-2'},
+      {title: '关联单号', key: 'order_sn', class: 'width-1'}
     ]
   ]
   const TOP_DATA = [
-    [{img: require('./icon-yybt@2x.png'), title: '业务补贴总额(元)', value: '99999.99'}],
-    [{img: require('./icon-spbtze@2x.png'), title: '商品补贴总额(元)', value: '77777.77'}]
+    [{img: require('./icon-yybt@2x.png'), title: '业务补贴总额(元)', value: '—'}],
+    [{img: require('./icon-spbtze@2x.png'), title: '商品补贴总额(元)', value: '—'}]
   ]
+  const TEST_DATA = {
+    "data": [
+      {
+        "id": 1,
+        "type": 1,
+        "title": "全能版",
+        "money": 30,
+        "order_type": 40,
+        "order_type_text": "权益订单",
+        "order_sn": "xxxx",
+        "status": 1,
+        "settlement_at": "2019-08-24 14:31:54",
+        "source_shop_truename": "刘强东1",
+        "source_shop_level_name": "合伙版",
+        "target_shop_truename": "刘强东4",
+        "target_shop_level_name": "全能版",
+        "total": 60,
+        "commission_way": 2,
+        "commission_way_text": "比例",
+        "commission_money": 3000,
+        "commission_value": "60%"
+      }
+    ],
+    "links": {
+      "first": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index?page=1",
+      "last": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index?page=1",
+      "prev": null,
+      "next": null
+    },
+    "meta": {
+      "current_page": 1,
+      "from": 1,
+      "last_page": 1,
+      "path": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index",
+      "per_page": 10,
+      "to": 1,
+      "total": 1
+    },
+    "error_code": 0,
+    "message": "操作成功！"
+  }
 
   export default {
     name: PAGE_NAME,
@@ -81,29 +130,22 @@
         topData: TOP_DATA[DEFAULT_TAB],
         listHeader: LIST_CONFIG[DEFAULT_TAB],
         tabName: TAB_CONFIG[DEFAULT_TAB].text,
+        listData: [],
         currentPage: 1,
         page: 1,
-        orderList: [],
         keyword: '',
         total: 21,
         time: []
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: ''}
-      API.Order.getOrderList({data, loading: true, toast: true})
+      API.Finance.getSubsidyList({data: {type: DEFAULT_TAB + 1, target_type: 2, page: 1,}, loading: true, toast: true})
         .then((res) => {
           next(vx => {
-            // vx.orderList = res.data
-            // vx.total = res.meta.total
-            vx.orderList = [
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'}
-            ]
+            res = TEST_DATA
+            vx.listData = res.data
             vx.total = res.meta.total
+            vx._getSubsidyTotal()
           })
         })
         .catch(() => {
@@ -112,16 +154,21 @@
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''}
-        return data
+        return {
+          type: this.tabIndex + 1,
+          target_type: 2,
+          target_shop_truename: this.keyword,
+          page: this.page,
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || ''
+        }
       }
     },
     methods: {
       _initParams() {
-        this.page = 1
-        this.keyword = ''
-        this.time = []
-        this.getOrderList()
+        this.paramObj = {type: this.tabIndex + 1, target_type: 2, page: 1,}
+        this._getListData()
+        this._getSubsidyTotal()
       },
       // 切换顶部tab
       _changeTopTab(select) {
@@ -130,9 +177,18 @@
         this.tabName = TAB_CONFIG[select].text
         this._initParams()
       },
+      _getSubsidyTotal() {
+        API.Finance.getSubsidyTotal({
+          data: { type: this.tabIndex + 1, target_type: 2 },
+          loading: false,
+        })
+          .then((res) => {
+            this.topData.value = res.data.total_remaining
+          })
+      },
       // 获取订单列表
-      async getOrderList(loading = false) {
-        API.Order.getOrderList({
+      _getListData(loading = false) {
+        API.Finance.getSubsidyList({
           data: this.paramObj,
           loading,
           toast: true,
@@ -140,29 +196,23 @@
           }
         })
           .then((res) => {
-            res.data = [
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'},
-              {time: '2019-01-01', order:'dd234557577', price:'12.1', name: 'Joe', type: '全能版', ratio: '67%'}
-            ]
-            this.orderList = res.data
+            res = TEST_DATA
+            this.listData = res.data
             this.total = res.meta.total
           })
       },
       _search(keyword) {
         this.keyword = keyword || ''
         this.page = 1
-        this.getOrderList()
+        this._getListData()
       },
       _changePage(page) {
         this.page = page || 1
-        this.getOrderList()
+        this._getListData()
       },
       _changeDate() {
         this.page = 1
-        this.getOrderList()
+        this._getListData()
       }
     }
   }
@@ -189,5 +239,7 @@
         flex: 0.8
       &.width-3
         flex: 1
+      .item-text
+        line-height: 20px
 
 </style>

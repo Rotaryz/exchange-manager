@@ -263,14 +263,14 @@
     methods: {
       _initParams() {
         this.page = 1
+        this.status = INFO_STATUS
         this.keyword = ''
         this.time = []
-        this.getOrderList()
       },
       _changeTopTab(index) {
         this.tabIndex = index
         this.listHeader = LIST_CONFIG[index]
-        // this._initParams()
+        this._initParams()
       },
       // 获取物流列表
       getLogisticsList() {

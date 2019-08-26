@@ -122,6 +122,16 @@
         list: []
       }
     },
+    watch: {
+      $route() {
+        this.filter.category_id = ''
+        this.$refs.selects.clearValues()
+        this.filter.keyword = ''
+        this.filter.status = ''
+        this.filter.page = 1
+        this.updatePage()
+      }
+    },
     mounted() {
       this.updatePage()
     },
@@ -132,13 +142,7 @@
       },
       // 顶部类型切换
       tabChange(val) {
-        this.filter.category_id = ''
-        this.$refs.selects.clearValues()
-        this.filter.keyword = ''
-        this.filter.status = ''
-        this.filter.page = 1
         this.$router.push({name: 'mall-goods-goods-list', query: {type: val}})
-        this.updatePage()
       },
       setData(res) {
         this.list = res.data
