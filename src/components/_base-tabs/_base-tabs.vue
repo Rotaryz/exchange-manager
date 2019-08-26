@@ -86,7 +86,6 @@
     },
     watch: {
       value(val) {
-        console.log('value', val)
       }
     },
     mounted() {
@@ -153,7 +152,6 @@
       left: 8px
       bottom: -2px
       z-index: 10
-
 
     .tab-active-line
       background: $color-main
