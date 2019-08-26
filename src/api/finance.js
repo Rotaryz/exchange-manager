@@ -55,5 +55,15 @@ export default {
   withdrawConfirmPay(args) {
     const url = `/exchange-platform/platform/settlement/withdraw/confirm-pay`
     return request.put({url, ...args})
+  },
+  // 收支明细
+  getAccountDetails(args) {
+    const url = `/exchange-platform/platform/settlement/settlement/shop-index`
+    return request.get({url, ...args})
+  },
+  // 收支明细统计
+  accountDetailsTotal(args) {
+    const url = `/exchange-platform/platform/settlement/settlement/shop-account-total`
+    return request.get({url, ...args})
   }
 }
