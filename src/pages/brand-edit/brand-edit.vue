@@ -62,6 +62,17 @@
           <base-input v-model="msg.brand_name" size="middle"></base-input>
         </base-form-item>
 
+        <!--品牌名称 -->
+        <base-form-item label="品牌副标题"
+                        labelMarginRight="40"
+                        labelWidth="68px"
+                        labelAlign="right"
+                        verticalAlign="top"
+                        labelHeight="40px"
+        >
+          <base-input v-model="msg.brand_subhead" size="middle" :maxlength="25"></base-input>
+        </base-form-item>
+
         <!--品牌介绍 -->
         <base-form-item label="品牌介绍"
                         labelMarginRight="40"

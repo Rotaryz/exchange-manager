@@ -13,8 +13,8 @@
           <div class="small">
             <div v-if="type === 'category'" class="category">
               <div class="content-header">
-                <div class="content-title">为你推荐</div>
-                <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
+                <div class="content-title">类目导航</div>
+                <div class="content-sub">(最多添加5个类目，鼠标拖拽调整类目顺序)</div>
               </div>
               <slick-list v-model="categoryList" :distance="30" lockAxis="y">
                 <slick-item v-for="(item, index) in categoryList" :key="index" :index="index">
@@ -105,38 +105,7 @@
       <div class="edit-modular">
         <div class="box">
           <div class="small">
-            <div v-if="type === 'category'" class="category">
-              <div class="content-header">
-                <div class="content-title">为你推荐</div>
-                <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
-              </div>
-              <slick-list v-model="categoryList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in categoryList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :multiple="false"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :indicatorPosition="false"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
-
-                    <!--@click=""-->
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                      <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
-                    </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                  </div>
-                </slick-item>
-              </slick-list>
-            </div>
-            <div v-if="type === 'article'" class="brand">
+            <div v-if="type === 'article'" class="article">
               <div class="content-header">
                 <div class="content-title">轮播图</div>
                 <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
@@ -163,7 +132,7 @@
                 </slick-item>
               </slick-list>
             </div>
-            <div v-if="type === 'brands'" class="goods">
+            <div v-if="type === 'brands'" class="brands">
               <div class="content-header">
                 <div class="content-title">品牌列表</div>
                 <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
@@ -256,42 +225,91 @@
             </div>
           </div>
         </div>
+        <!--小程序链接-->
         <div v-if="tabIndex === 2" class="link-text">
           <textarea v-model="miniLink" class="link-text-box" placeholder="请输入小程序链接"></textarea>
         </div>
+        <!--H5链接-->
         <div v-if="tabIndex === 3" class="link-text">
           <textarea v-model="outHtml" class="link-text-box" placeholder="请输入H5链接"></textarea>
         </div>
-        <div v-if="tabIndex === 4 || (tabIndex === 0 && type === 'brand')" class="goods-cate">
-          <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
-            <div class="select-icon hand" :class="{'select-icon-active': showCateIndex === goodsIdx}" @click="selectCate(goods, goodsIdx)">
-              <span class="after"></span>
+        <!--内容列表-->
+        <div v-if="tabIndex === 4" class="goods-cate">
+          <div class="shade-tab">
+            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入内容文章标题" @search="searchArticle"></base-search>
+          </div>
+          <div class="goods-content">
+            <div class="goods-item goods-header">
+              <div class="goods-text"></div>
+              <div class="goods-text">文章封面</div>
+              <div class="goods-text">标题</div>
             </div>
-            <div class="shade-goods-msg">
-              <div class="shade-goods-name">{{goods.name}}</div>
-              <div class="shade-goods-num">{{goods.goods_count}}个商品</div>
+            <div class="goods-list">
+              <div v-for="(item, index) in choiceGoods" :key="index" class="goods-item">
+                <div class="goods-text">
+                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                    <span class="after"></span>
+                  </div>
+                </div>
+                <div class="goods-text goods-msg">
+                  <img :src="item.goods_cover_image" alt="" class="goods-img">
+                </div>
+                <div class="goods-text">{{item.name}}</div>
+              </div>
             </div>
           </div>
         </div>
-        <div v-if="tabIndex === 0 && type === 'article'" class="goods-cate">
-          <div v-for="(goods, goodsIdx) in article" :key="goodsIdx" class="goods_cate-item">
-            <div class="select-icon hand" :class="{'select-icon-active': showCateIndex === goodsIdx}" @click="selectCate(goods, goodsIdx)">
-              <span class="after"></span>
+        <!--品牌列表-->
+        <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand') || (tabIndex === 0 && type === 'brands')" class="goods-cate">
+          <div class="shade-tab">
+            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入品牌名称" @search="searchArticle"></base-search>
+          </div>
+          <div class="goods-content">
+            <div class="goods-item goods-header">
+              <div class="goods-text"></div>
+              <div class="goods-text">品牌logo</div>
+              <div class="goods-text">品牌名称</div>
             </div>
-            <div class="shade-goods-msg">
-              <div class="shade-goods-name">{{goods.name}}</div>
-              <div class="shade-goods-num">{{goods.goods_count}}个商品</div>
+            <div class="goods-list">
+              <div v-for="(item, index) in choiceGoods" :key="index" class="goods-item">
+                <div class="goods-text">
+                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                    <span class="after"></span>
+                  </div>
+                </div>
+                <div class="goods-text goods-msg">
+                  <img :src="item.goods_cover_image" alt="" class="goods-img">
+                </div>
+                <div class="goods-text">{{item.name}}</div>
+              </div>
             </div>
           </div>
         </div>
-        <div v-if="tabIndex === 0 && type === 'brands'" class="goods-cate">
-          <div v-for="(goods, goodsIdx) in brand" :key="goodsIdx" class="goods_cate-item">
-            <div class="select-icon hand" :class="{'select-icon-active': showCateIndex === goodsIdx}" @click="selectCate(goods, goodsIdx)">
-              <span class="after"></span>
+        <!--选择文章弹窗-->
+        <div v-if="tabIndex === 0 && type === 'article'" class="goods-cate" style="margin-top: 0">
+
+          <div class="shade-tab">
+            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入文章名称" @search="searchArticle"></base-search>
+          </div>
+          <div class="goods-content">
+            <div class="goods-item goods-header">
+              <div class="goods-text"></div>
+              <div class="goods-text">文章封面</div>
+              <div class="goods-text">标题</div>
             </div>
-            <div class="shade-goods-msg">
-              <div class="shade-goods-name">{{goods.name}}</div>
-              <div class="shade-goods-num">{{goods.goods_count}}个商品</div>
+            <div class="goods-list">
+              <div v-for="(item, index) in choiceGoods" :key="index" class="goods-item">
+                <div class="goods-text">
+                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                    <span class="after"></span>
+                  </div>
+                </div>
+                <div class="goods-text goods-msg">
+                  <img :src="item.goods_cover_image" alt="" class="goods-img">
+                  <div class="goods-name">{{item.name}}</div>
+                </div>
+                <div class="goods-text">{{item.saleable}}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -322,7 +340,8 @@
     {title: '商品分类', status: 3003},
     {title: '小程序链接', status: 3005},
     {title: 'H5链接', status: 3004},
-    {title: '品牌列表', status: 3006}
+    {title: '内容列表', status: 3006},
+    {title: '品牌列表', status: 3007}
   ]
   const BRAND_TYPE = [{title: '品牌列表', status: '3006'}]
   const GOODS_TYPE = [{title: '商品详情', status: '3002'}]
@@ -386,7 +405,9 @@
         confirm: false,
         pageType: 1,
         article: [],
-        brand: []
+        brand: [],
+        goodsId: '',
+        articleId: ''
       }
     },
     computed: {
@@ -421,7 +442,6 @@
           break
         case 'article':
           this.typeList = ARTICLE_TYPE
-          console.log(this.articleList)
           break
         case 'brands':
           this.typeList = BRANDS_TYPE
@@ -473,6 +493,10 @@
       searchGoods(keyword) {
         this.keyword = keyword
         this._getGoodsList()
+      },
+      searchArticle(keyword) {
+        this.keyword = keyword
+        this._getArticleList()
       },
       // 获取页面详情
       moduleShow() {
@@ -564,6 +588,17 @@
         this.total = res.meta.total
         this.choiceGoods = res.data
         this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
+      },
+      async _getArticleList() {
+        let data = {
+          keyword: this.keyword,
+          limit: 6,
+          page: this.goodsPage
+        }
+        let res = await API.Cms.getArticleList({data})
+        this.total = res.meta.total
+        this.article = res.data
+        this.showSelectIndex = this.article.findIndex((item) => item.id === this.articleId)
       },
       showModalBox(index, id) {
         this.showModal = true
