@@ -91,7 +91,7 @@
           order_sn: {name: '提现单号'}
         },
         list: [],
-        total: 11
+        total: 0
       }
     },
     computed: {
@@ -100,6 +100,12 @@
       }
     },
     methods: {
+      // 收支明细列表
+      _getList() {
+        API.Finance.getAccountDetails({data: this.filter, loading: false}).then((res) => {
+          this.setData(res)
+        })
+      },
       setData(res) {
         res.data = [
           {
@@ -121,15 +127,12 @@
           item.expend = item.money < 0 ? item.money : '—'
         })
         this.list = res.data
+        this.total = res.meta.total
       },
+      // 顶部数据
       _getStatistic() {
         API.Finance.accountDetailsTotal({data: {target_id: this.filter.target_id, type: this.$route.query.type}, loading: false}).then((res) => {
           this.money = res.data
-        })
-      },
-      _getList() {
-        API.Finance.getAccountDetails({data: this.filter, loading: false}).then((res) => {
-          this.setData(res)
         })
       },
       pageChange(val) {

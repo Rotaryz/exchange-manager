@@ -69,6 +69,7 @@
     },
     data() {
       return {
+        tabIndex: 0,
         tabList: [{text: '业务补贴', type: DEFAULT_TYPE}, {text: '商品补贴', type: '2'}],
         statusList: [],
         filter: {
@@ -138,13 +139,16 @@
       })
     },
     mounted() {
-      console.log('mounted')
+      this.tabIndex = this.$route.query.type - 1 || 0
     },
     methods: {
       // 顶部类型切换
       tabChange(val) {
-        // this.filter.type = val
+        this.tabIndex = val - 1
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
+        this.filter = {start_time: '', end_time: '', keyword: '', type: val}
+        this.status = ''
+        this.page = 1
       },
       // 设置页面数据
       setData(res) {
@@ -204,7 +208,7 @@
       },
       // 收支明细
       goIncomeExpenses(item) {
-        const curTab = this.tabList[this.filter.type]
+        const curTab = this.tabList[this.tabIndex]
         this.$router.push({
           name: 'income-expenses-detail',
           params: {id: item.id},
@@ -216,7 +220,7 @@
         this.$router.push({
           name: 'withdrawal-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.filter.type].text}
+          query: {name: this.tabList[this.tabIndex].text}
         })
       }
     }
