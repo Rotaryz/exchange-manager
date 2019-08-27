@@ -1,8 +1,8 @@
 <template>
   <div class="good-item">
     <div class="goods-photo-wrap">
-      <img v-if="goodsData.is_online === 0" src="../../pic-off_shelf@2x.png" class="goods-photo fix-photo">
-      <img v-else-if="goodsData.usable_stock === 0" src="../../pic-out_stock@2x.png" class="goods-photo fix-photo">
+      <img v-if="goodsData.status === 0" src="../pic-off_shelf@2x.png" class="goods-photo fix-photo">
+      <img v-else-if="goodsData.saleable === 0" src="../pic-out_stock@2x.png" class="goods-photo fix-photo">
       <img :src="goodsData.goods_cover_image" class="goods-photo">
     </div>
     <div class="info">
@@ -10,14 +10,14 @@
       <div class="details">{{goodsData.describe}}</div>
       <div class="operate">
         <span class="price-now">
-          <span class="big">{{goodsData.trade_price}}</span>
+          <span class="big">¥{{goodsData.discount_price}}</span>
           <span class="unit">元</span>
         </span>
-        <span class="price">{{goodsData.original_price}}元</span>
+        <span class="price">¥{{goodsData.price}}元</span>
       </div>
     </div>
     <div class="operate-btn">
-      <img src="icon-add_to@2x.png" class="add-img" @click="addBtn">
+      <img src="./icon-right_goods@2x.png" class="add-img" @click="addBtn">
     </div>
   </div>
 </template>
@@ -66,21 +66,19 @@
     background: #FFFFFF
     border: 1px solid #EFEFEF
     box-shadow: 0 4px 6px 0 rgba(17, 17, 17, 0.02)
-    border-radius: 8px
     margin-bottom 15px
-    height: 64px
+    height: 66px
     padding: 3px 0px
 
     .goods-photo-wrap
-      width: 64px
-      height: 64px
+      width: 66px
+      height: 66px
       position relative
 
     .goods-photo
-      width: 64px
-      height: 64px
+      width: 66px
+      height: 66px
       flex-shrink: 0
-      border-radius 8px 0px 0px 8px
       object-fit cover
       flex-shrink 0
 
@@ -93,7 +91,7 @@
       position absolute
 
     .info
-      height: 64px
+      height: 66px
       padding: 5px 5px 5px 10px
       overflow: hidden
       flex: 1
@@ -110,9 +108,9 @@
 
       .details
         font-family $font-family-regular
-        font-size: $font-size-12
-        color: #808080
-        margin-bottom 2px
+        font-size: 10px
+        color: #B3B7BB
+        margin-bottom 7px
         overflow hidden
         text-overflow ellipsis
         white-space: nowrap
@@ -125,7 +123,7 @@
         overflow hidden
 
       .price-now
-        color: #FA7500
+        color: #D83F35
         font-family:$font-family-medium
 
         .big

@@ -9,15 +9,15 @@
           <img v-else :src="data.coverImage.url" class="cover-photo">
           <div v-if="type === 'cookbook'" class="cookbook-title">{{data.title}}</div>
           <div :class="['auth-wrap',{cookbook: type === 'cookbook' }]">
-            <img src="icon-high_quality@2x.png" class="good-article-icon">
+            <img src="./icon-high_quality@2x.png" class="good-article-icon">
             <div v-if="data.authPhoto.url" class="auth-photo-wrap">
               <img :src="data.authPhoto.url" class="auth-photo">
-              <img src="icon-v@2x.png" class="auth-photo-v">
+              <img src="./icon-v@2x.png" class="auth-photo-v">
             </div>
             <div v-if="data.authName|| data.authSignature" class="auth-info">
               <div v-if="data.authName" class="name">
                 {{data.authName}}
-                <img src="icon-lv8@2x.png" class="level-icon">
+                <img src="./icon-lv8@2x.png" class="level-icon">
               </div>
               <div v-if="data.authSignature" class="auth-introduce">{{data.authSignature}}</div>
             </div>
@@ -28,7 +28,7 @@
             <div class="browse-title"></div>
             <div v-if="data.goodCount" class="like-wrap">
               <div class="like-total">
-                <img src="icon-like_big1@2x.png" alt="" class="like-icon">
+                <img src="./icon-like_big1@2x.png" alt="" class="like-icon">
                 <div class="total-count">{{data.goodCount}}</div>
               </div>
               <img v-for="(item,idx) in data.likes" :key="idx" :src="item.avatar" class="liker-photo">
@@ -39,7 +39,7 @@
           <template v-else>
             <div class="emoty-grey-bg"></div>
             <div class="foodlist-title">
-              <img src="icon-ingredients@2x.png" class="foodlist-icon">食材
+              <img src="./icon-ingredients@2x.png" class="foodlist-icon">食材
             </div>
             <div v-if="data.foodList" class="foods-list">{{data.foodList.trim()}}</div>
             <div class="goods-list">
@@ -60,20 +60,21 @@
               <div class="operate-item">
                 <div class="icon-wrap">
                   <div v-if="data.goodCount" class="count">{{data.goodCount}}</div>
-                  <img src="icon-like_big1@2x.png" class="operate-icon">
+                  <img src="./icon-like_big2@2x.png" class="operate-icon">
                 </div>
               </div>
-              <div class="operate-item">
+              <div class="operate-item" style="opacity: 0">
                 <div class="icon-wrap">
                   <!--<div class="count">{{data.goodCount}}</div>-->
-                  <img src="icon-share@2x.png" class="operate-icon">
+                  <img src="./icon-share@2x.png" class="operate-icon">
                 </div>
               </div>
               <div class="operate-item">
-                <div class="icon-wrap">
-                  <!--<div class="count red">{{data.goodCount}}</div>-->
-                  <img src="icon-shopping_cart@2x.png" class="operate-icon">
-                </div>
+                商品(20)
+                <!--<div class="icon-wrap">
+                  <div class="count red">{{data.goodCount}}</div>
+                  <img src="./icon-shopping_cart@2x.png" class="operate-icon">
+                </div>-->
               </div>
             </div>
           </div>
@@ -83,16 +84,16 @@
                  @click="videoClick" @play="videoPause = false" @pause="videoPause = true"
           >
           </video>
-          <img v-if="data.videoContent.url && videoPause" src="icon-play_big@2x.png" alt="" class="pause-icon" @click="videoClick">
+          <img v-if="data.videoContent.url && videoPause" src="./icon-play_big@2x.png" alt="" class="pause-icon" @click="videoClick">
           <div class="info-wrap">
             <div class="auth-wrap" @click="videoClick">
               <div v-if="data.authPhoto.url" class="auth-photo-wrap">
                 <img :src="data.authPhoto.url" class="auth-photo">
-                <img src="icon-v@2x.png" class="auth-photo-v">
+                <img src="./icon-v@2x.png" class="auth-photo-v">
               </div>
               <template v-if="data.authName">
                 <div class="name">{{data.authName}}</div>
-                <img src="icon-lv8@2x.png" class="level-icon">
+                <img src="./icon-lv8@2x.png" class="level-icon">
               </template>
             </div>
             <div class="text">{{data.videoIntroduce}}</div>
@@ -100,10 +101,10 @@
               <div>
                 <div class="like-operate">
                   <div class="count">{{data.goodCount > 99 ? '99+' :data.goodCount}}</div>
-                  <img src="icon-fabulous1@2x.png" class="operate-icon">
+                  <img src="./icon-fabulous1@2x.png" class="operate-icon">
                 </div>
-                <img src="icon-share_big@2x.png" class="operate-icon">
-                <img src="icon-shoping_catbig@2x.png" class="operate-icon">
+                <img src="./icon-share_big@2x.png" class="operate-icon">
+                <img src="./icon-shoping_catbig@2x.png" class="operate-icon">
               </div>
               <div class="goods-btn" @click.stop="showGoodsListBtn">
                 商品({{data.goodsList.length}})
@@ -252,6 +253,7 @@
           .auth-photo
             width: 34px
             height: 34px
+            object-fit: cover
 
           .auth-photo-v
             position: absolute
@@ -377,8 +379,8 @@
 
       .bottom-operate
         position absolute
-        bottom 0px
-        right: 6px
+        bottom 0
+        right: 0
         left: 0
         background white
         box-shadow: 0 -4px 20px 0 rgba(29, 32, 35, 0.06)
@@ -412,7 +414,17 @@
                 height: 16px
                 border-radius 8px
                 font-size: $font-size-10
-
+          &:last-child
+            width: 80px
+            height: 27px
+            color: $color-white
+            text-align: center
+            font-family: $font-family-regular
+            font-size: 11.18px
+            line-height: 27px
+            border-radius: 30px
+            background: #D83F35
+            padding: 0
     .content-article-detail-video
       position absolute
       top: 0

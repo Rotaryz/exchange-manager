@@ -456,9 +456,9 @@
       if (this.id) {
         this.$route.meta.params && this.changeDetailData(this.$route.meta.params)
       } else {
-        // this._getAuth()
+        this._getAuth()
       }
-      // this._getLikes()
+      this._getLikes()
     },
     methods: {
       updatePage() {
@@ -470,10 +470,7 @@
       _getLikes() {
         let limit = this.addData.goodCount < 10 ? this.addData.goodCount : 10
         let params = {article_id: this.articleId || 0, preview: 1, limit, page: 1}
-        API.Content.getLikes(params).then(res => {
-          if (res.error !== this.$ERR_OK) {
-            this.$toast.show(res.message)
-          }
+        API.Content.getLikes({data: params}).then(res => {
           this.addData.likes = res.data
         })
       },
@@ -485,9 +482,6 @@
       // 新增创建时获取最后一次作者信息
       _getAuth() {
         API.Content.getAuth().then(res => {
-          if (res.error !== this.$ERR_OK) {
-            this.$toast.show(res.message)
-          }
           this.addData.authPhoto.url = res.data.head_image_url
           this.addData.authPhoto.id = res.data.head_image_id
           this.addData.authName = res.data.nickname

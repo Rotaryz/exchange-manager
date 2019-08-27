@@ -30,6 +30,10 @@ export default {
   getAuth(args) {
     const url = `/exchange-platform/platform/article/article/get-last-author`
     return request.get({url, ...args})
+  },
+  getLikes(args) {
+    const url = `/exchange-platform/platform/article/fabulou/index`
+    return request.get({url, ...args})
   }
 
 }
