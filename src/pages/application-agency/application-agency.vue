@@ -140,6 +140,7 @@
           }
         })
           .then((res) => {
+            res.data.unshift({name: '普通会员', id: 0})
             res.data.unshift({name: '全部', id: ''})
             this.selectList = res.data
           })
