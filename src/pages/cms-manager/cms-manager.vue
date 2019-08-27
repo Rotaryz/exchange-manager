@@ -374,7 +374,6 @@
         setTimeout(() => {
           this.tabIndex = TYPE_LIST.findIndex((item) => item.status === this.outLink)
           this.left = el[this.tabIndex].offsetLeft + (el[this.tabIndex].offsetWidth - 64) / 2
-          console.log(this.tabIndex, el[this.tabIndex].offsetLeft, el[this.tabIndex].offsetWidth, this.left)
         }, 200)
         this.showSelectIndex = this.outLink === 3002 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
         this.showCateIndex = this.outLink === 3003 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
