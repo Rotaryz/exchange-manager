@@ -13,11 +13,11 @@
         <div class="list">
           <div v-if="levelList.length">
             <div v-for="(item, index) in levelList" :key="index" class="list-content list-box">
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
+              <div class="list-item">{{item.name}}</div>
+              <div class="list-item">{{item.level_no}}</div>
+              <div class="list-item">{{item.agent_amount}}</div>
               <div class="list-item">
-                <router-link tag="span" :to="`edit-level?id=`" append class="list-operation">编辑</router-link>
+                <router-link tag="span" :to="`edit-level?id=${item.id}`" append class="list-operation">编辑</router-link>
                 <span v-if="false" class="list-operation" @click="delLevel">删除</span>
               </div>
             </div>
@@ -41,7 +41,7 @@
 
   const PAGE_NAME = 'LEVEL_MANAGER'
   const TITLE = '等级管理'
-  const LIST_HEADER = ['账号等级名称', '账号等级', '代理金额(元)', '操作']
+  const LIST_HEADER = ['等级名称', '账号等级', '等级金额', '操作']
   const EXCEL_URL = ''
 
   export default {
@@ -52,25 +52,25 @@
     data() {
       return {
         listHeader: LIST_HEADER,
-        levelList: [{}],
+        levelList: [],
         page: 1,
         total: 0,
         delId: ''
       }
     },
-    // beforeRouteEnter(to, from, next) {
-    //   let data = {page: 1}
-    //   API.Level.getLevelList({data, loading: true, toast: true})
-    //     .then((res) => {
-    //       next(vx => {
-    //         vx.levelList = res.data
-    //         vx.total = res.meta.total
-    //       })
-    //     })
-    //     .catch(() => {
-    //       next('404')
-    //     })
-    // },
+    beforeRouteEnter(to, from, next) {
+      let data = {page: 1}
+      API.Level.getLevelList({data, loading: true, toast: true})
+        .then((res) => {
+          next(vx => {
+            vx.levelList = res.data
+            vx.total = res.meta.total
+          })
+        })
+        .catch(() => {
+          next('404')
+        })
+    },
     computed: {
       excelUrl() {
         let data = {

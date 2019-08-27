@@ -1,7 +1,7 @@
 <template>
   <div class="order-list normal-box table">
     <base-tabs :data="tabList" :value.sync="tabIndex" valueKey="type" tabAlign="left" margin="0 20px"
-               defaultColor="#4E5983" class="tab-top" @change="_changeTopTab"
+               defaultColor="#4E5983" class="tab-top"
     ></base-tabs>
     <base-tab-select></base-tab-select>
     <div class="down-content">
@@ -34,6 +34,7 @@
                   </template>
                 </template>
                 <template v-if="head.type==='normal'">{{item[head.key]}}</template>
+                <!-- 子订单单商品-->
                 <template v-if="head.type==='goods'">
                   <!--商品样式-->
                   <img :src="item.detail ? item.detail.goods_cover_image : ''" class="item-img">
@@ -54,12 +55,37 @@
                     </transition>
                   </span>
                 </template>
+                <!--主订单多商品-->
+                <template v-if="head.type==='goods-more'">
+                  <!--商品样式-->
+                  <img :src="item.details ? item.details[0].goods_cover_image : ''" class="item-img">
+                  <p class="goods-name two-line">{{item.details[0] ? item.details[0].goods_name : ''}}</p>
+                  <span v-if="item.details.length > 1" class="show-more hand">
+                    <transition name="fade">
+                      <div class="goods-box">
+                        <span class="tooltip__arrow"></span>
+                        <ul class="more-goods">
+                          <li v-for="(good, goodIdx) in item.details" :key="goodIdx" class="goods-item">
+                            <img src="" alt="" class="goods-img">
+                            <p class="two-line">{{good.goods_name}}</p>
+                            <p class="goods-num">x{{good.goods_num}}</p>
+                            <!--<p class="goods-price">{{good.goods_spec}}</p>-->
+                          </li>
+                        </ul>
+                      </div>
+                    </transition>
+                  </span>
+                </template>
                 <template v-if="head.type==='user'">
                   <div class="item-dark"> {{item.receiver_addresses ? item.receiver_addresses.name : ''}}</div>
                   <div class="item-sub-time"> {{item.receiver_addresses ? item.receiver_addresses.mobile : ''}}
                   </div>
                 </template>
-                <template v-if="head.type==='address'">
+                <template v-if="head.type==='bean-money'">
+                  <div class="item-dark"> {{item.pay_amount_total}}元</div>
+                  <div class="item-sub-time"> {{item.pay_bean_price}}播豆</div>
+                </template>
+                <template v-if="head.type==='address' && item.receiver_addresses">
                   {{`${item.receiver_addresses.province}${item.receiver_addresses.city}${item.receiver_addresses.district}${item.receiver_addresses.address}`}}
                 </template>
                 <template v-if="head.type==='option'">
@@ -125,22 +151,23 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
+  // import * as Helpers from './modules/helpers'
   import API from '@api'
   import storage from 'storage-controller'
 
   const PAGE_NAME = 'ORDER_LIST'
   const TITLE = '订单列表'
   const INFO_STATUS = ''
-  const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
-  const TAB_CONFIG = [{text: '采集订单', type: 0}, {text: '赞播优品订单', type: 1}]
+  let ORDER_EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
+  let EXCHANGE_EXCEL_URL = '/exchange-platform/platform/bean-order/order/export'
+  const TAB_CONFIG = [{text: '集采订单', type: 0}, {text: '赞播优品订单', type: 1}]
   const LIST_CONFIG = [
     [
-      {title: '主单号', key: ['order','order_sn'], class: 'width-3', type: 'keyArr'},
+      {title: '主单号', key: ['order', 'order_sn'], class: 'width-3', type: 'keyArr'},
       {title: '子单号', key: 'sub_order_sn', class: 'width-3', type: 'normal'},
       {title: '商品', key: '', class: 'goods-item', type: 'goods'},
-      {title: '数量', key: ['detail','goods_num'], class: 'width-1', type: 'keyArr'},
-      {title: '单价(元)', key: ['detail','goods_spec','price'], class: 'width-1', type: 'keyArr'},
+      {title: '数量', key: ['detail', 'goods_num'], class: 'width-1', type: 'keyArr'},
+      {title: '单价(元)', key: ['detail', 'goods_spec', 'price'], class: 'width-1', type: 'keyArr'},
       {title: '姓名', key: '', class: 'width-2 list-double-row', type: 'user'},
       {title: '收货地址', key: '', class: 'width-3 two-line', type: 'address'},
       {title: '下单时间', key: 'created_at', class: 'width-3', type: 'normal'},
@@ -149,14 +176,14 @@
       {title: '操作', key: '', class: 'option-item', type: 'option'},
     ],
     [
-      {title: '主单号', key: ['order','order_sn'], class: 'width-3', type: 'keyArr'},
-      {title: '商品', key: '', class: 'goods-item', type: 'goods'},
-      {title: '数量', key: ['detail','goods_num'], class: 'width-1', type: 'keyArr'},
-      {title: '单价(元)', key: ['detail','goods_spec','price'], class: 'width-1', type: 'keyArr'},
+      {title: '主单号', key: 'order_sn', class: 'width-3', type: 'normal'},
+      {title: '商品', key: '', class: 'goods-item', type: 'goods-more'},
+      {title: '数量', key: 'goods_num_total', class: 'width-1', type: 'normal'},
+      // {title: '总价(元)', key: ['detail', 'goods_spec', 'price'], class: 'width-1', type: 'keyArr'},
       {title: '姓名', key: '', class: 'width-2 list-double-row', type: 'user'},
       {title: '收货地址', key: '', class: 'width-3 two-line', type: 'address'},
       {title: '下单时间', key: 'created_at', class: 'width-3', type: 'normal'},
-      {title: '实付款(元)', key: 'pay_amount', class: 'width-1', type: 'normal'},
+      {title: '实付款(元)', key: '', class: 'width-1 list-double-row', type: 'bean-money'},
       {title: '状态', key: 'status_str', class: 'width-1', type: 'normal'},
       {title: '操作', key: '', class: 'option-item', type: 'option'},
     ]
@@ -176,6 +203,7 @@
         valueKey: 'id',
         arr: [{id: 111, label: '顺丰'}],
         logisticsObj: {
+          order_id: '',
           sub_order_id: '',
           logistics_id: '',
           logistics_sn: '',
@@ -191,7 +219,12 @@
         statusList: [],
         deliverId: '',
         disable: false,
-        title: '订单发货'
+        title: '订单发货',
+        methodsName: 'getOrderList',
+        loName: 'logisticsDetail',
+        statusName: 'orderStatus',
+        setLoName: 'setLogistics',
+        excel: ORDER_EXCEL_URL
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -224,7 +257,7 @@
         for (let key in data) {
           search.push(`${key}=${data[key]}`)
         }
-        let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
+        let url = `${process.env.VUE_APP_API}${this.excel}?${search.join('&')}`
         return url
       },
       paramObj() {
@@ -253,6 +286,35 @@
       async time() {
         this.page = 1
         await this.getOrderList()
+      },
+      async tabIndex(news) {
+        // 初始化数据
+        this.page = 1
+        this.status = INFO_STATUS
+        this.keyword = INFO_STATUS
+        this.time = []
+        switch (news) {
+        case 0:
+          this.methodsName = 'getOrderList'
+          this.loName = 'logisticsDetail'
+          this.statusName = 'orderStatus'
+          this.setLoName = 'setLogistics'
+          this.excel = ORDER_EXCEL_URL
+          break
+        case 1:
+          this.methodsName = 'getBeanList'
+          this.loName = 'logisticsExDetail'
+          this.statusName = 'exchangeStatus'
+          this.setLoName = 'setExLogistics'
+          this.excel = EXCHANGE_EXCEL_URL
+          break
+        default:
+          break
+        }
+        this.tabIndex = news
+        this.listHeader = LIST_CONFIG[news]
+        this.orderList = []
+        await this.getOrderList()
       }
     },
     created() {
@@ -264,11 +326,7 @@
         this.status = INFO_STATUS
         this.keyword = ''
         this.time = []
-      },
-      _changeTopTab(index) {
-        this.tabIndex = index
-        this.listHeader = LIST_CONFIG[index]
-        this._initParams()
+        this.getOrderList()
       },
       // 获取物流列表
       getLogisticsList() {
@@ -283,7 +341,7 @@
       // 获取订单列表
       async getOrderList(loading = false) {
         await this._orderStatus()
-        API.Order.getOrderList({
+        API.Order[this.methodsName]({
           data: this.paramObj,
           loading,
           toast: true,
@@ -297,7 +355,7 @@
       },
       // 获取订单状态
       async _orderStatus() {
-        let res = await API.Order.orderStatus({
+        let res = await API.Order[this.statusName]({
           data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''},
           loading: false,
           toast: false
@@ -317,12 +375,14 @@
       // 发货
       deliver(item) {
         this.logisticsObj = {
+          order_id: '',
           sub_order_id: '',
           logistics_id: '',
           logistics_sn: '',
           shipping_name: ''
         }
         this.logisticsObj.sub_order_id = item.id
+        this.logisticsObj.order_id = item.id
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
@@ -338,7 +398,7 @@
         if (this.disable) {
           return
         }
-        await API.Order.setLogistics({
+        await API.Order[this.setLoName]({
           data: this.logisticsObj,
           loading: true,
           toast: true
@@ -347,7 +407,7 @@
       },
       // 查看发货详情
       async _getLogisticsDetail() {
-        let res = await API.Order.logisticsDetail({
+        let res = await API.Order[this.loName]({
           data: {sub_order_id: this.logisticsObj.sub_order_id},
           loading: true,
           toast: true
@@ -386,6 +446,7 @@
       top: 50px
       left: 200px
       z-index: 99
+
   .list-box
     overflow: visible
     .two-line
