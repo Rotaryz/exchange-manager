@@ -1,12 +1,12 @@
 <template>
   <div class="trading-list">
     <base-tabs :data="tabList" :value.sync="tabIndex" valueKey="type" tabAlign="left" margin="0 20px"
-               defaultColor="#4E5983" class="tab-top"
+               defaultColor="#4E5983" class="tab-top" @change="_changeTopTab"
     ></base-tabs>
     <top-data-bar :topData="topData"></top-data-bar>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time"></base-date>
-      <base-search placeholder="订单号/交易号" boxStyle="margin-left: 20px"></base-search>
+      <base-search v-model="keyword" placeholder="订单号/交易号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-business@2x.png')" title="交易明细"></base-table-tool>
     <div class="table-content">
@@ -94,30 +94,29 @@
       async page() {
         await this._getListData()
       },
-      async keyword() {
-        this.page = 1
-        await this._getListData()
-      },
       async time() {
         this.page = 1
         await this._getListData()
+        await this._getTradingTotal()
       }
     },
     methods: {
-      _initParams() {
-        this.page = 1
-        this.keyword = ''
-        this.time = []
-        this._getListData()
-        this._getTradingTotal()
-      },
       // 切换顶部tab
       _changeTopTab(select) {
         this.tabIndex = select
-        this._initParams()
+        this.page = 1
+        this.keyword = ''
+        this.time = []
+      },
+      // 搜索
+      async search(keyword) {
+        this.keyword = keyword || ''
+        this.page = 1
+        await this._getListData()
+        await this._getTradingTotal()
       },
       // 获取总额
-      _getTradingTotal(loading = false) {
+      async _getTradingTotal(loading = false) {
         const apiArr = ['getSellTotal', 'getPurchaseTotal']
         API.Finance[apiArr[this.tabIndex]]({
           data: {keyword: this.keyword, start_at: this.time[0] || '', end_at: this.time[1] || ''},
