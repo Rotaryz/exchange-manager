@@ -25,8 +25,10 @@
     <div class="certificate-wrap info-wrap">
       <base-form-item label="凭证流水:" :required="false" verticalAlign="top" class="info-item">
         <div v-if="info.status===0" class="empty-line">-</div>
-        <img v-else-if="info.image_url" :src="info.image_url" class="item-img">
-        <upload v-else-if="!info.image_url"></upload>
+        <div v-else-if="uploadImg" class="img-box">
+          <img :src="uploadImg" class="item-img">
+        </div>
+        <upload v-else-if="!uploadImg" @successImage="getUploadImg"></upload>
       </base-form-item>
     </div>
     <base-footer>
@@ -70,7 +72,7 @@
     data() {
       return {
         recordId: '',
-        info: '',
+        info: {},
         checkVisible: false,
         detail: {
           status: ''
@@ -80,7 +82,8 @@
           result: 0,
           reason: ''
         },
-        uploadImg: ''
+        uploadImg: '',
+        uploadImgId: ''
       }
     },
     computed: {
@@ -94,6 +97,7 @@
         next((vx) => {
           vx.recordId = id
           vx.info = res.data
+          vx.uploadImg = res.data.image_url
         })
       })
     },
@@ -120,16 +124,22 @@
           this.checkVisible = false
         })
       },
+      // 获取上传图片的信息
+      getUploadImg(imgArr) {
+        this.uploadImg = imgArr.data.url
+        this.uploadImgId = imgArr.data.id
+      },
       // 确认打款
       sureRemitBtn() {
-        // 上传图片还没做
+        if (!this.uploadImgId) {
+          this.$toast.show('请上传凭证流水')
+          return
+        }
         API.Finance.withdrawConfirmPay({
-          data: {image_id: this.uploadImg, id: this.recordId},
+          data: {image_id: this.uploadImgId, id: this.recordId},
           loading: false
         }).then((res) => {
           this.$toast.show('打款成功')
-        }).catch(() => {
-          this.$toast.show('打款失败')
         })
       }
     }
@@ -167,8 +177,12 @@
           color:$color-text-assist
           opacity: 0.8
           margin-left 10px
-        .item-img
+        .img-box
           width: 90px
           height: 90px
           border-radius: 2px
+          overflow: hidden
+        .item-img
+          width: auto
+          height: 90px
 </style>
