@@ -167,7 +167,7 @@
       .text
         display: inline-block
         font-size: $font-size-16
-        font-family: $font-family-medium
+        font-family: $font-family-regular
 
       .idx-mark
         display: inline-block
