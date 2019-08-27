@@ -368,11 +368,10 @@
         this.logisticsObj = {
           order_id: item.id,
           sub_order_id: item.id,
-          logistics_id: express[0].logistics_id,
+          logistics_id: express[0].id,
           logistics_sn: '',
           shipping_name: express[0].name
         }
-        console.log(this.logisticsObj)
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
