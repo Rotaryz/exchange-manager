@@ -6,7 +6,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search v-model="keyword" placeholder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search v-model="keyword" placeholder="子单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
@@ -379,6 +379,7 @@
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
+          this.visible = true
           return
         }
         this.title = '订单发货'

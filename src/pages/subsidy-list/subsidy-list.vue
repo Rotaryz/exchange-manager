@@ -49,8 +49,8 @@
   const LIST_CONFIG = [
     [
       {title: '创建时间', key: 'settlement_at', class: 'width-1'},
-      {title: '客户名称', key: ['target_shop_truename', 'target_shop_level_name'], class: 'width-3'},
-      {title: '被推荐人', key: 'source_shop_truename', class: 'width-3'},
+      {title: '客户名称', key: ['target_shop_name', 'target_shop_level_name'], class: 'width-3'},
+      {title: '被推荐人', key: 'source_shop_name', class: 'width-3'},
       {title: '升级类型', key: 'source_shop_level_name', class: 'width-2'},
       {title: '升级金额', key: 'total', class: 'width-2'},
       {title: '补贴方式', key: ['commission_way_text', 'commission_value'], class: 'width-3'},
@@ -59,8 +59,8 @@
     ],
     [
       {title: '创建时间', key: 'settlement_at', class: 'width-1'},
-      {title: '客户名称', key: ['target_shop_truename', 'target_shop_level_name'], class: 'width-3'},
-      {title: '被推荐人', key: ['source_shop_truename', 'source_shop_level_name'], class: 'width-3'},
+      {title: '客户名称', key: ['target_shop_name', 'target_shop_level_name'], class: 'width-3'},
+      {title: '被推荐人', key: ['source_shop_name', 'source_shop_level_name'], class: 'width-3'},
       {title: '订单类型', key: 'order_type_text', class: 'width-2'},
       {title: '订单金额', key: 'total', class: 'width-2'},
       {title: '补贴方式', key: 'commission_way_text', class: 'width-2'},
@@ -115,7 +115,7 @@
         return {
           type: this.tabIndex + 1,
           target_type: 2,
-          target_shop_truename: this.keyword,
+          target_shop_name: this.keyword,
           page: this.page,
           start_at: this.time[0] || '',
           end_at: this.time[1] || ''
@@ -158,7 +158,7 @@
           loading: false,
         })
           .then((res) => {
-            this.topData.value = res.data.total_remaining
+            this.topData[0].value = res.data.total_remaining
           })
       },
       // 获取订单列表
