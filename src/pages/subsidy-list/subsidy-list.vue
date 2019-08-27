@@ -7,7 +7,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="time" @changeDate="_changeDate"></base-date>
-      <base-search placeholder="客户名称" boxStyle="margin-left: 20px" @search="_search"></base-search>
+      <base-search v-model="keyword" placeholder="客户名称" boxStyle="margin-left: 20px" @search="_search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-business@2x.png')" :title="tabName+'明细'"></base-table-tool>
     <div class="table-content">
@@ -73,47 +73,6 @@
     [{img: require('./icon-yybt@2x.png'), title: '业务补贴总额(元)', value: '—'}],
     [{img: require('./icon-spbtze@2x.png'), title: '商品补贴总额(元)', value: '—'}]
   ]
-  const TEST_DATA = {
-    "data": [
-      {
-        "id": 1,
-        "type": 1,
-        "title": "全能版",
-        "money": 30,
-        "order_type": 40,
-        "order_type_text": "权益订单",
-        "order_sn": "xxxx",
-        "status": 1,
-        "settlement_at": "2019-08-24 14:31:54",
-        "source_shop_truename": "刘强东1",
-        "source_shop_level_name": "合伙版",
-        "target_shop_truename": "刘强东4",
-        "target_shop_level_name": "全能版",
-        "total": 60,
-        "commission_way": 2,
-        "commission_way_text": "比例",
-        "commission_money": 3000,
-        "commission_value": "60%"
-      }
-    ],
-    "links": {
-      "first": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index?page=1",
-      "last": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index?page=1",
-      "prev": null,
-      "next": null
-    },
-    "meta": {
-      "current_page": 1,
-      "from": 1,
-      "last_page": 1,
-      "path": "http://exchange-platform-api.com/exchange-platform/platform/settlement/settlement/index",
-      "per_page": 10,
-      "to": 1,
-      "total": 1
-    },
-    "error_code": 0,
-    "message": "操作成功！"
-  }
 
   export default {
     name: PAGE_NAME,
@@ -134,7 +93,7 @@
         currentPage: 1,
         page: 1,
         keyword: '',
-        total: 21,
+        total: 0,
         time: []
       }
     },
@@ -142,7 +101,6 @@
       API.Finance.getSubsidyList({data: {type: DEFAULT_TAB + 1, target_type: 2, page: 1,}, loading: true, toast: true})
         .then((res) => {
           next(vx => {
-            res = TEST_DATA
             vx.listData = res.data
             vx.total = res.meta.total
             vx._getSubsidyTotal()
@@ -165,10 +123,26 @@
       }
     },
     methods: {
-      _initParams() {
-        this.paramObj = {type: this.tabIndex + 1, target_type: 2, page: 1,}
+      _search(keyword) {
+        this.keyword = keyword || ''
+        this.page = 1
         this._getListData()
         this._getSubsidyTotal()
+      },
+      _changePage(page) {
+        this.page = page || 1
+        this._getListData()
+        this._getSubsidyTotal()
+      },
+      _changeDate() {
+        this.page = 1
+        this._getListData()
+        this._getSubsidyTotal()
+      },
+      _initParams() {
+        this.keyword = ''
+        this.time = []
+        this.page = 1
       },
       // 切换顶部tab
       _changeTopTab(select) {
@@ -177,6 +151,7 @@
         this.tabName = TAB_CONFIG[select].text
         this._initParams()
       },
+      // 顶部补贴总额
       _getSubsidyTotal() {
         API.Finance.getSubsidyTotal({
           data: { type: this.tabIndex + 1, target_type: 2 },
@@ -196,23 +171,9 @@
           }
         })
           .then((res) => {
-            res = TEST_DATA
             this.listData = res.data
             this.total = res.meta.total
           })
-      },
-      _search(keyword) {
-        this.keyword = keyword || ''
-        this.page = 1
-        this._getListData()
-      },
-      _changePage(page) {
-        this.page = page || 1
-        this._getListData()
-      },
-      _changeDate() {
-        this.page = 1
-        this._getListData()
       }
     }
   }
