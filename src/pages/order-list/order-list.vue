@@ -379,6 +379,7 @@
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
+          this.visible = true
           return
         }
         this.title = '订单发货'
