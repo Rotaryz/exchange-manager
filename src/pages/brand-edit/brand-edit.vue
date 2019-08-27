@@ -5,7 +5,7 @@
       <p class="edit-title-name">创作品牌</p>
     </div>
     <div class="wrap-container">
-      <mobile-content></mobile-content>
+      <mobile-content :brandMsg="msg"></mobile-content>
       <div class="edit-right-box">
         <!--品牌首图 -->
         <base-form-item label="品牌首图"
@@ -211,16 +211,19 @@
       submitBtn() {
         let checkForm = this.checkForm()
         if (!checkForm) return
-        console.log('continue')
+        API.Brand.newBrand({data: this.msg})
+          .then(res => {
+            this.$toast.show('创建成功')
+          })
       },
       checkForm() {
         let arr = [
-          {value: this.testBanner, txt: '请输入拓展名称'},
-          {value: this.testLogo, txt: '请选择拓展图片'},
-          {value: this.testTrade, txt: '请选择拓展开始时间'},
-          {value: this.testName, txt: '请选择拓展结束时间'},
-          {value: this.testSubName, txt: '拓展结束时间必须大于今天'},
-          {value: this.testDescribe, txt: '请选择拓展社区'},
+          {value: this.testBanner, txt: '请添加品牌首图'},
+          {value: this.testLogo, txt: '请添加品牌Logo'},
+          {value: this.testTrade, txt: '请选择所属行业'},
+          {value: this.testName, txt: '请输入品牌名称'},
+          {value: this.testSubName, txt: '请输入品牌副标题'},
+          {value: this.testDescribe, txt: '请输入品牌介绍'},
         ]
         for (let i = 0, j = arr.length; i < j; i++) {
           if (!arr[i].value) {

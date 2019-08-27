@@ -2,15 +2,6 @@ import request from '@utils/http'
 
 export default {
   /**
-   * 获取客户列表
-   * @param args
-   * @returns {*}
-   */
-  goodsList(args) {
-    const url = `/exchange-platform/platform/platform-goods/goods/index`
-    return request.get({url, ...args})
-  },
-  /**
    * 保存模块数据
    * @param args
    * @returns {*}
@@ -29,12 +20,39 @@ export default {
     return request.post({url, ...args})
   },
   /**
+   * 获取商品列表
+   * @param args
+   * @returns {*}
+   */
+  goodsList(args) {
+    const url = `/exchange-platform/platform/platform-goods/goods/index`
+    return request.get({url, ...args})
+  },
+  /**
    * 分类列表
    * @param args
    * @returns {*}
    */
   categoryList(args) {
     const url = `/exchange-platform/platform/platform-goods/category/index`
+    return request.get({url, ...args})
+  },
+  /**
+   * 文章列表
+   * @param args
+   * @returns {*}
+   */
+  articleList(args) {
+    const url = `/exchange-platform/platform/article/article/index`
+    return request.get({url, ...args})
+  },
+  /**
+   * 品牌列表
+   * @param args
+   * @returns {*}
+   */
+  brandList(args) {
+    const url = `/exchange-platform/platform/platform-goods/brand/index`
     return request.get({url, ...args})
   },
   /**

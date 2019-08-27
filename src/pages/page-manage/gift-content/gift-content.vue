@@ -2,9 +2,9 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <span @click="changeType('category')">类目</span>
-        <span @click="changeType('brand')">品牌</span>
-        <span @click="changeType('goods')">商品</span>
+        <span @click="changeType('navigation')">导航类目</span>
+        <span @click="changeType('hot')">今日爆款</span>
+        <span @click="changeType('recommend')">商品推荐</span>
       </div>
     </div>
   </div>
@@ -21,17 +21,17 @@
     props: {
       cmsType: {
         type: String,
-        default: 'category'
+        default: 'navigation'
       },
-      categoryList: {
+      navigationList: {
         type: Array,
         default: () => []
       },
-      brandList: {
+      hotList: {
         type: Array,
         default: () => []
       },
-      goodsList: {
+      recommendList: {
         type: Array,
         default: () => []
       }

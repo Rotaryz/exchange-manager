@@ -2,8 +2,8 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <span @click="changeType('article')">文章</span>
-        <span @click="changeType('brands')">品牌</span>
+        <span @click="changeType('banner')">文章</span>
+        <span @click="changeType('brand')">品牌</span>
       </div>
     </div>
   </div>
@@ -20,13 +20,13 @@
     props: {
       cmsType: {
         type: String,
-        default: 'article'
+        default: 'banner'
       },
-      articleList: {
+      bannerList: {
         type: Array,
         default: () => []
       },
-      brandsList: {
+      brandList: {
         type: Array,
         default: () => []
       }
