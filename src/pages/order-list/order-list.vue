@@ -6,7 +6,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search placeholder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search v-model="keyword" placeholder="订单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
@@ -275,10 +275,6 @@
       async page() {
         await this.getOrderList()
       },
-      async keyword() {
-        this.page = 1
-        await this.getOrderList()
-      },
       async status() {
         this.page = 1
         await this.getOrderList()
@@ -291,7 +287,7 @@
         // 初始化数据
         this.page = 1
         this.status = INFO_STATUS
-        this.keyword = INFO_STATUS
+        this.keyword = ''
         this.time = []
         switch (news) {
         case 0:
@@ -314,20 +310,12 @@
         this.tabIndex = news
         this.listHeader = LIST_CONFIG[news]
         this.orderList = []
-        await this.getOrderList()
       }
     },
     created() {
       this.getLogisticsList()
     },
     methods: {
-      _initParams() {
-        this.page = 1
-        this.status = INFO_STATUS
-        this.keyword = ''
-        this.time = []
-        this.getOrderList()
-      },
       // 获取物流列表
       getLogisticsList() {
         API.Logistics.logisticsList({
@@ -367,6 +355,8 @@
       // 搜索
       search(keyword) {
         this.keyword = keyword || ''
+        this.page = 1
+        this.getOrderList()
       },
       // 导出Excel
       downExcel() {
@@ -374,19 +364,18 @@
       },
       // 发货
       deliver(item) {
+        let express = this.arr.filter((express) => express.id === item.logistics_id)
         this.logisticsObj = {
-          order_id: '',
-          sub_order_id: '',
-          logistics_id: '',
+          order_id: item.id,
+          sub_order_id: item.id,
+          logistics_id: express[0].logistics_id,
           logistics_sn: '',
-          shipping_name: ''
+          shipping_name: express[0].name
         }
-        this.logisticsObj.sub_order_id = item.id
-        this.logisticsObj.order_id = item.id
+        console.log(this.logisticsObj)
         if (item.status === 20 || item.status === 100) {
           this.disable = true
           this.title = '查看物流'
-          this._getLogisticsDetail()
           return
         }
         this.title = '订单发货'
@@ -408,6 +397,7 @@
       // 查看发货详情
       async _getLogisticsDetail() {
         let res = await API.Order[this.loName]({
+          // data: {id: this.logisticsObj.order_id},
           data: {sub_order_id: this.logisticsObj.sub_order_id},
           loading: true,
           toast: true

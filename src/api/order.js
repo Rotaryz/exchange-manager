@@ -52,7 +52,7 @@ export default {
    * @returns {*}
    */
   logisticsExDetail(args) {
-    const url = `/exchange-platform/platform/bean-order/order/index`
+    const url = `/exchange-platform/platform/bean-order/order/logistics`
     return request.post({url, ...args})
   },
   /**
