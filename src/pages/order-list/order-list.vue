@@ -368,9 +368,13 @@
         this.logisticsObj = {
           order_id: item.id,
           sub_order_id: item.id,
-          logistics_id: express[0].id,
+          logistics_id: '',
           logistics_sn: '',
-          shipping_name: express[0].name
+          shipping_name: ''
+        }
+        if (express.length) {
+          this.logisticsObj.logistics_id = express[0].id
+          this.logisticsObj.shipping_name = express[0].name
         }
         if (item.status === 20 || item.status === 100) {
           this.disable = true
