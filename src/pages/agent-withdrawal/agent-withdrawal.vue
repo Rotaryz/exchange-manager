@@ -11,7 +11,7 @@
     ></base-tabs>
     <div class="content-wrap">
       <base-layout-top>
-        <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="creatTime" class="date-wrap" @changeDate="_getData"></base-date>
+        <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
         <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" @search="_getData"></base-search>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="提现列表">
@@ -80,6 +80,7 @@
         },
         page: 1,
         status: '',
+        time: [],
         listHeader: {
           withdraw_sn: {name: '提现单号'},
           created_at: {name: '申请时间'},
@@ -152,6 +153,8 @@
         this.page = 1
       },
       _getData() {
+        this.filter.start_time = this.time[0] || ''
+        this.filter.end_time = this.time[1] || ''
         this._getWithdrawalList()
         this._getStatistics()
       },
