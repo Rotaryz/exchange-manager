@@ -15,10 +15,11 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <image-upload :data.sync="msg.brand_banner_images"
-                        :addStyle="`margin:0 0 14px 0`"
-                        multiple
-                        @successImage="getBrandBannerImages"
+          <image-upload :data.sync="msg.banner_image_url"
+                        :addStyle="`margin-right: 20px`"
+                        @successImage="addBannerImages"
+                        @delete="delBannerImage"
+                        @failFile="failFile"
           ></image-upload>
           <p class="tip-text">请添加不大于10M的清晰图片</p>
         </base-form-item>
@@ -31,10 +32,11 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <image-upload :data.sync="msg.brand_banner_images"
-                        :addStyle="`margin:0 0 14px 0`"
-                        multiple
-                        @successImage="getBrandBannerImages"
+          <image-upload :data.sync="msg.logo_image_url"
+                        :addStyle="`margin-right: 20px`"
+                        @successImage="addLogoImages"
+                        @delete="delLogoImage"
+                        @failFile="failFile"
           ></image-upload>
           <p class="tip-text">请添加不大于10M的清晰图片</p>
         </base-form-item>
@@ -59,10 +61,10 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.brand_name" size="middle"></base-input>
+          <base-input v-model="msg.name" size="middle"></base-input>
         </base-form-item>
 
-        <!--品牌名称 -->
+        <!--品牌副标题 -->
         <base-form-item label="品牌副标题"
                         labelMarginRight="40"
                         labelWidth="68px"
@@ -70,7 +72,7 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.brand_subhead" size="middle" :maxlength="25"></base-input>
+          <base-input v-model="msg.sub_name" size="middle" :maxlength="25"></base-input>
         </base-form-item>
 
         <!--品牌介绍 -->
@@ -81,7 +83,7 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.introduce" size="middle" type="textarea" width="400" height="94"></base-input>
+          <base-input v-model="msg.describe" size="middle" type="textarea" width="400" height="94"></base-input>
         </base-form-item>
       </div>
     </div>
@@ -101,6 +103,7 @@
 <script type="text/ecmascript-6">
   import MobileContent from './mobile-content/mobile-content'
   import ImageUpload from '../../components/zb-upload/zb-upload.vue'
+  import API from '@api'
 
   const PAGE_NAME = 'GOODS_BRAND_EDIT'
   const TITLE = '新建品牌'
@@ -119,7 +122,8 @@
     data() {
       return {
         msg: {
-          brand_banner_images: []
+          banner_image_url: '',
+          logo_image_url: ''
         },
         tradeVisible: false,
         trade: '',
@@ -132,20 +136,58 @@
         }
       }
     },
+    computed: {
+      testBanner() {
+        return this.msg.banner_image_url
+      },
+      testLogo() {
+        return this.msg.logo_image_url
+      },
+      testTrade() {
+        return this.msg.industry_id
+      },
+      testName() {
+        return this.msg.name
+      },
+      testSubName() {
+        return this.msg.sub_name
+      },
+      testDescribe() {
+        return this.msg.describe
+      }
+    },
+    created() {
+      this.getTradeList()
+    },
     methods: {
-      getBrandBannerImages(arr) {
-        arr.forEach(item => {
-          item = item.data
-          this.msg.brand_banner_images.push({
-            id: 0,
-            image_url: item.url,
-            image_id: item.id,
+      getTradeList() {
+        API.Brand.getTradeList()
+          .then(res => {
+            this.tradeList.data = res.data
           })
-        })
+      },
+      addBannerImages(image) {
+        this.msg.banner_image_id = image.data.id
+        this.msg.banner_image_url = image.data.url
+      },
+      addLogoImages(logo) {
+        this.msg.logo_image_id = logo.data.id
+        this.msg.logo_image_url = logo.data.url
+      },
+      failFile(msg) {
+        this.$toast.show(msg)
+      },
+      delBannerImage(index) {
+        this.msg.banner_image_id = ''
+        this.msg.banner_image_url = ''
+      },
+      delLogoImage(index) {
+        this.msg.logo_image_id = ''
+        this.msg.logo_image_url = ''
       },
       _selectTrade(item) {
-        console.log(item)
-        this.msg.trade = item.name
+        this.msg.industry_name = item.name
+        this.msg.industry_id = item.id
       },
       _showAddTrade() {
         this.tradeVisible = true
@@ -163,14 +205,33 @@
           this.trade = ''
         }, 300)
       },
-
-
       back() {
         this.$router.back()
       },
       submitBtn() {
-
+        let checkForm = this.checkForm()
+        if (!checkForm) return
+        console.log('continue')
       },
+      checkForm() {
+        let arr = [
+          {value: this.testBanner, txt: '请输入拓展名称'},
+          {value: this.testLogo, txt: '请选择拓展图片'},
+          {value: this.testTrade, txt: '请选择拓展开始时间'},
+          {value: this.testName, txt: '请选择拓展结束时间'},
+          {value: this.testSubName, txt: '拓展结束时间必须大于今天'},
+          {value: this.testDescribe, txt: '请选择拓展社区'},
+        ]
+        for (let i = 0, j = arr.length; i < j; i++) {
+          if (!arr[i].value) {
+            this.$toast.show(arr[i].txt)
+            return false
+          }
+          if (i === j - 1 && arr[i].value) {
+            return true
+          }
+        }
+      }
     }
   }
 </script>
@@ -211,11 +272,11 @@
         font-size: $font-size-14
         font-family: $font-family-regular
         color: $color-text-sub
-        margin-left: 14px
         margin-top: 38px
       .add-trade
         margin-left: 14px
         line-height: 44px
+        width: 58px
         font-size: $font-size-14
         font-family: $font-family-regular
         color: $color-main

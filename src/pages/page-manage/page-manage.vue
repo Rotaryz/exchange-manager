@@ -61,7 +61,7 @@
                       @successImage="successImage"
                     ></upload>
                     <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择品牌</base-button>
                       <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                     </div>
                     <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -88,7 +88,7 @@
                       @successImage="successImage"
                     ></upload>
                     <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
                       <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                     </div>
                     <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -236,7 +236,7 @@
         <!--内容列表-->
         <div v-if="tabIndex === 4" class="goods-cate">
           <div class="shade-tab">
-            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入内容文章标题" @search="searchArticle"></base-search>
+            <base-search :width="244" :isShowTip="false" boxStyle="margin-left: 0" placeholder="请输入内容文章标题" @search="searchArticle"></base-search>
           </div>
           <div class="goods-content">
             <div class="goods-item goods-header">
@@ -262,7 +262,7 @@
         <!--品牌列表-->
         <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand') || (tabIndex === 0 && type === 'brands')" class="goods-cate">
           <div class="shade-tab">
-            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入品牌名称" @search="searchArticle"></base-search>
+            <base-search :width="244" :isShowTip="false" boxStyle="margin-left: 0" placeholder="请输入品牌名称" @search="searchArticle"></base-search>
           </div>
           <div class="goods-content">
             <div class="goods-item goods-header">
@@ -289,7 +289,7 @@
         <div v-if="tabIndex === 0 && type === 'article'" class="goods-cate" style="margin-top: 0">
 
           <div class="shade-tab">
-            <base-search :width="244" :isShowTip="false" :boxStyle="{marginLeft: 0}" placeholder="请输入文章名称" @search="searchArticle"></base-search>
+            <base-search :width="244" :isShowTip="false" boxStyle="margin-left: 0" placeholder="请输入文章名称" @search="searchArticle"></base-search>
           </div>
           <div class="goods-content">
             <div class="goods-item goods-header">
