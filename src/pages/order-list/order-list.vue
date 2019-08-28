@@ -66,7 +66,7 @@
                         <span class="tooltip__arrow"></span>
                         <ul class="more-goods">
                           <li v-for="(good, goodIdx) in item.details" :key="goodIdx" class="goods-item">
-                            <img src="" alt="" class="goods-img">
+                            <img :src="good.goods_cover_image" alt="" class="goods-img">
                             <p class="two-line">{{good.goods_name}}</p>
                             <p class="goods-num">x{{good.goods_num}}</p>
                             <!--<p class="goods-price">{{good.goods_spec}}</p>-->
@@ -554,6 +554,7 @@
                 overflow: hidden
                 display: block
                 object-fit: cover
+                margin-right: 10px
                 background: $color-background
               .goods-name
                 width: 142px
