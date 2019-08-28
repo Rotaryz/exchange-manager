@@ -155,7 +155,7 @@
         let res = this.valueKey ? value[this.valueKey] : value
         this.$emit('update:value', res)
         this.$emit('input', res)
-        this.$emit('change', res)
+        this.$emit('change', res, value)
       }
     }
   }

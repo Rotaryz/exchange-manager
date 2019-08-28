@@ -69,6 +69,7 @@
     },
     data() {
       return {
+        tabIndex: 0,
         tabList: [{text: '业务补贴', type: DEFAULT_TYPE}, {text: '商品补贴', type: '2'}],
         statusList: [],
         filter: {
@@ -132,40 +133,23 @@
       ]).then((res) => {
         console.log(res)
         next((vw) => {
-          vw.setData(res[0])
+          vw.list = res[0].data
+          vw.total = res[0].meta.total
           vw.statusList = res[1].data
         })
       })
     },
     mounted() {
-      console.log('mounted')
+      this.tabIndex = this.$route.query.type - 1 || 0
     },
     methods: {
       // 顶部类型切换
       tabChange(val) {
-        // this.filter.type = val
+        this.tabIndex = val - 1
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
-      },
-      // 设置页面数据
-      setData(res) {
-        res.data = [
-          {
-            "id": 1,
-            "withdraw_id": 1,
-            "withdraw_sn": "W1908251748135306",
-            "created_at": "2019-08-25 17:48",
-            "withdrawal_name": "黄锦冰111",
-            "shop_name": "杂货铺子",
-            "poundage": "1元",
-            "total": "1元",
-            "status": 1,
-            "status_text": "待打款",
-            "image_url": "https://exchange-platform-img.jkweixin.com/prod%2F2019%2F08%2F19%2F1566216158349-883671",
-            "note": "xx"
-          }
-        ]
-        this.list = res.data
-        this.total = res.meta.total
+        this.filter = {start_time: '', end_time: '', keyword: '', type: val}
+        this.status = ''
+        this.page = 1
       },
       _getData() {
         this._getWithdrawalList()
@@ -177,7 +161,8 @@
           data: {...this.filter, page: this.page, status: this.status},
           loading: false
         }).then((res) => {
-          this.setData(res)
+          this.list = res.data
+          this.total = res.meta.total
         })
       },
       // 获取提现状态统计
@@ -204,10 +189,11 @@
       },
       // 收支明细
       goIncomeExpenses(item) {
+        const curTab = this.tabList[this.tabIndex]
         this.$router.push({
           name: 'income-expenses-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.filter.type].text}
+          query: {name: curTab.text, type: curTab.type}
         })
       },
       // 详情
@@ -215,7 +201,7 @@
         this.$router.push({
           name: 'withdrawal-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.filter.type].text}
+          query: {name: this.tabList[this.tabIndex].text}
         })
       }
     }
