@@ -100,10 +100,6 @@
       page() {
         this._getApplicationList()
       },
-      keyword() {
-        this.page = 1
-        this._getApplicationList()
-      },
       level() {
         this.page = 1
         this._getApplicationList()
