@@ -28,7 +28,7 @@
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item">
                   <template v-if="key==='operate_icon'">
-                    <div v-if="item.status===3&&item[val.imgUrlKey]" :class="val.iconClass" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
+                    <div v-if="item.status===3&&item[val.imgUrlKey]" :class="val.iconClass" class="hand" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
                     <div v-else>—</div>
                   </template>
                   <template v-if="key==='operate_text'">

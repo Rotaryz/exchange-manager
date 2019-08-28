@@ -123,6 +123,9 @@
         }).then((res) => {
           this.$toast.show('审核成功')
           this.checkVisible = false
+          setTimeout(() => {
+            this.$router.go(-1)
+          }, 1000)
         })
       },
       // 获取上传图片的信息
@@ -146,6 +149,9 @@
           loading: false
         }).then((res) => {
           this.$toast.show('打款成功')
+          setTimeout(() => {
+            this.$router.go(-1)
+          }, 1000)
         })
       }
     }
