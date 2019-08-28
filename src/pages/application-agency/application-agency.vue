@@ -54,7 +54,7 @@
 
   const PAGE_NAME = 'APPLICATION_AGENCY'
   const TITLE = '代理申请'
-  const LIST_HEADER = ['客户名称', '当前等级', '申请类型', '代理金额', '提交时间', '提交渠道']
+  const LIST_HEADER = ['店铺名称', '当前等级', '申请类型', '代理金额', '提交时间', '提交渠道']
   const EXCEL_URL = '/exchange-platform/platform/shop/level-apply-record/export'
 
   export default {
@@ -151,6 +151,7 @@
       },
       search(keyword) {
         this.keyword = keyword
+        this._getApplicationList()
       },
       _getApplicationList(loading = false) {
         API.Application.getApplicationList({

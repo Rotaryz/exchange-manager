@@ -75,7 +75,7 @@
           limit: 10
         },
         listHeader: {
-          shop_name: {name: '客户名称'},
+          shop_name: {name: '店铺名称'},
           shop_level_name: {name: '等级类型'},
           amount: {name: '等级金额(元) '},
           shop_inviter_name: {name: '推荐人 '},
