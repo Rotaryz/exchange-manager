@@ -179,7 +179,7 @@
 
   // 结构布局
   .phone-box
-    margin: 0 60px 0 60px
+    margin: 0 60px
     box-sizing: border-box
     display: flex
     justify-content: center

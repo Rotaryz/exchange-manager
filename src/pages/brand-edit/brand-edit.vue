@@ -50,7 +50,7 @@
                         labelHeight="40px"
         >
           <base-drop-down :width="400" :height="44" :select="tradeList" @setValue="_selectTrade"></base-drop-down>
-          <p class="add-trade hand" @click="_showAddTrade">添加行业</p>
+          <!--<p class="add-trade hand" @click="_showAddTrade">添加行业</p>-->
         </base-form-item>
 
         <!--品牌名称 -->

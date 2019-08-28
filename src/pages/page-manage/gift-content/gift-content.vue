@@ -2,26 +2,100 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <span @click="changeType('navigation')">导航类目</span>
-        <span @click="changeType('hot')">今日爆款</span>
-        <span @click="changeType('recommend')">商品推荐</span>
+        <!--<div class="menu">
+          <span @click="changeType('banner')">banner</span>
+          <span @click="changeType('navigation')">导航类目</span>
+          <span @click="changeType('hot')">今日爆款</span>
+          <span @click="changeType('recommend')">商品推荐</span>
+        </div>-->
+
+        <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
+          <div v-if="cms.code === 'banner'" class="banner-bg"></div>
+          <!--banner-->
+          <div v-if="cms.code === 'banner'" :class="{'touch': cmsType === 'banner'}" class="carousel hand" @click="changeType('banner')">
+            <carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
+              <carousel-item v-for="(item, index) in bannerList" :key="index">
+                <img :src="item.detail.image_url" class="carousel-image">
+              </carousel-item>
+            </carousel>
+          </div>
+          <!--导航-->
+          <div v-if="cms.code === 'navigation'" class="nav-box">
+            <div class="nav hand" :class="{'touch': cmsType === 'navigation'}" @click="changeType('navigation')">
+              <div v-for="(item, index) in navigationList" :key="index" class="nav-item">
+                <img :src="item.detail.image_url" alt="" class="nav-image">
+                <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
+              </div>
+            </div>
+          </div>
+          <!--今日爆款-->
+          <div v-if="cms.code === 'hot_goods'" class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
+            <div class="hot-title">今日爆款</div>
+            <div class="scroll-wrapper">
+              <div v-for="(item, index) in hotList" :key="index" class="hot-item">
+                <img :src="item.detail.image_url" class="hot-good-img">
+                <p class="hot-good-name">{{item.detail.title}}</p>
+              </div>
+            </div>
+          </div>
+          <!-- 推荐商品列表-->
+          <div v-if="cms.code === 'recommend'" class="recommend" :class="{'touch': cmsType === 'banner'}" @click="changeType('recommend')">
+            <div class="recommend-name">为你推荐</div>
+            <div class="recommend-goods">
+              <div v-for="(item, index) in recommendList" :key="index" class="goods-item">
+                <img :src="item.goods_cover_image" class="goods-img">
+                <p class="goods-name">{{item.name}}</p>
+                <div class="goods-mag">
+                  <div class="goods-tariff">
+                    <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
+                    <img src="./pic-member@2x.png" alt="" class="goods-member">
+                  </div>
+                  <div class="original-price">¥${{item.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 行业推荐-->
+          <div v-if="cms.code === 'industry_recommend'" class="recommend">
+            <div class="recommend-name">行业推荐</div>
+            <div class="recommend-goods">
+              <div v-for="(item, index) in industryRecommendList" :key="index" class="goods-item">
+                <img :src="item.goods_cover_image" class="goods-img">
+                <p class="goods-name">{{item.name}}</p>
+                <div class="goods-mag">
+                  <div class="goods-tariff">
+                    <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
+                    <img src="./pic-member@2x.png" alt="" class="goods-member">
+                  </div>
+                  <div class="original-price">¥${{item.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
+  import {Carousel, CarouselItem} from 'element-ui'
   const PAGE_NAME = 'mobile-content'
 
   export default {
     name: PAGE_NAME,
     components: {
+      Carousel,
+      CarouselItem
     },
     props: {
       cmsType: {
         type: String,
         default: 'navigation'
+      },
+      bannerList: {
+        type: Array,
+        default: () => []
       },
       navigationList: {
         type: Array,
@@ -34,10 +108,22 @@
       recommendList: {
         type: Array,
         default: () => []
+      },
+      industryRecommendList: {
+        type: Array,
+        default: () => []
       }
     },
     data() {
-      return {}
+      return {
+        cmsList: [
+          {code: 'banner'},
+          {code: 'navigation'},
+          {code: 'hot_goods'},
+          {code: 'recommend'},
+          {code: 'industry_recommend'}
+        ]
+      }
     },
     methods: {
       changeType(type) {
@@ -52,7 +138,13 @@
   @import "~@design"
   img
     object-fit: cover
-
+  .menu
+    position: absolute
+    left: 0
+    top: 0
+    z-index: 2
+    color: #333
+    background: #FFF
   // 结构布局
   .mobile-content
     float: left
@@ -62,25 +154,36 @@
     justify-content: center
     .phone
       icon-image('pic-tel')
-      width: 352.2px
-      height: 752.93px
+      width: 300px
+      height: 641px
       position: relative
       .content-box
-        padding: 0 2px
         box-sizing: border-box
-        top: 111px
-        left: 23px
+        top: 95px
+        left: 19px
         position: absolute
-        width: 307px
-        height: 525px
+        width: 262px
+        height: 446px
         overflow-x: hidden
-        background: #f5f5f9
+        background: #FFF
         &::-webkit-scrollbar
           width: 0
-
+  .banner-bg
+    width: 100%
+    height: 84px
+    background: url("pic-bg_gift@2x.png")
+    background-size: 100% 100%
+    position: absolute
+    left: 0
+    top: 0
   .carousel
+    width: 241px
+    height: 118.8px
+    border-radius: 6px
+    margin: 10px auto 0
     border: 2px dashed #D9D9D9
     background: $color-background
+    overflow: hidden
     .carousel-image
       width: 100%
       height: 100%
@@ -92,7 +195,36 @@
     overflow: hidden
     position: relative
     border: 2px solid #4C84FF !important
+  .nav-box
+    background: $color-white
 
+  .nav
+    width: 100%
+    height: 62px
+    display: flex
+    padding: 2px 7px
+    margin: 6.5px 0 8px 0
+    border: 2px dashed #D9D9D9
+    .nav-item
+      height: 56px
+      width: 50px
+      margin-right: 0
+      text-align: center
+      &:last-child
+        margin-right: 0
+    .nav-image
+      display: block
+      width: 34.9px
+      height: 34.9px
+      border-radius: 50%
+      object-fit: cover
+      margin: 0 auto
+      margin-bottom: 4px
+
+    .nav-name
+      font-size: 8.38px
+      color: #1D2023
+      font-family: $font-family-regular
   .hot-commodity
     height: 187px
     border: 2px dashed #D9D9D9

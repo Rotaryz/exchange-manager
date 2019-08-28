@@ -7,10 +7,47 @@
                @change="tabChange"
     ></base-tabs>
     <template v-if="pageType === 'gift_index'">
-      <gift-content :navigationList="navigationList" :hotList="hotList" :recommendList="recommendList" :cmsType.sync="type"></gift-content>
+      <gift-content :bannerList="bannerList"
+                    :navigationList="navigationList"
+                    :hotList="hotList"
+                    :recommendList="recommendList"
+                    :industryRecommendList="industryRecommendList"
+                    :cmsType.sync="type"
+      ></gift-content>
       <div class="edit-modular">
         <div class="box">
           <div class="small">
+            <div v-if="type === 'banner'" class="banner">
+              <div class="content-header">
+                <div class="content-title">首图banner</div>
+                <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+              </div>
+              <slick-list v-model="bannerList" :distance="30" lockAxis="y">
+                <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
+                  <div class="advertisement-msg" @click="getIndex(index)">
+                    <upload
+                      :data.sync="item.detail.image_url"
+                      :multiple="false"
+                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                      imgStyle="width: 100px; height: 100px"
+                      :indicatorPosition="false"
+                      :isShowDel="false"
+                      :isChange="true"
+                      firstTag="更换图片"
+                      @delete="deleteGoodsMainPic()"
+                      @successImage="successImage"
+                    ></upload>
+
+                    <!--@click=""-->
+                    <div class="advertisement-link">
+                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                      <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
+                    </div>
+                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                  </div>
+                </slick-item>
+              </slick-list>
+            </div>
             <div v-if="type === 'navigation'" class="navigation">
               <div class="content-header">
                 <div class="content-title">类目导航</div>
@@ -377,7 +414,8 @@
         recommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        type: 'navigation',
+        industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
+        type: 'banner',
         cmsIndex: 0,
         showModal: false,
         tabIndex: 0,
@@ -414,7 +452,7 @@
         return name
       },
       showModalLine() {
-        if (this.type === 'navigation') {
+        if (this.type === 'navigation' || this.type === 'banner') {
           return true
         }
         return false
@@ -441,7 +479,11 @@
           this.typeList = GOODS_TYPE
           break
         case 'banner':
-          this.typeList = ARTICLE_TYPE
+          if (this.pageType === 'gift_index') {
+            this.typeList = TYPE_LIST
+          } else {
+            this.typeList = ARTICLE_TYPE
+          }
           break
         case 'brand':
           this.typeList = BRANDS_TYPE
@@ -477,6 +519,9 @@
               case 'brand_list':
                 vx.brandList = item.children
                 break
+              case 'industry_recommend':
+                vx.industryRecommendList = item.children
+                break
               }
             })
           })
@@ -494,11 +539,9 @@
     methods: {
       tabChange(val) {
         this.pageType = val
-        if (val === 'brand_index') {
-          this.type = 'banner'
-        } else {
-          this.type = 'navigation'
-        }
+        this.type = 'banner'
+        this.bannerList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
+        this.moduleShow()
       },
       searchGoods(keyword) {
         this.keyword = keyword
@@ -533,9 +576,11 @@
             case 'brand_list':
               this.brandList = item.children
               break
+            case 'industry_recommend':
+              this.industryRecommendList = item.children
+              break
             }
           })
-        // console.log(this.categoryList)
         })
       },
       // 判断
@@ -637,6 +682,7 @@
         this.showModal = true
         this.bannerIndex = index
         this.goodsId = id
+        this.outLink = this.typeList[0].status
         this.showSelectIndex = this.outLink === 3005 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
         this.showCateIndex = this.outLink === 3004 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
       },
@@ -687,7 +733,11 @@
           }
           break
         case 'banner':
-          type = '文章'
+          if (this.pageType === 'gift_index') {
+            type = 'banner'
+          } else {
+            type = '文章'
+          }
           if (this[this.dataName].length >= 5) {
             this.$toast.show('最多添加5个' + type)
             return
@@ -726,7 +776,12 @@
         case 'recommend':
           type = '商品'; break
         case 'banner':
-          type = '文章'; break
+          if (this.pageType === 'gift_index') {
+            type = 'banner'
+          } else {
+            type = '文章'
+          }
+          break
         case 'brand':
           type = '品牌'; break
         }
@@ -751,13 +806,16 @@
         })
       },
       infoData() {
-        this.moduleList.findIndex((item, index) => {
+        this.moduleList.forEach((item, index) => {
           if (item.code.includes(this.type)) {
-            this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
-              cms.parent_id = item.id
-              cms.sort = cmsIndex
-              return cms
-            })
+            if (item.code === 'industry_recommend' && this.type === 'recommend') {
+            } else {
+              this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
+                cms.parent_id = item.id
+                cms.sort = cmsIndex
+                return cms
+              })
+            }
           }
         })
       },
