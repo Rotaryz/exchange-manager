@@ -28,7 +28,8 @@
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item">
                   <template v-if="key==='operate_icon'">
-                    <div :class="val.iconClass" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
+                    <div v-if="item.status===3&&item[val.imgUrlKey]" :class="val.iconClass" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
+                    <div v-else>—</div>
                   </template>
                   <template v-if="key==='operate_text'">
                     <span class="list-operation" @click="goDetail(item,i)">详情</span>
@@ -196,7 +197,7 @@
         const curTab = this.tabList[this.tabIndex]
         this.$router.push({
           name: 'income-expenses-detail',
-          params: {id: item.id},
+          params: {id: item.source_id},
           query: {name: curTab.text, type: curTab.type}
         })
       },
