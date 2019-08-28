@@ -33,7 +33,7 @@
       </base-form-item>
     </div>
     <base-footer>
-      <base-button @click="cancelBtn">取消</base-button>
+      <base-button @click="cancelBtn">返回</base-button>
       <base-button v-if="info.status===0" type="primary" @click="checkBtn">审核</base-button>
       <base-button v-if="info.status===1" type="primary" @click="sureRemitBtn">确认打款</base-button>
     </base-footer>
