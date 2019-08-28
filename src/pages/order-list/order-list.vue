@@ -133,7 +133,7 @@
   const TITLE = '订单列表'
   const INFO_STATUS = ''
   const EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
-  const TAB_CONFIG = [{text: '采集订单', type: 0}, {text: '赞播优品订单', type: 1}]
+  const TAB_CONFIG = [{text: '采集订单', type: 0}, {text: '播豆订单', type: 1}]
   const LIST_CONFIG = [
     [
       {title: '主单号', key: ['order','order_sn'], class: 'width-3', type: 'keyArr'},
