@@ -11,6 +11,20 @@
       >
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
+      <!-- b端 集采特有-->
+      <template v-if="edit.type===1">
+        <base-form-item label="商品类型" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+          <base-select v-model="useType" :height="44" :data="goodsUseList" limit="50"
+                       placeholder="商品类型"
+          ></base-select>
+        </base-form-item>
+        <base-form-item label="所属品牌" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+          <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
+                       placeholder="所属品牌"
+          ></base-select>
+        </base-form-item>
+      </template>
+      <!------------>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <cascade-select ref="cascadeSelect"
                         v-model="edit.category_id"
@@ -20,9 +34,6 @@
                         placeholder1="请选择分类"
                         placeholder2="请选择子分类"
         ></cascade-select>
-      </base-form-item>
-      <base-form-item label="所属品牌" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-drop-down :width="400" :height="44" :select="brandList" @setValue="_selectBrand"></base-drop-down>
       </base-form-item>
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
@@ -34,6 +45,11 @@
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
       </base-form-item>
+      <!-- b端 集采特有-->
+      <base-form-item v-if="edit.type===1" label="邮费信息" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <radio v-model="freightType" :list="freightList" @change="changeType"></radio>
+      </base-form-item>
+      <!---------------->
       <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
@@ -260,7 +276,10 @@
         // 详情返回的元sku列表
         detailGoodsSpec: [],
         id: 0,
-        specId: 0,
+
+        brandList: [],
+        freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
+        goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
         edit: {
           type: 1,
           name: '',
@@ -273,13 +292,18 @@
           // goodsDetailPic: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F29%2F1564383114632-777951',
           goods_banner_images: [],
           specification_type: 0,
+          // ------ 单规格-----
           // 赞播优品商品 & 集采商品
           saleable: 0,
           price: 0,
           // 赞播优品商品
           cash_price: 0,
           bean_price: 0,
-        }
+        },
+        specId: 0,
+        useType: 1,
+        brandId: '',
+        freightType: 1
       }
     },
     watch: {
@@ -291,7 +315,7 @@
       }
     },
     created() {
-      this.getBrandList()
+      this._getBrandList()
     },
     mounted() {
       this.id = this.$route.query.id || 0
@@ -317,20 +341,11 @@
           }]
         }
       },
-      getBrandList() {
+      _getBrandList() {
         API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}})
           .then(res => {
-            this.brandList.data = res.data.map(item => {
-              return {
-                name: item.name,
-                id: item.id
-              }
-            })
-            console.log(this.brandList)
+            this.brandList = res.data
           })
-      },
-      _selectBrand(item) {
-        this.edit.brand_id = item.id
       },
       setData(res) {
         let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, ...edit} = res.data
@@ -338,16 +353,15 @@
         this.detailGoodsSpec = goodsSpecs
         this.edit = edit
         // 单规格
+
         if (!this.edit.specification_type) {
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable
+          this.edit.price = obj.price
           // 赞播优品与普通商品区别
-          if (this.edit.type === 1) {
-            this.edit.price = obj.price
-          } else if (this.edit.type === 2) {
+          if (this.edit.type === 2) {
             this.edit.cash_price = obj.cash_price
             this.edit.bean_price = obj.bean_price
-            this.price = obj.price
           }
         }
       },
@@ -455,10 +469,6 @@
         }
       },
       getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs) {
-        // console.log('----------------------')
-        // console.log(initObj, 'initObj')
-        // console.log(oldGoodsSpecs, 'oldGoodsSpecs')
-        // console.log(newSpecsAttrs, 'newSpecsAttrs')
         let res = null
         let newGoodsSpec = {}
         // 详情查询 存在的sku
@@ -566,8 +576,6 @@
         return over
       },
       _addGoods() {
-        console.log(this.edit)
-        console.log(this.edit.type, 'this.edit.type')
         let {price, cash_price: cashPrice, bean_price: beanPrice, saleable, ...params} = this.edit
         let specsAttrs = []
         let goodsSpecs = this.goodsDetails
@@ -575,7 +583,7 @@
         if (this.edit.specification_type) {
           specsAttrs = this.goodsSpecification
         } else {
-          // 統一规格
+          // 单规格
           goodsSpecs = [{
             "spec_id": this.specId,
             "price": price,
@@ -586,14 +594,20 @@
             goodsSpecs[0].cash_price = cashPrice
             goodsSpecs[0].bean_price = beanPrice
           }
-          console.log(goodsSpecs, 'goodsSpecs')
         }
         let data = {
           ...params, specs_attrs: specsAttrs, goods_specs: goodsSpecs
         }
+        // 编辑
+        if (this.id) data.id = this.id
+        // 集采商品
+        if (this.edit.type === 1) {
+          data.use_type = this.useType
+          data.brand_id = this.brandId
+          data.freight_type = this.freightType
+        }
         //  编辑 or 新增
         let requestName = this.id ? 'editGoods' : 'addGoods'
-        if (this.id) data.id = this.id
         API.Goods[requestName]({
           data
         }).then(() => {
