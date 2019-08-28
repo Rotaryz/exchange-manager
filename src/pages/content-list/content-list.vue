@@ -15,17 +15,19 @@
       <div class="table-content">
         <div class="big-list">
           <div class="list-header list-box">
-            <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
+            <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">{{val.name}}</div>
           </div>
           <div class="list">
             <template v-if="list.length">
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
-                <div v-for="(val,key) in listHeader" :key="key" class="list-item">
+                <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
-                    <span class="list-operation" @click="onOffHandle(item, i)">下线</span>
+                    <span v-if="+item.status === 1" class="list-operation" @click="onOffHandle(item, i)">下线</span>
+                    <router-link v-if="+item.status === -1 || +item.status === 0" tag="span" :to="'content-edit?id='+item.id" append class="list-operation">编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
+                  <div v-else-if="val.type === 'status'">{{statusHandle(item.status)}}</div>
                   <template v-else>
                     <img v-if="val.before && val.before.img" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
                     <div class="item-text">{{item[key]}}</div>
@@ -56,24 +58,18 @@
       title: TITLE
     },
     beforeRouteEnter(to, from, next) {
-      let type = to.query.type
-      Promise.all([API.Goods.getGoodsList({
+      Promise.all([API.Content.getArticleList({
         data: {
           keyword: '',
-          category_id: '',
           status: '',
           page: 1,
           limit: 10,
-          type: type
         }
-      }), API.Goods.getGoodsListStatus({
+      }), API.Content.getArticleListStatus({
         data: {
           keyword: '',
-          category_id: '',
-          type: type
         }
       })]).then(res => {
-        // console.log(res)
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])
@@ -95,16 +91,16 @@
         listHeader: {
           name_: {
             name: '封面图', before: {
-              img: 'goods_cover_image'
+              img: 'cover_image_url'
             }
           },
-          category_name: {name: '文章标题'},
-          ctegory_1: {name: '时间'},
-          saleable: {name: '阅读数 '},
-          price: {name: '点赞数'},
-          discount_price: {name: '状态'},
+          title: {name: '文章标题'},
+          list_date: {name: '时间'},
+          browse_count: {name: '阅读数 '},
+          fabulous_num: {name: '点赞数'},
+          status: {name: '状态', type: 'status'},
           // status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate"}
+          operate_text: {name: '操作', type: "operate", style: 'max-width:98px'}
         },
         list: []
       }
@@ -125,22 +121,30 @@
         this.statusList = res.data
       },
       _getStatus() {
-        API.Goods.getGoodsListStatus({
+        API.Content.getArticleListStatus({
           data: {
-            type: this.filter.type,
             keyword: this.filter.keyword,
-            category_id: this.filter.category_id
           }, loading: false
         }).then(res => {
           this.statusList = res.data
         })
       },
       _getList(other) {
-        API.Goods.getGoodsList({
+        API.Content.getArticleList({
           data: this.filter, ...other
         }).then(res => {
           this.setData(res)
         })
+      },
+      statusHandle(status) {
+        switch (+status) {
+        case -1:
+          return '已下线'
+        case 0:
+          return '草稿'
+        default:
+          return '已上线'
+        }
       },
       statusChange(val) {
         this.filter.page = 1
@@ -148,7 +152,8 @@
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
-          await API.Goods.deleteGoods({data: {id: item.id}, loading: false})
+          await API.Content.deleteArticle({data: {id: item.id}, loading: false})
+          this.$toast.show('文章删除成功')
           this.updatePage()
         })
       },
@@ -164,7 +169,11 @@
         this._getList({loading: false})
       },
       onOffHandle(item, index) {
-        // todo
+        API.Content.offline({data: {status: -1, id: item.id}})
+          .then(res => {
+            this.$toast.show('文章下线成功')
+            this.updatePage()
+          })
       }
     }
   }
@@ -186,7 +195,7 @@
 
   .list-box > .list-item
     &:nth-child(1)
-      flex: 1.6
+      flex: 1.5
 
   .list-item
     display flex

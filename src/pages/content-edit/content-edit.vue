@@ -354,8 +354,9 @@
       if (id) {
         API.Content.getArticleDetail({data: {id}})
           .then((res) => {
-            next({
-              params: res.data
+            next(vm => {
+              vm.msg = res.data
+              console.log(vm.msg, '12222222222222')
             })
           })
           .catch(() => {
@@ -429,7 +430,8 @@
         addTextVisible: false,
         imageArr: [],
         goodsVisible: false,
-        selects: []
+        selects: [],
+        msg: {}
       }
     },
     computed: {
@@ -448,17 +450,21 @@
         return this.id ? (this.isDisabled ? '查看' : '编辑') : '创作'
       }
     },
-    async created() {
-      let query = this.$route.query
-      this.currentType = query.type || 'common'
-      this.id = query.id || ''
-      this.isDisabled = Boolean(query.isSee) || false
-      if (this.id) {
-        this.$route.meta.params && this.changeDetailData(this.$route.meta.params)
-      } else {
-        this._getAuth()
-      }
-      this._getLikes()
+    created() {
+      console.log(this.msg, 6)
+      // let query = this.$route.query
+      // this.currentType = query.type || 'common'
+      // this.id = query.id || ''
+      // this.isDisabled = Boolean(query.isSee) || false
+      // if (this.id) {
+      //   // this.changeDetailData(this.msg)
+      // } else {
+      //   this._getAuth()
+      // }
+      // this._getLikes()
+    },
+    mounted() {
+      console.log(this.msg, 7)
     },
     methods: {
       updatePage() {
@@ -492,6 +498,7 @@
       },
       // 转换详情数据
       changeDetailData(obj) {
+        console.log(obj, 23)
         this.currentType = obj.type || 'common'
         this.addData.title = obj.title
         this.addData.coverImage.url = obj.cover_image.source_url
@@ -727,7 +734,8 @@
           let res = await API.Content[name]({data, loading: true})
           this.$toast.show(res.message)
           this.$loading.hide()
-          if (res.error === this.$ERR_OK) this.$router.go(-1)
+          this.$router.go(-1)
+          this.$emit('updatePage')
         }
       },
       // 上线

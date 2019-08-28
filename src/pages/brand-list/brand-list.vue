@@ -10,7 +10,7 @@
       <div class="table-content">
         <div class="big-list">
           <div class="list-header list-box">
-            <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
+            <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">{{val.name}}</div>
           </div>
           <div class="list">
             <template v-if="list.length">
@@ -21,6 +21,7 @@
                 <div v-for="(val,key) in listHeader"
                      :key="key"
                      class="list-item"
+                     :style="val.style"
                 >
                   <base-switch v-if="val.type ==='switch'"
                                :status="item.status"
@@ -28,7 +29,7 @@
                   ></base-switch>
                   <div v-else-if="val.type === 'operate'">
                     <router-link tag="span"
-                                 :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}"
+                                 :to="{path:'brand-edit',query:{id:item.id}}"
                                  class="list-operation"
                                  append
                     >编辑</router-link>
@@ -69,24 +70,13 @@
       title: TITLE
     },
     beforeRouteEnter(to, from, next) {
-      let type = to.query.type
-      Promise.all([API.Goods.getGoodsList({
+      Promise.all([API.Brand.getBrandList({
         data: {
-          keyword: '',
-          category_id: '',
-          status: '',
           page: 1,
-          limit: 10,
-          type: type
+          limit: 10
         }
-      }), API.Goods.getGoodsListStatus({
-        data: {
-          keyword: '',
-          category_id: '',
-          type: type
-        }
+      }), API.Brand.getBrandListStatus({
       })]).then(res => {
-        // console.log(res)
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])
@@ -98,30 +88,27 @@
         statusList: [],
         total: 0,
         filter: {
-          keyword: '',
-          category_id: '',
           status: '',
           page: 1,
-          limit: 10,
-          type: this.$route.query.type || '1'
+          limit: 10
         },
         // key值代表后台的字段 val代表前端页面字段
         listHeader: {
           first: {
             name: '品牌首图', before: {
-              img: 'goods_cover_image'
+              img: 'banner_image_url'
             }
           },
           logo: {
             name: '品牌Logo', before: {
-              img: 'goods_cover_image'
+              img: 'logo_image_url'
             }
           },
-          category_name: {name: '所属行业'},
-          saleable: {name: '品牌名称'},
-          price: {name: '时间 '},
+          industry_name: {name: '所属行业'},
+          name: {name: '品牌名称'},
+          created_at: {name: '时间 ', style: 'flex: 1.4'},
           status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate"}
+          operate_text: {name: '操作', type: "operate", style: 'max-width: 98px'}
         },
         list: []
       }
@@ -142,18 +129,14 @@
         this.statusList = res.data
       },
       _getStatus() {
-        API.Goods.getGoodsListStatus({
-          data: {
-            type: this.filter.type,
-            keyword: this.filter.keyword,
-            category_id: this.filter.category_id
-          }, loading: false
+        API.Brand.getBrandListStatus({
+          data: {}, loading: false
         }).then(res => {
           this.statusList = res.data
         })
       },
       _getList(other) {
-        API.Goods.getGoodsList({
+        API.Brand.getBrandList({
           data: this.filter, ...other
         }).then(res => {
           this.setData(res)
@@ -165,12 +148,12 @@
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm().then(async () => {
-          await API.Goods.deleteGoods({data: {id: item.id}, loading: false})
+          await API.Brand.deleteBrand({data: {id: item.id}, loading: false})
           this.updatePage()
         })
       },
       async changeSwitch(item) {
-        await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
+        await API.Brand.switchStatus({data: {id: item.id, status: item.status ? 0 : 1}})
         this.updatePage()
       },
       pageChange(val) {

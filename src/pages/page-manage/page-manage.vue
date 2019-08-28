@@ -531,6 +531,7 @@
         })
     },
     async created() {
+      console.log(this.moduleList, 4444)
       this._getCateList() // 获取分类列表
       this._getArticleList() // 文章列表
       this._getBrandList() // 品牌列表
@@ -540,6 +541,11 @@
       tabChange(val) {
         this.pageType = val
         this.type = 'banner'
+        if (this.pageType === 'gift_index') {
+          this.typeList = TYPE_LIST
+        } else {
+          this.typeList = ARTICLE_TYPE
+        }
         this.bannerList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
         this.moduleShow()
       },
