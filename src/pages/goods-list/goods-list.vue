@@ -93,7 +93,7 @@
     },
     data() {
       return {
-        tabList: [{text: '集采商品', type: '1'}, {text: '赞播优品', type: '2'}],
+        tabList: [{text: '集采商品', type: '1'}, {text: '播豆商品', type: '2'}],
         getDataFunction: API.Goods.getGoodsList,
         statusList: [],
         inputValue: '1122',
