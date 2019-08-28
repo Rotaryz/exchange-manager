@@ -448,6 +448,7 @@
   .list-box
     overflow: visible
     .two-line
+      align-items: flex-start
       color: $color-text-main
       font-size: $font-size-14
       line-height: 18px
@@ -494,12 +495,14 @@
           margin-left: 6px
           &:hover
             .goods-box
+              width: auto
               opacity: 1
               z-index: 100
           .goods-box
+            width: 0
             opacity: 0
             z-index: 0
-            transition: all 0.3s
+            transition: all 0.25s
             box-shadow: 0 1px 8px 0 rgba(78, 89, 131, 0.2)
             background: $color-white
             border-radius: 4px
