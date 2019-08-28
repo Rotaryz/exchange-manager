@@ -13,7 +13,7 @@
         >
         </base-select>
       </base-form-item>
-      <base-search v-model="keyword" placeholder="客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search v-model="keyword" placeholder="店铺名称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-sqjl@2x.png')" title="申请记录">
       <base-button plain buttonStyle="width: 92px" @click="downExcel">

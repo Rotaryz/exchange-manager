@@ -12,7 +12,7 @@
           @change="_getList"
         >
         </base-select>
-        <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
+        <base-search v-model="filter.keyword" placeholder="店铺名称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-jyjl@2x.png')" title="交易记录">
