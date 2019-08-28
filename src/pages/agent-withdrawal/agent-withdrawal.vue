@@ -151,6 +151,7 @@
         this.filter = {start_time: '', end_time: '', keyword: '', type: val}
         this.status = ''
         this.page = 1
+        this._getData()
       },
       _getData() {
         this.filter.start_time = this.time[0] || ''
