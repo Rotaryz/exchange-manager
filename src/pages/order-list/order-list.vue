@@ -160,7 +160,7 @@
   const INFO_STATUS = ''
   let ORDER_EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
   let EXCHANGE_EXCEL_URL = '/exchange-platform/platform/bean-order/order/export'
-  const TAB_CONFIG = [{text: '集采订单', type: 0}, {text: '赞播优品订单', type: 1}]
+  const TAB_CONFIG = [{text: '集采订单', type: 0}, {text: '播豆订单', type: 1}]
   const LIST_CONFIG = [
     [
       {title: '主单号', key: ['order', 'order_sn'], class: 'width-3', type: 'keyArr'},
@@ -561,6 +561,7 @@
                 overflow: hidden
                 display: block
                 object-fit: cover
+                margin-right: 10px
                 background: $color-background
               .goods-name
                 width: 142px

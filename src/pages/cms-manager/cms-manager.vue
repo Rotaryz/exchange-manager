@@ -30,7 +30,7 @@
 
                   <!--@click=""-->
                   <div class="advertisement-link">
-                    <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                    <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item)"><span class="add-icon"></span>添加链接</base-button>
                     <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                   </div>
                   <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -56,7 +56,7 @@
                     @successImage="successImage"
                   ></upload>
                   <div class="advertisement-link">
-                    <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                    <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item)"><span class="add-icon"></span>添加链接</base-button>
                     <p class="goods-title">{{item.style === 3004 || item.style === 3005 ? item.detail.url : item.detail.title}}</p>
                   </div>
                   <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <base-modal ref="goods" :width="1000" :visible.sync="showModal" :submitBefore="justifyForm" @submit="miniGoods">
+    <base-modal ref="goods" width="1000px" :visible.sync="showModal" :submitBefore="justifyForm" @submit="miniGoods">
       <div class="model">
         <div class="shade-header">
           <div class="shade-tab-type">
@@ -142,7 +142,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
+  // import * as Helpers from './modules/helpers'
   import API from '@api'
   import MobileContent from './mobile-content/mobile-content'
   import {SlickList, SlickItem, HandleDirective} from 'vue-slicksort'
@@ -288,7 +288,7 @@
               break
             }
           })
-        // console.log(this.bannerList)
+          // console.log(this.bannerList)
         })
       },
       // 判断
@@ -339,6 +339,7 @@
           this[this.dataName][index].detail.title = this.goodsCate[this.showCateIndex].name
           break
         }
+        this.outLink = 3002
       },
       // 获取分类
       getCateList() {
@@ -364,16 +365,22 @@
         this.choiceGoods = res.data
         this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
       },
-      showModalBox(index, id) {
+      showModalBox(index, item) {
         this.showModal = true
         this.bannerIndex = index
-        this.goodsId = id
-        this.showSelectIndex = this.outLink === 3005 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
-        this.showCateIndex = this.outLink === 3004 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
+        this.goodsId = item.detail.object_id
+        this.outLink = item.style || 3002
+        let el = document.querySelectorAll('.shade-tab-item')
+        setTimeout(() => {
+          this.tabIndex = TYPE_LIST.findIndex((item) => item.status === this.outLink)
+          this.left = el[this.tabIndex].offsetLeft + (el[this.tabIndex].offsetWidth - 64) / 2
+        }, 200)
+        this.showSelectIndex = this.outLink === 3002 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
+        this.showCateIndex = this.outLink === 3003 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
       },
       selectCate(item, index) {
         this.showCateIndex = index
-      // console.log(this.showCateIndex)
+        // console.log(this.showCateIndex)
       },
       selectGoods(item, index) {
         this.showSelectIndex = index
@@ -386,6 +393,7 @@
       hideGoods() {
         this.showModal = false
         this.showSelectIndex = -1
+        this.outLink = 3002
         this.outHtml = ''
         this.miniLink = ''
         this.showCateIndex = -1
@@ -475,7 +483,8 @@
               this[this.dataName].splice(index, 1)
             })
           })
-          .catch(() => {})
+          .catch(() => {
+          })
       },
       deleteGoodsMainPic() {
         this[this.dataName][this.cmsIndex].detail.image_url = ''
@@ -672,7 +681,6 @@
       transition: all 0.3s
 
   .model
-    width: 52.08vw
     height: 592px
     .shade-header
       display: flex

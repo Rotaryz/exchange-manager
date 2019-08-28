@@ -13,7 +13,7 @@
         >
         </base-select>
       </base-form-item>
-      <base-search v-model="keyword" placeholder="客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search v-model="keyword" placeholder="店铺名称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-sqjl@2x.png')" title="申请记录">
       <base-button plain buttonStyle="width: 92px" @click="downExcel">
@@ -54,7 +54,7 @@
 
   const PAGE_NAME = 'APPLICATION_AGENCY'
   const TITLE = '代理申请'
-  const LIST_HEADER = ['客户名称', '当前等级', '申请类型', '代理金额', '提交时间', '提交渠道']
+  const LIST_HEADER = ['店铺名称', '当前等级', '申请类型', '代理金额', '提交时间', '提交渠道']
   const EXCEL_URL = '/exchange-platform/platform/shop/level-apply-record/export'
 
   export default {
@@ -100,10 +100,6 @@
       page() {
         this._getApplicationList()
       },
-      keyword() {
-        this.page = 1
-        this._getApplicationList()
-      },
       level() {
         this.page = 1
         this._getApplicationList()
@@ -140,6 +136,7 @@
           }
         })
           .then((res) => {
+            res.data.unshift({name: '普通会员', id: 0})
             res.data.unshift({name: '全部', id: ''})
             this.selectList = res.data
           })
@@ -150,6 +147,7 @@
       },
       search(keyword) {
         this.keyword = keyword
+        this._getApplicationList()
       },
       _getApplicationList(loading = false) {
         API.Application.getApplicationList({

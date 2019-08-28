@@ -14,7 +14,7 @@
         >
         </base-select>
       </base-form-item>
-      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户名称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -141,6 +141,7 @@
           }
         })
           .then((res) => {
+            res.data.unshift({name: '普通会员', id: 0})
             res.data.unshift({name: '全部', id: ''})
             this.selectList = res.data
           })

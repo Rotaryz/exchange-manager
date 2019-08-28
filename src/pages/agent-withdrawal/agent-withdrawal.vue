@@ -12,7 +12,7 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
-        <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" @search="_getData"></base-search>
+        <base-search v-model="filter.keyword" placeholder="店铺名称/客户手机号" @search="_getData"></base-search>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="提现列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="status" @change="_getData"></base-status-tab>
@@ -85,7 +85,7 @@
         listHeader: {
           withdraw_sn: {name: '提现单号'},
           created_at: {name: '申请时间'},
-          shop_name: {name: '客户名称'},
+          shop_name: {name: '店铺名称'},
           total: {name: '提现金额'},
           status_text: {name: '提现状态'},
           operate_icon: {name: '打款凭证', iconClass: 'icon-certificate', imgUrlKey: 'image_url'},
