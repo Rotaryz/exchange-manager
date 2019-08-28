@@ -7,7 +7,7 @@
       <base-form-item label="提现单号:" :required="false" class="info-item">{{info.withdraw_sn}}</base-form-item>
       <base-form-item label="申请时间:" :required="false" class="info-item">{{info.created_at}}</base-form-item>
       <base-form-item label="客户名称:" :required="false" class="info-item">{{info.shop_name}}</base-form-item>
-      <base-form-item label="状态:" :required="false" class="info-item">{{info.status_text}} <span v-if="info.status===2" class="explain">({{info.note}})</span></base-form-item>
+      <base-form-item label="状态:" :required="false" class="info-item">{{info.status_text}} <span v-if="info.status===2&&info.note" class="explain">({{info.note}})</span></base-form-item>
     </div>
     <title-line title="提现信息"></title-line>
     <div class="withdrawal-info-wrap info-wrap">
@@ -24,17 +24,18 @@
     <title-line title="打款凭证"></title-line>
     <div class="certificate-wrap info-wrap">
       <base-form-item label="凭证流水:" :required="false" verticalAlign="top" class="info-item">
-        <div v-if="info.status===0" class="empty-line">-</div>
+        <upload v-if="info.status===1&&!uploadImg" @successImage="getUploadImg"></upload>
         <div v-else-if="uploadImg" class="img-box">
           <img :src="uploadImg" class="item-img">
+          <img v-if="info.status===1" src="./pic-delete@2x.png" class="icon-delete" @click="deleteUploadImg">
         </div>
-        <upload v-else-if="!uploadImg" @successImage="getUploadImg"></upload>
+        <div v-else class="empty-line">-</div>
       </base-form-item>
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
-      <base-button type="primary" @click="checkBtn">审核</base-button>
-      <base-button type="primary" @click="sureRemitBtn">确认打款</base-button>
+      <base-button v-if="info.status===0" type="primary" @click="checkBtn">审核</base-button>
+      <base-button v-if="info.status===1" type="primary" @click="sureRemitBtn">确认打款</base-button>
     </base-footer>
     <base-modal :visible="checkVisible" width="534px" height="234px" title="审核" @close="checkVisible=false"
                 @submit="checkSubmit"
@@ -129,6 +130,11 @@
         this.uploadImg = imgArr.data.url
         this.uploadImgId = imgArr.data.id
       },
+      // 删除上传图片
+      deleteUploadImg() {
+        this.uploadImg = ''
+        this.uploadImgId = ''
+      },
       // 确认打款
       sureRemitBtn() {
         if (!this.uploadImgId) {
@@ -178,6 +184,7 @@
           opacity: 0.8
           margin-left 10px
         .img-box
+          position: relative
           width: 90px
           height: 90px
           border-radius: 2px
@@ -185,4 +192,11 @@
         .item-img
           width: auto
           height: 90px
+        .icon-delete
+          position: absolute
+          top: 0
+          right: 0
+          z-index: 9
+          width: 15px
+          height: @width
 </style>
