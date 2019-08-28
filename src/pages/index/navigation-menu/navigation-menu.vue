@@ -13,12 +13,10 @@
     </nav>
     <nav class="nav-right">
       <div class="sec-title">{{menuData[menuIndex].title}}</div>
-      <div v-for="(item, index) in navList" :key="index">
-        <div class="second-item">
-          <p class="second-title">{{item.text}}</p>
-          <div v-for="(child, i) in item.children" :key="i" class="second-link hand" @click="setChildActive(child)">
-            <router-link v-if="child.meta" tag="span" :to="child.path" class="second-link-content">{{child.meta.title}}</router-link>
-          </div>
+      <div v-for="(item, index) in navList" :key="index" class="second-item">
+        <p class="second-title">{{item.text}}</p>
+        <div v-for="(child, i) in item.children" :key="i" class="second-link hand" @click="setChildActive(child)">
+          <router-link v-if="child.meta" tag="span" :to="child.path" class="second-link-content">{{child.meta.title}}</router-link>
         </div>
       </div>
     </nav>
@@ -201,9 +199,10 @@
 
   .second-item
     text-indent: 20px
+    padding: 20px 0 10px
     .second-title
       transition: all 0.2s
-      margin: 20px 0 17px
+      margin-bottom: 17px
       color: #868DAA
       font-size: $font-size-12
       line-height: 1
