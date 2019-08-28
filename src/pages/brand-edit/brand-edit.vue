@@ -214,6 +214,9 @@
         API.Brand.newBrand({data: this.msg})
           .then(res => {
             this.$toast.show('创建成功')
+            setTimeout(() => {
+              this.$router.back()
+            }, 300)
           })
       },
       checkForm() {

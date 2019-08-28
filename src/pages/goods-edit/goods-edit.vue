@@ -276,7 +276,7 @@
           show: false,
           content: '选择品牌',
           type: 'default',
-          data: [] // 格式：{title: '55'}}
+          data: [] // 格式：{name: '55'}}
         }
 
       }
@@ -293,6 +293,9 @@
           this.getGoodsDetials()
         }
       }
+    },
+    created() {
+      this.getBrandList()
     },
     mounted() {
       this.id = this.$route.query.id || 0
@@ -318,8 +321,20 @@
           }]
         }
       },
+      getBrandList() {
+        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}})
+          .then(res => {
+            this.brandList.data = res.data.map(item => {
+              return {
+                name: item.name,
+                id: item.id
+              }
+            })
+            console.log(this.brandList)
+          })
+      },
       _selectBrand(item) {
-        console.log(item)
+        this.edit.brand_id = item.id
       },
       setData(res) {
         let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, ...edit} = res.data

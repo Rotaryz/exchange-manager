@@ -79,5 +79,10 @@ export default {
   deleteGroupGoods(args) {
     const url = `/exchange-platform/platform/platform-goods/group/delete-goods`
     return request.delete({url, ...args})
+  },
+  // 获取品牌列表
+  getBrandList(args) {
+    const url = `/exchange-platform/platform/platform-goods/brand/index`
+    return request.get({url, ...args})
   }
 }
