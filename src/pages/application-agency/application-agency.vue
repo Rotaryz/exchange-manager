@@ -3,11 +3,19 @@
     <base-layout-top>
       <base-date dateStyle="margin-right: 20px" datePlaceholder="请选择时间" textName="提交时间" :infoTime.sync="time"></base-date>
       <base-form-item :inline="true" :required="false" verticalAlign="center" label="等级筛选" labelSize="12px">
-        <base-select v-model="level" placeholder="账号等级" width="120" radius="2"></base-select>
+        <base-select
+          v-model="level"
+          :data="selectList"
+          labelKey="name"
+          placeholder="账号等级"
+          width="120"
+          radius="2"
+        >
+        </base-select>
       </base-form-item>
       <base-search v-model="keyword" placeholder="客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
     </base-layout-top>
-    <base-table-tool :iconUrl="require('./icon-sqjl@2x.png')" title="交易记录">
+    <base-table-tool :iconUrl="require('./icon-sqjl@2x.png')" title="申请记录">
       <base-button plain buttonStyle="width: 92px" @click="downExcel">
         导出Excel
       </base-button>
@@ -20,12 +28,12 @@
         <div class="list">
           <div v-if="applicationList.length">
             <div v-for="(item, index) in applicationList" :key="index" class="list-content list-box">
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
-              <div class="list-item">sdfsdf</div>
+              <div class="list-item">{{item.shop_name}}</div>
+              <div class="list-item">{{item.current_level_name}}</div>
+              <div class="list-item">{{item.apply_level_name}}</div>
+              <div class="list-item">{{item.agent_amount}}</div>
+              <div class="list-item">{{item.created_at}}</div>
+              <div class="list-item">{{item.submit_way_str}}</div>
             </div>
           </div>
           <base-blank v-else></base-blank>
@@ -47,7 +55,7 @@
   const PAGE_NAME = 'APPLICATION_AGENCY'
   const TITLE = '代理申请'
   const LIST_HEADER = ['客户名称', '当前等级', '申请类型', '代理金额', '提交时间', '提交渠道']
-  const EXCEL_URL = ''
+  const EXCEL_URL = '/exchange-platform/platform/shop/level-apply-record/export'
 
   export default {
     name: PAGE_NAME,
@@ -62,7 +70,8 @@
         page: 1,
         level: '',
         keyword: '',
-        total: 1
+        total: 1,
+        selectList: []
       }
     },
     computed: {
@@ -70,7 +79,7 @@
         let data = {
           page: this.page,
           keyword: this.keyword,
-          level: this.level,
+          current_level_id: this.level,
           start_at: this.time[0] || '',
           end_at: this.time[1] || ''
         }
@@ -83,6 +92,7 @@
           search.push(`${key}=${data[key]}`)
         }
         let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
+        console.log(url)
         return url
       }
     },
@@ -103,23 +113,38 @@
         this._getApplicationList()
       }
     },
-    // beforeRouteEnter(to, from, next) {
-    //   let data = {page: 1, keyword: '', level: '', start_at: '', end_at: ''}
-    //   API.Application.getApplicationList({data, loading: true, toast: true})
-    //     .then((res) => {
-    //       API.Order.orderStatus({data: null, loading: true, toast: true})
-    //         .then((status) => {
-    //           next(vx => {
-    //             vx.applicationList = res.data
-    //             vx.total = res.meta.total
-    //           })
-    //         })
-    //     })
-    //     .catch(() => {
-    //       next('404')
-    //     })
-    // },
+    beforeRouteEnter(to, from, next) {
+      let data = {page: 1, keyword: '', level: '', start_at: '', end_at: ''}
+      API.Application.getApplicationList({data, loading: true, toast: true})
+        .then((res) => {
+          next(vx => {
+            vx.applicationList = res.data
+            vx.total = res.meta.total
+          })
+        })
+        .catch(() => {
+          next('404')
+        })
+    },
+    created() {
+      this._getLevelList()
+    },
     methods: {
+      // 获取等级列表
+      _getLevelList(loading = false) {
+        API.Level.getLevelList({
+          data: {page: 1},
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            res.data.unshift({name: '普通会员', id: 0})
+            res.data.unshift({name: '全部', id: ''})
+            this.selectList = res.data
+          })
+      },
       // 导出Excel
       downExcel() {
         window.open(this.excelUrl, '_blank')

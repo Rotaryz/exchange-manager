@@ -86,7 +86,6 @@
     },
     watch: {
       value(val) {
-        console.log('value', val)
       }
     },
     mounted() {
@@ -154,7 +153,6 @@
       bottom: -2px
       z-index: 10
 
-
     .tab-active-line
       background: $color-main
       border-radius: 2px
@@ -169,7 +167,7 @@
       .text
         display: inline-block
         font-size: $font-size-16
-        font-family: $font-family-medium
+        font-family: $font-family-regular
 
       .idx-mark
         display: inline-block

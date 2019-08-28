@@ -7,7 +7,7 @@ export default {
    * @returns {*}
    */
   getApplicationList(args) {
-    const url = `/exchange-platform/platform/shop/shop-manager/index`
+    const url = `/exchange-platform/platform/shop/level-apply-record/index`
     return request.get({url, ...args})
   }
 }

@@ -2,7 +2,16 @@
   <div class="trading-record">
     <base-layout-top>
       <base-form-item :inline="true" :required="false" verticalAlign="center" label="搜索" labelSize="12px">
-        <base-select v-model="filter.level" placeholder="账号等级" width="120" radius="2"></base-select>
+        <base-select
+          v-model="filter.level_id"
+          :data="selectList"
+          labelKey="name"
+          placeholder="账号等级"
+          width="120"
+          radius="2"
+          @change="_getList"
+        >
+        </base-select>
         <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout-top>
@@ -47,14 +56,13 @@
       API.Customer.getTradingRecord({
         data: {
           keyword: '',
-          level: '',
+          level_id: '',
           page: 1,
           limit: 10
         }
       }).then((res) => {
         next((vw) => {
-          console.log('111')
-        // vw.setData(res)
+          vw.setData(res)
         })
       })
     },
@@ -62,40 +70,41 @@
       return {
         filter: {
           keyword: '',
-          level: '',
+          level_id: '',
           page: 1,
           limit: 10
         },
         listHeader: {
-          name: {name: '账号等级名称'},
-          level: {name: '账号等级'},
-          price: {name: '代理金额(元) '},
-          referrer: {name: '推荐人 '},
-          channels: {name: '升级渠道 '},
-          update_time: {name: '升级时间 '}
+          shop_name: {name: '客户名称'},
+          shop_level_name: {name: '等级类型'},
+          amount: {name: '等级金额(元) '},
+          shop_inviter_name: {name: '推荐人 '},
+          upgrade_way_str: {name: '升级渠道 '},
+          created_at: {name: '升级时间 '}
         },
-        list: [
-          {
-            name: '刘强东',
-            level: '标准版',
-            price: 123.0,
-            referrer: '李力',
-            channels: '线下',
-            update_time: '2019-09-18'
-          },
-          {
-            name: '刘强东',
-            level: '标准版',
-            price: 123.0,
-            referrer: '李力',
-            channels: '线下',
-            update_time: '2019-09-18'
-          }
-        ],
-        total: 11
+        list: [],
+        total: 11,
+        selectList: []
       }
     },
+    created() {
+      this._getLevelList()
+    },
     methods: {
+      // 获取等级列表
+      _getLevelList(loading = false) {
+        API.Level.getLevelList({
+          data: {page: 1},
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            res.data.unshift({name: '全部', id: ''})
+            this.selectList = res.data
+          })
+      },
       setData(res) {
         this.list = res.data
       },

@@ -68,7 +68,7 @@
               <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px" verticalAlign="top">
                 <div class="spec-value-row">
                   <template v-for="(spec,i) in item.values">
-                    <base-input :key="i" v-model="spec.text" size="small" clear class="value-input">
+                    <base-input :key="i" v-model="spec.text" size="small" class="value-input">
                       <div v-if="item.values.length>1" slot="after" class="icon-delete-wrap" @click="deleteSpec(idx,i)">
                         <div class="icon-delete"></div>
                       </div>
@@ -98,9 +98,9 @@
                 <div class="list-item"><span class="required-mark">*</span>库存</div>
               </template>
               <template v-if="edit.type===2">
-                <div class="list-item"><span class="required-mark">*</span>现金价格(元)</div>
-                <div class="list-item"><span class="required-mark">*</span> 播豆</div>
-                <div class="list-item"><span class="required-mark">*</span>库存</div>
+                <div class="list-item list-item-input"><span class="required-mark">*</span>现金价格(元)</div>
+                <div class="list-item list-item-input"><span class="required-mark">*</span> 播豆</div>
+                <div class="list-item list-item-input"><span class="required-mark">*</span>库存</div>
               </template>
             </div>
             <div class="list">
@@ -119,15 +119,21 @@
                   </div>
                 </template>
                 <template v-if="edit.type===2">
-                  <div class="list-item">
-                    <base-input v-model="item.cash_price" type="number" size="mini" clear class="value-input">
+                  <div class="list-item  list-item-input">
+                    <base-input v-model="item.cash_price" type="number" width="93" size="mini" clear
+                                class="value-input"
+                    >
                     </base-input>
                   </div>
-                  <div class="list-item">
-                    <base-input v-model="item.bean_price" type="number" size="mini" clear class="value-input"></base-input>
+                  <div class="list-item  list-item-input">
+                    <base-input v-model="item.bean_price" type="number" width="93" size="mini" clear
+                                class="value-input"
+                    ></base-input>
                   </div>
-                  <div class="list-item">
-                    <base-input v-model="item.saleable" type="number" size="mini" clear class="value-input">
+                  <div class="list-item  list-item-input">
+                    <base-input v-model="item.saleable" type="number" width="93" size="mini" clear
+                                class="value-input"
+                    >
                     </base-input>
                   </div>
                 </template>
@@ -612,6 +618,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  .list-item.list-item-input
+    flex-shrink 0
+    min-width:127px
   .icon-delete-wrap
     position absolute
     top: -14px

@@ -2,9 +2,19 @@
   <div class="customer-list normal-box table">
     <div class="down-content">
       <base-form-item :required="false" labelSize="12px" label="筛选" marginBottom="0">
-        <base-select boxStyle="margin: 0" :width="120" :height="32" defaultLabel="账号等级"></base-select>
+        <base-select
+          v-model="id"
+          boxStyle="margin: 0"
+          :width="120"
+          :data="selectList"
+          labelKey="name"
+          :height="32"
+          placeholder="账号等级"
+          @change="getCustomerList"
+        >
+        </base-select>
       </base-form-item>
-      <base-search boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -88,29 +98,27 @@
         page: 1,
         keyword: '',
         total: 1,
-        defaultLabel: ''
+        defaultLabel: '',
+        selectList: [],
+        id: ''
       }
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword}
+        let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id}
         return data
       }
     },
     watch: {
       async page() {
         await this.getCustomerList()
-      },
-      async keyword() {
-        this.page = 1
-        await this.getCustomerList()
       }
     },
     async created() {
-      await this._getGrade()
+      this._getLevelList()
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: ''}
+      let data = {page: 1, keyword: '', shop_level_id: ''}
       API.Customer.getCustomerList({data, loading: true, toast: true})
         .then((res) => {
           next((vx) => {
@@ -123,6 +131,21 @@
         })
     },
     methods: {
+      // 获取等级列表
+      _getLevelList(loading = false) {
+        API.Level.getLevelList({
+          data: {page: this.page},
+          loading,
+          toast: true,
+          doctor() {
+          }
+        })
+          .then((res) => {
+            res.data.unshift({name: '普通会员', id: 0})
+            res.data.unshift({name: '全部', id: ''})
+            this.selectList = res.data
+          })
+      },
       // 获取客户列表
       async getCustomerList(loading = false) {
         API.Customer.getCustomerList({
@@ -163,8 +186,9 @@
         })
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },
-      search(keyword) {
-        this.keyword = keyword || ''
+      async search(keyword) {
+        console.log(keyword)
+        await this.getCustomerList()
       },
       //  弹窗限制
       justifyForm(done) {
