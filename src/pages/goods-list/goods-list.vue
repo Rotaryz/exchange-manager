@@ -24,12 +24,12 @@
       <div class="table-content">
         <div class="big-list">
           <div class="list-header list-box">
-            <div v-for="(val,key) in listHeader" :key="key" class="list-item">{{val.name}}</div>
+            <div v-for="(val,key) in currentListHeader" :key="key" class="list-item">{{val.name}}</div>
           </div>
           <div class="list">
             <template v-if="list.length">
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
-                <div v-for="(val,key) in listHeader" :key="key" class="list-item">
+                <div v-for="(val,key) in currentListHeader" :key="key" class="list-item">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
                     <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑</router-link>
@@ -93,7 +93,7 @@
     },
     data() {
       return {
-        tabList: [{text: '集采商品', type: '1'}, {text: '赞播优品', type: '2'}],
+        tabList: [{text: '集采商品', type: '1'}, {text: '播豆商品', type: '2'}],
         getDataFunction: API.Goods.getGoodsList,
         statusList: [],
         inputValue: '1122',
@@ -106,7 +106,7 @@
           limit: 10,
           type: this.$route.query.type || '1'
         },
-        listHeader: {
+        listHeader1: {
           name: {
             name: '商品名称', before: {
               img: 'goods_cover_image'
@@ -115,11 +115,29 @@
           category_name: {name: '分类'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
-          discount_price: {name: '会员价'},
+          status: {name: '状态', type: "switch"},
+          operate_text: {name: '操作', type: "operate"}
+        },
+        listHeader2: {
+          name: {
+            name: '商品名称', before: {
+              img: 'goods_cover_image'
+            }
+          },
+          category_name: {name: '分类'},
+          saleable: {name: '库存'},
+          price: {name: '零售价'},
+          cash_price: {name: '现金价格'},
+          bean_price: {name: '播豆'},
           status: {name: '状态', type: "switch"},
           operate_text: {name: '操作', type: "operate"}
         },
         list: []
+      }
+    },
+    computed: {
+      currentListHeader() {
+        return this.filter.type === '1' ? this.listHeader1 : this.listHeader2
       }
     },
     watch: {
@@ -196,7 +214,6 @@
         this._getList({loading: false})
       }
     }
-
   }
 </script>
 
