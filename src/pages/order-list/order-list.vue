@@ -46,9 +46,9 @@
                         <ul class="more-goods">
                           <li class="goods-item">
                             <img src="" alt="" class="goods-img">
-                            <p class="two-line">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                            <p class="goods-num">x10</p>
-                            <p class="goods-price">238.00</p>
+                            <p class="two-line"></p>
+                            <p class="goods-num"></p>
+                            <p class="goods-price"></p>
                           </li>
                         </ul>
                       </div>
@@ -66,7 +66,7 @@
                         <span class="tooltip__arrow"></span>
                         <ul class="more-goods">
                           <li v-for="(good, goodIdx) in item.details" :key="goodIdx" class="goods-item">
-                            <img src="" alt="" class="goods-img">
+                            <img :src="good.goods_cover_image" alt="" class="goods-img">
                             <p class="two-line">{{good.goods_name}}</p>
                             <p class="goods-num">x{{good.goods_num}}</p>
                             <!--<p class="goods-price">{{good.goods_spec}}</p>-->
@@ -377,6 +377,7 @@
           this.logisticsObj.shipping_name = express[0].name
         }
         if (item.status === 20 || item.status === 100) {
+          this._getLogisticsDetail()
           this.disable = true
           this.title = '查看物流'
           this.visible = true
@@ -400,9 +401,12 @@
       },
       // 查看发货详情
       async _getLogisticsDetail() {
+        let params = {sub_order_id: this.logisticsObj.sub_order_id}
+        if (this.tabIndex===1) {
+          params = {id: this.logisticsObj.order_id}
+        }
         let res = await API.Order[this.loName]({
-          // data: {id: this.logisticsObj.order_id},
-          data: {sub_order_id: this.logisticsObj.sub_order_id},
+          data: params,
           loading: true,
           toast: true
         })
