@@ -85,7 +85,7 @@
         listHeader: {
           withdraw_sn: {name: '提现单号'},
           created_at: {name: '申请时间'},
-          withdrawal_name: {name: '客户名称'},
+          shop_name: {name: '客户名称'},
           total: {name: '提现金额'},
           status_text: {name: '提现状态'},
           operate_icon: {name: '打款凭证', iconClass: 'icon-certificate', imgUrlKey: 'image_url'},

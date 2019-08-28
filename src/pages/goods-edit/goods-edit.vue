@@ -154,7 +154,6 @@
           </base-form-item>
           <base-form-item label="播豆" labelMarginRight="40" labelWidth="78px" labelAlign="right">
             <base-input v-if="edit.specification_type !== 1" v-model="edit.bean_price" type="number"></base-input>
-            <span class="after-word">元</span>
           </base-form-item>
         </template>
         <base-form-item label="库存" labelMarginRight="40" labelWidth="78px" labelAlign="right">
