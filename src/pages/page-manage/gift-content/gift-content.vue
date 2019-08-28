@@ -30,33 +30,36 @@
           </div>
           <!--今日爆款-->
           <div v-if="cms.code === 'hot_goods'" class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
-            <div class="hot-title">今日爆款</div>
+            <img src="./pic-dhzq_banner@2x.png" alt="" class="hot-bg">
+            <div class="hot-title">
+              今日爆款
+              <span class="text">优选国内2%精品品牌</span>
+            </div>
             <div class="scroll-wrapper">
               <div v-for="(item, index) in hotList" :key="index" class="hot-item">
                 <img :src="item.detail.image_url" class="hot-good-img">
                 <p class="hot-good-name">{{item.detail.title}}</p>
+                <p class="hot-price">¥{{item.detail.price || 0}}</p>
               </div>
             </div>
           </div>
           <!-- 推荐商品列表-->
-          <div v-if="cms.code === 'recommend'" class="recommend" :class="{'touch': cmsType === 'banner'}" @click="changeType('recommend')">
-            <div class="recommend-name">为你推荐</div>
-            <div class="recommend-goods">
-              <div v-for="(item, index) in recommendList" :key="index" class="goods-item">
-                <img :src="item.goods_cover_image" class="goods-img">
-                <p class="goods-name">{{item.name}}</p>
-                <div class="goods-mag">
-                  <div class="goods-tariff">
-                    <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
-                    <img src="./pic-member@2x.png" alt="" class="goods-member">
-                  </div>
-                  <div class="original-price">¥${{item.price}}</div>
-                </div>
+          <div v-if="cms.code === 'recommend'" class="hot-commodity hand" :class="{'touch': cmsType === 'recommend'}" @click="changeType('recommend')">
+            <img src="./pic-dhzq_banner2@2x.png" alt="" class="hot-bg">
+            <div class="hot-title">
+              今日爆款
+              <span class="text">优选国内2%精品品牌</span>
+            </div>
+            <div class="scroll-wrapper">
+              <div v-for="(item, index) in recommendList" :key="index" class="hot-item">
+                <img :src="item.detail.image_url" class="hot-good-img">
+                <p class="hot-good-name">{{item.detail.title}}</p>
+                <p class="hot-price">¥{{item.detail.price || 0}}</p>
               </div>
             </div>
           </div>
           <!-- 行业推荐-->
-          <div v-if="cms.code === 'industry_recommend'" class="recommend">
+          <!--<div v-if="cms.code === 'industry_recommend'" class="recommend">
             <div class="recommend-name">行业推荐</div>
             <div class="recommend-goods">
               <div v-for="(item, index) in industryRecommendList" :key="index" class="goods-item">
@@ -67,11 +70,12 @@
                     <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
                     <img src="./pic-member@2x.png" alt="" class="goods-member">
                   </div>
-                  <div class="original-price">¥${{item.price}}</div>
+                  <div class="original-price">¥{{item.price}}</div>
                 </div>
               </div>
             </div>
           </div>
+          -->
         </div>
       </div>
     </div>
@@ -124,6 +128,9 @@
           {code: 'industry_recommend'}
         ]
       }
+    },
+    created() {
+      console.log(this.hotList, this.recommendList, this.industryRecommendList)
     },
     methods: {
       changeType(type) {
@@ -203,7 +210,7 @@
     height: 62px
     display: flex
     padding: 2px 7px
-    margin: 6.5px 0 8px 0
+    margin: 6.5px 0 10px 0
     border: 2px dashed #D9D9D9
     .nav-item
       height: 56px
@@ -226,43 +233,64 @@
       color: #1D2023
       font-family: $font-family-regular
   .hot-commodity
-    height: 187px
+    height: 199px
     border: 2px dashed #D9D9D9
-    margin-top: 10px
-    padding: 0 0 20px 5px
+    padding-bottom: 20px
     box-sizing: border-box
     background: $color-white
-    margin-bottom: 20px
+    margin-bottom: 5px
+    .hot-bg
+      width: 100%
+      height: 108px
+      object-fit: cover
     .hot-title
       text-indent: 5px
-      padding: 18px 0 15px
-      color: #3F454B
+      margin-top: -60px
+      padding: 0 0 9.8px 10.8px
+      color: #FFF
       font-family: $font-family-medium
-      font-size: $font-size-17
+      font-size: 13.97px
+      .text
+        display: block
+        font-size: 8.38px
+        font-family: $font-family-regular
+        opacity: 0.8
+        margin-top: 5px
     .scroll-wrapper
       overflow-x: auto
       display: flex
       hide-scrollbar()
+      border-radius: 1.4px
+      margin-left: 15px
+      box-shadow: 0 2px 4px 1px rgba(0,0,0,0.1)
       .hot-item
-        margin-right: 5px
         width: 28%
+        border-right: 1px solid $color-line
         .hot-good-img
-          background: $color-background
-          width: 83px
+          background: $color-white
+          width: 66.4px
           height: @width
           min-height: @width
           min-width: @width
-          border-radius: 3px
+          border-radius: 2px
           display: block
           object-fit: cover
+          border-bottom: 1px solid $color-line
         .hot-good-name
-          text-align: center
-          font-size: $font-size-14
+          font-size: 8.38px
           color: #3F454B
+          font-family: $font-family-regular
+          margin-top: 2.5px
+          line-height: 1.2
+          display: -webkit-box
+          overflow: hidden
+          -webkit-line-clamp: 2
+          -webkit-box-orient: vertical
+        .hot-price
+          margin-top: 4.9px
+          color: #D83F35
           font-family: $font-family-medium
-          margin-top: 16px
-          no-wrap()
-
+          font-size: 8.38px
   // 商品分类
   .goods-classify-wrapper
     background: $color-white

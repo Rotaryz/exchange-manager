@@ -116,7 +116,23 @@
       MobileContent,
       ImageUpload
     },
-    beforeRouteEnter(to, from, next) {
+    beforeRouteEnter(routeTo, routeFrom, next) {
+      let id = routeTo.query.id
+      if (id) {
+        API.Brand.getBrandDetail({data: {id}})
+          .then((res) => {
+            console.log(1)
+            next(vm => {
+              console.log(2)
+              // vm.changeDetailData(res.data)
+            })
+          })
+          .catch(() => {
+            next({name: '404'})
+          })
+      } else {
+        next()
+      }
       next()
     },
     data() {
@@ -160,6 +176,10 @@
       this.getTradeList()
     },
     methods: {
+      changeDetailData(data) {
+        this.msg = JSON.parse(JSON.stringify(data))
+        console.log(this.msg, 434)
+      },
       getTradeList() {
         API.Brand.getTradeList()
           .then(res => {

@@ -642,6 +642,7 @@
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
+            this[this.dataName][index].detail.price = this.currentItem.price || ''
           }
           break
         }

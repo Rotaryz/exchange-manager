@@ -38,6 +38,7 @@
           <div class="edit-input-box flex-box">
             <zb-upload :data.sync="addData.coverImage.url"
                        :addStyle="`margin-right: 20px`"
+                       :disabled="isDisabled"
                        @successImage="getCoverImage"
                        @delete="delCoverImage"
             ></zb-upload>
@@ -63,6 +64,7 @@
           <div class="edit-input-box flex-box author-info-box">
             <zb-upload :data.sync="addData.authPhoto.url"
                        :addStyle="`margin-right: 20px`"
+                       :disabled="isDisabled"
                        @successImage="getAuthorPic"
                        @delete="delAuthorPic"
             ></zb-upload>
@@ -354,9 +356,10 @@
       if (id) {
         API.Content.getArticleDetail({data: {id}})
           .then((res) => {
+            console.log(1)
             next(vm => {
-              vm.msg = res.data
-              console.log(vm.msg, '12222222222222')
+              console.log(2)
+              vm.changeDetailData(res.data)
             })
           })
           .catch(() => {
@@ -431,7 +434,7 @@
         imageArr: [],
         goodsVisible: false,
         selects: [],
-        msg: {}
+        msg: ''
       }
     },
     computed: {
@@ -451,24 +454,23 @@
       }
     },
     created() {
-      console.log(this.msg, 6)
-      // let query = this.$route.query
-      // this.currentType = query.type || 'common'
-      // this.id = query.id || ''
-      // this.isDisabled = Boolean(query.isSee) || false
-      // if (this.id) {
-      //   // this.changeDetailData(this.msg)
-      // } else {
-      //   this._getAuth()
-      // }
-      // this._getLikes()
-    },
-    mounted() {
-      console.log(this.msg, 7)
+      let query = this.$route.query
+      this.currentType = query.type || 'common'
+      this.id = query.id || ''
+      this.isDisabled = Boolean(query.isSee) || false
+      if (this.id) {
+        // this.changeDetailData(this.msg)
+      } else {
+        this._getAuth()
+      }
+      this._getLikes()
     },
     methods: {
       updatePage() {
 
+      },
+      setMsg(data) {
+        this.msg = data
       },
       formatM(m) {
         return formatCouponMoney(m)
@@ -481,6 +483,7 @@
         })
       },
       showTextDialog(index, text = '') {
+        if (this.isDisabled) return
         this.detailIndex = index
         this.addText = text
         this.addTextVisible = true
@@ -488,20 +491,19 @@
       // 新增创建时获取最后一次作者信息
       _getAuth() {
         API.Content.getAuth().then(res => {
-          this.addData.authPhoto.url = res.data.head_image_url
-          this.addData.authPhoto.id = res.data.head_image_id
-          this.addData.authName = res.data.nickname
-          this.addData.authSignature = res.data.sign
+          this.addData.authPhoto.url = res.data.head_image_url || ''
+          this.addData.authPhoto.id = res.data.head_image_id || ''
+          this.addData.authName = res.data.nickname || ''
+          this.addData.authSignature = res.data.sign || ''
         }).finally(() => {
           this.$loading.hide()
         })
       },
       // 转换详情数据
       changeDetailData(obj) {
-        console.log(obj, 23)
         this.currentType = obj.type || 'common'
         this.addData.title = obj.title
-        this.addData.coverImage.url = obj.cover_image.source_url
+        this.addData.coverImage.url = obj.cover_image.url
         this.addData.coverImage.id = obj.cover_image.id
         this.addData.authPhoto.url = obj.author.head_image_url
         this.addData.authPhoto.id = obj.author.head_image_id
@@ -520,15 +522,15 @@
                 case "image":
                   details.push({
                     type: 'image',
-                    value: contItem.image.source_url,
+                    value: contItem.image.url,
                     id: contItem.image.id
                   })
                   break
                 case "video":
                   details.push({
                     type: 'video',
-                    value: contItem.video.full_url,
-                    id: contItem.video.id
+                    value: contItem.url,
+                    id: contItem.video_id
                   })
                   break
                 case "text":
@@ -538,12 +540,12 @@
                   })
                   break
                 case "goods":
-                  if (contItem.goods.goods_id) {
+                  if (contItem.goods_id) {
                     details.push({
                       type: 'goods',
-                      value: {id: contItem.goods.goods_id, ...contItem.goods},
+                      value: {id: contItem.goods_id, ...contItem},
                     })
-                    this.addData.goodsList.push({id: contItem.goods.goods_id, ...contItem.goods})
+                    this.addData.goodsList.push({id: contItem.goods_id, ...contItem})
                   }
                   break
               }
@@ -735,7 +737,7 @@
           this.$toast.show(res.message)
           this.$loading.hide()
           this.$router.go(-1)
-          this.$emit('updatePage')
+          this.$emit('update')
         }
       },
       // 上线
@@ -804,7 +806,7 @@
                 break;
               case 'video':
                 newItem.content = [{
-                  video_id: item.id,
+                  video_id: item.file_id,
                   title: '',
                   introduction: ''
                 }]
