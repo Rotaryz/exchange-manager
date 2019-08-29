@@ -1,7 +1,7 @@
 <template>
   <div class="base-select"
        :class="[{'active': visible}, {'disabled':disabled},'base-select--'+size,radius ? 'border-radius--'+ radius:'']"
-       :style="[{ 'min-width':width+'px',height:height+'px',width: width+'px'}]"
+       :style="[{ 'min-width':width+'px',width: width+'px',height:height+'px'}]"
        @click.stop="selectType"
   >
     <div class="inner-value">

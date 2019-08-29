@@ -15,7 +15,7 @@
         <cascade-select ref="cascadeSelect"
                         v-model="edit.category_id"
                         valueKey="id"
-                        :inputStyle="{'min-width':'194px'}"
+                        :width="194"
                         size="middle"
                         placeholder1="请选择分类"
                         placeholder2="请选择子分类"
@@ -601,9 +601,6 @@
       background-size 100%
 
   .edit-product
-    width: 100%
-    position absolute
-
     .top-title
       padding-top: 3px
 
