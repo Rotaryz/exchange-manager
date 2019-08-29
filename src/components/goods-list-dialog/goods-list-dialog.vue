@@ -85,6 +85,11 @@
         type: Number,
         default: null
       },
+      // currentCount 与 selects 不可同时传
+      currentCount:{
+        type: Number,
+        default: 0
+      },
       selects: {
         type: Array,
         default: () => []
@@ -125,7 +130,7 @@
     },
     computed: {
       titleTip() {
-        return this.limit ? `(商品数量一共可添加${this.limit}个,已添加${this.selectGoods.length})个` : ''
+        return this.limit ? `(商品数量一共可添加${this.limit}个,已添加${this.selectGoods.length + this.currentCount+this.selects.length})个` : ''
       },
       dialogVisible: {
         get() {
@@ -204,7 +209,8 @@
           }
           break
         default:
-          if (this.limit && this.selects.length + this.selectGoods.length >= this.limit) {
+          console.log(this.selects.length + this.selectGoods.length + this.currentCount)
+          if (this.limit && this.selects.length + this.selectGoods.length + this.currentCount >= this.limit) {
             this.$toast.show(`选择商品数量不能超过${this.limit}个`)
             return
           }
