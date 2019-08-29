@@ -141,6 +141,7 @@
     left: 0
     bottom: 0
     right: 0
+    z-index:10
    .list-box  .list-item:nth-child(1)
       flex:2
     .list-item
