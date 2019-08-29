@@ -44,7 +44,7 @@
         <radio v-model="edit.result" :list="radioList"></radio>
       </base-form-item>
       <base-form-item v-if="!edit.result" label="不通过原因" labelWidth="106px">
-        <base-input v-model="edit.reason" width="388" maxlength="15"></base-input>
+        <base-input v-model="edit.reason" width="388" :maxlength="15"></base-input>
       </base-form-item>
     </base-modal>
   </div>
@@ -105,6 +105,7 @@
     methods: {
       // 取消
       cancelBtn() {
+        this.$emit('update', this.$route.query.type)
         this.$router.go(-1)
       },
       // 审核，显示审核弹窗
@@ -124,7 +125,7 @@
           this.$toast.show('审核成功')
           this.checkVisible = false
           setTimeout(() => {
-            this.$router.go(-1)
+            this.cancelBtn()
           }, 1000)
         })
       },
