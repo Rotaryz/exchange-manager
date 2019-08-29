@@ -151,7 +151,7 @@
         }).then((res) => {
           this.$toast.show('打款成功')
           setTimeout(() => {
-            this.$router.go(-1)
+            this.cancelBtn()
           }, 1000)
         })
       }
