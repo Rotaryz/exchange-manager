@@ -40,6 +40,11 @@ export default {
   deleteBrand(args) {
     const url = `/exchange-platform/platform/platform-goods/brand/destroy`
     return request.post({url, ...args})
+  },
+  // 获取品牌下商品列表
+  getGoodsList(args) {
+    const url = `/exchange-platform/platform/platform-goods/goods/index`
+    return request.post({url, ...args})
   }
 
 }

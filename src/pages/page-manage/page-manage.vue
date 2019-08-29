@@ -13,6 +13,7 @@
                     :recommendList="recommendList"
                     :industryRecommendList="industryRecommendList"
                     :cmsType.sync="type"
+                    :cmsList="moduleList"
       ></gift-content>
       <div class="edit-modular">
         <div class="box">
@@ -138,7 +139,7 @@
       </div>
     </template>
     <template v-if="pageType === 'brand_index'">
-      <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type"></brand-content>
+      <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList"></brand-content>
       <div class="edit-modular">
         <div class="box">
           <div class="small">
@@ -217,7 +218,7 @@
           <!--<div class="shade-title">选择商品</div>-->
           <span class="close hand" @click="hideGoods"></span>
         </div>
-        <div v-if="tabIndex === 0 && (type === 'navigation' || type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
+        <div v-if="tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
           <div class="shade-tab">
             <base-select
               placeholder="请选择分类"
@@ -263,7 +264,7 @@
           </div>
         </div>
         <!--商品分类-->
-        <div v-if="tabIndex === 1" class="goods-cate">
+        <div v-if="tabIndex === 1 || (tabIndex === 0 && type === 'navigation')" class="goods-cate">
           <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
             <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === goodsIdx}" @click="selectGoods(goods, goodsIdx)">
               <span class="after"></span>
@@ -383,6 +384,7 @@
     {title: '内容列表', status: 3006},
     {title: '品牌列表', status: 3009}
   ]
+  const NAV_TYPE = [{title: '商品分类', status: 3003}]
   const HOT_TYPE = [{title: '今日爆款', status: 3002}]
   const GOODS_TYPE = [{title: '商品详情', status: 3002}]
   const ARTICLE_TYPE = [{title: '文章列表', status: 3006}]
@@ -475,7 +477,7 @@
       type(news) {
         switch (news) {
         case 'navigation':
-          this.typeList = TYPE_LIST
+          this.typeList = NAV_TYPE
           break
         case 'hot':
           this.typeList = HOT_TYPE
@@ -670,6 +672,9 @@
           limit: 6,
           page: this.goodsPage
         }
+        // 礼品馆=>兑换商品    品牌馆=>自有商品
+        this.pageType === 'gift_index' && (data.use_type = 1)
+        this.pageType === 'brand_index' && (data.use_type = 2)
         let res = await API.Cms.goodsList({data})
         this.total = res.meta.total
         this.choiceGoods = res.data

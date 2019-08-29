@@ -5,7 +5,7 @@
       <p class="edit-title-name">创作品牌</p>
     </div>
     <div class="wrap-container">
-      <mobile-content :brandMsg="msg"></mobile-content>
+      <mobile-content :brandMsg="msg" :goodsList="goodsList"></mobile-content>
       <div class="edit-right-box">
         <!--品牌首图 -->
         <base-form-item label="品牌首图"
@@ -100,7 +100,6 @@
       </div>
     </div>
 
-
     <base-modal :visible.sync="tradeVisible" title="添加行业" :submitBefore="justifyAddTrade" @submit="_addTrade">
       <base-input v-model="trade" placeholder="长度不能超过4个字" limit="4" width="100%" height="100%"></base-input>
     </base-modal>
@@ -131,12 +130,15 @@
     beforeRouteEnter(routeTo, routeFrom, next) {
       let id = routeTo.query.id
       if (id) {
-        API.Brand.getBrandDetail({data: {id}})
-          .then((res) => {
-            next(vm => {
-              vm.changeDetailData(res.data)
-            })
+        Promise.all([
+          API.Brand.getBrandDetail({data: {id}}),
+          API.Brand.getGoodsList({data: {brand_id: id, status: 1}})
+        ]).then(res => {
+          next(vw => {
+            vw.changeDetailData(res[0])
+            vw.setGoodsList(res[1])
           })
+        })
           .catch(() => {
             next({name: '404'})
           })
@@ -155,7 +157,8 @@
         tradeVisible: false,
         trade: '',
         tradeList: [],
-        id: ''
+        id: '',
+        goodsList: []
       }
     },
     computed: {
@@ -184,8 +187,11 @@
     },
     methods: {
       changeDetailData(data) {
-        this.msg = JSON.parse(JSON.stringify(data))
+        this.msg = JSON.parse(JSON.stringify(data.data))
         // this.tradeList.content = data.industry_name
+      },
+      setGoodsList(data) {
+        this.goodsList = JSON.parse(JSON.stringify(data.data))
       },
       getTradeList() {
         API.Brand.getTradeList()

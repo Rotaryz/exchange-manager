@@ -8,16 +8,17 @@
           <span @click="changeType('hot')">今日爆款</span>
           <span @click="changeType('recommend')">商品推荐</span>
         </div>-->
-
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
           <div v-if="cms.code === 'banner'" class="banner-bg"></div>
-          <!--banner-->
-          <div v-if="cms.code === 'banner'" :class="{'touch': cmsType === 'banner'}" class="carousel hand" @click="changeType('banner')">
-            <carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
-              <carousel-item v-for="(item, index) in bannerList" :key="index">
-                <img :src="item.detail.image_url" class="carousel-image">
-              </carousel-item>
-            </carousel>
+          <div v-if="cms.code === 'banner'" class="banner hand" :class="{'touch': cmsType === 'banner'}" @click="changeType('banner')">
+            <!--banner-->
+            <div class="carousel">
+              <carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
+                <carousel-item v-for="(item, index) in bannerList" :key="index">
+                  <img :src="item.detail.image_url" class="carousel-image">
+                </carousel-item>
+              </carousel>
+            </div>
           </div>
           <!--导航-->
           <div v-if="cms.code === 'navigation'" class="nav-box">
@@ -59,7 +60,7 @@
             </div>
           </div>
           <!-- 行业推荐-->
-          <!--<div v-if="cms.code === 'industry_recommend'" class="recommend">
+          <div v-if="cms.code === 'industry_recommend'" class="recommend">
             <div class="recommend-name">行业推荐</div>
             <div class="recommend-goods">
               <div v-for="(item, index) in industryRecommendList" :key="index" class="goods-item">
@@ -75,7 +76,6 @@
               </div>
             </div>
           </div>
-          -->
         </div>
       </div>
     </div>
@@ -93,6 +93,10 @@
       CarouselItem
     },
     props: {
+      cmsList: {
+        type: Array,
+        default: () => {}
+      },
       cmsType: {
         type: String,
         default: 'navigation'
@@ -120,22 +124,21 @@
     },
     data() {
       return {
-        cmsList: [
-          {code: 'banner'},
-          {code: 'navigation'},
-          {code: 'hot_goods'},
-          {code: 'recommend'},
-          {code: 'industry_recommend'}
-        ]
+        // cmsList: [
+        //   {code: 'banner'},
+        //   {code: 'navigation'},
+        //   {code: 'hot_goods'},
+        //   {code: 'recommend'},
+        //   {code: 'industry_recommend'}
+        // ]
       }
     },
     created() {
-      console.log(this.hotList, this.recommendList, this.industryRecommendList)
+      // console.log(this.hotList, this.recommendList, this.industryRecommendList)
     },
     methods: {
       changeType(type) {
         this.$emit('update:cmsType', type)
-        // this.$emit('changeType', type)
       }
     }
   }
@@ -175,6 +178,10 @@
         background: #FFF
         &::-webkit-scrollbar
           width: 0
+  .banner
+    margin-top: 10px
+    position: relative
+    border: 2px dashed #D9D9D9
   .banner-bg
     width: 100%
     height: 84px
@@ -187,8 +194,7 @@
     width: 241px
     height: 118.8px
     border-radius: 6px
-    margin: 10px auto 0
-    border: 2px dashed #D9D9D9
+    margin: 0 auto
     background: $color-background
     overflow: hidden
     .carousel-image
@@ -233,12 +239,13 @@
       color: #1D2023
       font-family: $font-family-regular
   .hot-commodity
-    height: 204px
+    height: 210px
     border: 2px dashed #D9D9D9
     padding-bottom: 20px
     box-sizing: border-box
     background: $color-white
     margin-bottom: 5px
+    overflow: hidden
     .hot-bg
       width: 100%
       height: 108px
@@ -263,8 +270,10 @@
       border-radius: 1.4px
       margin-left: 15px
       box-shadow: 0 2px 4px 1px rgba(0,0,0,0.1)
+      background: #FFF
+      position: relative
       .hot-item
-        width: 66px
+        width: 67px
         border-right: 1px solid $color-line
         .hot-good-img
           background: $color-white
@@ -289,45 +298,10 @@
           -webkit-line-clamp: 2
           -webkit-box-orient: vertical
         .hot-price
-          margin-top: 4.9px
           color: #D83F35
           font-family: $font-family-medium
           font-size: 8.38px
-          padding: 0 3px
-  // 商品分类
-  .goods-classify-wrapper
-    background: $color-white
-    padding: 17.5px 9.4px 17.5px
-    display: flex
-    flex-direction: row
-    flex-wrap: wrap
-    .classify-item
-      width: 20%
-      display: flex
-      flex-direction column
-      align-items: center
-      overflow: hidden
-      &.next-row
-        padding-top: 9.6px
-      img
-        border-radius: 50%
-        display inline-block
-        width: 39.2px
-        background: #ccc
-        height: @width
-        text-align: center
-      p
-        width: 100%
-        box-sizing: border-box
-        padding: 0 1px
-        padding-top: 7.9px
-        font-family: $font-family-regular
-        font-size: 9.41px;
-        color: #333333;
-        text-align: center;
-        line-height: 1
-        no-wrap()
-
+          padding: 4px 3px
   .recommend
     padding: 0 8px
     box-sizing: border-box

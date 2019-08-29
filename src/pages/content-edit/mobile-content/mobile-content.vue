@@ -12,12 +12,12 @@
             <img src="./icon-high_quality@2x.png" class="good-article-icon">
             <div v-if="data.authPhoto.url" class="auth-photo-wrap">
               <img :src="data.authPhoto.url" class="auth-photo">
-              <img src="./icon-v@2x.png" class="auth-photo-v">
+              <!--<img src="./icon-v@2x.png" class="auth-photo-v">-->
             </div>
             <div v-if="data.authName|| data.authSignature" class="auth-info">
               <div v-if="data.authName" class="name">
                 {{data.authName}}
-                <img src="./icon-lv8@2x.png" class="level-icon">
+                <!--<img src="./icon-lv8@2x.png" class="level-icon">-->
               </div>
               <div v-if="data.authSignature" class="auth-introduce">{{data.authSignature}}</div>
             </div>
@@ -254,6 +254,7 @@
             width: 34px
             height: 34px
             object-fit: cover
+            box-shadow: 0 2px 5px 0 rgba(63,69,75,0.06)
 
           .auth-photo-v
             position: absolute

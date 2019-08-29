@@ -295,7 +295,7 @@
     <!--选择商品弹窗-->
     <goods-list-dialog
       v-if="goodsVisible"
-      :otherParams="{}"
+      :otherParams="{use_type: 2}"
       :selects="selects"
       :visible.sync="goodsVisible"
       :limit="5"
@@ -356,9 +356,7 @@
       if (id) {
         API.Content.getArticleDetail({data: {id}})
           .then((res) => {
-            console.log(1)
             next(vm => {
-              console.log(2)
               vm.changeDetailData(res.data)
             })
           })
@@ -529,8 +527,8 @@
                 case "video":
                   details.push({
                     type: 'video',
-                    value: contItem.url,
-                    id: contItem.video_id
+                    value: contItem.video.url,
+                    id: contItem.video.id
                   })
                   break
                 case "text":
@@ -540,12 +538,12 @@
                   })
                   break
                 case "goods":
-                  if (contItem.goods_id) {
+                  if (contItem.goods.id) {
                     details.push({
                       type: 'goods',
-                      value: {id: contItem.goods_id, ...contItem},
+                      value: {id: contItem.goods.id, ...contItem.goods},
                     })
-                    this.addData.goodsList.push({id: contItem.goods_id, ...contItem})
+                    this.addData.goodsList.push({id: contItem.goods.id, ...contItem.goods})
                   }
                   break
               }

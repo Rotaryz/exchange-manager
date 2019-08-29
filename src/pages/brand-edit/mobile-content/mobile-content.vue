@@ -2,86 +2,38 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <!--<img :src="brandMsg.banner_image_url" alt="" class="banner">-->
-        <img src="https://exchange-platform-img.jkweixin.com/dev/2019/08/27/1566899184301-323167.png" alt="" class="banner">
+        <img :src="brandMsg.banner_image_url" alt="" class="banner">
         <div class="brand-detail">
           <div class="base-msg">
-            <!--<img :src="logo_image_url" alt="" class="logo">-->
-            <img src="https://exchange-platform-img.jkweixin.com/dev/2019/08/27/1566899184301-323167.png" alt="" class="logo">
+            <img :src="brandMsg.logo_image_url" alt="" class="logo">
             <div class="brand-names">
-              <p class="brand-name">品牌</p>
-              <p class="brand-sub-name">副标题</p>
+              <p class="brand-name">{{brandMsg.name}}</p>
+              <p class="brand-sub-name">{{brandMsg.sub_name}}</p>
             </div>
           </div>
 
           <div class="brand-describe">
-            耳机水电费就开始大姐夫看来得及发了看时间了水电费啦介绍的了分开接受了看得见发禄口街道弗兰克斯的
+            {{brandMsg.describe}}
           </div>
-          <div class="has-more">
+          <div v-if="brandMsg.banner_image_url" class="has-more">
             <p class="text">更多品牌信息</p>
           </div>
         </div>
 
         <div class="goods-list">
-          <div class="goods-item">
-            <img src="https://exchange-platform-img.jkweixin.com/dev/2019/08/27/1566899184301-323167.png" alt="" class="goods-image">
+          <div v-for="(goods, index) in goodsList" :key="index" class="goods-item">
+            <img :src="goods.goods_cover_image" alt="" class="goods-image">
             <div class="goods-msg">
-              <p class="goods-name">产品名称</p>
+              <p class="goods-name">{{goods.name}}</p>
               <div class="price-box">
                 <p class="left-price">
-                  <span class="text-image">
-                    <img src="./icon-quan@2x.png" alt="" class="icon">
-                    <span class="price">300</span>
-                  </span>
-                  <span class="text-image">
-                    <img src="./icon-he@2x.png" alt="" class="icon">
-                    <span class="price">200</span>
+                  <span v-for="(price, ind) in priceSign['sign0']" :key="ind" class="text-image">
+                    <img :src="price.icon" alt="" class="icon">
+                    <span class="price">¥{{goods[price.key]}}</span>
                   </span>
                 </p>
                 <div class="right-price">
-                  <del class="del-price">¥480.00</del>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="goods-item">
-            <img src="https://exchange-platform-img.jkweixin.com/dev/2019/08/27/1566899184301-323167.png" alt="" class="goods-image">
-            <div class="goods-msg">
-              <p class="goods-name">产品名称</p>
-              <div class="price-box">
-                <p class="left-price">
-                  <span class="text-image">
-                    <img src="./icon-quan@2x.png" alt="" class="icon">
-                    <span class="price">300</span>
-                  </span>
-                  <span class="text-image">
-                    <img src="./icon-he@2x.png" alt="" class="icon">
-                    <span class="price">200</span>
-                  </span>
-                </p>
-                <div class="right-price">
-                  <del class="del-price">¥480.00</del>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="goods-item">
-            <img src="https://exchange-platform-img.jkweixin.com/dev/2019/08/27/1566899184301-323167.png" alt="" class="goods-image">
-            <div class="goods-msg">
-              <p class="goods-name">产品名称</p>
-              <div class="price-box">
-                <p class="left-price">
-                  <span class="text-image">
-                    <img src="./icon-quan@2x.png" alt="" class="icon">
-                    <span class="price">300</span>
-                  </span>
-                  <span class="text-image">
-                    <img src="./icon-he@2x.png" alt="" class="icon">
-                    <span class="price">200</span>
-                  </span>
-                </p>
-                <div class="right-price">
-                  <del class="del-price">¥480.00</del>
+                  <del class="del-price">¥{{goods.price || 0}}</del>
                 </div>
               </div>
             </div>
@@ -95,7 +47,11 @@
 <script>
 
   const PAGE_NAME = 'mobile-content'
-
+  const PRICE_SIGN = {
+    sign0: [{icon: require('./icon-biao@2x.png'), key: 'standard_price'}, {icon: require('./icon-quan@2x.png'), key: 'versatile_price'}],
+    sign1: [{icon: 'icon-biao', key: 'standard_price'}, {icon: 'icon-quan', key: 'versatile_price'}],
+    sign2: [{icon: 'icon-quan', key: 'versatile_price'}, {icon: 'icon-he', key: 'partner_price'}],
+  }
   export default {
     name: PAGE_NAME,
     components: {
@@ -103,13 +59,20 @@
     props: {
       brandMsg: {
         type: Object,
-        default: () => {
-          return {}
-        }
+        default: () => {}
+      },
+      goodsList: {
+        type: Array,
+        default: () => []
       }
     },
     data() {
-      return {}
+      return {
+        priceSign: PRICE_SIGN
+      }
+    },
+    created() {
+      console.log(this.brandMsg)
     },
     methods: {
       changeType(type) {
@@ -237,14 +200,16 @@
       font-size: 9.78px
       color: #3F454B
       margin-top: 4px
-      line-height: 1.2
+      line-height: 1.3
       overflow: hidden
       display: -webkit-box
       -webkit-line-clamp: 2
       -webkit-box-orient: vertical
+      word-break: break-all
+      height: 30px
     .price-box
       display: flex
-      padding-top: 4px
+      padding-top: 2px
       justify-content: space-between
       .text-image
         display: flex
