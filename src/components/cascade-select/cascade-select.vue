@@ -96,6 +96,10 @@
       size: {
         default: 'small',
         type: String
+      },
+      isAddAll: {
+        default: false,
+        type: Boolean
       }
     },
     data() {
@@ -110,7 +114,7 @@
       }
     },
     methods: {
-      clearValues(){
+      clearValues() {
         this.goodsCategoryFirst = ''
         this.goodsCategorySecond = ''
       },
@@ -140,21 +144,27 @@
           data: {[this.paramsKey]: -1, ...otherParams},
           loading: false
         }).then((res) => {
+          if (this.isAddAll) res.data = [{id: '', name: '全部'}, ...res.data]
           this.goodsCategoryFirstList = res.data || []
           return res
         })
       },
       // 选择第一分类
       async _selectCategoryFirst(otherParams = {}) {
-        let res = await this.getDataFunction({
-          doctor() {
-          }
-        })({
-          data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
-          loading: false
-        })
         this.goodsCategorySecond = ''
-        this.goodsCategorySecondList = res.data || []
+        this.goodsCategorySecondList = []
+        let res = null
+        // 选择全部时
+        if (this.goodsCategoryFirst) {
+          // 选择有内容选项
+          res = await this.getDataFunction()({
+            doctor() {
+            },
+            data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
+            loading: false
+          })
+          this.goodsCategorySecondList = res.data || []
+        }
         this.goodsCategoryChange(this.goodsCategoryFirst)
         return res
       },
