@@ -9,7 +9,7 @@
           placeholder="账号等级"
           width="120"
           radius="2"
-          @change="_getList"
+          @change="_getListSelect"
         >
         </base-select>
         <base-search v-model="filter.keyword" placeholder="店铺名称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
@@ -107,6 +107,11 @@
       },
       setData(res) {
         this.list = res.data
+        this.total = res.meta.total
+      },
+      _getListSelect() {
+        this.filter.page = 1
+        this._getList()
       },
       _getList() {
         API.Customer.getTradingRecord({data: this.filter, loading: false}).then((res) => {
@@ -117,6 +122,7 @@
         this._getList()
       },
       searchBtn() {
+        this.filter.page = 1
         this._getList()
       }
     }

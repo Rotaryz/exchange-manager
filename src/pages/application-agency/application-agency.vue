@@ -146,6 +146,7 @@
         window.open(this.excelUrl, '_blank')
       },
       search(keyword) {
+        this.page = 1
         this.keyword = keyword
         this._getApplicationList()
       },
