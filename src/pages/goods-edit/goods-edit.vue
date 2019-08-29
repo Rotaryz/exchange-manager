@@ -11,6 +11,20 @@
       >
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
+      <!-- b端 集采特有-->
+      <template v-if="edit.type===1">
+        <base-form-item label="商品类型" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+          <base-select v-model="useType" :height="44" :data="goodsUseList" limit="50"
+                       placeholder="商品类型"
+          ></base-select>
+        </base-form-item>
+        <base-form-item label="所属品牌" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+          <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
+                       placeholder="所属品牌"
+          ></base-select>
+        </base-form-item>
+      </template>
+      <!------------>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <cascade-select ref="cascadeSelect"
                         v-model="edit.category_id"
@@ -20,9 +34,6 @@
                         placeholder1="请选择分类"
                         placeholder2="请选择子分类"
         ></cascade-select>
-      </base-form-item>
-      <base-form-item label="所属品牌" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-drop-down :width="400" :height="44" :select="brandList" @setValue="_selectBrand"></base-drop-down>
       </base-form-item>
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
@@ -34,6 +45,11 @@
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
       </base-form-item>
+      <!-- b端 集采特有-->
+      <base-form-item v-if="edit.type===1" label="邮费信息" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <radio v-model="freightType" :list="freightList" @change="changeType"></radio>
+      </base-form-item>
+      <!---------------->
       <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
@@ -92,10 +108,10 @@
           <div class="big-list">
             <div class="list-header list-box">
               <div v-for="(item,key) in goodsSpecification" :key="key" class="list-item">{{item.name}}</div>
+              <div class="list-item list-item-input"><span class="required-mark">*</span>零售价</div>
               <!--     // 赞播优品与普通商品区别 -->
               <template v-if="edit.type===1">
-                <div class="list-item"><span class="required-mark">*</span>会员价</div>
-                <div class="list-item"><span class="required-mark">*</span>库存</div>
+                <div class="list-item list-item-input"><span class="required-mark">*</span>库存</div>
               </template>
               <template v-if="edit.type===2">
                 <div class="list-item list-item-input"><span class="required-mark">*</span>现金价格(元)</div>
@@ -108,13 +124,13 @@
                 <div v-for="(spec,idx) in item.specs_attrs" :key="idx" class="list-item">
                   {{spec.attr_value}}
                 </div>
+                <div class="list-item list-item-input">
+                  <base-input v-model="item.price" type="number" size="mini" clear class="value-input">
+                  </base-input>
+                </div>
                 <!--     // 赞播优品与普通商品区别 -->
                 <template v-if="edit.type===1">
-                  <div class="list-item">
-                    <base-input v-model="item.discount_price" type="number" size="mini" clear class="value-input">
-                    </base-input>
-                  </div>
-                  <div class="list-item">
+                  <div class="list-item list-item-input">
                     <base-input v-model="item.saleable" type="number" size="mini" clear class="value-input"></base-input>
                   </div>
                 </template>
@@ -142,13 +158,12 @@
           </div>
         </div>
       </base-form-item>
-      <base-form-item :label="priceName" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.price" type="number"></base-input>
-        <span class="after-word">元</span>
-      </base-form-item>
-      <template v-if="edit.specification_type !== 1">
-        <base-form-item v-if="edit.type===1" label="会员价" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-input v-if="edit.specification_type !== 1" v-model="edit.discount_price" type="number"></base-input>
+      <!-- 单规格 -->
+      <template v-if="edit.specification_type ===0 ">
+        <!-- 集采商品  优品商品区别-->
+        <!-- 优品商品 -->
+        <base-form-item label="零售价" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+          <base-input v-model="edit.price" type="number"></base-input>
           <span class="after-word">元</span>
         </base-form-item>
         <template v-if="edit.type===2">
@@ -212,6 +227,7 @@
       return {
         arrRes: [],
         specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
+        // 多规格校验
         justifyItems: [{
           key: 'name', rules: [{require: true, text: '请输入商品名称'}]
         }, {
@@ -228,21 +244,23 @@
           key: 'goods_banner_images', rules: [{minLength: 1, text: '请上传商品主图'}, {maxLength: 5, text: '商品主图不可超过5张'}]
         }, {
           key: 'goods_detail_images', rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
-        }, {
-          key: 'price', rules: [{require: true, text: '请输入商品价格'}]
         }],
+        // 单规格校验
         otherJustfy1: [{
-          key: 'discount_price', rules: [{require: true, text: '请输入商品会员价'}]
+          key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
         }, {
           key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
         otherJustfy2: [{
+          key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
+        }, {
           key: 'bean_price', rules: [{require: true, text: '请输入播豆'}]
         }, {
           key: 'cash_price', rules: [{require: true, text: '请输入现金价'}]
         }, {
           key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
+        // 商品规格
         goodsSpecification: [{
           "name": "",
           "attr_key_id": 0,
@@ -253,10 +271,14 @@
             }
           ]
         }],
+        // 新生成的  商品sku列表
         goodsDetails: [],
+        // 详情返回的元sku列表
         detailGoodsSpec: [],
         id: 0,
-        specId: 0,
+        brandList: [],
+        freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
+        goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
         edit: {
           type: 1,
           name: '',
@@ -269,27 +291,18 @@
           // goodsDetailPic: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F29%2F1564383114632-777951',
           goods_banner_images: [],
           specification_type: 0,
+          // ------ 单规格-----
+          // 赞播优品商品 & 集采商品
           saleable: 0,
-          price: '',
-          // 普通商品
-          discount_price: '',
+          price: 0,
           // 赞播优品商品
           cash_price: 0,
-          bean_price: 0
+          bean_price: 0,
         },
-        brandList: {
-          check: false,
-          show: false,
-          content: '选择品牌',
-          type: 'default',
-          data: [] // 格式：{name: '55'}}
-        }
-
-      }
-    },
-    computed: {
-      priceName() {
-        return +this.$route.query.type === 2 ? '商品零售价' : '商品价格'
+        specId: 0,
+        useType: 1,
+        brandId: '',
+        freightType: 1
       }
     },
     watch: {
@@ -301,7 +314,7 @@
       }
     },
     created() {
-      this.getBrandList()
+      this._getBrandList()
     },
     mounted() {
       this.id = this.$route.query.id || 0
@@ -327,37 +340,33 @@
           }]
         }
       },
-      getBrandList() {
+      _getBrandList() {
         API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}})
           .then(res => {
-            this.brandList.data = res.data.map(item => {
-              return {
-                name: item.name,
-                id: item.id
-              }
-            })
-            console.log(this.brandList)
+            this.brandList = res.data
           })
       },
-      _selectBrand(item) {
-        this.edit.brand_id = item.id
-      },
       setData(res) {
-        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, ...edit} = res.data
+        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId,freight_type:freightType,use_type:useType, ...edit} = res.data
         this.goodsSpecification = specsAttrs
         this.detailGoodsSpec = goodsSpecs
         this.edit = edit
+        // 单规格
+
         if (!this.edit.specification_type) {
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable
-          this.price = obj.price
+          this.edit.price = obj.price
           // 赞播优品与普通商品区别
-          if (this.edit.type === 1) {
-            this.edit.discount_price = obj.discount_price
-          } else if (this.edit.type === 2) {
+          if (this.edit.type === 2) {
             this.edit.cash_price = obj.cash_price
             this.edit.bean_price = obj.bean_price
           }
+        }
+        if (this.edit.type === 1) {
+          this.brandId = brandId
+          this.useType = useType
+          this.freightType = freightType
         }
       },
       deleteModule(idx) {
@@ -443,6 +452,9 @@
           first.values.forEach(item => {
             let ss = {
               spec_id: 0,
+              price: 0,
+              cash_price: 0,
+              bean_price: 0,
               saleable: 0,
               discount_price: 0,
               specs_attrs: [{
@@ -461,34 +473,31 @@
         }
       },
       getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs) {
-        console.log('----------------------')
-        console.log(initObj, 'initObj')
-        console.log(oldGoodsSpecs, 'oldGoodsSpecs')
-        console.log(newSpecsAttrs, 'newSpecsAttrs')
-
-        let newAttrs = newSpecsAttrs.map(item => item.attr_key_id + '_' + item.attr_value_id)
-        let res = oldGoodsSpecs.find(goodsSpec => {
-          return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
-        })
+        let res = null
         let newGoodsSpec = {}
+        // 详情查询 存在的sku
+        if (this.id) {
+          let newAttrs = newSpecsAttrs.map(item => item.attr_key_id + '_' + item.attr_value_id)
+          res = oldGoodsSpecs.find(goodsSpec => {
+            return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
+          })
+        }
+        // 如果存在此sku
         if (res) {
           newGoodsSpec.saleable = res.saleable
           newGoodsSpec.spec_id = res.spec_id
           // 赞播优品与普通商品区别
-          if (this.edit.type === 1) {
-            newGoodsSpec.discount_price = res.discount_price
-          } else if (this.edit.type === 2) {
+          newGoodsSpec.price = res.price
+          if (this.edit.type === 2) {
             newGoodsSpec.cash_price = res.cash_price
             newGoodsSpec.bean_price = res.bean_price
           }
-          // console.log('res', res)
         } else {
           newGoodsSpec.saleable = 0
           newGoodsSpec.spec_id = 0
+          newGoodsSpec.price = 0
           // 赞播优品与普通商品区别
-          if (this.edit.type === 1) {
-            newGoodsSpec.discount_price = 0
-          } else if (this.edit.type === 2) {
+          if (this.edit.type === 2) {
             newGoodsSpec.cash_price = 0
             newGoodsSpec.bean_price = 0
           }
@@ -500,7 +509,7 @@
       submitBtn() {
         let over = false
         over = this.justfyMethods(this.justifyItems)
-        if(over) return
+        if (over) return
         // 多规格的校验
         if (this.edit.specification_type) {
           // 规格
@@ -521,8 +530,8 @@
           for (let j in this.goodsDetails) {
             // 赞播优品与普通商品区别
             if (this.edit.type === 1) {
-              if (!this.goodsDetails[j].discount_price) {
-                this.$toast.show(`会员价不能为空`)
+              if (!this.goodsDetails[j].price) {
+                this.$toast.show(`价格不能为空`)
                 over = true
                 return
               }
@@ -544,7 +553,7 @@
               return
             }
           }
-        }else{
+        } else {
           let others = this.edit.type === 1 ? this.otherJustfy1 : this.otherJustfy2
           over = this.justfyMethods(others)
         }
@@ -571,40 +580,38 @@
         return over
       },
       _addGoods() {
-        console.log(this.edit)
-        let {price, discount_price: discountPrice, cash_price: cashPrice, bean_price: beanPrice, saleable, ...params} = this.edit
+        let {price, cash_price: cashPrice, bean_price: beanPrice, saleable, ...params} = this.edit
         let specsAttrs = []
-        let goodsSpecs = []
+        let goodsSpecs = this.goodsDetails
         // 多规格
         if (this.edit.specification_type) {
           specsAttrs = this.goodsSpecification
-          goodsSpecs = this.goodsDetails.map(item => {
-            item.price = price
-            return item
-          })
         } else {
-          // 統一规格
+          // 单规格
           goodsSpecs = [{
             "spec_id": this.specId,
             "price": price,
             "saleable": saleable
           }]
           // 赞播优品与普通商品区别
-          console.log(this.edit.type, 'this.edit.type')
-          if (this.edit.type === 1) {
-            goodsSpecs[0].discount_price = discountPrice
-          } else if (this.edit.type === 2) {
+          if (this.edit.type === 2) {
             goodsSpecs[0].cash_price = cashPrice
             goodsSpecs[0].bean_price = beanPrice
           }
-          console.log(goodsSpecs, 'goodsSpecs')
         }
         let data = {
           ...params, specs_attrs: specsAttrs, goods_specs: goodsSpecs
         }
+        // 编辑
+        if (this.id) data.id = this.id
+        // 集采商品
+        if (this.edit.type === 1) {
+          data.use_type = this.useType
+          data.brand_id = this.brandId
+          data.freight_type = this.freightType
+        }
         //  编辑 or 新增
         let requestName = this.id ? 'editGoods' : 'addGoods'
-        if (this.id) data.id = this.id
         API.Goods[requestName]({
           data
         }).then(() => {
@@ -620,7 +627,8 @@
   @import "~@design"
   .list-item.list-item-input
     flex-shrink 0
-    min-width:127px
+    min-width: 127px
+
   .icon-delete-wrap
     position absolute
     top: -14px
@@ -651,7 +659,7 @@
       margin-left: 10px
 
     .more-item-wrap
-      min-width: 700px
+      min-width: 860px
       max-width: 100%
       background-color #F4F8F9
       padding: 20px 20px 10px
@@ -682,5 +690,5 @@
       margin-left: 10px
 
     .big-list
-      min-width: 700px
+      min-width: 860px
 </style>
