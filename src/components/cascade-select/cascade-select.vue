@@ -144,7 +144,7 @@
           data: {[this.paramsKey]: -1, ...otherParams},
           loading: false
         }).then((res) => {
-          if (this.isAddAll) res.data = [{id: 0, name: '全部'}, ...res.data]
+          if (this.isAddAll) res.data = [{id: '', name: '全部'}, ...res.data]
           this.goodsCategoryFirstList = res.data || []
           return res
         })
@@ -153,15 +153,18 @@
       async _selectCategoryFirst(otherParams = {}) {
         this.goodsCategorySecond = ''
         this.goodsCategorySecondList = []
+        let res = null
         // 选择全部时
-        if(!this.goodsCategoryFirst)return false
-        // 选择有内容选项
-        let res = await this.getDataFunction()({
-          doctor() {},
-          data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
-          loading: false
-        })
-        this.goodsCategorySecondList = res.data || []
+        if (this.goodsCategoryFirst) {
+          // 选择有内容选项
+          res = await this.getDataFunction()({
+            doctor() {
+            },
+            data: {[this.paramsKey]: this.goodsCategoryFirst, ...otherParams},
+            loading: false
+          })
+          this.goodsCategorySecondList = res.data || []
+        }
         this.goodsCategoryChange(this.goodsCategoryFirst)
         return res
       },
