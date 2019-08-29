@@ -10,7 +10,7 @@
           labelKey="name"
           :height="32"
           placeholder="账号等级"
-          @change="getCustomerList"
+          @change="_exchangeList"
         >
         </base-select>
       </base-form-item>
@@ -146,6 +146,10 @@
             this.selectList = res.data
           })
       },
+      async _exchangeList() {
+        this.page = 1
+        await this.getCustomerList()
+      },
       // 获取客户列表
       async getCustomerList(loading = false) {
         API.Customer.getCustomerList({
@@ -187,7 +191,7 @@
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },
       async search(keyword) {
-        console.log(keyword)
+        this.page = 1
         await this.getCustomerList()
       },
       //  弹窗限制
