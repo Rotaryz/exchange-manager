@@ -85,12 +85,12 @@
           target_id: this.$route.params.id
         },
         listHeader: {
-          settlement_at: {name: '申请时间'},
+          settlement_at: {name: '生成时间'},
           order_type_text: {name: '类型'},
           income: {name: '收入'},
           expend: {name: '支出'},
           after_remaining: {name: '余额'},
-          order_sn: {name: '提现单号'}
+          order_sn: {name: '关联单号'}
         },
         list: [],
         total: 0,
