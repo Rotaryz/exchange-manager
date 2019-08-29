@@ -39,7 +39,7 @@
               <div v-for="(item, index) in hotList" :key="index" class="hot-item">
                 <img :src="item.detail.image_url" class="hot-good-img">
                 <p class="hot-good-name">{{item.detail.title}}</p>
-                <p class="hot-price">¥{{item.detail.price || 0}}</p>
+                <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
               </div>
             </div>
           </div>
@@ -47,14 +47,14 @@
           <div v-if="cms.code === 'recommend'" class="hot-commodity hand" :class="{'touch': cmsType === 'recommend'}" @click="changeType('recommend')">
             <img src="./pic-dhzq_banner2@2x.png" alt="" class="hot-bg">
             <div class="hot-title">
-              今日爆款
-              <span class="text">优选国内2%精品品牌</span>
+              精选推荐
+              <span class="text">优选国内2%优品</span>
             </div>
             <div class="scroll-wrapper">
               <div v-for="(item, index) in recommendList" :key="index" class="hot-item">
                 <img :src="item.detail.image_url" class="hot-good-img">
                 <p class="hot-good-name">{{item.detail.title}}</p>
-                <p class="hot-price">¥{{item.detail.price || 0}}</p>
+                <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
               </div>
             </div>
           </div>
@@ -233,7 +233,7 @@
       color: #1D2023
       font-family: $font-family-regular
   .hot-commodity
-    height: 199px
+    height: 204px
     border: 2px dashed #D9D9D9
     padding-bottom: 20px
     box-sizing: border-box
@@ -245,7 +245,7 @@
       object-fit: cover
     .hot-title
       text-indent: 5px
-      margin-top: -60px
+      margin-top: -68px
       padding: 0 0 9.8px 10.8px
       color: #FFF
       font-family: $font-family-medium
@@ -264,11 +264,11 @@
       margin-left: 15px
       box-shadow: 0 2px 4px 1px rgba(0,0,0,0.1)
       .hot-item
-        width: 28%
+        width: 66px
         border-right: 1px solid $color-line
         .hot-good-img
           background: $color-white
-          width: 66.4px
+          width: 66px
           height: @width
           min-height: @width
           min-width: @width
@@ -282,6 +282,8 @@
           font-family: $font-family-regular
           margin-top: 2.5px
           line-height: 1.2
+          padding: 0 3px
+          height: 28px
           display: -webkit-box
           overflow: hidden
           -webkit-line-clamp: 2
@@ -291,6 +293,7 @@
           color: #D83F35
           font-family: $font-family-medium
           font-size: 8.38px
+          padding: 0 3px
   // 商品分类
   .goods-classify-wrapper
     background: $color-white

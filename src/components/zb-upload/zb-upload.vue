@@ -230,8 +230,8 @@
             else this.$emit('successImage', Array.isArray(this.data) ? arr : arr[0])
           })
           .catch((err) => {
-            this.$emit('failFile', err)
             this.showLoading = false
+            this.$emit('failFile', err)
           })
       }
     }

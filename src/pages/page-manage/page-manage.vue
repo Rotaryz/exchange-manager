@@ -313,6 +313,9 @@
                 <div class="goods-text">{{item.title}}</div>
               </div>
             </div>
+            <div class="page-box">
+              <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
+            </div>
           </div>
         </div>
         <!--品牌列表-->
@@ -346,6 +349,9 @@
                 <div class="goods-text">{{item.name}}</div>
               </div>
             </div>
+          </div>
+          <div class="page-box">
+            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
           </div>
         </div>
       </div>
@@ -531,10 +537,9 @@
         })
     },
     async created() {
-      console.log(this.moduleList, 4444)
       this._getCateList() // 获取分类列表
-      this._getArticleList() // 文章列表
-      this._getBrandList() // 品牌列表
+      // this._getArticleList() // 文章列表
+      // this._getBrandList() // 品牌列表
       this._getGoodsList() // 商品列表
     },
     methods: {
@@ -672,7 +677,7 @@
         this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
       },
       async _getArticleList() {
-        let data = {keyword: this.keyword, page: this.goodsPage, limit: 6}
+        let data = {keyword: this.keyword, page: this.goodsPage, limit: 6, status: 1}
         let res = await API.Cms.articleList({data})
         this.total = res.meta.total
         this.articleArr = res.data
@@ -981,6 +986,7 @@
       align-items: center
       .goods-title
         margin-left: 18px
+        line-height: 1.2
         no-wrap()
         font-family: $font-family-regular
         color: $color-text-main
