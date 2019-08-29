@@ -217,7 +217,7 @@
           <!--<div class="shade-title">选择商品</div>-->
           <span class="close hand" @click="hideGoods"></span>
         </div>
-        <div v-if="tabIndex === 0 && (type === 'navigation' || type === 'recommend' || type === 'hot')" class="good-modal">
+        <div v-if="tabIndex === 0 && (type === 'navigation' || type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
           <div class="shade-tab">
             <base-select
               placeholder="请选择分类"
@@ -237,7 +237,7 @@
           <div class="goods-content">
             <div class="goods-item goods-header">
               <div class="goods-text"></div>
-              <div class="goods-text">商品名称</div>
+              <div class="goods-text">商品名称{{tabIndex}}</div>
               <div class="goods-text">零售价</div>
               <div class="goods-text">库存</div>
             </div>
@@ -258,7 +258,7 @@
               <!--select-icon-active-->
             </div>
           </div>
-          <div class="page-box">
+          <div v-if="total > 0" class="page-box">
             <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
           </div>
         </div>
@@ -283,7 +283,7 @@
           <textarea v-model="outHtml" class="link-text-box" placeholder="请输入H5链接"></textarea>
         </div>
         <!--内容列表-->
-        <div v-if="tabIndex === 4 || (tabIndex === 0 && type === 'banner')" class="goods-cate">
+        <div v-if="tabIndex === 4 || (tabIndex === 0 && type === 'banner' && pageType === 'brand_index')" class="goods-modal">
           <div class="shade-tab">
             <base-search
               v-model="keyword"
@@ -313,13 +313,13 @@
                 <div class="goods-text">{{item.title}}</div>
               </div>
             </div>
-            <div class="page-box">
-              <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
-            </div>
+          </div>
+          <div v-if="total > 0" class="page-box">
+            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
           </div>
         </div>
         <!--品牌列表-->
-        <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-cate">
+        <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-modal">
           <div class="shade-tab">
             <base-search
               v-model="keyword"
@@ -350,7 +350,7 @@
               </div>
             </div>
           </div>
-          <div class="page-box">
+          <div v-if="total > 0" class="page-box">
             <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
           </div>
         </div>
@@ -466,14 +466,13 @@
     },
     watch: {
       goodsPage() {
-        this._getGoodsList()
+        this.requestHandle()
+        // this._getGoodsList()
       },
       parentId() {
         this._getGoodsList()
       },
       type(news) {
-        this.keyword = ''
-        this.goodsPage = 1
         switch (news) {
         case 'navigation':
           this.typeList = TYPE_LIST
@@ -687,6 +686,7 @@
       _getBrandList() {
         let data = {keyword: this.keyword, page: this.goodsPage, limit: 6}
         API.Cms.brandList({data}).then((res) => {
+          this.total = res.meta.total
           this.brandArr = JSON.parse(JSON.stringify(res.data))
         })
       },
@@ -697,6 +697,7 @@
         this.outLink = this.typeList[0].status
         this.showSelectIndex = this.outLink === 3005 ? this.choiceGoods.findIndex((item) => item.id === this.goodsId) : -1
         this.showCateIndex = this.outLink === 3004 ? this.goodsCate.findIndex((item) => item.id === this.goodsId) : -1
+        this.requestHandle()
       },
       selectGoods(item, index) {
         this.currentItem = item
@@ -708,6 +709,19 @@
         this.outLink = this.typeList[index].status
         this.showSelectIndex = -1
         this.currentItem = ''
+        this.goodsPage = 1
+        this.keyword = ''
+        this.requestHandle()
+      },
+      requestHandle() {
+        switch (this.outLink) {
+        case 3002:
+          this._getGoodsList(); break
+        case 3006:
+          this._getArticleList(); break
+        case 3009:
+          this._getBrandList(); break
+        }
       },
       hideGoods() {
         this.showModal = false
@@ -715,6 +729,8 @@
         this.currentItem = ''
         this.outHtml = ''
         this.miniLink = ''
+        this.goodsPage = 1
+        this.keyword = ''
         this.showCateIndex = -1
       },
       getIndex(index) {
