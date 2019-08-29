@@ -79,7 +79,6 @@
           category_name: {name: '分类'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
-          discount_price: {name: '会员价'},
           status: {name: '状态', type: 'status'},
           operate_text: {name: '操作', type: 'operate', style: 'max-width:80px'}
         },
