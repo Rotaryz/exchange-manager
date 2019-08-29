@@ -9,7 +9,9 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item label="分类筛选" labelSize="12px" :required="false">
-          <cascade-select ref="selects" size="small" defaultLabel1="一级分类" defaultLabel2="二级分类" @change="changeGategory"></cascade-select>
+          <cascade-select ref="selects" :isAddAll="true" size="small" defaultLabel1="一级分类" defaultLabel2="二级分类"
+                          @change="changeGategory"
+          ></cascade-select>
         </base-form-item>
         <base-form-item :inline="true" :required="false" verticalAlign="center">
           <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="searchBtn"></base-search>
