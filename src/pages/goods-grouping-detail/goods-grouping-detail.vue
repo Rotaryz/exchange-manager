@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-grouping-detail normal-box table">
+  <div class="goods-grouping-detail child-router">
     <base-table-tool :title="name" :iconUrl="require('./icon-product_list@2x.png')">
       <base-button plain addIcon @click="addBtn">添加商品</base-button>
       <base-button class="go-back-btn" @click="goBack">返回</base-button>
@@ -134,14 +134,6 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
-  .goods-grouping-detail
-    width: 100%
-    position absolute
-    top: 0
-    left: 0
-    bottom: 0
-    right: 0
-    z-index:10
    .list-box  .list-item:nth-child(1)
       flex:2
     .list-item
