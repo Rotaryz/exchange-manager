@@ -44,7 +44,7 @@
         <radio v-model="edit.result" :list="radioList"></radio>
       </base-form-item>
       <base-form-item v-if="!edit.result" label="不通过原因" labelWidth="106px">
-        <base-input v-model="edit.reason" width="388"></base-input>
+        <base-input v-model="edit.reason" width="388" maxlength="15"></base-input>
       </base-form-item>
     </base-modal>
   </div>
