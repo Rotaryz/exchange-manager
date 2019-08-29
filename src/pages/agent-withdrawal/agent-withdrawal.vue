@@ -50,7 +50,7 @@
         <img :src="photoCertificatesUrl" alt="打款凭证" class="photo-certificate">
       </base-modal>
     </div>
-    <router-view></router-view>
+    <router-view @update="tabChange"></router-view>
   </div>
 </template>
 
@@ -146,7 +146,7 @@
     },
     methods: {
       // 顶部类型切换
-      tabChange(val) {
+      tabChange(val = 1) {
         this.tabIndex = val - 1
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
         this.filter = {start_time: '', end_time: '', keyword: '', type: val}
@@ -206,7 +206,7 @@
         this.$router.push({
           name: 'withdrawal-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.tabIndex].text}
+          query: {name: this.tabList[this.tabIndex].text, type: this.type}
         })
       }
     }
