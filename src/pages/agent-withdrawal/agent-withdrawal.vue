@@ -11,8 +11,8 @@
     ></base-tabs>
     <div class="content-wrap">
       <base-layout-top>
-        <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
-        <base-search v-model="filter.keyword" placeholder="店铺名称/客户手机号" @search="_getData"></base-search>
+        <base-date datePlaceholder="请选择时间" textName="申请时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
+        <base-search v-model="filter.keyword" placeholder="店铺名称" @search="_getData"></base-search>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="提现列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="status" @change="_getData"></base-status-tab>
