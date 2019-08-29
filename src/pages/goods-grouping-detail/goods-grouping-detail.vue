@@ -133,8 +133,11 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-
-   .list-box  .list-item:nth-child(1)
+  .goods-grouping-detail
+    background-color $color-white
+    display flex
+    flex-direction column
+ .list-box  .list-item:nth-child(1)
       flex:2
     .list-item
       display flex
@@ -142,20 +145,20 @@
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
-    .go-back-btn
-      margin-left 10px
+.go-back-btn
+  margin-left 10px
 
-    .status-dot
-      display inline-block
-      width: 8px
-      height: @width
-      border-radius: 50%
-      margin-right: 5px
+.status-dot
+  display inline-block
+  width: 8px
+  height: @width
+  border-radius: 50%
+  margin-right: 5px
 
-      &.success
-        background $color-success
+  &.success
+    background $color-success
 
-      &.error
-        background $color-error
+  &.error
+    background $color-error
 
 </style>
