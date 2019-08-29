@@ -276,7 +276,6 @@
         // 详情返回的元sku列表
         detailGoodsSpec: [],
         id: 0,
-
         brandList: [],
         freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
         goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
@@ -348,7 +347,7 @@
           })
       },
       setData(res) {
-        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, ...edit} = res.data
+        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId,freight_type:freightType,use_type:useType, ...edit} = res.data
         this.goodsSpecification = specsAttrs
         this.detailGoodsSpec = goodsSpecs
         this.edit = edit
@@ -363,6 +362,11 @@
             this.edit.cash_price = obj.cash_price
             this.edit.bean_price = obj.bean_price
           }
+        }
+        if (this.edit.type === 1) {
+          this.brandId = brandId
+          this.useType = useType
+          this.freightType = freightType
         }
       },
       deleteModule(idx) {
