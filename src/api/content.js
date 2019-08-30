@@ -23,7 +23,7 @@ export default {
   },
   // 编辑文章上线
   editArticle(args) {
-    const url = `/exchange-platform/platform/article/article/update-draft`
+    const url = `/exchange-platform/platform/article/article/update`
     return request.post({url, ...args})
   },
   // 获取上一篇文章的作者

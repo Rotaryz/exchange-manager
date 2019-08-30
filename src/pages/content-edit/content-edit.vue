@@ -822,7 +822,10 @@
             content: contents
           })
         }
-        if (this.id) params.id = this.id
+        if (this.id) {
+          params.id = this.id
+          params.status = 1
+        }
         return params
       },
 

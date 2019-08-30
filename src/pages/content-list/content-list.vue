@@ -171,7 +171,7 @@
         this._getList({loading: false})
       },
       onOffHandle(item, index) {
-        let status = +item.status === 1 ? 0 : 1
+        let status = +item.status === 1 ? -1 : 1
         let text = +item.status === 1 ? '下线' : '上线'
         this.$confirm.confirm({text: `确定要${text}`}).then(() => {
           API.Content.offline({data: {status, id: item.id}})
