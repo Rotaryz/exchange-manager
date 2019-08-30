@@ -27,10 +27,10 @@
             <div v-for="(brand, ind) in cms.children" :key="ind" class="brand-item">
               <img :src="brand.detail.image_url" alt="" class="brand-image">
               <div class="brand-title">
-                <img :src="brand.detail.brand.logo_image_url" alt="" class="brand-logo">
+                <img :src="brand.detail.brand && brand.detail.brand.logo_image_url" alt="" class="brand-logo">
                 <div class="title">
-                  <p class="name">{{brand.detail.brand.name}}</p>
-                  <p class="sub-name">{{brand.detail.brand.sub_name}}</p>
+                  <p class="name">{{brand.detail.brand && brand.detail.brand.name}}</p>
+                  <p class="sub-name">{{brand.detail.brand && brand.detail.brand.sub_name}}</p>
                 </div>
               </div>
               <div class="scroll-wrapper">

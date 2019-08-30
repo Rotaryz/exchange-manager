@@ -59,23 +59,6 @@
               </div>
             </div>
           </div>
-          <!-- 行业推荐-->
-          <div v-if="cms.code === 'industry_recommend' && cms.detail && cms.detail.length" class="recommend">
-            <div class="recommend-name">行业推荐</div>
-            <div class="recommend-goods">
-              <div v-for="(item, index) in industryRecommendList" :key="index" class="goods-item">
-                <img :src="item.goods_cover_image" class="goods-img">
-                <p class="goods-name">{{item.name}}</p>
-                <div class="goods-mag">
-                  <div class="goods-tariff">
-                    <div class="goods-price"><span class="goods-unit">¥</span>{{item.discount_price}}</div>
-                    <img src="./pic-member@2x.png" alt="" class="goods-member">
-                  </div>
-                  <div class="original-price">¥{{item.price}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

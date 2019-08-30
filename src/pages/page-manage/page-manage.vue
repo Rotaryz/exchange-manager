@@ -395,7 +395,8 @@
       url: '',
       title: '',
       image_id: '',
-      add_icon: ADD_IMAGE
+      add_icon: ADD_IMAGE,
+      brand: {}
     },
     style: ''
   } // 模板对象
@@ -643,12 +644,23 @@
         case 3002:
         case 3003:
         case 3006:
+          if (this.currentItem !== '') {
+            this[this.dataName][index].detail.object_id = this.currentItem.id
+            this[this.dataName][index].detail.url = ''
+            this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
+            this[this.dataName][index].detail.sale_price = this.currentItem.price || ''
+          }
+          break
         case 3009:
           if (this.currentItem !== '') {
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
-            this[this.dataName][index].detail.price = this.currentItem.price || ''
+            this.$set(this[this.dataName][index].detail, 'brand', {
+              logo_image_url: this.currentItem.logo_image_url,
+              name: this.currentItem.name,
+              sub_name: this.currentItem.sub_name
+            })
           }
           break
         }
@@ -743,8 +755,8 @@
       },
       // 添加图片
       successImage(res) {
-        this[this.dataName][this.cmsIndex].detail.image_url = res.data.url
-        this[this.dataName][this.cmsIndex].detail.image_id = res.data.id
+        this.$set(this[this.dataName][this.cmsIndex].detail, 'image_url', res.data.url)
+        this.$set(this[this.dataName][this.cmsIndex].detail, 'image_id', res.data.id)
         this.$forceUpdate()
       },
       newCms() {
