@@ -150,7 +150,7 @@
         this.$confirm.confirm().then(async () => {
           await API.Brand.deleteBrand({data: {id: item.id}, loading: false})
           this.updatePage()
-        })
+        }).catch()
       },
       async changeSwitch(item) {
         await API.Brand.switchStatus({data: {id: item.id, status: item.status ? 0 : 1}})

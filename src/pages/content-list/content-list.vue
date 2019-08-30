@@ -23,8 +23,10 @@
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
+                    <router-link v-if="+item.status === 1" tag="span" :to="'content-edit?id='+item.id+'&isSee=1'" append class="list-operation">查看</router-link>
+                    <router-link v-else tag="span" :to="'content-edit?id='+item.id" append class="list-operation">编辑</router-link>
                     <span v-if="+item.status === 1" class="list-operation" @click="onOffHandle(item, i)">下线</span>
-                    <router-link v-if="+item.status === -1 || +item.status === 0" tag="span" :to="'content-edit?id='+item.id" append class="list-operation">编辑</router-link>
+                    <span v-if="+item.status === -1" class="list-operation" @click="onOffHandle(item, i)">上线</span>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <div v-else-if="val.type === 'status'">{{statusHandle(item.status)}}</div>
@@ -100,7 +102,7 @@
           fabulous_num: {name: '点赞数'},
           status: {name: '状态', type: 'status'},
           // status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate", style: 'max-width:98px'}
+          operate_text: {name: '操作', type: "operate", style: 'max-width:144px'}
         },
         list: []
       }
@@ -155,7 +157,7 @@
           await API.Content.deleteArticle({data: {id: item.id}, loading: false})
           this.$toast.show('文章删除成功')
           this.updatePage()
-        })
+        }).catch()
       },
       async changeSwitch(item) {
         // await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
@@ -169,11 +171,15 @@
         this._getList({loading: false})
       },
       onOffHandle(item, index) {
-        API.Content.offline({data: {status: -1, id: item.id}})
-          .then(res => {
-            this.$toast.show('文章下线成功')
-            this.updatePage()
-          })
+        let status = +item.status === 1 ? 0 : 1
+        let text = +item.status === 1 ? '下线' : '上线'
+        this.$confirm.confirm({text: `确定要${text}`}).then(() => {
+          API.Content.offline({data: {status, id: item.id}})
+            .then(res => {
+              this.$toast.show(`文章${text}成功`)
+              this.updatePage()
+            })
+        }).catch()
       }
     }
   }

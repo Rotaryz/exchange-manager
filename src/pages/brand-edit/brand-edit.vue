@@ -49,7 +49,19 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-drop-down :width="400" :height="44" :select="tradeList" @setValue="_selectTrade"></base-drop-down>
+          <!--<base-drop-down :width="400" :height="44" :select="tradeList" @setValue="_selectTrade"></base-drop-down>-->
+          <base-select
+            v-model="msg.industry_id"
+            :data="tradeList"
+            :value="msg.industry_name"
+            labelKey="name"
+            placeholder="选择行业"
+            width="400"
+            height="44"
+            radius="2"
+            @change="_selectTrade"
+          >
+          </base-select>
           <!--<p class="add-trade hand" @click="_showAddTrade">添加行业</p>-->
         </base-form-item>
 
@@ -116,24 +128,34 @@
       MobileContent,
       ImageUpload
     },
-    beforeRouteEnter(to, from, next) {
-      next()
+    beforeRouteEnter(routeTo, routeFrom, next) {
+      let id = routeTo.query.id
+      if (id) {
+        API.Brand.getBrandDetail({data: {id}})
+          .then((res) => {
+            next(vm => {
+              vm.changeDetailData(res.data)
+            })
+          })
+          .catch(() => {
+            next({name: '404'})
+          })
+      } else {
+        next()
+      }
     },
     data() {
       return {
         msg: {
           banner_image_url: '',
-          logo_image_url: ''
+          logo_image_url: '',
+          industry_id: '',
+          industry_name: ''
         },
         tradeVisible: false,
         trade: '',
-        tradeList: {
-          check: false,
-          show: false,
-          content: '全部',
-          type: 'default',
-          data: [{name: '服装', id: '1'}, {name: '鞋子', id: '2'}] // 格式：{name: '55'}
-        }
+        tradeList: [],
+        id: ''
       }
     },
     computed: {
@@ -157,13 +179,18 @@
       }
     },
     created() {
+      this.id = this.$route.query.id || ''
       this.getTradeList()
     },
     methods: {
+      changeDetailData(data) {
+        this.msg = JSON.parse(JSON.stringify(data))
+        // this.tradeList.content = data.industry_name
+      },
       getTradeList() {
         API.Brand.getTradeList()
           .then(res => {
-            this.tradeList.data = res.data
+            this.tradeList = res.data
           })
       },
       addBannerImages(image) {
@@ -185,9 +212,8 @@
         this.msg.logo_image_id = ''
         this.msg.logo_image_url = ''
       },
-      _selectTrade(item) {
+      _selectTrade(id, item) {
         this.msg.industry_name = item.name
-        this.msg.industry_id = item.id
       },
       _showAddTrade() {
         this.tradeVisible = true
@@ -211,13 +237,25 @@
       submitBtn() {
         let checkForm = this.checkForm()
         if (!checkForm) return
-        API.Brand.newBrand({data: this.msg})
-          .then(res => {
-            this.$toast.show('创建成功')
-            setTimeout(() => {
-              this.$router.back()
-            }, 300)
-          })
+        if (this.id) {
+          API.Brand.editBrand({data: this.msg})
+            .then(res => {
+              this.$toast.show('修改成功')
+              setTimeout(() => {
+                this.$router.back()
+              }, 300)
+            })
+        } else {
+          API.Brand.newBrand({data: this.msg})
+            .then(res => {
+              this.$toast.show('创建成功')
+              this.$emit('update')
+              setTimeout(() => {
+                this.$router.back()
+              }, 300)
+            })
+        }
+
       },
       checkForm() {
         let arr = [

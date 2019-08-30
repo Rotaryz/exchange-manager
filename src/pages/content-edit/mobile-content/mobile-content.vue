@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="operate-item">
-                商品(20)
+                商品({{data.goodsList.length}})
                 <!--<div class="icon-wrap">
                   <div class="count red">{{data.goodCount}}</div>
                   <img src="./icon-shopping_cart@2x.png" class="operate-icon">

@@ -7,7 +7,7 @@ import storage from 'storage-controller'
  * @returns {Promise.<*>}
  */
 function _saveFile(data) {
-  const url = `/exchange-platform/common/file/image/create`
+  const url = `/exchange-platform/common/file/${data.type}/create`
   return request.post({url, data, loading: false})
 }
 
@@ -23,7 +23,8 @@ function _getAuthorization(options, callback) {
   // const pathname = key.indexOf('/') === 0 ? key : '/' + key
   const pathname = key
   const Authorization = storage.get('auth.token')
-  const url = '/exchange-platform/common/file/image/get-upload-sign?image=' + encodeURIComponent(pathname)
+  // const url = '/exchange-platform/common/file/image/get-upload-sign?image=' + encodeURIComponent(pathname)
+  const url = `/exchange-platform/common/file/${options.fileType}/get-upload-sign?${options.fileType}=${encodeURIComponent(pathname)}`
   const xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('Authorization', Authorization)
@@ -72,7 +73,7 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
           .substr(0, 6)
       + originFileType
       return new Promise((resolve, reject) => {
-        _getAuthorization({Method: 'PUT', Key: Key}, (err, info) => {
+        _getAuthorization({Method: 'PUT', Key: Key, fileType}, (err, info) => {
           if (err) {
             console.error(err)
             return
@@ -96,6 +97,8 @@ export function uploadFiles(fileType, files, showProcess, processCallBack) {
             if (xhr.status === 200 || xhr.status === 206) {
               _saveFile({path: '/' + encodeURIComponent(info.pathname), type: fileType}).then((resp) => {
                 resolve(resp)
+              }).catch(res => {
+                reject(res.message)
               })
             } else {
               reject(new Error('文件 ' + Key + ' 上传失败，状态码：' + xhr.status))
