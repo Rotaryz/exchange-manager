@@ -701,7 +701,7 @@
       },
       // 获取品牌列表
       _getBrandList() {
-        let data = {keyword: this.keyword, page: this.goodsPage, limit: 6}
+        let data = {keyword: this.keyword, page: this.goodsPage, limit: 6, status: 1}
         API.Cms.brandList({data}).then((res) => {
           this.total = res.meta.total
           this.brandArr = JSON.parse(JSON.stringify(res.data))
