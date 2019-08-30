@@ -110,7 +110,7 @@
           name: {name: '品牌名称'},
           created_at: {name: '时间 ', style: 'flex: 1.4'},
           status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate", style: 'max-width: 98px'}
+          operate_text: {name: '操作', type: "operate", style: 'max-width: 75px; padding-right: 0'}
         },
         list: []
       }

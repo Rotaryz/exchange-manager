@@ -429,7 +429,6 @@
           let zumto = [];
           zum.forEach(zu => {
             first.values.forEach(item => {
-              console.log(zu.specs_attrs,)
               let newZu = [...zu.specs_attrs, {
                 attr_key_id: first.attr_key_id,
                 attr_key: first.name,
@@ -439,7 +438,6 @@
               let obj = {}
               if (this.id) {
                 obj = this.getGoodsSpec(zu, this.detailGoodsSpec, newZu)
-                console.log(obj)
               } else {
                 obj = {...zu, specs_attrs: newZu}
               }

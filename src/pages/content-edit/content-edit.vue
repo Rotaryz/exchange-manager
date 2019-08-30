@@ -891,8 +891,8 @@
           line-height: 1.5
           font-family: $font-family-regular
           white-space: nowrap
-          text-align: left
-          min-width: 64px
+          text-align: right
+          width: 68px
         .start
           display: inline-block
           margin-right: -2px

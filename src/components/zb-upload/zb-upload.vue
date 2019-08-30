@@ -286,6 +286,7 @@
   .show-image
     margin-right: 20px
     position: relative
+    font-size: 0
 
     /*&:last-child*/
     /*margin: 0*/

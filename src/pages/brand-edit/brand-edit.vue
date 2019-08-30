@@ -10,7 +10,7 @@
         <!--品牌首图 -->
         <base-form-item label="品牌首图"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"
@@ -27,7 +27,7 @@
         <!--品牌Logo -->
         <base-form-item label="品牌Logo"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"
@@ -44,7 +44,7 @@
         <!--所属行业 -->
         <base-form-item label="所属行业"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"
@@ -68,7 +68,7 @@
         <!--品牌名称 -->
         <base-form-item label="品牌名称"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"
@@ -79,7 +79,7 @@
         <!--品牌副标题 -->
         <base-form-item label="品牌副标题"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"
@@ -90,7 +90,7 @@
         <!--品牌介绍 -->
         <base-form-item label="品牌介绍"
                         labelMarginRight="40"
-                        labelWidth="68px"
+                        labelWidth="75px"
                         labelAlign="right"
                         verticalAlign="top"
                         labelHeight="40px"

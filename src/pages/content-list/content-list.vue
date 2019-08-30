@@ -103,7 +103,7 @@
           fabulous_num: {name: '点赞数'},
           status: {name: '状态', type: 'status'},
           // status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate", style: 'max-width:144px'}
+          operate_text: {name: '操作', type: "operate", style: 'max-width:122px; padding-right: 0'}
         },
         list: []
       }

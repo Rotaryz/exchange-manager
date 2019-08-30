@@ -9,7 +9,7 @@
           <!--banner-->
           <div v-if="cms.code === 'banner'" :class="{'touch': cmsType === 'banner'}" class="banner" @click="changeType('banner')">
             <div class="carousel hand">
-              <carousel height="127px" arrow="never" :interval="4000" indicatorPosition="none">
+              <carousel height="127px" arrow="never" :interval="4000" class="carousel-box" indicatorPosition="none">
                 <carousel-item v-for="(item, index) in bannerList" :key="index">
                   <img :src="item.detail.image_url" class="carousel-image">
                 </carousel-item>
@@ -41,8 +41,6 @@
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -142,6 +140,10 @@
       height: 100%
       overflow: hidden
       object-fit: cover
+    .carousel-box
+      overflow-x: inherit
+      .el-carousel__item
+        margin: 0 5px
 
   // 选中
   .touch

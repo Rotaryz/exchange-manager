@@ -92,7 +92,6 @@
           search.push(`${key}=${data[key]}`)
         }
         let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
-        console.log(url)
         return url
       }
     },
