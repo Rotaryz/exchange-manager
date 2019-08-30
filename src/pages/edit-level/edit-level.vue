@@ -261,6 +261,9 @@
         if (this.msg.simple_rights.give_accounts) {
           this.msg.simple_rights.give_accounts.number += ''
         }
+        if (this.msg.simple_rights.discount) {
+          this.msg.simple_rights.discount += ''
+        }
         if (this.msg.agent_amount.length === 0 || this.msg.agent_amount <= 0) {
           this.$toast.show('请输入代理金额且大于0元')
           return false
@@ -269,6 +272,9 @@
           return false
         } else if (this.msg.simple_rights.discount < 0 || this.msg.simple_rights.discount > 100 || this.msg.simple_rights.discount.length === 0) {
           this.$toast.show('请输入采购折扣且范围为0-100')
+          return false
+        } else if (this.msg.simple_rights.discount.includes('.')) {
+          this.$toast.show('请输入采购折扣为整数')
           return false
         } else if (this.msg.simple_rights.is_give * 1 === 1 && (this.msg.simple_rights.give_accounts.number > 10 ||this.msg.simple_rights.give_accounts.number < 1 || this.msg.simple_rights.give_accounts.number.length === 0)) {
           this.$toast.show('请输入赠送账号数量且范围为1-10')
