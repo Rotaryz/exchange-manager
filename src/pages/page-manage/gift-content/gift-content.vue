@@ -60,7 +60,7 @@
             </div>
           </div>
           <!-- 行业推荐-->
-          <div v-if="cms.code === 'industry_recommend'" class="recommend">
+          <div v-if="cms.code === 'industry_recommend' && cms.detail && cms.detail.length" class="recommend">
             <div class="recommend-name">行业推荐</div>
             <div class="recommend-goods">
               <div v-for="(item, index) in industryRecommendList" :key="index" class="goods-item">
