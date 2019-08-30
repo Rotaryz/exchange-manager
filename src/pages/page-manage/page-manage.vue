@@ -83,7 +83,7 @@
             <div v-if="type === 'hot'" class="hot">
               <div class="content-header">
                 <div class="content-title">今日爆款</div>
-                <div class="content-sub">(最多添加6个商品，鼠标拖拽调整商品顺序)</div>
+                <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
               </div>
               <slick-list v-model="hotList" :distance="30" lockAxis="y">
                 <slick-item v-for="(item, index) in hotList" :key="index" :index="index">
@@ -172,7 +172,7 @@
             </div>
             <div v-if="type === 'brand'" class="brands">
               <div class="content-header">
-                <div class="content-title">品牌列表</div>
+                <div class="content-title">品牌动态</div>
                 <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
               </div>
               <slick-list v-model="brandList" :distance="30" lockAxis="y">
