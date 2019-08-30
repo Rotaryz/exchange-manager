@@ -266,6 +266,7 @@
         .auth-info
           font-family $font-family-regular
           margin-left: 5px
+          width: 142px
 
           .name
             font-size: $font-size-14
@@ -279,7 +280,12 @@
           .auth-introduce
             color: #808080
             font-size: $font-size-12
-
+            line-height: 1.2
+            word-break: break-all
+            display: -webkit-box
+            overflow: hidden
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
       .browse-wrap
         padding-left: 15px
 

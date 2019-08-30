@@ -31,7 +31,8 @@
                   </div>
                   <div v-else-if="val.type === 'status'">{{statusHandle(item.status)}}</div>
                   <template v-else>
-                    <img v-if="val.before && val.before.img" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
+                    <img v-if="val.before && val.before.img && item[val.before.img]" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
+                    <img v-if="val.before && !item[val.before.img]" class="list-img" style="width: 75px; height: 45px" src="./pic-caogao@2x.png">
                     <div class="item-text">{{item[key]}}</div>
                   </template>
                 </div>
