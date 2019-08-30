@@ -6,7 +6,7 @@
           <base-search v-model="filter.keyword" style="margin-left: 0" placeholder="请输入标题名称" @search="searchBtn"></base-search>
         </base-form-item>
       </base-layout-top>
-      <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
+      <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="文章列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
         <router-link tag="div" :to="{path:'content-edit',query:{type: 'common'}}" append>
           <base-button type="primary" plain addIcon>创作文章</base-button>

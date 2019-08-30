@@ -238,7 +238,7 @@
           <div class="goods-content">
             <div class="goods-item goods-header">
               <div class="goods-text"></div>
-              <div class="goods-text">商品名称{{tabIndex}}</div>
+              <div class="goods-text">商品名称</div>
               <div class="goods-text">零售价</div>
               <div class="goods-text">库存</div>
             </div>
@@ -253,7 +253,7 @@
                   <img :src="item.goods_cover_image" alt="" class="goods-img">
                   <div class="goods-name">{{item.name}}</div>
                 </div>
-                <div class="goods-text">{{item.price}}</div>
+                <div class="goods-text">¥{{item.price}}</div>
                 <div class="goods-text">{{item.saleable}}</div>
               </div>
               <!--select-icon-active-->
@@ -386,7 +386,7 @@
   ]
   const NAV_TYPE = [{title: '商品分类', status: 3003}]
   const HOT_TYPE = [{title: '今日爆款', status: 3002}]
-  const GOODS_TYPE = [{title: '商品详情', status: 3002}]
+  const GOODS_TYPE = [{title: '商品推荐', status: 3002}]
   const ARTICLE_TYPE = [{title: '文章列表', status: 3006}]
   const BRANDS_TYPE = [{title: '品牌列表', status: 3009}]
   const TEMPLATE_OBJ = {

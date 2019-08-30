@@ -55,7 +55,7 @@
             :data="tradeList"
             :value="msg.industry_name"
             labelKey="name"
-            placeholder="选择行业"
+            placeholder="请选择行业"
             width="400"
             height="44"
             radius="2"
@@ -73,7 +73,7 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.name" size="middle"></base-input>
+          <base-input v-model="msg.name" size="middle" placeholder="请输入品牌名称"></base-input>
         </base-form-item>
 
         <!--品牌副标题 -->
@@ -84,7 +84,7 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.sub_name" size="middle" :maxlength="25"></base-input>
+          <base-input v-model="msg.sub_name" size="middle" :maxlength="25" placeholder="请输入品牌副标题"></base-input>
         </base-form-item>
 
         <!--品牌介绍 -->
@@ -95,7 +95,14 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <base-input v-model="msg.describe" size="middle" type="textarea" width="400" height="94"></base-input>
+          <base-input
+            v-model="msg.describe"
+            size="middle"
+            type="textarea"
+            width="400"
+            height="94"
+            placeholder="请输入品牌介绍"
+          ></base-input>
         </base-form-item>
       </div>
     </div>

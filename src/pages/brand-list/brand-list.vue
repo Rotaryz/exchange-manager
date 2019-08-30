@@ -25,6 +25,8 @@
                 >
                   <base-switch v-if="val.type ==='switch'"
                                :status="item.status"
+                               confirmText="上线"
+                               cancelText="下线"
                                @changeSwitch="changeSwitch(item,i)"
                   ></base-switch>
                   <div v-else-if="val.type === 'operate'">
@@ -147,7 +149,7 @@
         this.updatePage()
       },
       deleteBtn(item, idx) {
-        this.$confirm.confirm().then(async () => {
+        this.$confirm.confirm({title: '删除品牌', text: '品牌删除后页面管理配置的品牌将会同步下线'}).then(async () => {
           await API.Brand.deleteBrand({data: {id: item.id}, loading: false})
           this.updatePage()
         }).catch()

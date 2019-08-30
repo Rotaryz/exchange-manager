@@ -940,7 +940,7 @@
           line-height: 44px
           font-size: $font-size-12
           font-family: $font-family-regular
-          color: $color-text-main
+          color: #C0C4D1
         .tip-text
           margin-left: 2px
           line-height: 44px
