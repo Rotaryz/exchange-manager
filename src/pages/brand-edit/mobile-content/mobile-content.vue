@@ -29,7 +29,7 @@
                 <p class="left-price">
                   <span v-for="(price, ind) in priceSign['sign0']" :key="ind" class="text-image">
                     <img :src="price.icon" alt="" class="icon">
-                    <span class="discount" :class="price.class">{{discount[price.code].discount}}折</span>
+                    <span class="discount" :class="price.class">{{discount[price.code] && discount[price.code].discount}}折</span>
                     <span class="price">¥{{goods[price.key]}}</span>
                   </span>
                 </p>
