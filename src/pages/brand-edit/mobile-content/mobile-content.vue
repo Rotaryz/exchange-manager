@@ -158,6 +158,10 @@
       color: #818d99
       opacity: 0.8
       margin-top: 3.7px
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      width: 188px
     .brand-describe
       margin-top: 10.5px
       line-height: 1.2
@@ -168,6 +172,7 @@
       display: -webkit-box
       -webkit-line-clamp: 2
       -webkit-box-orient: vertical
+      word-break: break-all
     .has-more
       border-top: 1px solid #DFEEF5
       margin-top: 10px
@@ -243,6 +248,8 @@
         font-size: 11.18px
         color: #D83F35
         font-family: $font-family-din-bold
+        transform: scale(0.8)
+        margin-left: -4px
       .right-price
         display: flex
         flex-direction: column

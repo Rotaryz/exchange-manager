@@ -93,12 +93,12 @@
         },
         listHeader: {
           name_: {
-            name: '封面图', before: {
-              img: 'cover_image_url'
-            }
+            name: '封面图',
+            before: {img: 'cover_image_url'},
+            style: {flex: 0.8}
           },
-          title: {name: '文章标题'},
-          list_date: {name: '时间'},
+          title: {name: '文章标题', style: {flex: 1.2}},
+          list_date: {name: '时间', style: {flex: 1.2}},
           browse_count: {name: '阅读数 '},
           fabulous_num: {name: '点赞数'},
           status: {name: '状态', type: 'status'},
@@ -199,10 +199,6 @@
     flex: 1
     display flex
     flex-direction column
-
-  .list-box > .list-item
-    &:nth-child(1)
-      flex: 1.5
 
   .list-item
     display flex
