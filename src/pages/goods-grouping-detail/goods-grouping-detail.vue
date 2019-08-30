@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-grouping-detail normal-box table">
+  <div class="goods-grouping-detail child-router">
     <base-table-tool :title="name" :iconUrl="require('./icon-product_list@2x.png')">
       <base-button plain addIcon @click="addBtn">添加商品</base-button>
       <base-button class="go-back-btn" @click="goBack">返回</base-button>
@@ -33,8 +33,10 @@
         </div>
       </div>
       <base-blank v-else></base-blank>
-
     </div>
+    <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id}" :visible.sync="visible" :currentCount="total" :limit="10"
+                       @submit="_addGoods"
+    ></goods-list-dialog>
     <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id, use_type: 2}" :visible.sync="visible" :limit="20" @submit="_addGoods"></goods-list-dialog>
   </div>
 </template>
@@ -79,7 +81,6 @@
           category_name: {name: '分类'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
-          discount_price: {name: '会员价'},
           status: {name: '状态', type: 'status'},
           operate_text: {name: '操作', type: 'operate', style: 'max-width:80px'}
         },
@@ -134,15 +135,11 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-
   .goods-grouping-detail
-    width: 100%
-    position absolute
-    top: 0
-    left: 0
-    bottom: 0
-    right: 0
-   .list-box  .list-item:nth-child(1)
+    background-color $color-white
+    display flex
+    flex-direction column
+ .list-box  .list-item:nth-child(1)
       flex:2
     .list-item
       display flex
@@ -150,20 +147,20 @@
         overflow hidden
         text-overflow ellipsis
         white-space nowrap
-    .go-back-btn
-      margin-left 10px
+.go-back-btn
+  margin-left 10px
 
-    .status-dot
-      display inline-block
-      width: 8px
-      height: @width
-      border-radius: 50%
-      margin-right: 5px
+.status-dot
+  display inline-block
+  width: 8px
+  height: @width
+  border-radius: 50%
+  margin-right: 5px
 
-      &.success
-        background $color-success
+  &.success
+    background $color-success
 
-      &.error
-        background $color-error
+  &.error
+    background $color-error
 
 </style>

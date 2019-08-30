@@ -10,11 +10,11 @@
           labelKey="name"
           :height="32"
           placeholder="账号等级"
-          @change="getCustomerList"
+          @change="_exchangeList"
         >
         </base-select>
       </base-form-item>
-      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
+      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户名称" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -146,6 +146,10 @@
             this.selectList = res.data
           })
       },
+      async _exchangeList() {
+        this.page = 1
+        await this.getCustomerList()
+      },
       // 获取客户列表
       async getCustomerList(loading = false) {
         API.Customer.getCustomerList({
@@ -187,7 +191,7 @@
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },
       async search(keyword) {
-        console.log(keyword)
+        this.page = 1
         await this.getCustomerList()
       },
       //  弹窗限制

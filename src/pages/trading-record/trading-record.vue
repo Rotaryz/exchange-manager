@@ -9,10 +9,10 @@
           placeholder="账号等级"
           width="120"
           radius="2"
-          @change="_getList"
+          @change="_getListSelect"
         >
         </base-select>
-        <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
+        <base-search v-model="filter.keyword" placeholder="店铺名称/客户手机号" :isShowTip="false" @search="searchBtn"></base-search>
       </base-form-item>
     </base-layout-top>
     <base-table-tool :iconUrl="require('./icon-jyjl@2x.png')" title="交易记录">
@@ -75,7 +75,7 @@
           limit: 10
         },
         listHeader: {
-          shop_name: {name: '客户名称'},
+          shop_name: {name: '店铺名称'},
           shop_level_name: {name: '等级类型'},
           amount: {name: '等级金额(元) '},
           shop_inviter_name: {name: '推荐人 '},
@@ -107,6 +107,11 @@
       },
       setData(res) {
         this.list = res.data
+        this.total = res.meta.total
+      },
+      _getListSelect() {
+        this.filter.page = 1
+        this._getList()
       },
       _getList() {
         API.Customer.getTradingRecord({data: this.filter, loading: false}).then((res) => {
@@ -117,6 +122,7 @@
         this._getList()
       },
       searchBtn() {
+        this.filter.page = 1
         this._getList()
       }
     }

@@ -4,7 +4,7 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="商品名称" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.name"></base-input>
+        <base-input v-model="edit.name" :maxlength="20" :limit="20"></base-input>
       </base-form-item>
       <base-form-item label="商品描述" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right"
                       verticalAlign="top"
@@ -29,7 +29,7 @@
         <cascade-select ref="cascadeSelect"
                         v-model="edit.category_id"
                         valueKey="id"
-                        :inputStyle="{'min-width':'194px'}"
+                        :width="194"
                         size="middle"
                         placeholder1="请选择分类"
                         placeholder2="请选择子分类"
@@ -173,7 +173,6 @@
           </base-form-item>
           <base-form-item label="播豆" labelMarginRight="40" labelWidth="78px" labelAlign="right">
             <base-input v-if="edit.specification_type !== 1" v-model="edit.bean_price" type="number"></base-input>
-            <span class="after-word">元</span>
           </base-form-item>
         </template>
         <base-form-item label="库存" labelMarginRight="40" labelWidth="78px" labelAlign="right">
@@ -642,9 +641,6 @@
       background-size 100%
 
   .edit-product
-    width: 100%
-    position absolute
-
     .top-title
       padding-top: 3px
 

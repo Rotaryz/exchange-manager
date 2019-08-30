@@ -6,7 +6,7 @@
     <base-tab-select></base-tab-select>
     <div class="down-content">
       <base-date datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"></base-date>
-      <base-search v-model="keyword" placeholder="子单号/客户昵称/客户手机号" boxStyle="margin-left: 20px" @search="search"></base-search>
+      <base-search v-model="keyword" :placeholder="tabIndex===0?'子单号/客户昵称/客户手机号':'主单号/客户昵称/客户手机号'" boxStyle="margin-left: 20px" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
       <div slot="left">
@@ -46,9 +46,9 @@
                         <ul class="more-goods">
                           <li class="goods-item">
                             <img src="" alt="" class="goods-img">
-                            <p class="two-line">商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称</p>
-                            <p class="goods-num">x10</p>
-                            <p class="goods-price">238.00</p>
+                            <p class="two-line"></p>
+                            <p class="goods-num"></p>
+                            <p class="goods-price"></p>
                           </li>
                         </ul>
                       </div>
@@ -66,7 +66,7 @@
                         <span class="tooltip__arrow"></span>
                         <ul class="more-goods">
                           <li v-for="(good, goodIdx) in item.details" :key="goodIdx" class="goods-item">
-                            <img src="" alt="" class="goods-img">
+                            <img :src="good.goods_cover_image" alt="" class="goods-img">
                             <p class="two-line">{{good.goods_name}}</p>
                             <p class="goods-num">x{{good.goods_num}}</p>
                             <!--<p class="goods-price">{{good.goods_spec}}</p>-->
@@ -160,7 +160,7 @@
   const INFO_STATUS = ''
   let ORDER_EXCEL_URL = '/exchange-platform/platform/platform-order/sub-order/export'
   let EXCHANGE_EXCEL_URL = '/exchange-platform/platform/bean-order/order/export'
-  const TAB_CONFIG = [{text: '集采订单', type: 0}, {text: '赞播优品订单', type: 1}]
+  const TAB_CONFIG = [{text: '集采订单', type: 0}, {text: '播豆订单', type: 1}]
   const LIST_CONFIG = [
     [
       {title: '主单号', key: ['order', 'order_sn'], class: 'width-3', type: 'keyArr'},
@@ -377,6 +377,7 @@
           this.logisticsObj.shipping_name = express[0].name
         }
         if (item.status === 20 || item.status === 100) {
+          this._getLogisticsDetail()
           this.disable = true
           this.title = '查看物流'
           this.visible = true
@@ -400,9 +401,12 @@
       },
       // 查看发货详情
       async _getLogisticsDetail() {
+        let params = {sub_order_id: this.logisticsObj.sub_order_id}
+        if (this.tabIndex===1) {
+          params = {id: this.logisticsObj.order_id}
+        }
         let res = await API.Order[this.loName]({
-          // data: {id: this.logisticsObj.order_id},
-          data: {sub_order_id: this.logisticsObj.sub_order_id},
+          data: params,
           loading: true,
           toast: true
         })
@@ -444,6 +448,7 @@
   .list-box
     overflow: visible
     .two-line
+      align-items: flex-start
       color: $color-text-main
       font-size: $font-size-14
       line-height: 18px
@@ -490,12 +495,14 @@
           margin-left: 6px
           &:hover
             .goods-box
+              width: auto
               opacity: 1
               z-index: 100
           .goods-box
+            width: 0
             opacity: 0
             z-index: 0
-            transition: all 0.3s
+            transition: all 0.25s
             box-shadow: 0 1px 8px 0 rgba(78, 89, 131, 0.2)
             background: $color-white
             border-radius: 4px
@@ -554,6 +561,7 @@
                 overflow: hidden
                 display: block
                 object-fit: cover
+                margin-right: 10px
                 background: $color-background
               .goods-name
                 width: 142px

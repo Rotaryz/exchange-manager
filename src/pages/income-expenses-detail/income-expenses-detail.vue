@@ -46,8 +46,10 @@
     },
     beforeRouteEnter(to, from, next) {
       const id = to.params.id
+      const type = to.query.type
       API.Finance.getAccountDetails({
         data: {
+          type: type,
           target_id: id,
           page: 1
         }
@@ -83,15 +85,16 @@
           target_id: this.$route.params.id
         },
         listHeader: {
-          settlement_at: {name: '申请时间'},
+          settlement_at: {name: '生成时间'},
           order_type_text: {name: '类型'},
           income: {name: '收入'},
           expend: {name: '支出'},
           after_remaining: {name: '余额'},
-          order_sn: {name: '提现单号'}
+          order_sn: {name: '关联单号'}
         },
         list: [],
-        total: 0
+        total: 0,
+        type: this.$route.query.type
       }
     },
     computed: {
@@ -117,12 +120,13 @@
       },
       // 顶部数据
       _getStatistic() {
-        API.Finance.accountDetailsTotal({data: {target_id: this.filter.target_id, type: this.$route.query.type}, loading: false}).then((res) => {
+        API.Finance.accountDetailsTotal({data: {target_id: this.filter.target_id, type: this.type}, loading: false}).then((res) => {
           this.money = res.data
         })
       },
       pageChange(val) {
         this._getList()
+        this._getStatistic()
       }
     }
   }

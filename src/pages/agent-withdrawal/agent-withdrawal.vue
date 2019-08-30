@@ -11,8 +11,8 @@
     ></base-tabs>
     <div class="content-wrap">
       <base-layout-top>
-        <base-date datePlaceholder="请选择时间" textName="创建时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
-        <base-search v-model="filter.keyword" placeholder="商户昵称/客户手机号" @search="_getData"></base-search>
+        <base-date datePlaceholder="请选择时间" textName="申请时间" :infoTime.sync="time" class="date-wrap" @changeDate="_getData"></base-date>
+        <base-search v-model="filter.keyword" placeholder="店铺名称" @search="_getData"></base-search>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="提现列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="status" @change="_getData"></base-status-tab>
@@ -28,7 +28,8 @@
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item">
                   <template v-if="key==='operate_icon'">
-                    <div :class="val.iconClass" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
+                    <div v-if="item.status===3&&item[val.imgUrlKey]" :class="val.iconClass" class="hand" @click="showCertificatesPhoto(item[val.imgUrlKey])"></div>
+                    <div v-else>—</div>
                   </template>
                   <template v-if="key==='operate_text'">
                     <span class="list-operation" @click="goDetail(item,i)">详情</span>
@@ -49,7 +50,7 @@
         <img :src="photoCertificatesUrl" alt="打款凭证" class="photo-certificate">
       </base-modal>
     </div>
-    <router-view></router-view>
+    <router-view @update="tabChange"></router-view>
   </div>
 </template>
 
@@ -84,7 +85,7 @@
         listHeader: {
           withdraw_sn: {name: '提现单号'},
           created_at: {name: '申请时间'},
-          withdrawal_name: {name: '客户名称'},
+          shop_name: {name: '店铺名称'},
           total: {name: '提现金额'},
           status_text: {name: '提现状态'},
           operate_icon: {name: '打款凭证', iconClass: 'icon-certificate', imgUrlKey: 'image_url'},
@@ -145,12 +146,13 @@
     },
     methods: {
       // 顶部类型切换
-      tabChange(val) {
+      tabChange(val = 1) {
         this.tabIndex = val - 1
         this.$router.push({name: 'agent-withdrawal', query: {type: val}})
         this.filter = {start_time: '', end_time: '', keyword: '', type: val}
         this.status = ''
         this.page = 1
+        this._getData()
       },
       _getData() {
         this.filter.start_time = this.time[0] || ''
@@ -195,7 +197,7 @@
         const curTab = this.tabList[this.tabIndex]
         this.$router.push({
           name: 'income-expenses-detail',
-          params: {id: item.id},
+          params: {id: item.source_id},
           query: {name: curTab.text, type: curTab.type}
         })
       },
@@ -204,7 +206,7 @@
         this.$router.push({
           name: 'withdrawal-detail',
           params: {id: item.id},
-          query: {name: this.tabList[this.tabIndex].text}
+          query: {name: this.tabList[this.tabIndex].text, type: this.type}
         })
       }
     }

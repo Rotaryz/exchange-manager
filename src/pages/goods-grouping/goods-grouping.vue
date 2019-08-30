@@ -31,6 +31,9 @@
         </div>
       </div>
     </div>
+    <goods-list-dialog v-if="visible" :visible.sync="visible" :otherParams="{group_id:currentGroup.id}" :currentCount="currentGroup.goods_num" :limit="10"
+                       @submit="_addGoods"
+    ></goods-list-dialog>
     <goods-list-dialog v-if="visible" :visible.sync="visible" :otherParams="{group_id:currentGroup.id, use_type: 2}" :limit="20" @submit="_addGoods"></goods-list-dialog>
     <base-modal :visible.sync="editVisible" :title="(edit.id?'修改':'新建')+'商品分组'" :submitBefore="justifyAddGroup" @submit="_addGroup">
       <base-form-item label="分组名称">

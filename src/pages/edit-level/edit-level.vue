@@ -55,7 +55,15 @@
                 </span>
                 <label class="radio__label">赠送账号</label>
               </div>
-              <base-input v-model="msg.simple_rights.give_accounts.number" :type="numberType" placeholder="请输入数量" :width="300" :height="40"></base-input>
+              <base-input
+                v-model="msg.simple_rights.give_accounts.number"
+                :disabled="msg.simple_rights.is_give * 1 === 0"
+                :type="numberType"
+                placeholder="请输入数量"
+                :width="300"
+                :height="40"
+              >
+              </base-input>
               <span class="after-word">全能版</span>
             </div>
           </div>
@@ -354,6 +362,9 @@
       },
       // 选择是否赠送账号
       changeValue(index) {
+        if (index === 0) {
+          this.msg.simple_rights.give_accounts.number = ''
+        }
         this.msg.simple_rights.is_give = index
       },
       // 切换权限

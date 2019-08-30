@@ -137,9 +137,7 @@
         API.Customer.editSettingDetail({
           data: this.msgData,
           loading: true,
-          toast: true,
-          doctor() {
-          }
+          toast: true
         }).then((res) => {
           this.$emit('update')
           this.$router.go(-1)
