@@ -356,6 +356,7 @@
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable
           this.edit.price = obj.price
+          this.specId = obj.spec_id
           // 赞播优品与普通商品区别
           if (this.edit.type === 2) {
             this.edit.cash_price = obj.cash_price
