@@ -304,7 +304,7 @@
 
   .tag
     position absolute
-    bottom 3px
+    bottom 0
     right: 0
     left: 0
     background: rgba(30, 35, 51, 0.5)

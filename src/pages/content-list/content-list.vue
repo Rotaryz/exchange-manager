@@ -154,7 +154,7 @@
         this.updatePage()
       },
       deleteBtn(item, idx) {
-        this.$confirm.confirm().then(async () => {
+        this.$confirm.confirm({text: `确定要删除`}).then(async () => {
           await API.Content.deleteArticle({data: {id: item.id}, loading: false})
           this.$toast.show('文章删除成功')
           this.updatePage()

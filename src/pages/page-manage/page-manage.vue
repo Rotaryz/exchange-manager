@@ -297,7 +297,7 @@
                   @search="searchArticle"
                 ></base-search>
               </div>
-              <div class="goods-content">
+              <div class="goods-content article">
                 <div class="goods-item goods-header">
                   <div class="goods-text"></div>
                   <div class="goods-text">文章封面</div>
@@ -988,6 +988,7 @@
     align-items: center
     position: relative
     margin-top: 24px
+    user-select: none
     .add-advertisement
       position: relative
       margin-left: 20px
@@ -1029,6 +1030,7 @@
     .advertisement-link
       display: flex
       align-items: center
+      overflow: hidden
       .goods-title
         margin-left: 18px
         line-height: 1.2
@@ -1218,8 +1220,6 @@
       &:nth-child(1)
         min-width: 38px
         max-width: 38px
-      &:nth-child(2)
-        flex: 2
       &:nth-child(3)
         flex: 1
       &:nth-child(4)
@@ -1229,6 +1229,8 @@
       align-items: center
       display: flex
 
+  .article .goods-text:nth-child(2)
+    flex: 1.4
   .page-box
     box-sizing: border-box
     height: 76px

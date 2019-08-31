@@ -140,10 +140,6 @@
       height: 100%
       overflow: hidden
       object-fit: cover
-    .carousel-box
-      overflow-x: inherit
-      .el-carousel__item
-        margin: 0 5px
 
   // 选中
   .touch
