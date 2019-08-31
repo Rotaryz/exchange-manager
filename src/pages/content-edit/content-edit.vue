@@ -211,7 +211,7 @@
                     <div class="name">{{item.value.name}}</div>
                     <div class="details">{{item.value.describe}}</div>
                     <div class="operate">
-                      <span class="price-now">{{formatM(+item.value.discount_price || item.value.sale_price).int}}<span class="small">{{formatM(+item.value.discount_price || item.value.sale_price).dec}}<span class="unit">元</span></span></span>
+                      <span class="price-now">{{formatM(+item.value.discount_price || item.value.sale_price).int || 0}}<span class="small">{{formatM(+item.value.discount_price || item.value.sale_price || 0).dec}}<span class="unit">元</span></span></span>
                       <span class="price">{{item.value.price}}元</span>
                     </div>
                   </div>
@@ -294,7 +294,7 @@
     <goods-list-dialog
       v-if="goodsVisible"
       :otherParams="{use_type: 2}"
-      :selects="selects"
+      :selects="selectGoodsArr"
       :visible.sync="goodsVisible"
       :limit="5"
       :valueKey="false"
@@ -304,7 +304,14 @@
 
     <!--添加文字-->
     <base-modal :visible.sync="addTextVisible" title="增加详情文本" :submitBefore="justifyAddText" @submit="addTextItem">
-      <base-input v-model="addText" placeholder="输入文字" type="textarea" width="600" height="300"></base-input>
+      <base-input
+        v-model="addText"
+        placeholder="输入文字"
+        type="textarea"
+        width="600"
+        height="300"
+        limit="2000"
+      ></base-input>
     </base-modal>
 
     <base-footer :isSeize="false">
@@ -447,6 +454,15 @@
       },
       editName() {
         return this.id ? (this.isDisabled ? '查看' : '编辑') : '创作'
+      },
+      selectGoodsArr() {
+        let arr = this.addData.details.filter(item => {
+          return item.type === 'goods'
+        })
+        let goods = arr.map(item => {
+          return item.value
+        })
+        return goods.length ? goods : []
       }
     },
     created() {

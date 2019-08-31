@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="operate-item">
-                商品({{data.goodsList.length}})
+                商品({{goodsCount}})
                 <!--<div class="icon-wrap">
                   <div class="count red">{{data.goodCount}}</div>
                   <img src="./icon-shopping_cart@2x.png" class="operate-icon">
@@ -159,7 +159,14 @@
         videoPause:true
       }
     },
-    computed: {},
+    computed: {
+      goodsCount() {
+        let goods = this.data.details.filter(item => {
+          return item.type === 'goods'
+        })
+        return goods.length
+      }
+    },
     methods: {
       videoClick() {
         if(!this.data.videoContent || !this.data.videoContent.url)  return
