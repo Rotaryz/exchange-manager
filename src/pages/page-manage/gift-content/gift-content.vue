@@ -31,7 +31,8 @@
           </div>
           <!--今日爆款-->
           <div v-if="cms.code === 'hot_goods'" class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
-            <img src="./pic-dhzq_banner@2x.png" alt="" class="hot-bg">
+            <!--<img src="./pic-dhzq_banner@2x.png" alt="" class="hot-bg">-->
+            <img :src="$imageUrl + '/exchange/pic-hot_banner.png'" alt="" class="hot-bg">
             <div class="hot-title">
               今日爆款
               <span class="text">优选国内2%精品品牌</span>
@@ -46,7 +47,8 @@
           </div>
           <!-- 推荐商品列表-->
           <div v-if="cms.code === 'recommend'" class="hot-commodity hand" :class="{'touch': cmsType === 'recommend'}" @click="changeType('recommend')">
-            <img src="./pic-dhzq_banner2@2x.png" alt="" class="hot-bg">
+            <!--<img src="./pic-dhzq_banner2@2x.png" alt="" class="hot-bg">-->
+            <img :src="$imageUrl + '/exchange/pic-re_banner.png'" alt="" class="hot-bg">
             <div class="hot-title">
               精选推荐
               <span class="text">优选国内2%优品</span>
@@ -107,16 +109,12 @@
     },
     data() {
       return {
-        // cmsList: [
-        //   {code: 'banner'},
-        //   {code: 'navigation'},
-        //   {code: 'hot_goods'},
-        //   {code: 'recommend'},
-        //   {code: 'industry_recommend'}
-        // ]
+        $imageUrl: ''
       }
     },
     created() {
+      this.$imageUrl = process.env.VUE_APP_IMAGE
+      console.log(process.env.VUE_APP_IMAGE, 33)
       // console.log(this.hotList, this.recommendList, this.industryRecommendList)
     },
     methods: {
@@ -234,9 +232,8 @@
       height: 108px
       object-fit: cover
     .hot-title
-      text-indent: 5px
-      margin-top: -68px
-      padding: 0 0 9.8px 10.8px
+      margin-top: -80px
+      padding: 0 0 9.8px 10px
       color: #FFF
       font-family: $font-family-medium
       font-size: 13.97px
@@ -251,9 +248,10 @@
       display: flex
       hide-scrollbar()
       border-radius: 1.4px
-      margin-left: 15px
+      margin-left: 10px
       box-shadow: 0 2px 4px 1px rgba(0,0,0,0.1)
       background: #FFF
+      margin-top: 20px
       position: relative
       .hot-item
         width: 67px

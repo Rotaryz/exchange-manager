@@ -211,7 +211,7 @@
                     <div class="name">{{item.value.name}}</div>
                     <div class="details">{{item.value.describe}}</div>
                     <div class="operate">
-                      <span class="price-now">{{formatM(+item.value.discount_price || item.value.sale_price).int || 0}}<span class="small">{{formatM(+item.value.discount_price || item.value.sale_price || 0).dec}}<span class="unit">元</span></span></span>
+                      <span class="price-now">{{formatM(item.value.sale_price).int || 0}}<span class="small">{{formatM(item.value.sale_price || 0).dec}}<span class="unit">元</span></span></span>
                       <span class="price">{{item.value.price}}元</span>
                     </div>
                   </div>
