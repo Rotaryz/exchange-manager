@@ -379,11 +379,14 @@
         // console.log(arr, 'getGoodsBannerImages')
         arr.forEach(item => {
           item = item.data
-          this.edit.goods_banner_images.push({
-            id: 0,
-            image_url: item.url,
-            image_id: item.id,
-          })
+          // 限制5张
+          if (this.edit.goods_banner_images.length < 5) {
+            this.edit.goods_banner_images.push({
+              id: 0,
+              image_url: item.url,
+              image_id: item.id,
+            })
+          }
         })
       },
       getGoodsDetailImages(arr) {

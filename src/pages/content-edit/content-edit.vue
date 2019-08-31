@@ -238,7 +238,7 @@
                   </div>
                 </zb-upload>
               </div>
-              <div class="add-cont-type-item hand">c
+              <div class="add-cont-type-item hand">
                 <zb-upload type="video-custom"
                            @successImage="addVideoItem"
                            @failFile="failFile"
