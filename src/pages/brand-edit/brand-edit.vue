@@ -202,7 +202,9 @@
         this.goodsList = JSON.parse(JSON.stringify(data.data))
       },
       getTradeList() {
-        API.Brand.getTradeList()
+        API.Brand.getTradeList({
+          data: {limit: 0}
+        })
           .then(res => {
             this.tradeList = res.data
           })
