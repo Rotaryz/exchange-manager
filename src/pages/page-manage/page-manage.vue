@@ -1220,6 +1220,8 @@
       &:nth-child(1)
         min-width: 38px
         max-width: 38px
+      &:nth-child(2)
+        flex: 2
       &:nth-child(3)
         flex: 1
       &:nth-child(4)
