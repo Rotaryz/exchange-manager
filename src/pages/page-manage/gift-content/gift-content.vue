@@ -114,7 +114,6 @@
     },
     created() {
       this.$imageUrl = process.env.VUE_APP_IMAGE
-      console.log(process.env.VUE_APP_IMAGE, 33)
       // console.log(this.hotList, this.recommendList, this.industryRecommendList)
     },
     methods: {
