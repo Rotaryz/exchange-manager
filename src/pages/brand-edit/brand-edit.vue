@@ -255,6 +255,7 @@
           API.Brand.editBrand({data: this.msg})
             .then(res => {
               this.$toast.show('修改成功')
+              this.$emit('update')
               setTimeout(() => {
                 this.$router.back()
               }, 300)
