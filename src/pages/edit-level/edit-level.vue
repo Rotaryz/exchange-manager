@@ -356,7 +356,6 @@
         let that = this
         for (let i = 0; i < arr.length; i++) {
           let name = arr[i].level_id * 1 === 1 ? '标准版' : arr[i].level_id * 1 === 2 ? '全能版' : '合伙版'
-          console.log(arr[i].rate_value)
           if (arr[i].rate_value.length === 0 || arr[i].rate_value > 100 || arr[i].rate_value < 0) {
             that.$toast.show(`请输入${name}商品差价且大于0元`)
             over = true
@@ -379,7 +378,6 @@
       },
       // 设置详情
       setData(res) {
-        console.log(res.data)
         this.msg = res.data
         let that = this
         this.msg.business_commissions.forEach((item, index) => {

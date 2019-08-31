@@ -356,6 +356,7 @@
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable
           this.edit.price = obj.price
+          this.specId = obj.spec_id
           // 赞播优品与普通商品区别
           if (this.edit.type === 2) {
             this.edit.cash_price = obj.cash_price
@@ -378,11 +379,14 @@
         // console.log(arr, 'getGoodsBannerImages')
         arr.forEach(item => {
           item = item.data
-          this.edit.goods_banner_images.push({
-            id: 0,
-            image_url: item.url,
-            image_id: item.id,
-          })
+          // 限制5张
+          if (this.edit.goods_banner_images.length < 5) {
+            this.edit.goods_banner_images.push({
+              id: 0,
+              image_url: item.url,
+              image_id: item.id,
+            })
+          }
         })
       },
       getGoodsDetailImages(arr) {
@@ -428,7 +432,6 @@
           let zumto = [];
           zum.forEach(zu => {
             first.values.forEach(item => {
-              console.log(zu.specs_attrs,)
               let newZu = [...zu.specs_attrs, {
                 attr_key_id: first.attr_key_id,
                 attr_key: first.name,
@@ -438,7 +441,6 @@
               let obj = {}
               if (this.id) {
                 obj = this.getGoodsSpec(zu, this.detailGoodsSpec, newZu)
-                console.log(obj)
               } else {
                 obj = {...zu, specs_attrs: newZu}
               }

@@ -31,7 +31,8 @@
                   </div>
                   <div v-else-if="val.type === 'status'">{{statusHandle(item.status)}}</div>
                   <template v-else>
-                    <img v-if="val.before && val.before.img" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
+                    <img v-if="val.before && val.before.img && item[val.before.img]" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
+                    <img v-if="val.before && !item[val.before.img]" class="list-img" style="width: 75px; height: 45px" src="./pic-caogao@2x.png">
                     <div class="item-text">{{item[key]}}</div>
                   </template>
                 </div>
@@ -92,17 +93,17 @@
         },
         listHeader: {
           name_: {
-            name: '封面图', before: {
-              img: 'cover_image_url'
-            }
+            name: '封面图',
+            before: {img: 'cover_image_url'},
+            style: {flex: 0.8}
           },
-          title: {name: '文章标题'},
-          list_date: {name: '时间'},
+          title: {name: '文章标题', style: {flex: 1.2}},
+          list_date: {name: '时间', style: {flex: 1.2}},
           browse_count: {name: '阅读数 '},
           fabulous_num: {name: '点赞数'},
           status: {name: '状态', type: 'status'},
           // status: {name: '状态', type: "switch"},
-          operate_text: {name: '操作', type: "operate", style: 'max-width:144px'}
+          operate_text: {name: '操作', type: "operate", style: 'max-width:122px; padding-right: 0'}
         },
         list: []
       }
@@ -153,7 +154,7 @@
         this.updatePage()
       },
       deleteBtn(item, idx) {
-        this.$confirm.confirm().then(async () => {
+        this.$confirm.confirm({text: `确定要删除`}).then(async () => {
           await API.Content.deleteArticle({data: {id: item.id}, loading: false})
           this.$toast.show('文章删除成功')
           this.updatePage()
@@ -198,10 +199,6 @@
     flex: 1
     display flex
     flex-direction column
-
-  .list-box > .list-item
-    &:nth-child(1)
-      flex: 1.5
 
   .list-item
     display flex

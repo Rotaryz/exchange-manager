@@ -209,7 +209,7 @@
           }
           break
         default:
-          console.log(this.selects.length + this.selectGoods.length + this.currentCount)
+          // console.log(this.selects.length + this.selectGoods.length + this.currentCount)
           if (this.limit && this.selects.length + this.selectGoods.length + this.currentCount >= this.limit) {
             this.$toast.show(`选择商品数量不能超过${this.limit}个`)
             return

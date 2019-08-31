@@ -70,7 +70,7 @@
                 </div>
               </div>
               <div class="operate-item">
-                商品({{data.goodsList.length}})
+                商品({{goodsCount}})
                 <!--<div class="icon-wrap">
                   <div class="count red">{{data.goodCount}}</div>
                   <img src="./icon-shopping_cart@2x.png" class="operate-icon">
@@ -159,7 +159,14 @@
         videoPause:true
       }
     },
-    computed: {},
+    computed: {
+      goodsCount() {
+        let goods = this.data.details.filter(item => {
+          return item.type === 'goods'
+        })
+        return goods.length
+      }
+    },
     methods: {
       videoClick() {
         if(!this.data.videoContent || !this.data.videoContent.url)  return
@@ -266,6 +273,7 @@
         .auth-info
           font-family $font-family-regular
           margin-left: 5px
+          width: 142px
 
           .name
             font-size: $font-size-14
@@ -279,7 +287,12 @@
           .auth-introduce
             color: #808080
             font-size: $font-size-12
-
+            line-height: 1.2
+            word-break: break-all
+            display: -webkit-box
+            overflow: hidden
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
       .browse-wrap
         padding-left: 15px
 

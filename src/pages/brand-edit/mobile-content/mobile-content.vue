@@ -29,6 +29,7 @@
                 <p class="left-price">
                   <span v-for="(price, ind) in priceSign['sign0']" :key="ind" class="text-image">
                     <img :src="price.icon" alt="" class="icon">
+                    <span class="discount" :class="price.class">{{discount[price.code] && discount[price.code].discount}}折</span>
                     <span class="price">¥{{goods[price.key]}}</span>
                   </span>
                 </p>
@@ -45,10 +46,14 @@
 </template>
 
 <script>
+  import API from '@api'
 
   const PAGE_NAME = 'mobile-content'
   const PRICE_SIGN = {
-    sign0: [{icon: require('./icon-biao@2x.png'), key: 'standard_price'}, {icon: require('./icon-quan@2x.png'), key: 'versatile_price'}],
+    sign0: [
+      {icon: require('./icon-biao@2x.png'), key: 'standard_price', code: 1, class: 'public'},
+      {icon: require('./icon-quan@2x.png'), key: 'versatile_price', code: 2, class: 'all'}
+    ],
     sign1: [{icon: 'icon-biao', key: 'standard_price'}, {icon: 'icon-quan', key: 'versatile_price'}],
     sign2: [{icon: 'icon-quan', key: 'versatile_price'}, {icon: 'icon-he', key: 'partner_price'}],
   }
@@ -68,16 +73,23 @@
     },
     data() {
       return {
-        priceSign: PRICE_SIGN
+        priceSign: PRICE_SIGN,
+        discount: []
       }
     },
     created() {
-      console.log(this.brandMsg)
+      this.getDiscount()
     },
     methods: {
       changeType(type) {
         this.$emit('update:cmsType', type)
         this.$emit('changeType', type)
+      },
+      getDiscount() {
+        API.Brand.getDiscount({data: {is_include_rights: 1}})
+          .then(res => {
+            this.discount = res.data
+          })
       }
     }
   }
@@ -128,7 +140,7 @@
       width: 41.9px
       height: 41.9px
       border-radius: 1.4px
-      box-shadow: 0 2px 5px 0 rgba(0,0,0,0,.1)
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1)
       background: #FFF
       margin-top: -7px
     .base-msg
@@ -146,6 +158,10 @@
       color: #818d99
       opacity: 0.8
       margin-top: 3.7px
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
+      width: 188px
     .brand-describe
       margin-top: 10.5px
       line-height: 1.2
@@ -156,6 +172,7 @@
       display: -webkit-box
       -webkit-line-clamp: 2
       -webkit-box-orient: vertical
+      word-break: break-all
     .has-more
       border-top: 1px solid #DFEEF5
       margin-top: 10px
@@ -216,13 +233,23 @@
         align-items: center
         margin-top: 3.5px
       .icon
-        width: 17.5px
-        height: 9.8px
-        margin-right: 3.4px
+        width: 32px
+        height: 11px
+      .discount
+        font-size: 7.5px
+        width: 30px
+        margin-left: -25px
+        transform: scale(0.7)
+      .public
+        color: #272727
+      .all
+        color: #71392C
       .price
         font-size: 11.18px
         color: #D83F35
         font-family: $font-family-din-bold
+        transform: scale(0.8)
+        margin-left: -4px
       .right-price
         display: flex
         flex-direction: column

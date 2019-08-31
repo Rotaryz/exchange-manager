@@ -34,7 +34,7 @@
       </div>
       <base-blank v-else></base-blank>
     </div>
-    <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id, use_type: 2}" :visible.sync="visible" :currentCount="total" :limit="10"
+    <goods-list-dialog v-if="visible" :otherParams="{group_id:filter.id, use_type: 1}" :visible.sync="visible" :currentCount="total" :limit="10"
                        @submit="_addGoods"
     ></goods-list-dialog>
   </div>

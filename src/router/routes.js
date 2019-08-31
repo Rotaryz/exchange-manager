@@ -304,7 +304,8 @@ export default [
                 meta: {
                   title: '页面管理', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['页面管理'] // 面包屑标题
+                  crumbs: ['页面管理'], // 面包屑标题
+                  style:{margin:0}
                 }
               },
               {

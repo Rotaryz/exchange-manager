@@ -45,6 +45,12 @@ export default {
   getGoodsList(args) {
     const url = `/exchange-platform/platform/platform-goods/goods/index`
     return request.post({url, ...args})
+  },
+  // 获取折扣
+  getDiscount(args) {
+    const url = `/exchange-platform/shop/shop/shop-level/index`
+    return request.get({url, ...args})
   }
+
 
 }

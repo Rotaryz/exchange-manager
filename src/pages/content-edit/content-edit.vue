@@ -10,22 +10,20 @@
             {{name}}标题
           </div>
           <div class="edit-input-box">
-            <input v-if="currentType === 'video'"
-                   v-model="addData.title"
-                   :placeholder="'在此输入'+name+'标题，最多30个字'"
-                   :disabled="isDisabled"
-                   class="edit-input title-input"
-                   type="text"
-                   max-length="30"
-            >
-            <input v-else
-                   v-model="addData.title"
-                   :placeholder="'在此输入'+name+'标题，最少5个最多50个字'"
-                   :disabled="isDisabled"
-                   class="edit-input title-input"
-                   type="text"
-                   max-length="50"
-            >
+            <base-input v-if="currentType === 'video'"
+                        v-model="addData.title"
+                        :placeholder="'在此输入'+name+'标题，最多30个字'"
+                        :disabled="isDisabled"
+                        inputStyle="border-radius: 2px"
+                        :maxlength="30"
+            ></base-input>
+            <base-input v-else
+                        v-model="addData.title"
+                        :placeholder="'在此输入'+name+'标题，最少5个最多50个字'"
+                        :disabled="isDisabled"
+                        inputStyle="border-radius: 2px"
+                        :maxlength="50"
+            ></base-input>
 
           </div>
         </div>
@@ -213,7 +211,7 @@
                     <div class="name">{{item.value.name}}</div>
                     <div class="details">{{item.value.describe}}</div>
                     <div class="operate">
-                      <span class="price-now">{{formatM(item.value.sale_price).int}}<span class="small">{{formatM(item.value.sale_price).dec}}<span class="unit">元</span></span></span>
+                      <span class="price-now">{{formatM(item.value.sale_price).int || 0}}<span class="small">{{formatM(item.value.sale_price || 0).dec}}<span class="unit">元</span></span></span>
                       <span class="price">{{item.value.price}}元</span>
                     </div>
                   </div>
@@ -296,7 +294,7 @@
     <goods-list-dialog
       v-if="goodsVisible"
       :otherParams="{use_type: 2}"
-      :selects="selects"
+      :selects="selectGoodsArr"
       :visible.sync="goodsVisible"
       :limit="5"
       :valueKey="false"
@@ -306,7 +304,14 @@
 
     <!--添加文字-->
     <base-modal :visible.sync="addTextVisible" title="增加详情文本" :submitBefore="justifyAddText" @submit="addTextItem">
-      <base-input v-model="addText" placeholder="输入文字" type="textarea" width="600" height="300"></base-input>
+      <base-input
+        v-model="addText"
+        placeholder="输入文字"
+        type="textarea"
+        width="600"
+        height="300"
+        limit="2000"
+      ></base-input>
     </base-modal>
 
     <base-footer :isSeize="false">
@@ -449,6 +454,15 @@
       },
       editName() {
         return this.id ? (this.isDisabled ? '查看' : '编辑') : '创作'
+      },
+      selectGoodsArr() {
+        let arr = this.addData.details.filter(item => {
+          return item.type === 'goods'
+        })
+        let goods = arr.map(item => {
+          return item.value
+        })
+        return goods.length ? goods : []
       }
     },
     created() {
@@ -648,8 +662,7 @@
         this.addDetailContentItem({
           type: 'video',
           value: res.data.url,
-          video: res.data.id,
-          file_id: res.data.id
+          id: res.data.id
         })
       },
       deleteContentItem(idx, item) {
@@ -758,8 +771,8 @@
             style_type: "content_goods_list",
             content: this.addData.goodsList.map(item => {
               return {
-                "goods_id": item.id,
-                "goods_spec_id": item.goods_spec_id
+                "goods_id": item.id
+                // "goods_spec_id": item.goods_spec_id
               }
             })
           })
@@ -793,8 +806,8 @@
             switch (item.type) {
               case 'goods':
                 newItem.content = [{
-                  goods_id: item.value.id,
-                  goods_spec_id: item.value.goods_spec_id
+                  goods_id: item.value.id
+                  // goods_spec_id: item.value.goods_spec_id
                 }]
                 break;
               case 'image':
@@ -804,7 +817,7 @@
                 break;
               case 'video':
                 newItem.content = [{
-                  video_id: item.file_id,
+                  video_id: item.id,
                   title: '',
                   introduction: ''
                 }]
@@ -891,8 +904,8 @@
           line-height: 1.5
           font-family: $font-family-regular
           white-space: nowrap
-          text-align: left
-          min-width: 64px
+          text-align: right
+          width: 68px
         .start
           display: inline-block
           margin-right: -2px

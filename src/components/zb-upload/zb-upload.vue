@@ -286,6 +286,7 @@
   .show-image
     margin-right: 20px
     position: relative
+    font-size: 0
 
     /*&:last-child*/
     /*margin: 0*/
@@ -303,7 +304,7 @@
 
   .tag
     position absolute
-    bottom 3px
+    bottom 0
     right: 0
     left: 0
     background: rgba(30, 35, 51, 0.5)

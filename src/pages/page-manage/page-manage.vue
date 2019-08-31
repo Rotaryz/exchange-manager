@@ -6,362 +6,366 @@
                tabAlign="left"
                @change="tabChange"
     ></base-tabs>
-    <template v-if="pageType === 'gift_index'">
-      <gift-content :bannerList="bannerList"
-                    :navigationList="navigationList"
-                    :hotList="hotList"
-                    :recommendList="recommendList"
-                    :industryRecommendList="industryRecommendList"
-                    :cmsType.sync="type"
-                    :cmsList="moduleList"
-      ></gift-content>
-      <div class="edit-modular">
-        <div class="box">
-          <div class="small">
-            <div v-if="type === 'banner'" class="banner">
-              <div class="content-header">
-                <div class="content-title">首图banner</div>
-                <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
-              </div>
-              <slick-list v-model="bannerList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :multiple="false"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :indicatorPosition="false"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
+    <div class="content-wrap">
+      <div class="content-detail">
+        <template v-if="pageType === 'gift_index'">
+          <gift-content :bannerList="bannerList"
+                        :navigationList="navigationList"
+                        :hotList="hotList"
+                        :recommendList="recommendList"
+                        :industryRecommendList="industryRecommendList"
+                        :cmsType.sync="type"
+                        :cmsList="moduleList"
+          ></gift-content>
+          <div class="edit-modular">
+            <div class="box">
+              <div class="small">
+                <div v-if="type === 'banner'" class="banner">
+                  <div class="content-header">
+                    <div class="content-title">首图banner</div>
+                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                  </div>
+                  <slick-list v-model="bannerList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :multiple="false"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :indicatorPosition="false"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
 
-                    <!--@click=""-->
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                      <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
-                    </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                        <!--@click=""-->
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                          <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'navigation'" class="navigation">
+                  <div class="content-header">
+                    <div class="content-title">类目导航</div>
+                    <div class="content-sub">(最多添加5个类目，鼠标拖拽调整类目顺序)</div>
                   </div>
-                </slick-item>
-              </slick-list>
-            </div>
-            <div v-if="type === 'navigation'" class="navigation">
-              <div class="content-header">
-                <div class="content-title">类目导航</div>
-                <div class="content-sub">(最多添加5个类目，鼠标拖拽调整类目顺序)</div>
-              </div>
-              <slick-list v-model="navigationList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in navigationList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :multiple="false"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :indicatorPosition="false"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
+                  <slick-list v-model="navigationList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in navigationList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :multiple="false"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :indicatorPosition="false"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
 
-                    <!--@click=""-->
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                      <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
+                        <!--@click=""-->
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                          <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'hot'" class="hot">
+                  <div class="content-header">
+                    <div class="content-title">今日爆款</div>
+                    <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
+                  </div>
+                  <slick-list v-model="hotList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in hotList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'recommend'" class="goods">
+                  <div class="content-header">
+                    <div class="content-title">为你推荐</div>
+                    <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
+                  </div>
+                  <slick-list v-model="recommendList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in recommendList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-if="pageType === 'brand_index'">
+          <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList"></brand-content>
+          <div class="edit-modular">
+            <div class="box">
+              <div class="small">
+                <div v-if="type === 'banner'" class="banner">
+                  <div class="content-header">
+                    <div class="content-title">轮播图</div>
+                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                  </div>
+                  <slick-list v-model="bannerList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'brand'" class="brands">
+                  <div class="content-header">
+                    <div class="content-title">品牌动态</div>
+                    <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                  </div>
+                  <slick-list v-model="brandList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择品牌</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <base-modal
+          ref="goods"
+          width="1000"
+          :visible.sync="showModal"
+          :submitBefore="justifyForm"
+          @cancel="hideGoods"
+          @submit="miniGoods"
+        >
+          <div class="model">
+            <div class="shade-header">
+              <div class="shade-tab-type">
+                <div v-for="(items, index) in typeList" :key="index" :class="{'shade-tab-item-active': tabIndex === index}" class="shade-tab-item hand" @click="setLinkType(index, $event)">{{items.title}}</div>
+                <div v-if="showModalLine" class="line" :style="{left: left + 'px'}"></div>
+              </div>
+              <!--<div class="shade-title">选择商品</div>-->
+              <span class="close hand" @click="hideGoods"></span>
+            </div>
+            <div v-if="tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
+              <div class="shade-tab">
+                <base-select
+                  placeholder="请选择分类"
+                  :data="classList"
+                  :width="218"
+                  valueKey="id"
+                  labelKey="name"
+                  :value.sync="parentId"
+                ></base-select>
+                <base-search
+                  v-model="keyword"
+                  :width="244"
+                  placeholder="请输入商品名称"
+                  @search="searchGoods"
+                ></base-search>
+              </div>
+              <div class="goods-content">
+                <div class="goods-item goods-header">
+                  <div class="goods-text"></div>
+                  <div class="goods-text">商品名称</div>
+                  <div class="goods-text">零售价</div>
+                  <div class="goods-text">库存</div>
+                </div>
+                <div class="goods-list">
+                  <div v-for="(item, index) in choiceGoods" :key="index" class="goods-item">
+                    <div class="goods-text">
+                      <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                        <span class="after"></span>
+                      </div>
                     </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                  </div>
-                </slick-item>
-              </slick-list>
-            </div>
-            <div v-if="type === 'hot'" class="hot">
-              <div class="content-header">
-                <div class="content-title">今日爆款</div>
-                <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
-              </div>
-              <slick-list v-model="hotList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in hotList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
-                      <p class="goods-title">{{item.detail.title}}</p>
+                    <div class="goods-text goods-msg">
+                      <img :src="item.goods_cover_image" alt="" class="goods-img">
+                      <div class="goods-name">{{item.name}}</div>
                     </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                    <div class="goods-text">¥{{item.price}}</div>
+                    <div class="goods-text">{{item.saleable}}</div>
                   </div>
-                </slick-item>
-              </slick-list>
-            </div>
-            <div v-if="type === 'recommend'" class="goods">
-              <div class="content-header">
-                <div class="content-title">为你推荐</div>
-                <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
+                  <!--select-icon-active-->
+                </div>
               </div>
-              <slick-list v-model="recommendList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in recommendList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
-                      <p class="goods-title">{{item.detail.title}}</p>
+              <div v-if="total > 0" class="page-box">
+                <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
+              </div>
+            </div>
+            <!--商品分类-->
+            <div v-if="tabIndex === 1 || (tabIndex === 0 && type === 'navigation')" class="goods-cate">
+              <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
+                <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === goodsIdx}" @click="selectGoods(goods, goodsIdx)">
+                  <span class="after"></span>
+                </div>
+                <div class="shade-goods-msg">
+                  <div class="shade-goods-name">{{goods.name}}</div>
+                  <div class="shade-goods-num">{{goods.goods_count}}个商品</div>
+                </div>
+              </div>
+            </div>
+            <!--小程序链接-->
+            <div v-if="tabIndex === 2" class="link-text">
+              <textarea v-model="miniLink" class="link-text-box" placeholder="请输入小程序链接"></textarea>
+            </div>
+            <!--H5链接-->
+            <div v-if="tabIndex === 3" class="link-text">
+              <textarea v-model="outHtml" class="link-text-box" placeholder="请输入H5链接"></textarea>
+            </div>
+            <!--内容列表-->
+            <div v-if="tabIndex === 4 || (tabIndex === 0 && type === 'banner' && pageType === 'brand_index')" class="goods-modal">
+              <div class="shade-tab">
+                <base-search
+                  v-model="keyword"
+                  :width="244"
+                  :isShowTip="false"
+                  boxStyle="margin-left: 0"
+                  placeholder="请输入内容文章标题"
+                  @search="searchArticle"
+                ></base-search>
+              </div>
+              <div class="goods-content article">
+                <div class="goods-item goods-header">
+                  <div class="goods-text"></div>
+                  <div class="goods-text">文章封面</div>
+                  <div class="goods-text">标题</div>
+                </div>
+                <div class="goods-list">
+                  <div v-for="(item, index) in articleArr" :key="index" class="goods-item">
+                    <div class="goods-text">
+                      <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                        <span class="after"></span>
+                      </div>
                     </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                  </div>
-                </slick-item>
-              </slick-list>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <template v-if="pageType === 'brand_index'">
-      <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList"></brand-content>
-      <div class="edit-modular">
-        <div class="box">
-          <div class="small">
-            <div v-if="type === 'banner'" class="banner">
-              <div class="content-header">
-                <div class="content-title">轮播图</div>
-                <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
-              </div>
-              <slick-list v-model="bannerList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
-                      <p class="goods-title">{{item.detail.title}}</p>
+                    <div class="goods-text goods-msg">
+                      <img :src="item.cover_image_url" alt="" class="goods-img">
                     </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                    <div class="goods-text">{{item.title}}</div>
                   </div>
-                </slick-item>
-              </slick-list>
-            </div>
-            <div v-if="type === 'brand'" class="brands">
-              <div class="content-header">
-                <div class="content-title">品牌动态</div>
-                <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                </div>
               </div>
-              <slick-list v-model="brandList" :distance="30" lockAxis="y">
-                <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
-                  <div class="advertisement-msg" @click="getIndex(index)">
-                    <upload
-                      :data.sync="item.detail.image_url"
-                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                      imgStyle="width: 100px; height: 100px"
-                      :isShowDel="false"
-                      :isChange="true"
-                      firstTag="更换图片"
-                      @delete="deleteGoodsMainPic()"
-                      @successImage="successImage"
-                    ></upload>
-                    <div class="advertisement-link">
-                      <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择品牌</base-button>
-                      <p class="goods-title">{{item.detail.title}}</p>
+              <div v-if="total > 0" class="page-box">
+                <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
+              </div>
+            </div>
+            <!--品牌列表-->
+            <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-modal">
+              <div class="shade-tab">
+                <base-search
+                  v-model="keyword"
+                  :width="244"
+                  :isShowTip="false"
+                  boxStyle="margin-left: 0"
+                  placeholder="请输入品牌名称"
+                  @search="searchBrand"
+                ></base-search>
+              </div>
+              <div class="goods-content">
+                <div class="goods-item goods-header">
+                  <div class="goods-text"></div>
+                  <div class="goods-text">品牌logo</div>
+                  <div class="goods-text">品牌名称</div>
+                </div>
+                <div class="goods-list">
+                  <div v-for="(item, index) in brandArr" :key="index" class="goods-item">
+                    <div class="goods-text">
+                      <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
+                        <span class="after"></span>
+                      </div>
                     </div>
-                    <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                  </div>
-                </slick-item>
-              </slick-list>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <base-modal
-      ref="goods"
-      width="1000"
-      :visible.sync="showModal"
-      :submitBefore="justifyForm"
-      @cancel="hideGoods"
-      @submit="miniGoods"
-    >
-      <div class="model">
-        <div class="shade-header">
-          <div class="shade-tab-type">
-            <div v-for="(items, index) in typeList" :key="index" :class="{'shade-tab-item-active': tabIndex === index}" class="shade-tab-item hand" @click="setLinkType(index, $event)">{{items.title}}</div>
-            <div v-if="showModalLine" class="line" :style="{left: left + 'px'}"></div>
-          </div>
-          <!--<div class="shade-title">选择商品</div>-->
-          <span class="close hand" @click="hideGoods"></span>
-        </div>
-        <div v-if="tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
-          <div class="shade-tab">
-            <base-select
-              placeholder="请选择分类"
-              :data="classList"
-              :width="218"
-              valueKey="id"
-              labelKey="name"
-              :value.sync="parentId"
-            ></base-select>
-            <base-search
-              v-model="keyword"
-              :width="244"
-              placeholder="请输入商品名称"
-              @search="searchGoods"
-            ></base-search>
-          </div>
-          <div class="goods-content">
-            <div class="goods-item goods-header">
-              <div class="goods-text"></div>
-              <div class="goods-text">商品名称</div>
-              <div class="goods-text">零售价</div>
-              <div class="goods-text">库存</div>
-            </div>
-            <div class="goods-list">
-              <div v-for="(item, index) in choiceGoods" :key="index" class="goods-item">
-                <div class="goods-text">
-                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
-                    <span class="after"></span>
+                    <div class="goods-text goods-msg">
+                      <img :src="item.logo_image_url" alt="" class="goods-img">
+                    </div>
+                    <div class="goods-text">{{item.name}}</div>
                   </div>
                 </div>
-                <div class="goods-text goods-msg">
-                  <img :src="item.goods_cover_image" alt="" class="goods-img">
-                  <div class="goods-name">{{item.name}}</div>
-                </div>
-                <div class="goods-text">¥{{item.price}}</div>
-                <div class="goods-text">{{item.saleable}}</div>
               </div>
-              <!--select-icon-active-->
-            </div>
-          </div>
-          <div v-if="total > 0" class="page-box">
-            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
-          </div>
-        </div>
-        <!--商品分类-->
-        <div v-if="tabIndex === 1 || (tabIndex === 0 && type === 'navigation')" class="goods-cate">
-          <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
-            <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === goodsIdx}" @click="selectGoods(goods, goodsIdx)">
-              <span class="after"></span>
-            </div>
-            <div class="shade-goods-msg">
-              <div class="shade-goods-name">{{goods.name}}</div>
-              <div class="shade-goods-num">{{goods.goods_count}}个商品</div>
-            </div>
-          </div>
-        </div>
-        <!--小程序链接-->
-        <div v-if="tabIndex === 2" class="link-text">
-          <textarea v-model="miniLink" class="link-text-box" placeholder="请输入小程序链接"></textarea>
-        </div>
-        <!--H5链接-->
-        <div v-if="tabIndex === 3" class="link-text">
-          <textarea v-model="outHtml" class="link-text-box" placeholder="请输入H5链接"></textarea>
-        </div>
-        <!--内容列表-->
-        <div v-if="tabIndex === 4 || (tabIndex === 0 && type === 'banner' && pageType === 'brand_index')" class="goods-modal">
-          <div class="shade-tab">
-            <base-search
-              v-model="keyword"
-              :width="244"
-              :isShowTip="false"
-              boxStyle="margin-left: 0"
-              placeholder="请输入内容文章标题"
-              @search="searchArticle"
-            ></base-search>
-          </div>
-          <div class="goods-content">
-            <div class="goods-item goods-header">
-              <div class="goods-text"></div>
-              <div class="goods-text">文章封面</div>
-              <div class="goods-text">标题</div>
-            </div>
-            <div class="goods-list">
-              <div v-for="(item, index) in articleArr" :key="index" class="goods-item">
-                <div class="goods-text">
-                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
-                    <span class="after"></span>
-                  </div>
-                </div>
-                <div class="goods-text goods-msg">
-                  <img :src="item.cover_image_url" alt="" class="goods-img">
-                </div>
-                <div class="goods-text">{{item.title}}</div>
+              <div v-if="total > 0" class="page-box">
+                <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
               </div>
             </div>
           </div>
-          <div v-if="total > 0" class="page-box">
-            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
-          </div>
-        </div>
-        <!--品牌列表-->
-        <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-modal">
-          <div class="shade-tab">
-            <base-search
-              v-model="keyword"
-              :width="244"
-              :isShowTip="false"
-              boxStyle="margin-left: 0"
-              placeholder="请输入品牌名称"
-              @search="searchBrand"
-            ></base-search>
-          </div>
-          <div class="goods-content">
-            <div class="goods-item goods-header">
-              <div class="goods-text"></div>
-              <div class="goods-text">品牌logo</div>
-              <div class="goods-text">品牌名称</div>
-            </div>
-            <div class="goods-list">
-              <div v-for="(item, index) in brandArr" :key="index" class="goods-item">
-                <div class="goods-text">
-                  <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === index}" @click="selectGoods(item, index)">
-                    <span class="after"></span>
-                  </div>
-                </div>
-                <div class="goods-text goods-msg">
-                  <img :src="item.logo_image_url" alt="" class="goods-img">
-                </div>
-                <div class="goods-text">{{item.name}}</div>
-              </div>
-            </div>
-          </div>
-          <div v-if="total > 0" class="page-box">
-            <base-pagination ref="pages" :currentPage.sync="goodsPage" :total="total" :pageSize="6"></base-pagination>
-          </div>
-        </div>
-      </div>
-    </base-modal>
+        </base-modal>
 
-    <base-footer :isSeize="false">
-      <base-button plain @click="newCms">新建</base-button>
-      <base-button type="primary" @click="submitBtn">保存</base-button>
-    </base-footer>
+        <base-footer :isSeize="false">
+          <base-button plain @click="newCms">新建</base-button>
+          <base-button type="primary" @click="submitBtn">保存</base-button>
+        </base-footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -461,7 +465,7 @@
         return name
       },
       showModalLine() {
-        if (this.type === 'navigation' || this.type === 'banner') {
+        if (this.type === 'banner' && this.pageType === 'gift_index') {
           return true
         }
         return false
@@ -893,13 +897,22 @@
   @import "~@design"
 
   .page-manage
-    overflow: hidden
-    border: 0.5px solid $color-line
-    border-radius: 4px
-    background: $color-white
+    position: relative
     width: 100%
-    max-height: 100%
-    box-sizing: border-box
+    display: flex
+    flex-direction: column
+    .content-wrap
+      flex: 1
+      padding: 20px
+    .content-detail
+      overflow: hidden
+      border: 0.5px solid $color-line
+      border-radius: 4px
+      background: $color-white
+      width: 100%
+      height: 100%
+      max-height: 100%
+      box-sizing: border-box
 
   .edit-modular
     height: 100%
@@ -940,6 +953,7 @@
     box-sizing: border-box
     padding-bottom: 16px
     line-height: 1
+    margin-bottom: 30px
     .excel
       margin-left: 20px
       &:hover
@@ -974,8 +988,7 @@
     align-items: center
     position: relative
     margin-top: 24px
-    &:first-child
-      margin-top: 30px
+    user-select: none
     .add-advertisement
       position: relative
       margin-left: 20px
@@ -1017,6 +1030,7 @@
     .advertisement-link
       display: flex
       align-items: center
+      overflow: hidden
       .goods-title
         margin-left: 18px
         line-height: 1.2
@@ -1217,6 +1231,8 @@
       align-items: center
       display: flex
 
+  .article .goods-text:nth-child(2)
+    flex: 1.4
   .page-box
     box-sizing: border-box
     height: 76px
@@ -1323,5 +1339,5 @@
       border-radius: 50%
 
   .select-icon-active
-    border: 5px solid #0AD4A1
+    border: 5px solid $color-main
 </style>

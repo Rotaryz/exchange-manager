@@ -133,7 +133,6 @@
           data: params
         })
       ]).then((res) => {
-        console.log(res)
         next((vw) => {
           vw.list = res[0].data
           vw.total = res[0].meta.total
