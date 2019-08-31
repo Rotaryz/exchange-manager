@@ -166,7 +166,8 @@
         trade: '',
         tradeList: [],
         id: '',
-        goodsList: []
+        goodsList: [],
+        isSubmit: false
       }
     },
     computed: {
@@ -253,6 +254,8 @@
       submitBtn() {
         let checkForm = this.checkForm()
         if (!checkForm) return
+        if (this.isSubmit) return
+        this.isSubmit = true
         if (this.id) {
           API.Brand.editBrand({data: this.msg})
             .then(res => {
@@ -262,6 +265,11 @@
                 this.$router.back()
               }, 300)
             })
+            .finally(res => {
+              setTimeout(() => {
+                this.isSubmit = false
+              }, 500)
+            })
         } else {
           API.Brand.newBrand({data: this.msg})
             .then(res => {
@@ -270,6 +278,11 @@
               setTimeout(() => {
                 this.$router.back()
               }, 300)
+            })
+            .finally(res => {
+              setTimeout(() => {
+                this.isSubmit = false
+              }, 500)
             })
         }
 

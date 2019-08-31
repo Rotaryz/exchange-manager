@@ -437,7 +437,8 @@
         imageArr: [],
         goodsVisible: false,
         selects: [],
-        msg: ''
+        msg: '',
+        isSubmit: false
       }
     },
     computed: {
@@ -743,6 +744,11 @@
       async _submitBtn(name, status) {
         let res = status ? this.justifyConent() : this.justifyDraft()
         if (res) {
+          if (this.isSubmit) return
+          this.isSubmit = true
+          setTimeout(() => {
+            this.isSubmit = false
+          }, 2000)
           let data = this.getSubmitData(status)
           let res = await API.Content[name]({data, loading: true})
           this.$toast.show(res.message)
