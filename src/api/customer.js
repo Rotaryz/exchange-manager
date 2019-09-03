@@ -67,5 +67,15 @@ export default {
   editSettingDetail(args) {
     const url = `/exchange-platform/platform/shop/shop-manager/set-level`
     return request.post({url, ...args})
+  },
+  /**
+   *  认证审核[1.4.1]
+   * @param args
+   * @returns {*}
+   */
+  // todo ammy
+  postCertificateStatus(args) {
+    const url = `/exchange-platform/platform/shop/shop-manager/certificate`
+    return request.post({url, ...args})
   }
 }
