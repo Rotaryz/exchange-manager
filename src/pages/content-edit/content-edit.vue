@@ -293,7 +293,7 @@
     <!--选择商品弹窗-->
     <goods-list-dialog
       v-if="goodsVisible"
-      :otherParams="{use_type: 2}"
+      :otherParams="{}"
       :selects="selectGoodsArr"
       :visible.sync="goodsVisible"
       :limit="5"
