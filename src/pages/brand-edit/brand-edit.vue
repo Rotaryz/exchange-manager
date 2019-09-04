@@ -2,7 +2,7 @@
   <div class="goods-brand-edit child-router">
     <div class="edit-page-title">
       <img src="./icon-new_commodity@2x.png" class="edit-title-icon">
-      <p class="edit-title-name">创作品牌</p>
+      <p class="edit-title-name">创建品牌</p>
     </div>
     <div class="wrap-container">
       <mobile-content :brandMsg="msg" :goodsList="goodsList"></mobile-content>

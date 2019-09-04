@@ -9,7 +9,7 @@
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="文章列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
         <router-link tag="div" :to="{path:'content-edit',query:{type: 'common'}}" append>
-          <base-button type="primary" plain addIcon>创作文章</base-button>
+          <base-button type="primary" plain addIcon>创建文章</base-button>
         </router-link>
       </base-table-tool>
       <div class="table-content">

@@ -124,7 +124,7 @@ export default [
                     name: 'goods-brand-edit',
                     component: () => import('@pages/brand-edit/brand-edit'),
                     meta: {
-                      crumbs: ['品牌列表', '创作品牌']
+                      crumbs: ['品牌列表', '创建品牌']
                     }
                   }
                 ]
@@ -323,8 +323,8 @@ export default [
                     name: 'content-edit',
                     component: () => import('@pages/content-edit/content-edit'),
                     meta: {
-                      title: '创作文章', // 页面标题
-                      crumbs: ['内容列表', '创作文章'] // 面包屑标题
+                      title: '创建文章', // 页面标题
+                      crumbs: ['内容列表', '创建文章'] // 面包屑标题
                     }
                   }
                 ]

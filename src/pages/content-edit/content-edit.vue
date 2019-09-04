@@ -342,7 +342,7 @@
   import {formatCouponMoney, objDeepCopy} from '@utils/common'
 
   const PAGE_NAME = 'CONTET_EDIT'
-  const TITLE = '创作文章'
+  const TITLE = '创建文章'
   export default {
     name: PAGE_NAME,
     page: {
@@ -376,12 +376,12 @@
       return {
         id: "",
         isDisabled: false,
-        currentType: 'common', // 现在创作类型
+        currentType: 'common', // 现在创建类型
         typeList: {
           common: {name: '文章'},
           video: {name: '视频'},
           cookbook: {name: '菜谱'}
-        }, // 三种创作
+        }, // 三种创建
         addText: '',
         addData: {
           likes: [],
@@ -454,7 +454,7 @@
         return this.typeList[this.currentType] && this.typeList[this.currentType].name || '文章'
       },
       editName() {
-        return this.id ? (this.isDisabled ? '查看' : '编辑') : '创作'
+        return this.id ? (this.isDisabled ? '查看' : '编辑') : '创建'
       },
       selectGoodsArr() {
         let arr = this.addData.details.filter(item => {
