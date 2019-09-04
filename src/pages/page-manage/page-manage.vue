@@ -111,7 +111,7 @@
                 </div>
                 <div v-if="type === 'recommend'" class="goods">
                   <div class="content-header">
-                    <div class="content-title">为你推荐</div>
+                    <div class="content-title">精品推荐</div>
                     <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
                   </div>
                   <slick-list v-model="recommendList" :distance="30" lockAxis="y">
@@ -141,7 +141,8 @@
           </div>
         </template>
         <template v-if="pageType === 'brand_index'">
-          <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList"></brand-content>
+          <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList" :bestList="bestList"
+          ></brand-content>
           <div class="edit-modular">
             <div class="box">
               <div class="small">
@@ -175,7 +176,7 @@
                 <div v-if="type === 'brand'" class="brands">
                   <div class="content-header">
                     <div class="content-title">品牌动态</div>
-                    <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                    <div class="content-sub">(最多添加20个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="brandList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
@@ -191,7 +192,34 @@
                           @successImage="successImage"
                         ></upload>
                         <div class="advertisement-link">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择品牌</base-button>
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择链接</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'best'" class="brands">
+                  <div class="content-header">
+                    <div class="content-title">精品推荐</div>
+                    <div class="content-sub">(最多添加20商品，鼠标拖拽调整商品顺序)</div>
+                  </div>
+                  <slick-list v-model="bestList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in bestList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
                           <p class="goods-title">{{item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -220,7 +248,10 @@
               <!--<div class="shade-title">选择商品</div>-->
               <span class="close hand" @click="hideGoods"></span>
             </div>
-            <div v-if="tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
+            <div
+              v-if="(tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index') || type === 'best')) || (tabIndex === 1 && type === 'brand')"
+              class="good-modal"
+            >
               <div class="shade-tab">
                 <base-select
                   placeholder="请选择分类"
@@ -266,7 +297,7 @@
               </div>
             </div>
             <!--商品分类-->
-            <div v-if="tabIndex === 1 || (tabIndex === 0 && type === 'navigation')" class="goods-cate">
+            <div v-if="(tabIndex === 1 || (tabIndex === 0 && type === 'navigation')) && outLink === 3003" class="goods-cate">
               <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
                 <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === goodsIdx}" @click="selectGoods(goods, goodsIdx)">
                   <span class="after"></span>
@@ -370,7 +401,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
+  // import * as Helpers from './modules/helpers'
   import API from '@api'
   import GiftContent from './gift-content/gift-content'
   import BrandContent from './brand-content/brand-content'
@@ -392,7 +423,8 @@
   const HOT_TYPE = [{title: '今日爆款', status: 3002}]
   const GOODS_TYPE = [{title: '商品推荐', status: 3002}]
   const ARTICLE_TYPE = [{title: '文章列表', status: 3006}]
-  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}]
+  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品详情', status: 3002}]
+  const BEST_TYPE = [{title: '商品详情', status: 3002}]
   const TEMPLATE_OBJ = {
     detail: {
       object_id: '',
@@ -428,6 +460,7 @@
         bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
+        bestList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         type: 'banner',
         cmsIndex: 0,
         showModal: false,
@@ -465,7 +498,7 @@
         return name
       },
       showModalLine() {
-        if (this.type === 'banner' && this.pageType === 'gift_index') {
+        if (this.type === 'banner' && this.pageType === 'gift_index' || this.type === 'brand') {
           return true
         }
         return false
@@ -500,6 +533,9 @@
         case 'brand':
           this.typeList = BRANDS_TYPE
           break
+        case 'best':
+          this.typeList = BEST_TYPE
+          break
         default:
           break
         }
@@ -533,6 +569,9 @@
                 break
               case 'industry_recommend':
                 vx.industryRecommendList = item.children
+                break
+              case 'best_recommend':
+                vx.bestList = item.children
                 break
               }
             })
@@ -596,6 +635,9 @@
             case 'industry_recommend':
               this.industryRecommendList = item.children
               break
+            case 'best_recommend':
+              this.bestList = item.children
+              break
             }
           })
         })
@@ -648,6 +690,7 @@
         case 3002:
         case 3003:
         case 3006:
+        case 2011:
           if (this.currentItem !== '') {
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
@@ -668,6 +711,7 @@
           }
           break
         }
+        this.$forceUpdate()
       },
       // 获取分类
       _getCateList() {
@@ -735,13 +779,20 @@
         this.requestHandle()
       },
       requestHandle() {
+        console.log(this.outLink)
         switch (this.outLink) {
         case 3002:
-          this._getGoodsList(); break
+          this._getGoodsList()
+          break
         case 3006:
-          this._getArticleList(); break
+          this._getArticleList()
+          break
         case 3009:
-          this._getBrandList(); break
+          this._getBrandList()
+          break
+        case 2011:
+          this._getGoodsList()
+          break
         }
       },
       hideGoods() {
@@ -794,8 +845,15 @@
           break
         case 'brand':
           type = '品牌'
-          if (this[this.dataName].length >= 10) {
-            this.$toast.show('最多添加10个' + type)
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
+            return
+          }
+          break
+        case 'best':
+          type = '精品推荐'
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
             return
           }
           break
@@ -820,10 +878,12 @@
         let type = ''
         switch (this.type) {
         case 'navigation':
-          type = '类目'; break
+          type = '类目';
+          break
         case 'hot':
         case 'recommend':
-          type = '商品'; break
+          type = '商品';
+          break
         case 'banner':
           if (this.pageType === 'gift_index') {
             type = 'banner'
@@ -832,7 +892,11 @@
           }
           break
         case 'brand':
-          type = '品牌'; break
+          type = '品牌'
+          break
+        case 'best':
+          type = '精品推荐'
+          break
         }
         if (!this[this.dataName].length) {
           this.$toast.show(`${type}不能为空`, 1500)
@@ -883,7 +947,8 @@
               this[this.dataName].splice(index, 1)
             })
           })
-          .catch(() => {})
+          .catch(() => {
+          })
       },
       deleteGoodsMainPic() {
         this[this.dataName][this.cmsIndex].detail.image_url = ''
@@ -1233,6 +1298,7 @@
 
   .article .goods-text:nth-child(2)
     flex: 1.4
+
   .page-box
     box-sizing: border-box
     height: 76px
