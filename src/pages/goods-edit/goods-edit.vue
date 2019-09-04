@@ -26,14 +26,40 @@
       </template>
       <!------------>
       <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <cascade-select ref="cascadeSelect"
-                        v-model="edit.category_id"
-                        valueKey="id"
-                        :width="194"
-                        size="middle"
-                        placeholder1="请选择分类"
-                        placeholder2="请选择子分类"
-        ></cascade-select>
+        <!--<cascade-select ref="cascadeSelect"-->
+        <!--v-model="edit.category_id"-->
+        <!--valueKey="id"-->
+        <!--:width="194"-->
+        <!--size="middle"-->
+        <!--placeholder1="请选择分类"-->
+        <!--placeholder2="请选择子分类"-->
+        <!--&gt;</cascade-select>-->
+        <base-select v-model="goodsCategoryFirst"
+                     :data="goodsCategoryFirstList"
+                     :height="32"
+                     radius="4"
+                     placeholder="请选择分类"
+                     valueKey="id"
+                     labelKey="name"
+                     size="small"
+                     width="180"
+                     @change-visible="changeVisible"
+                     @change="_selectCategoryFirst"
+        >
+        </base-select>
+        <base-select v-model="goodsCategorySecond"
+                     :data="goodsCategorySecondList"
+                     :height="32"
+                     placeholder="请选择子分类"
+                     width="180"
+                     valueKey="id"
+                     labelKey="name"
+                     size="small"
+                     radius="4"
+                     class="level-two"
+                     @change="goodsCategoryChange"
+        >
+        </base-select>
       </base-form-item>
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
@@ -190,7 +216,7 @@
 
 <script type="text/ecmascript-6">
   import Upload from '../../components/zb-upload/zb-upload.vue'
-  import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
+  // import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
   import API from '@api'
@@ -207,7 +233,7 @@
       TitleLine,
       Upload,
       Radio,
-      CascadeSelect
+      // CascadeSelect
     },
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
@@ -301,7 +327,12 @@
         specId: 0,
         useType: 1,
         brandId: '',
-        freightType: 1
+        freightType: 1,
+        // 分类选择
+        goodsCategoryFirstList: [],
+        goodsCategorySecondList: [],
+        goodsCategoryFirst: '',
+        goodsCategorySecond: ''
       }
     },
     watch: {
@@ -318,12 +349,63 @@
     mounted() {
       this.id = this.$route.query.id || 0
       if (this.id) {
-        this.$refs.cascadeSelect.setValue({goods_id: this.id})
+        this.setCategory()
       } else {
         this.edit.type = +this.$route.query.type || 1
       }
     },
     methods: {
+      setCategory() {
+        this._getCategoryFirst({goods_id: this.id}).then((res) => {
+          let item = res.data.find((item) => item.is_selected)
+          if (!item) return false
+          this.goodsCategoryFirst = item.id
+          this.goodsCategoryChange(this.goodsCategorySecond)
+          this._selectCategoryFirst({goods_id: this.id}).then((res2) => {
+            let item2 = res2.data.find((item) => item.is_selected)
+            if (!item2) return false
+            this.goodsCategorySecond = item2 && item2.id
+            this.goodsCategoryChange(this.goodsCategorySecond)
+          })
+        })
+      },
+      changeVisible(val) {
+        if (!val) return
+        this._getCategoryFirst()
+      },
+      // 获取一级分类
+      async _getCategoryFirst(otherParams = {}) {
+        return API.Goods.getCategory({
+          data: {pid: -1, ...otherParams},
+          loading: false
+        }).then((res) => {
+          if (this.isAddAll) res.data = [{id: '', name: '全部'}, ...res.data]
+          this.goodsCategoryFirstList = res.data || []
+          return res
+        })
+      },
+      // 选择第一分类
+      async _selectCategoryFirst(otherParams = {}) {
+        this.goodsCategorySecond = ''
+        this.goodsCategorySecondList = []
+        let res = null
+        // 选择全部时
+        if (this.goodsCategoryFirst) {
+          // 选择有内容选项
+          res = await API.Goods.getCategory({
+            doctor() {
+            },
+            data: {pid: this.goodsCategoryFirst, ...otherParams},
+            loading: false
+          })
+          this.goodsCategorySecondList = res.data || []
+        }
+        this.goodsCategoryChange(this.goodsCategoryFirst)
+        return res
+      },
+      goodsCategoryChange(val) {
+        this.edit.category_id = val
+      },
       changeType() {
         if (this.edit.specification_type && !this.goodsSpecification.length) {
           this.getGoodsDetials()
@@ -346,7 +428,7 @@
           })
       },
       setData(res) {
-        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId,freight_type:freightType,use_type:useType, ...edit} = res.data
+        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId, freight_type: freightType, use_type: useType, ...edit} = res.data
         this.goodsSpecification = specsAttrs
         this.detailGoodsSpec = goodsSpecs
         this.edit = edit
@@ -626,6 +708,9 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
+  .level-two
+    margin-left: 10px
+
   .list-item.list-item-input
     flex-shrink 0
     min-width: 127px
