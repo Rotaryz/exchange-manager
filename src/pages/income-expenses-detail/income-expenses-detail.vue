@@ -82,6 +82,7 @@
         money: {total_remaining: '—', remaining: '—', already_remaining: '—'},
         filter: {
           page: 1,
+          type: this.$route.query.type,
           target_id: this.$route.params.id
         },
         listHeader: {
