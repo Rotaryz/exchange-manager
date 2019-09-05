@@ -27,7 +27,7 @@
           <div v-if="cms.code === 'brand_wall'" class="nav-box">
             <div class="nav hand" :class="{'touch': cmsType === 'wall'}" @click="changeType('wall')">
               <div v-for="(item, index) in wallList" :key="index" class="nav-item">
-                <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="nav-image">
+                <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="nav-image">
                 <div v-else class="nav-image"></div>
                 <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
               </div>

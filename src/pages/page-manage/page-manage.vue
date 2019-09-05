@@ -179,7 +179,7 @@
                     </slick-item>
                   </slick-list>
                 </div>
-                <div class="navigation">
+                <div v-if="type === 'wall'" class="wall">
                   <div class="content-header">
                     <div class="content-title">品牌导航</div>
                     <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
@@ -187,7 +187,7 @@
                   <slick-list v-model="wallList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
+                        <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
                         <div v-else class="cate-image"></div>
                         <!--@click=""-->
                         <div class="advertisement-link">
@@ -752,7 +752,7 @@
           if (this.currentItem !== '') {
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
-            this[this.dataName][index].detail.image_url = this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url || ''
             this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || ''
             this[this.dataName][index].detail.title = this.currentItem.name
           }
