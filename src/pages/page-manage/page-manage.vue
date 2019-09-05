@@ -990,12 +990,6 @@
         this.moduleList.forEach((item, index) => {
           if (item.code.includes(this.type)) {
             if (item.code === 'industry_recommend' && this.type === 'recommend') {
-            } else if (item.code === 'brand_wall' && this.type === 'brand') {
-              this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
-                cms.parent_id = item.id
-                cms.sort = cmsIndex
-                return cms
-              })
             } else {
               this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
                 cms.parent_id = item.id
