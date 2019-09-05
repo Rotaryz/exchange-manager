@@ -24,7 +24,8 @@
           <div v-if="cms.code === 'navigation'" class="nav-box">
             <div class="nav hand" :class="{'touch': cmsType === 'navigation'}" @click="changeType('navigation')">
               <div v-for="(item, index) in navigationList" :key="index" class="nav-item">
-                <img :src="item.detail.image_url" alt="" class="nav-image">
+                <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="nav-image">
+                <div v-else class="nav-image"></div>
                 <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
               </div>
             </div>
@@ -218,6 +219,9 @@
       font-size: 8.38px
       color: #1D2023
       font-family: $font-family-regular
+      transform: scale(0.8)
+      display: block
+      width: 50px
   .hot-commodity
     height: 210px
     border: 2px dashed #D9D9D9

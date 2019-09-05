@@ -190,9 +190,18 @@
                         <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
                         <div v-else class="cate-image"></div>
                         <!--@click=""-->
-                        <div class="advertisement-link">
+                        <div class="advertisement-link column">
                           <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
-                          <p class="goods-title">{{item.detail.title}}</p>
+                          <!--<p class="goods-title">{{item.detail.title}}</p>-->
+                          <base-input
+                            :value="item.detail.title"
+                            class="brand-title"
+                            width="260"
+                            height="44"
+                            placeholder="请输入品牌名称"
+                            limit="4"
+                            @input="changeBrandTitle($event, index)"
+                          ></base-input>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                       </div>
@@ -646,6 +655,10 @@
         // this.keyword = keyword
         this._getBrandList()
       },
+      changeBrandTitle(value, index) {
+        this.$set(this[this.dataName][this.cmsIndex].detail, 'title', value)
+        this.$forceUpdate()
+      },
       // 获取页面详情
       moduleShow() {
         API.Cms.moduleShow({data: {code: this.pageType}}).then((res) => {
@@ -754,7 +767,7 @@
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url || ''
             this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || ''
-            this[this.dataName][index].detail.title = this.currentItem.name
+            this[this.dataName][index].detail.title = this.currentItem.name.slice(0, 4)
           }
           break
         }
@@ -1171,6 +1184,14 @@
         font-family: $font-family-regular
         color: $color-text-main
         font-size: $font-size-14
+      .brand-title
+        width: 40px
+        height: 20px
+    .column
+      align-items: flex-start
+      flex-direction: column
+      justify-content: space-between
+      height: 92px
 
   .add-icon
     margin: 0 3px 0 0

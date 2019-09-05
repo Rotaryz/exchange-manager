@@ -31,7 +31,7 @@
            @input="inputEvent"
            @keydown="keydown"
     >
-    <span v-if="limit" class="base-input__count">{{value.length}}/{{limit}}</span>
+    <span v-if="limit" class="base-input__count" :class="{'input-count__center': type === 'text'}">{{value.length}}/{{limit}}</span>
   </div>
 </template>
 
@@ -218,6 +218,8 @@
       position absolute
       bottom 10px
       right 10px
+    .input-count__center
+      col-center()
 
   .zb-textarea
     padding 14px
