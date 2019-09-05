@@ -23,7 +23,7 @@
                 <div v-if="type === 'banner'" class="banner">
                   <div class="content-header">
                     <div class="content-title">首图banner</div>
-                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                    <div class="content-sub">(最多添加10个banner，鼠标拖拽调整广告顺序)</div>
                   </div>
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
@@ -149,7 +149,7 @@
                 <div v-if="type === 'banner'" class="banner">
                   <div class="content-header">
                     <div class="content-title">轮播图</div>
-                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                    <div class="content-sub">(最多添加10个banner，鼠标拖拽调整广告顺序)</div>
                   </div>
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
@@ -838,8 +838,8 @@
           } else {
             type = '文章'
           }
-          if (this[this.dataName].length >= 5) {
-            this.$toast.show('最多添加5个' + type)
+          if (this[this.dataName].length >= 10) {
+            this.$toast.show('最多添加10个' + type)
             return
           }
           break
