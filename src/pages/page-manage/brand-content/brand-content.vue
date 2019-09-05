@@ -181,7 +181,7 @@
 
   .nav
     width: 100%
-    height: 112px
+    min-height: 59px
     display: flex
     flex-wrap: wrap
     padding: 2px 7px
