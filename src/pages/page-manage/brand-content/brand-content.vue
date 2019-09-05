@@ -188,10 +188,11 @@
     margin: 6.5px 0 10px 0
     border: 2px dashed #D9D9D9
     .nav-item
-      height: 44.6px
+      height: 46.6px
       width: 31.4px
-      margin-right: 17px
+      margin-right: 21.5px
       text-align: center
+      margin-bottom: 4px
       &:nth-child(5n)
         margin-right: 0
     .nav-image
