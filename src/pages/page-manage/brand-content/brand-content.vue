@@ -22,6 +22,18 @@
               <span class="text">{{item}}</span>
             </p>
           </div>
+
+          <!--品牌导航-->
+          <div v-if="cms.code === 'brand_wall'" class="nav-box">
+            <div class="nav hand" :class="{'touch': cmsType === 'wall'}" @click="changeType('wall')">
+              <div v-for="(item, index) in wallList" :key="index" class="nav-item">
+                <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="nav-image">
+                <div v-else class="nav-image"></div>
+                <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
+              </div>
+            </div>
+          </div>
+
           <!--品牌列表-->
           <div v-if="cms.code === 'brand_list'" class="brand-commodity hand" :class="{'touch': cmsType === 'brand'}" @click="changeType('brand')">
             <div v-if="!cms.children.length" class="block">点击添加品牌动态</div>
@@ -80,6 +92,10 @@
         default: 'banner'
       },
       bannerList: {
+        type: Array,
+        default: () => []
+      },
+      wallList: {
         type: Array,
         default: () => []
       },
@@ -162,6 +178,39 @@
   .touch
     position: relative
     border: 2px solid #4C84FF !important
+
+  .nav
+    width: 100%
+    height: 112px
+    display: flex
+    flex-wrap: wrap
+    padding: 2px 7px
+    margin: 6.5px 0 10px 0
+    border: 2px dashed #D9D9D9
+    .nav-item
+      height: 44.6px
+      width: 31.4px
+      margin-right: 17px
+      text-align: center
+      &:nth-child(5n)
+        margin-right: 0
+    .nav-image
+      display: block
+      width: 31.4px
+      height: 31.4px
+      border-radius: 50%
+      object-fit: cover
+      margin: 0 auto
+      margin-bottom: 4px
+
+    .nav-name
+      font-size: 8.38px
+      color: #3F454B
+      font-family: $font-family-regular
+      transform: scale(0.8)
+      display: block
+      width: 50px
+      margin-left: -10px
 
   .brand-sign
     height: 15px

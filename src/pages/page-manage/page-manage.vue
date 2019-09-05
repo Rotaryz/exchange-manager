@@ -141,7 +141,13 @@
           </div>
         </template>
         <template v-if="pageType === 'brand_index'">
-          <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList" :bestList="bestList"
+          <brand-content
+            :brandList="brandList"
+            :bannerList="bannerList"
+            :wallList="wallList"
+            :cmsType.sync="type"
+            :cmsList="moduleList"
+            :bestList="bestList"
           ></brand-content>
           <div class="edit-modular">
             <div class="box">
@@ -166,6 +172,26 @@
                         ></upload>
                         <div class="advertisement-link">
                           <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div class="navigation">
+                  <div class="content-header">
+                    <div class="content-title">品牌导航</div>
+                    <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                  </div>
+                  <slick-list v-model="wallList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
+                        <div v-else class="cate-image"></div>
+                        <!--@click=""-->
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
                           <p class="goods-title">{{item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -353,7 +379,7 @@
               </div>
             </div>
             <!--品牌列表-->
-            <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-modal">
+            <div v-if="tabIndex === 5 || (tabIndex === 0 && (type === 'brand' || type === 'wall'))" class="goods-modal">
               <div class="shade-tab">
                 <base-search
                   v-model="keyword"
@@ -425,6 +451,7 @@
   const ARTICLE_TYPE = [{title: '文章列表', status: 3006}]
   const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品详情', status: 3002}]
   const BEST_TYPE = [{title: '商品详情', status: 3002}]
+  const WALL_TYPE = [{title: '品牌信息', status: 3010}]
   const TEMPLATE_OBJ = {
     detail: {
       object_id: '',
@@ -461,6 +488,7 @@
         brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         bestList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
+        wallList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
         type: 'banner',
         cmsIndex: 0,
         showModal: false,
@@ -536,6 +564,9 @@
         case 'best':
           this.typeList = BEST_TYPE
           break
+        case 'wall':
+          this.typeList = WALL_TYPE
+          break
         default:
           break
         }
@@ -573,6 +604,9 @@
               case 'best_recommend':
                 vx.bestList = item.children
                 break
+              case 'brand_wall':
+                vx.wallList = item.children
+                break
               }
             })
           })
@@ -597,6 +631,7 @@
           this.typeList = ARTICLE_TYPE
         }
         this.bannerList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
+        this.navigationList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
         this.moduleShow()
       },
       searchGoods(keyword) {
@@ -637,6 +672,9 @@
               break
             case 'best_recommend':
               this.bestList = item.children
+              break
+            case 'brand_wall':
+              this.wallList = item.children
               break
             }
           })
@@ -710,6 +748,15 @@
             })
           }
           break
+        case 3010:
+          if (this.currentItem !== '') {
+            this[this.dataName][index].detail.object_id = this.currentItem.id
+            this[this.dataName][index].detail.url = ''
+            this[this.dataName][index].detail.image_url = this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || ''
+            this[this.dataName][index].detail.title = this.currentItem.name
+          }
+          break
         }
         this.$forceUpdate()
       },
@@ -779,7 +826,6 @@
         this.requestHandle()
       },
       requestHandle() {
-        console.log(this.outLink)
         switch (this.outLink) {
         case 3002:
           this._getGoodsList()
@@ -787,6 +833,7 @@
         case 3006:
           this._getArticleList()
           break
+        case 3010:
         case 3009:
           this._getBrandList()
           break
@@ -857,6 +904,13 @@
             return
           }
           break
+        case 'wall':
+          type = '品牌'
+          if (this[this.dataName].length >= 10) {
+            this.$toast.show('最多添加10个' + type)
+            return
+          }
+          break
         }
 
         let obj = {
@@ -892,6 +946,7 @@
           }
           break
         case 'brand':
+        case 'wall':
           type = '品牌'
           break
         case 'best':
@@ -922,6 +977,12 @@
         this.moduleList.forEach((item, index) => {
           if (item.code.includes(this.type)) {
             if (item.code === 'industry_recommend' && this.type === 'recommend') {
+            } else if (item.code === 'brand_wall' && this.type === 'brand') {
+              this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
+                cms.parent_id = item.id
+                cms.sort = cmsIndex
+                return cms
+              })
             } else {
               this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
                 cms.parent_id = item.id
@@ -1054,6 +1115,13 @@
     position: relative
     margin-top: 24px
     user-select: none
+    .cate-image
+      margin:0 20px 0 0
+      width:100px
+      height:100px
+      object-fit: cover
+      background: #FFF
+      border: none
     .add-advertisement
       position: relative
       margin-left: 20px
