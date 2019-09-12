@@ -79,6 +79,7 @@
 <script type="text/ecmascript-6">
   import API from '@api'
   import CascadeSelect from '@components/cascade-select/cascade-select'
+
   const PAGE_NAME = 'PRODUCT_LIST'
   const TITLE = '商品列表'
   export default {
@@ -176,8 +177,9 @@
       }
     },
     watch: {
-      $route() {
-        console.log('$route')
+      $route(router) {
+        console.log('$route', router)
+        if (router.name !== 'mall-goods-goods-list') return
         this.filter.type = this.$route.query.type || '1'
         this.updatePage()
       }
