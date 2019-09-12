@@ -401,9 +401,9 @@ export default [
                 children: [
                   // 收支明细
                   {
-                    path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
-                    name: 'income-expenses-detail',
-                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    path: '/finance-manager/agent/agent-withdrawal/income-expenses/:id',
+                    name: 'income-expenses',
+                    component: () => import('@pages/income-expenses/income-expenses'),
                     meta: {
                       title: '收支明细', // 页面标题
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题

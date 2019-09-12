@@ -1,6 +1,5 @@
 <template>
   <div class="withdrawal-detail">
-    <!--:iconUrl="require('./icon-order_list@2x.png')" -->
     <base-table-tool :title="title"></base-table-tool>
     <title-line title="基本信息"></title-line>
     <div class="base-info-wrap info-wrap">
