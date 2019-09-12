@@ -178,6 +178,7 @@
     watch: {
       $route() {
         console.log('$route')
+        this.filter.type = this.$route.query.type || '1'
         this.updatePage()
       }
     },
