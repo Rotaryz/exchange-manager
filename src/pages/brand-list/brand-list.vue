@@ -169,25 +169,25 @@
   @import "~@design"
 
   .brand-list
-    position relative
+    position: relative
     width: 100%
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .content-wrap
     flex: 1
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .list-box > .list-item:nth-child(1)
     flex: 1
 
   .list-item
-    display flex
+    display: flex
 
     .item-text
-      text-overflow: ellipsis;
-      overflow: hidden;
+      text-overflow: ellipsis
+      overflow: hidden
       white-space: nowrap
 
 </style>

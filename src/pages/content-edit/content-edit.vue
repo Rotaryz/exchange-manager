@@ -172,7 +172,7 @@
             </div>
             <div v-if="addData.goodsList && addData.goodsList.length" :class="['goods-list-box',{disable:isDisabled}]">
               <div class="list-header list-box">
-                <div v-for="(item, index) in selectedGoodsCommodities" :key="index" class="list-item">{{item}}</div>
+                <div v-for="(item, index) in selectedTitle" :key="index" class="list-item">{{item}}</div>
               </div>
               <div class="list">
                 <div v-for="(item, index) in addData.goodsList" :key="index" class="list-content list-box">
@@ -275,7 +275,7 @@
                      class="edit-input"
               >
             </div>
-            <div class="edit-input-item" style="margin-top: 20px">
+            <div class="edit-input-item">
               <div class="edit-title">
                 初始浏览人数
               </div>
@@ -300,7 +300,6 @@
       :valueKey="false"
       @submit="_addGoods"
     ></goods-list-dialog>
-    <!--<add-goods ref="selectGoods" :goodsType="goodsType" :maxLimit="5" @batchAddition="batchAddition"></add-goods>-->
 
     <!--添加文字-->
     <base-modal :visible.sync="addTextVisible" title="增加详情文本" :submitBefore="justifyAddText" @submit="addTextItem">
@@ -335,7 +334,6 @@
 <script type="text/ecmascript-6">
   import MobileContent from './mobile-content/mobile-content'
   import ZbUpload from '@components/zb-upload/zb-upload.vue'
-  // import AddGoods from '@components/add-goods/add-goods'
   import GoodsListDialog from '../../components/goods-list-dialog/goods-list-dialog'
   import API from '@api'
   import Draggable from 'vuedraggable'
@@ -349,7 +347,6 @@
       title: TITLE
     },
     components: {
-      // AddGoods,
       GoodsListDialog,
       ZbUpload,
       Draggable,
@@ -416,12 +413,8 @@
           details: []
         },
         // 已经选择的商品头部
-        selectedGoodsCommodities: ['商品名称', '单位', '售价', '操作'],
+        selectedTitle: ['商品名称', '单位', '售价', '操作'],
         // 选择商品弹框删选条件
-        goodsCategoryFristList: [],
-        goodsCategorySecondList: [],
-        goodsCategoryFrist: '',
-        goodsCategorySecond: '',
         chooseGoods: [], // 弹框商品列表
         goodsPage: {
           total: 1,
@@ -471,9 +464,7 @@
       this.currentType = query.type || 'common'
       this.id = query.id || ''
       this.isDisabled = Boolean(query.isSee) || false
-      if (this.id) {
-        // this.changeDetailData(this.msg)
-      } else {
+      if (!this.id) {
         this._getAuth()
       }
       this._getLikes()
@@ -481,9 +472,6 @@
     methods: {
       updatePage() {
 
-      },
-      setMsg(data) {
-        this.msg = data
       },
       formatM(m) {
         return formatCouponMoney(m)
@@ -677,7 +665,6 @@
       async showGoods() {
         if (this.disable) return
         this.goodsVisible = true
-        // this.$refs.selectGoods && this.$refs.selectGoods.showModal(this.addData.goodsList)
       },
       // 删除商品
       _showDelGoods(item, index) {
@@ -705,12 +692,10 @@
         this.addData.goodsList = newArr
         this.$forceUpdate()
       },
-      justifyConent(status) {
+      justifyContent(status) {
         let message = ''
-        // if (!this.addData.category) message = '请选择内容分类'
         if (!this.addData.title) message = '请输入文章标题'
         else if (this.addData.title && (this.addData.title.length < 5 || this.addData.title.length > 50)) message = '请输入文章标题最少5个最多50个字符'
-        //  !this.addData.coverVideo.id &&
         else if (!this.addData.coverImage.id) message = '请上传封面'
         else if (!this.addData.authPhoto.id) message = '请上传作者头像'
         else if (!this.addData.authName) message = '请填写作者名字'
@@ -742,7 +727,7 @@
       },
       // 上线
       async _submitBtn(name, status) {
-        let res = status ? this.justifyConent() : this.justifyDraft()
+        let res = status ? this.justifyContent() : this.justifyDraft()
         if (res) {
           if (this.isSubmit) return
           this.isSubmit = true
@@ -850,9 +835,6 @@
 
       goBack() {
         this.$router.go(-1)
-      },
-      submitBtn() {
-
       }
     }
   }
@@ -944,6 +926,7 @@
             border-color: $color-main
         .edit-input-item
           display: flex
+          margin-bottom: 20px
           .edit-title
             text-align: left
             min-width: 105px
@@ -1231,11 +1214,11 @@
     .add-text-dialog
       height:300px
       width:600px
-      display flex
-      flex-direction column
+      display: flex
+      flex-direction: column
       .title-box
       .back
-        flex-shrink 0
+        flex-shrink: 0
         position: static
       .dialog-body
         flex:1
@@ -1243,10 +1226,10 @@
         padding: 14px
         width: 100%
         height:100%
-        resize none
+        resize: none
     .add-text-textarea
       padding: 14px
       width: 100%
       height:100%
-      resize none
+      resize: none
 </style>

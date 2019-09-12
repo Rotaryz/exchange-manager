@@ -8,6 +8,7 @@
     ></base-tabs>
     <div class="content-wrap">
       <div class="content-detail">
+        <!--礼品馆-->
         <template v-if="pageType === 'gift_index'">
           <gift-content :bannerList="bannerList"
                         :navigationList="navigationList"
@@ -140,6 +141,8 @@
             </div>
           </div>
         </template>
+
+        <!--品牌馆-->
         <template v-if="pageType === 'brand_index'">
           <brand-content
             :brandList="brandList"
@@ -266,6 +269,8 @@
             </div>
           </div>
         </template>
+
+        <!--弹窗-->
         <base-modal
           ref="goods"
           width="1000"
@@ -436,7 +441,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import * as Helpers from './modules/helpers'
   import API from '@api'
   import GiftContent from './gift-content/gift-content'
   import BrandContent from './brand-content/brand-content'
@@ -446,6 +450,7 @@
   const PAGE_NAME = 'CMS_MANAGER'
   const TITLE = '页面管理'
   const ADD_IMAGE = require('./pic-add_img@2x.png')
+  // 弹窗菜单栏
   const TYPE_LIST = [
     {title: '商品详情', status: 3002},
     {title: '商品分类', status: 3003},
@@ -461,6 +466,8 @@
   const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品详情', status: 3002}]
   const BEST_TYPE = [{title: '商品详情', status: 3002}]
   const WALL_TYPE = [{title: '品牌信息', status: 3010}]
+
+  // 初始模块数据
   const TEMPLATE_OBJ = {
     detail: {
       object_id: '',
@@ -471,7 +478,9 @@
       brand: {}
     },
     style: ''
-  } // 模板对象
+  }
+
+  // 模板对象
   export default {
     name: PAGE_NAME,
     directives: {handle: HandleDirective},
@@ -490,14 +499,14 @@
         tabList: [{text: '礼品馆', type: 'gift_index'}, {text: '品牌馆', type: 'brand_index'}],
         left: 0,
         addImage: ADD_IMAGE,
-        navigationList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        hotList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        recommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        bestList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        wallList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
+        navigationList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 导航初始数据
+        hotList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],  // 今日爆款初始数据
+        recommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 精品推荐初始数据
+        bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 礼品馆首图banner
+        brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 品牌推荐
+        industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 行业推荐初始数据
+        bestList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 精品推荐初始数据
+        wallList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 品牌墙初始数据
         type: 'banner',
         cmsIndex: 0,
         showModal: false,
@@ -624,10 +633,8 @@
           next('404')
         })
     },
-    async created() {
+    created() {
       this._getCateList() // 获取分类列表
-      // this._getArticleList() // 文章列表
-      // this._getBrandList() // 品牌列表
       this._getGoodsList() // 商品列表
     },
     methods: {
@@ -784,7 +791,7 @@
         })
       },
       // 获取商品列表
-      async _getGoodsList() {
+      _getGoodsList() {
         let data = {
           status: 1,
           keyword: this.keyword,
@@ -795,17 +802,21 @@
         // 礼品馆=>兑换商品    品牌馆=>自有商品
         this.pageType === 'gift_index' && (data.use_type = 1)
         this.pageType === 'brand_index' && (data.use_type = 2)
-        let res = await API.Cms.goodsList({data})
-        this.total = res.meta.total
-        this.choiceGoods = res.data
-        this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
+        API.Cms.goodsList({data})
+          .then(res => {
+            this.total = res.meta.total
+            this.choiceGoods = res.data
+            this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
+          })
       },
-      async _getArticleList() {
+      _getArticleList() {
         let data = {keyword: this.keyword, page: this.goodsPage, limit: 6, status: 1}
-        let res = await API.Cms.articleList({data})
-        this.total = res.meta.total
-        this.articleArr = res.data
-        this.showSelectIndex = this.articleArr.findIndex((item) => item.id === this.articleId)
+        API.Cms.articleList({data})
+          .then(res => {
+            this.total = res.meta.total
+            this.articleArr = res.data
+            this.showSelectIndex = this.articleArr.findIndex((item) => item.id === this.articleId)
+          })
       },
       // 获取品牌列表
       _getBrandList() {
@@ -838,6 +849,7 @@
         this.keyword = ''
         this.requestHandle()
       },
+      // 请求列表控制器
       requestHandle() {
         switch (this.outLink) {
         case 3002:

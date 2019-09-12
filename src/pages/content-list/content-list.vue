@@ -3,7 +3,7 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
-          <base-search v-model="filter.keyword" style="margin-left: 0" placeholder="请输入标题名称" @search="searchBtn"></base-search>
+          <base-search v-model="filter.keyword" placeholder="请输入标题名称" class="base-search" @search="searchBtn"></base-search>
         </base-form-item>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="文章列表">
@@ -21,8 +21,8 @@
             <template v-if="list.length">
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
-                  <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
-                  <div v-else-if="val.type === 'operate'">
+                  <!--<base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>-->
+                  <div v-if="val.type === 'operate'">
                     <router-link v-if="+item.status === 1" tag="span" :to="'content-edit?id='+item.id+'&isSee=1'" append class="list-operation">查看</router-link>
                     <router-link v-else tag="span" :to="'content-edit?id='+item.id" append class="list-operation">编辑</router-link>
                     <span v-if="+item.status === 1" class="list-operation" @click="onOffHandle(item, i)">下线</span>
@@ -31,8 +31,8 @@
                   </div>
                   <div v-else-if="val.type === 'status'">{{statusHandle(item.status)}}</div>
                   <template v-else>
-                    <img v-if="val.before && val.before.img && item[val.before.img]" class="list-img" style="width: 75px; height: 45px" :src="item[val.before.img]">
-                    <img v-if="val.before && !item[val.before.img]" class="list-img" style="width: 75px; height: 45px" src="./pic-caogao@2x.png">
+                    <img v-if="val.before && val.before.img && item[val.before.img]" class="list-img" :src="item[val.before.img]">
+                    <img v-if="val.before && !item[val.before.img]" class="list-img" src="./pic-caogao@2x.png">
                     <div class="item-text">{{item[key]}}</div>
                   </template>
                 </div>
@@ -160,10 +160,7 @@
           this.updatePage()
         }).catch()
       },
-      async changeSwitch(item) {
-        // await API.Goods.editStatus({data: {id: item.id, status: item.status ? 0 : 1}})
-        // this.updatePage()
-      },
+      // changeSwitch(item) {},
       searchBtn(val) {
         this.filter.page = 1
         this.updatePage()
@@ -190,22 +187,26 @@
   @import "~@design"
 
   .content-list
-    position relative
+    position: relative
     width: 100%
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .content-wrap
     flex: 1
-    display flex
-    flex-direction column
-
+    display: flex
+    flex-direction: column
+  .base-search
+    margin-left: 0
+  .list-box .list-item .list-img
+    width: 75px
+    height: 45px
   .list-item
-    display flex
+    display: flex
 
     .item-text
-      text-overflow: ellipsis;
-      overflow: hidden;
+      text-overflow: ellipsis
+      overflow: hidden
       white-space: nowrap
 
 </style>
