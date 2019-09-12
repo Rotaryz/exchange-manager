@@ -72,16 +72,16 @@
     margin-bottom: 24px
 
     &.inline
-      display flex
+      display:flex
 
       &.top
-        align-items flex-start
+        align-items:flex-start
 
       &.center
-        align-items center
+        align-items:center
 
       &.bottom
-        align-items flex-end
+        align-items:flex-end
 
     .required-mask
       color: $color-error

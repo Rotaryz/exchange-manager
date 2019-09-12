@@ -66,7 +66,6 @@
             this.$router.push(this.$route.query.redirectFrom || INFO_PATH)
           })
           .catch(() => {
-            // console.error(error.message)
           })
           .finally(() => {
             this.tryingToLogIn = false

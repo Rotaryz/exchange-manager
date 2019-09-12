@@ -165,10 +165,10 @@
   @import "~@design"
 
   .base-select
-    position relative
-    background-color $color-white
+    position:relative
+    background-color:$color-white
     color: $color-text-main
-    font-size $font-size-14
+    font-size:$font-size-14
     border-radius: 2px
     white-space: nowrap
     box-sizing: border-box
@@ -180,8 +180,8 @@
     .inner-value
       padding-left: 14px
       padding-right: 30px
-      visibility hidden
-      cursor pointer
+      visibility: hidden
+      cursor: pointer
     .select-child
       top: 44px
 
@@ -232,13 +232,13 @@
 
     &.disabled
       border-color: $color-disable
-      cursor not-allowed
+      cursor: not-allowed
 
     .inner-input
       width: 100%
       height: 100%
       min-height: 32px
-      position absolute
+      position: absolute
       top: 0
       right: 0
       bottom 0

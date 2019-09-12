@@ -262,7 +262,7 @@
           icon-image('pic-paging_left2')
 
       .page-icon-disable
-        cursor not-allowed
+        cursor:not-allowed
 
         &:hover
           transition: all 0.3s

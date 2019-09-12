@@ -173,11 +173,6 @@
       },
       showSet(item) {
         this.$router.push(`/client/customer/customer-list/`)
-        console.log(`/client/customer/customer-list/level-setting/${item.id}`)
-      // this.customerId = item.id
-      // this.grade = item.shop_level_id
-      // this.visible = true
-      // this.defaultLabel = item.shop_level_name
       },
       // 设置等级
       async setGrade() {
