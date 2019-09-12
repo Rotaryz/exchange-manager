@@ -25,8 +25,7 @@
           <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
-          <!---->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -84,11 +83,6 @@
         return url
       }
     },
-    watch: {
-      page() {
-        this._getLevelList()
-      }
-    },
     methods: {
       // 获取等级列表
       _getLevelList(loading = false) {
@@ -118,9 +112,12 @@
           .catch(() => {
           })
       },
-      // 导出Excel
+      // 新建和编辑等级
       newLevel() {
         this.$router.push('/client/customer/level-manager/edit-level')
+      },
+      pageChange() {
+        this._getLevelList()
       }
     }
   }
