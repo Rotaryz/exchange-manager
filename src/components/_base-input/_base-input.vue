@@ -131,8 +131,8 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .base-input
-    display inline-block
-    position relative
+    display:inline-block
+    position:relative
 
     &.zb-input--big
       height: 60px
@@ -172,10 +172,10 @@
       border-radius 4px
       border: 0.5px solid $color-line
       color: $color-text-main
-      font-size $font-size-14
-      font-family $font-family-regular
-      padding-right 14px
-      padding-left 14px
+      font-size:$font-size-14
+      font-family:$font-family-regular
+      padding-right:14px
+      padding-left:14px
       box-sizing: border-box
       &:hover
         border: 0.5px solid $color-border-hover
@@ -193,13 +193,13 @@
         padding-right: 30px
 
       .clear-wrap
-        display inline-block
-        position absolute
+        display:inline-block
+        position:absolute
         top: 50%
         right: 0px
         padding-right: 10px
         padding-left: 7px
-        transform translateY(-50%)
+        transform:translateY(-50%)
 
       .clear-icon
         width: 13px
@@ -214,10 +214,10 @@
     .base-input__count
       font-size $font-size-12
       color: #C9CCDA
-      letter-spacing 0.5px
-      position absolute
-      bottom 10px
-      right 10px
+      letter-spacing:0.5px
+      position:absolute
+      bottom:10px
+      right:10px
     .input-count__center
       col-center()
 
@@ -235,7 +235,7 @@
     background: #f9f9f9
     font-family: $font-family-regular
     color: $color-text-assist
-    cursor not-allowed
+    cursor:not-allowed
 
 
 </style>

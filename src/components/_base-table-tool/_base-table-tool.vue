@@ -54,7 +54,7 @@
     justify-content: space-between
     box-sizing: border-box
     padding: 0 20px
-    flex-shrink 0
+    flex-shrink: 0
     border-top-right-radius: 4px
     border-top-left-radius: 4px
     .title-wrap

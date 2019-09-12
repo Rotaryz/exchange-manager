@@ -96,8 +96,8 @@
 
   .img-icon
     width: 100%
-    height @width
-    display block
+    height: @width
+    display: block
     object-fit: cover
 
   .product-top
@@ -186,7 +186,6 @@
     padding-left: 22px
     layout(row)
     align-items: center
-
     .add-icon
       margin-right: 6px
       width: 12px

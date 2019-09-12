@@ -250,24 +250,24 @@
       flex: 1
 
     .operate-box
-      display flex
-      align-items center
+      display: flex
+      align-items: center
 
   .goods-image-wrap
-    display inline-block
+    display: inline-block
     width: 40px
     height: @width
-    border-radius 2px
-    vertical-align middle
-    overflow hidden
-    text-align center
-    line-height @width
-    font-size 0
+    border-radius: 2px
+    vertical-align: middle
+    overflow: hidden
+    text-align: center
+    line-height: @width
+    font-size: 0
 
     border-1px()
 
     .goods-image
-      object-fit cover
+      object-fit: cover
       width: 40px
       height: @width
 
@@ -276,8 +276,8 @@
 
   .body-inner
     height: 100%
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .list .list-box
     height: 60px

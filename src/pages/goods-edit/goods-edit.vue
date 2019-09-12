@@ -712,11 +712,11 @@
     margin-left: 10px
 
   .list-item.list-item-input
-    flex-shrink 0
+    flex-shrink: 0
     min-width: 127px
 
   .icon-delete-wrap
-    position absolute
+    position: absolute
     top: -14px
     right: -13px
     padding: 10px
@@ -724,8 +724,8 @@
     .icon-delete
       width: 13px
       height: 13px
-      background-image url("./icon-delet@2x.png")
-      background-size 100%
+      background-image: url("./icon-delet@2x.png")
+      background-size: 100%
 
   .edit-product
     .top-title
@@ -733,10 +733,10 @@
 
     .container
       padding: 24px 20px 8px 30px
-      background-color $color-white
+      background-color: $color-white
 
     .first-category-item
-      margin-right 12px
+      margin-right: 12px
 
     .after-word
       margin-left: 10px
@@ -744,12 +744,12 @@
     .more-item-wrap
       min-width: 860px
       max-width: 100%
-      background-color #F4F8F9
+      background-color: #F4F8F9
       padding: 20px 20px 10px
       margin: 20px 0
 
       .spec-value-row
-        flex-wrap wrap
+        flex-wrap: wrap
 
       .add-btn
         color: $color-main
@@ -768,7 +768,7 @@
       margin-bottom: 16px
 
     .tip
-      font-size $font-size-14
+      font-size: $font-size-14
       color: $color-text-sub
       margin-left: 10px
 

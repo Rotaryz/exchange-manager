@@ -170,7 +170,7 @@
     .admin-select-box
       min-width: 102px
       border-radius: 2px
-      border 1px solid $color-line
+      border: 1px solid $color-line
       padding: 0 31px 0 15px
       line-height: 27px
       white-space: nowrap

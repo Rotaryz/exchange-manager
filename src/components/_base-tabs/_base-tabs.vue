@@ -125,8 +125,8 @@
   $tabs-default-color = #999
   .tab-wrap
     width: 100%
-    border-bottom 1px solid #E9ECEE
-    display: flex;
+    border-bottom: 1px solid #E9ECEE
+    display: flex
     justify-content: center
     background-color: $color-white
     &.center
@@ -139,7 +139,6 @@
       justify-content: flex-end
 
   .tab-list
-    display inline-block
     display: flex
     align-items: center
     position: relative
@@ -173,8 +172,8 @@
         display: inline-block
         margin-right: 4px
         font-size: $font-size-12
-        height: 16px;
-        width: 16px;
+        height: 16px
+        width: 16px
         text-align: center
         border-radius: 50%
         color: #fff

@@ -197,7 +197,7 @@
 
   .goods-grouping
     width: 100%
-    position relative
+    position: relative
 
     .big-list
       margin-bottom: 46px

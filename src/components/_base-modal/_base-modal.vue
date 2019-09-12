@@ -149,25 +149,25 @@
       max-height: 100%
       box-shadow: 0 0 5px 0 $color-text-main
       border-radius: 3px
-      background-color $color-white
-      display flex
-      flex-direction column
+      background-color:$color-white
+      display:flex
+      flex-direction:column
 
     .modal-title
       padding: 22px 20px
       color: $color-text-main
       font-size: $font-size-16
-      flex-shrink 0
-      display flex
-      justify-content space-between
+      flex-shrink:0
+      display:flex
+      justify-content:space-between
 
       .text
         flex: 1
       .title-tip
         font-size $font-size-12
         color:$color-text-assist
-        letter-spacing 0.5px
-        margin-left 6px
+        letter-spacing:0.5px
+        margin-left:6px
       .handle-close-icon
         width: 10px
         height: @width
@@ -179,9 +179,9 @@
       scroll-opacity(5px, 5px, rgba(0, 0, 0, .15), rgba(0, 0, 0, .15))
 
     .modal-footer
-      flex-shrink 0
+      flex-shrink:0
       padding:20px
-      text-align right
+      text-align:right
 
       & :nth-child(n)
         margin-right: 10px

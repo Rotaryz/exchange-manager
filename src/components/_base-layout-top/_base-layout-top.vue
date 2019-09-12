@@ -30,7 +30,7 @@
   @import "~@design"
   .base-layout-top
     border: 0.5px solid $color-line
-    background-color $color-white
+    background-color:$color-white
     width: 100%
     padding: 24px 20px
     border-radius: 4px
@@ -39,25 +39,25 @@
       margin-bottom:0
   .flex-start
   .flex-start-center
-    display flex
+    display:flex
 
   .flex-start-center
-    align-items center
+    align-items:center
 
   .flex-between
   .flex-between-center
-    display flex
-    justify-content space-between
+    display:flex
+    justify-content:space-between
 
   .flex-between-center
-    align-items center
+    align-items:center
 
   .flex-aroundn-center
-    align-items center
+    align-items:center
 
   .flex-around
-    display flex
-    justify-content space-around
-    align-items center
+    display:flex
+    justify-content:space-around
+    align-items:center
 
 </style>

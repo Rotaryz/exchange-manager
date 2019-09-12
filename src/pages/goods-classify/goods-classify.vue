@@ -169,12 +169,12 @@
   .goods-classify
     width: 100%
     flex: 1
-    background-color $color-white
-    display flex
-    flex-direction column
+    background-color: $color-white
+    display: flex
+    flex-direction: column
 
     .base-table-tool-wrap
-      flex-shrink 0
+      flex-shrink: 0
 
     .tree-wrap
       padding: 0px 20px 20px
