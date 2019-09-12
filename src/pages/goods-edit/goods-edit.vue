@@ -179,7 +179,6 @@
           <base-input v-model="edit.saleable" type="number"></base-input>
         </base-form-item>
       </template>
-
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
@@ -279,7 +278,7 @@
         freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
         goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
         edit: {
-          type: 1,
+          type: '',
           name: '',
           describe: '',
           category_id: '',
@@ -316,12 +315,7 @@
       this._getBrandList()
     },
     mounted() {
-      this.id = this.$route.query.id || 0
-      if (this.id) {
-        this.$refs.cascadeSelect.setValue({goods_id: this.id})
-      } else {
-        this.edit.type = +this.$route.query.type || 1
-      }
+      if (!this.id) this.edit.type = +this.$route.query.type || 1
     },
     methods: {
       changeType() {
@@ -346,12 +340,12 @@
           })
       },
       setData(res) {
-        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId,freight_type:freightType,use_type:useType, ...edit} = res.data
+        let {id, specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId, freight_type: freightType, use_type: useType, ...edit} = res.data
         this.goodsSpecification = specsAttrs
         this.detailGoodsSpec = goodsSpecs
         this.edit = edit
+        this.id = id
         // 单规格
-
         if (!this.edit.specification_type) {
           let obj = this.detailGoodsSpec[0]
           this.saleable = obj.saleable
@@ -368,6 +362,7 @@
           this.useType = useType
           this.freightType = freightType
         }
+        this.$refs.cascadeSelect.setValue({goods_id: this.id})
       },
       deleteModule(idx) {
         this.goodsSpecification.splice(idx, 1)
