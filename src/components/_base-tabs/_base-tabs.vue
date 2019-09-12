@@ -100,18 +100,15 @@
     },
     methods: {
       getId(item, idx) {
-        // console.log(typeof (this.valueKey))
         return typeof this.valueKey === 'number' ? idx : item[this.valueKey]
       },
       getWidthAndPositon(id) {
-        // console.log(this.$refs['activeTab' + id])
         let el = this.$refs['activeTab' + id] && this.$refs['activeTab' + id][0]
         if (!el) return
         this.activeLine.lineWidth = el.offsetWidth
         this.activeLine.left = el.offsetLeft
       },
       changeTab(val) {
-        // console.log(val)
         this.getWidthAndPositon(val)
         this.$emit('update:value', val)
         this.$emit('change', val)

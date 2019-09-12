@@ -86,7 +86,6 @@
           type: type
         }
       })]).then(res => {
-        // console.log(res)
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])

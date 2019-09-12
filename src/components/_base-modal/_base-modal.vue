@@ -119,7 +119,6 @@
       },
       submit() {
         this.submitBefore(() => {
-          // console.log('submit')
           this.hideModal()
           this.$emit('submit')
         })

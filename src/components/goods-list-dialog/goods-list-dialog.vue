@@ -196,7 +196,6 @@
       },
       // 勾选商品
       selectGoodsBtn(item, index) {
-        // console.log(item.selecteStatus)
         /* eslint-disable */
       switch (item.selecteStatus) {
         case 'disable':
@@ -209,14 +208,12 @@
           }
           break
         default:
-          // console.log(this.selects.length + this.selectGoods.length + this.currentCount)
           if (this.limit && this.selects.length + this.selectGoods.length + this.currentCount >= this.limit) {
             this.$toast.show(`选择商品数量不能超过${this.limit}个`)
             return
           }
           this.list[index].selecteStatus = 'checked'
           this.selectGoods.push(item)
-          // console.log(item)
           break
       }
     },

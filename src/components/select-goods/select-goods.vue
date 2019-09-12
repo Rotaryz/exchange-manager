@@ -191,7 +191,6 @@
       },
       // 勾选商品
       selectGoodsBtn(item, index) {
-        // console.log(item.selecteStatus)
         /* eslint-disable */
       switch (item.selecteStatus) {
         case 'disable':

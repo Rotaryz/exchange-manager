@@ -458,7 +458,6 @@
         this.goodsSpecification[idx].values.splice(i, 1)
       },
       getGoodsBannerImages(arr) {
-        // console.log(arr, 'getGoodsBannerImages')
         arr.forEach(item => {
           item = item.data
           // 限制5张

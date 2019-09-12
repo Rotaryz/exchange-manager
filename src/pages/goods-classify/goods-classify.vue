@@ -57,7 +57,6 @@
     },
     beforeRouteEnter(to, from, next) {
       API.Goods.getCategory({data: {pid: -1}}).then((res) => {
-        // console.log(res)
         next((vw) => {
           vw.setData(res)
         })
@@ -116,7 +115,6 @@
         }
       },
       editItem(obj) {
-        // console.log(obj)
         this.editVisible = true
         let {index = null, item = {}, childItem = {}, childIndex = null} = obj
         this.currentIndex = index

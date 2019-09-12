@@ -115,7 +115,6 @@
     },
     created() {
       this.$imageUrl = process.env.VUE_APP_IMAGE
-      // console.log(this.hotList, this.recommendList, this.industryRecommendList)
     },
     methods: {
       changeType(type) {
