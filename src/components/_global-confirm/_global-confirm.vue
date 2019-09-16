@@ -15,7 +15,7 @@
     name: COMPONENT_NAME,
     props: {
       options: {
-        // 取消文字
+        // 取消文字...
         type: Object,
         default: () => {
           return {

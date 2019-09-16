@@ -49,14 +49,14 @@ export default [
             component: {render: (h) => h('router-view')},
             children: [
               {
-                path: '/mall/goods/goods-list',
+                path: '/mall/goods/goods-list', // 路径（需写全路径，面包屑中需要使用）
                 name: 'mall-goods-goods-list',
                 component: () => import('@pages/goods-list/goods-list'),
                 meta: {
-                  title: '商品列表',
+                  title: '商品列表', // 导航标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['商品列表'],
-                  style:{margin:0}
+                  crumbs: ['商品列表'], // 面包屑标题
+                  style:{margin:0} // 最外层路由盒子的自定义样式
                 },
                 children:[
                   // 新建商品
