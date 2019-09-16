@@ -176,9 +176,17 @@ export default [
                     }
                   }
                 ]
-              }, // 交易记录
+              }
+            ]
+          },
+          {
+            path: 'agent',
+            name: 'agent',
+            text: '代理商',
+            component: {render: (h) => h('router-view')},
+            children: [ // 交易记录
               {
-                path: '/client/customer/trading-record',
+                path: '/client/agent/trading-record',
                 name: 'trading-record',
                 component: () => import('@pages/trading-record/trading-record'),
                 meta: {
@@ -189,7 +197,7 @@ export default [
               },
               // 代理申请
               {
-                path: '/client/customer/application-agency',
+                path: '/client/agent/application-agency',
                 name: 'application-agency',
                 component: () => import('@pages/application-agency/application-agency'),
                 meta: {
@@ -200,7 +208,7 @@ export default [
               },
               // 等级管理
               {
-                path: '/client/customer/level-manager',
+                path: '/client/agent/level-manager',
                 name: 'level-manager',
                 component: () => import('@pages/level-manager/level-manager'),
                 meta: {
@@ -211,7 +219,7 @@ export default [
                 children: [
                   // 等级
                   {
-                    path: '/client/customer/level-manager/edit-level',
+                    path: '/client/agent/level-manager/edit-level',
                     name: 'edit-level',
                     component: () => import('@pages/edit-level/edit-level'),
                     meta: {
