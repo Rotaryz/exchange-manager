@@ -288,7 +288,6 @@
               break
             }
           })
-          // console.log(this.bannerList)
         })
       },
       // 判断
@@ -380,7 +379,6 @@
       },
       selectCate(item, index) {
         this.showCateIndex = index
-        // console.log(this.showCateIndex)
       },
       selectGoods(item, index) {
         this.showSelectIndex = index

@@ -57,7 +57,6 @@
     },
     beforeRouteEnter(to, from, next) {
       API.Goods.getCategory({data: {pid: -1}}).then((res) => {
-        // console.log(res)
         next((vw) => {
           vw.setData(res)
         })
@@ -116,7 +115,6 @@
         }
       },
       editItem(obj) {
-        // console.log(obj)
         this.editVisible = true
         let {index = null, item = {}, childItem = {}, childIndex = null} = obj
         this.currentIndex = index
@@ -169,12 +167,12 @@
   .goods-classify
     width: 100%
     flex: 1
-    background-color $color-white
-    display flex
-    flex-direction column
+    background-color: $color-white
+    display: flex
+    flex-direction: column
 
     .base-table-tool-wrap
-      flex-shrink 0
+      flex-shrink: 0
 
     .tree-wrap
       padding: 0px 20px 20px

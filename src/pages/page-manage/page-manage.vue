@@ -8,6 +8,7 @@
     ></base-tabs>
     <div class="content-wrap">
       <div class="content-detail">
+        <!--礼品馆-->
         <template v-if="pageType === 'gift_index'">
           <gift-content :bannerList="bannerList"
                         :navigationList="navigationList"
@@ -23,7 +24,7 @@
                 <div v-if="type === 'banner'" class="banner">
                   <div class="content-header">
                     <div class="content-title">首图banner</div>
-                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                    <div class="content-sub">(最多添加10个banner，鼠标拖拽调整广告顺序)</div>
                   </div>
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
@@ -111,7 +112,7 @@
                 </div>
                 <div v-if="type === 'recommend'" class="goods">
                   <div class="content-header">
-                    <div class="content-title">为你推荐</div>
+                    <div class="content-title">精品推荐</div>
                     <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
                   </div>
                   <slick-list v-model="recommendList" :distance="30" lockAxis="y">
@@ -140,15 +141,24 @@
             </div>
           </div>
         </template>
+
+        <!--品牌馆-->
         <template v-if="pageType === 'brand_index'">
-          <brand-content :brandList="brandList" :bannerList="bannerList" :cmsType.sync="type" :cmsList="moduleList"></brand-content>
+          <brand-content
+            :brandList="brandList"
+            :bannerList="bannerList"
+            :wallList="wallList"
+            :cmsType.sync="type"
+            :cmsList="moduleList"
+            :bestList="bestList"
+          ></brand-content>
           <div class="edit-modular">
             <div class="box">
               <div class="small">
                 <div v-if="type === 'banner'" class="banner">
                   <div class="content-header">
                     <div class="content-title">轮播图</div>
-                    <div class="content-sub">(最多添加5个banner，鼠标拖拽调整广告顺序)</div>
+                    <div class="content-sub">(最多添加10个banner，鼠标拖拽调整广告顺序)</div>
                   </div>
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
@@ -172,10 +182,39 @@
                     </slick-item>
                   </slick-list>
                 </div>
+                <div v-if="type === 'wall'" class="wall">
+                  <div class="content-header">
+                    <div class="content-title">品牌导航</div>
+                    <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                  </div>
+                  <slick-list v-model="wallList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
+                        <div v-else class="cate-image"></div>
+                        <!--@click=""-->
+                        <div class="advertisement-link column">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
+                          <!--<p class="goods-title">{{item.detail.title}}</p>-->
+                          <base-input
+                            :value="item.detail.title"
+                            class="brand-title"
+                            width="260"
+                            height="44"
+                            placeholder="请输入品牌名称"
+                            limit="4"
+                            @input="changeBrandTitle($event, index)"
+                          ></base-input>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
                 <div v-if="type === 'brand'" class="brands">
                   <div class="content-header">
                     <div class="content-title">品牌动态</div>
-                    <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
+                    <div class="content-sub">(最多添加20个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="brandList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
@@ -191,7 +230,34 @@
                           @successImage="successImage"
                         ></upload>
                         <div class="advertisement-link">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择品牌</base-button>
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择链接</base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                </div>
+                <div v-if="type === 'best'" class="brands">
+                  <div class="content-header">
+                    <div class="content-title">精品推荐</div>
+                    <div class="content-sub">(最多添加20商品，鼠标拖拽调整商品顺序)</div>
+                  </div>
+                  <slick-list v-model="bestList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in bestList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择商品</base-button>
                           <p class="goods-title">{{item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -203,6 +269,8 @@
             </div>
           </div>
         </template>
+
+        <!--弹窗-->
         <base-modal
           ref="goods"
           width="1000"
@@ -220,7 +288,10 @@
               <!--<div class="shade-title">选择商品</div>-->
               <span class="close hand" @click="hideGoods"></span>
             </div>
-            <div v-if="tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index'))" class="good-modal">
+            <div
+              v-if="(tabIndex === 0 && (type === 'recommend' || type === 'hot' || (type === 'banner' && pageType === 'gift_index') || type === 'best')) || (tabIndex === 1 && type === 'brand')"
+              class="good-modal"
+            >
               <div class="shade-tab">
                 <base-select
                   placeholder="请选择分类"
@@ -266,7 +337,7 @@
               </div>
             </div>
             <!--商品分类-->
-            <div v-if="tabIndex === 1 || (tabIndex === 0 && type === 'navigation')" class="goods-cate">
+            <div v-if="(tabIndex === 1 || (tabIndex === 0 && type === 'navigation')) && outLink === 3003" class="goods-cate">
               <div v-for="(goods, goodsIdx) in goodsCate" :key="goodsIdx" class="goods_cate-item">
                 <div class="select-icon hand" :class="{'select-icon-active': showSelectIndex === goodsIdx}" @click="selectGoods(goods, goodsIdx)">
                   <span class="after"></span>
@@ -322,7 +393,7 @@
               </div>
             </div>
             <!--品牌列表-->
-            <div v-if="tabIndex === 5 || (tabIndex === 0 && type === 'brand')" class="goods-modal">
+            <div v-if="tabIndex === 5 || (tabIndex === 0 && (type === 'brand' || type === 'wall'))" class="goods-modal">
               <div class="shade-tab">
                 <base-search
                   v-model="keyword"
@@ -370,7 +441,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-// import * as Helpers from './modules/helpers'
   import API from '@api'
   import GiftContent from './gift-content/gift-content'
   import BrandContent from './brand-content/brand-content'
@@ -380,6 +450,7 @@
   const PAGE_NAME = 'CMS_MANAGER'
   const TITLE = '页面管理'
   const ADD_IMAGE = require('./pic-add_img@2x.png')
+  // 弹窗菜单栏
   const TYPE_LIST = [
     {title: '商品详情', status: 3002},
     {title: '商品分类', status: 3003},
@@ -392,7 +463,11 @@
   const HOT_TYPE = [{title: '今日爆款', status: 3002}]
   const GOODS_TYPE = [{title: '商品推荐', status: 3002}]
   const ARTICLE_TYPE = [{title: '文章列表', status: 3006}]
-  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}]
+  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品详情', status: 3002}]
+  const BEST_TYPE = [{title: '商品详情', status: 3002}]
+  const WALL_TYPE = [{title: '品牌信息', status: 3010}]
+
+  // 初始模块数据
   const TEMPLATE_OBJ = {
     detail: {
       object_id: '',
@@ -403,7 +478,9 @@
       brand: {}
     },
     style: ''
-  } // 模板对象
+  }
+
+  // 模板对象
   export default {
     name: PAGE_NAME,
     directives: {handle: HandleDirective},
@@ -422,12 +499,14 @@
         tabList: [{text: '礼品馆', type: 'gift_index'}, {text: '品牌馆', type: 'brand_index'}],
         left: 0,
         addImage: ADD_IMAGE,
-        navigationList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        hotList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        recommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
-        industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],
+        navigationList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 导航初始数据
+        hotList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))],  // 今日爆款初始数据
+        recommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 精品推荐初始数据
+        bannerList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 礼品馆首图banner
+        brandList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 品牌推荐
+        industryRecommendList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 行业推荐初始数据
+        bestList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 精品推荐初始数据
+        wallList: [JSON.parse(JSON.stringify(TEMPLATE_OBJ))], // 品牌墙初始数据
         type: 'banner',
         cmsIndex: 0,
         showModal: false,
@@ -465,7 +544,7 @@
         return name
       },
       showModalLine() {
-        if (this.type === 'banner' && this.pageType === 'gift_index') {
+        if (this.type === 'banner' && this.pageType === 'gift_index' || this.type === 'brand') {
           return true
         }
         return false
@@ -499,6 +578,12 @@
           break
         case 'brand':
           this.typeList = BRANDS_TYPE
+          break
+        case 'best':
+          this.typeList = BEST_TYPE
+          break
+        case 'wall':
+          this.typeList = WALL_TYPE
           break
         default:
           break
@@ -534,6 +619,12 @@
               case 'industry_recommend':
                 vx.industryRecommendList = item.children
                 break
+              case 'best_recommend':
+                vx.bestList = item.children
+                break
+              case 'brand_wall':
+                vx.wallList = item.children
+                break
               }
             })
           })
@@ -542,10 +633,8 @@
           next('404')
         })
     },
-    async created() {
+    created() {
       this._getCateList() // 获取分类列表
-      // this._getArticleList() // 文章列表
-      // this._getBrandList() // 品牌列表
       this._getGoodsList() // 商品列表
     },
     methods: {
@@ -558,6 +647,7 @@
           this.typeList = ARTICLE_TYPE
         }
         this.bannerList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
+        this.navigationList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
         this.moduleShow()
       },
       searchGoods(keyword) {
@@ -571,6 +661,10 @@
       searchBrand(keyword) {
         // this.keyword = keyword
         this._getBrandList()
+      },
+      changeBrandTitle(value, index) {
+        this.$set(this[this.dataName][this.cmsIndex].detail, 'title', value)
+        this.$forceUpdate()
       },
       // 获取页面详情
       moduleShow() {
@@ -595,6 +689,12 @@
               break
             case 'industry_recommend':
               this.industryRecommendList = item.children
+              break
+            case 'best_recommend':
+              this.bestList = item.children
+              break
+            case 'brand_wall':
+              this.wallList = item.children
               break
             }
           })
@@ -648,6 +748,7 @@
         case 3002:
         case 3003:
         case 3006:
+        case 2011:
           if (this.currentItem !== '') {
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
@@ -667,7 +768,17 @@
             })
           }
           break
+        case 3010:
+          if (this.currentItem !== '') {
+            this[this.dataName][index].detail.object_id = this.currentItem.id
+            this[this.dataName][index].detail.url = ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || ''
+            this[this.dataName][index].detail.title = this.currentItem.name.slice(0, 4)
+          }
+          break
         }
+        this.$forceUpdate()
       },
       // 获取分类
       _getCateList() {
@@ -680,7 +791,7 @@
         })
       },
       // 获取商品列表
-      async _getGoodsList() {
+      _getGoodsList() {
         let data = {
           status: 1,
           keyword: this.keyword,
@@ -691,17 +802,21 @@
         // 礼品馆=>兑换商品    品牌馆=>自有商品
         this.pageType === 'gift_index' && (data.use_type = 1)
         this.pageType === 'brand_index' && (data.use_type = 2)
-        let res = await API.Cms.goodsList({data})
-        this.total = res.meta.total
-        this.choiceGoods = res.data
-        this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
+        API.Cms.goodsList({data})
+          .then(res => {
+            this.total = res.meta.total
+            this.choiceGoods = res.data
+            this.showSelectIndex = this.choiceGoods.findIndex((item) => item.id === this.goodsId)
+          })
       },
-      async _getArticleList() {
+      _getArticleList() {
         let data = {keyword: this.keyword, page: this.goodsPage, limit: 6, status: 1}
-        let res = await API.Cms.articleList({data})
-        this.total = res.meta.total
-        this.articleArr = res.data
-        this.showSelectIndex = this.articleArr.findIndex((item) => item.id === this.articleId)
+        API.Cms.articleList({data})
+          .then(res => {
+            this.total = res.meta.total
+            this.articleArr = res.data
+            this.showSelectIndex = this.articleArr.findIndex((item) => item.id === this.articleId)
+          })
       },
       // 获取品牌列表
       _getBrandList() {
@@ -734,14 +849,22 @@
         this.keyword = ''
         this.requestHandle()
       },
+      // 请求列表控制器
       requestHandle() {
         switch (this.outLink) {
         case 3002:
-          this._getGoodsList(); break
+          this._getGoodsList()
+          break
         case 3006:
-          this._getArticleList(); break
+          this._getArticleList()
+          break
+        case 3010:
         case 3009:
-          this._getBrandList(); break
+          this._getBrandList()
+          break
+        case 2011:
+          this._getGoodsList()
+          break
         }
       },
       hideGoods() {
@@ -787,12 +910,26 @@
           } else {
             type = '文章'
           }
-          if (this[this.dataName].length >= 5) {
-            this.$toast.show('最多添加5个' + type)
+          if (this[this.dataName].length >= 10) {
+            this.$toast.show('最多添加10个' + type)
             return
           }
           break
         case 'brand':
+          type = '品牌'
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
+            return
+          }
+          break
+        case 'best':
+          type = '精品推荐'
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
+            return
+          }
+          break
+        case 'wall':
           type = '品牌'
           if (this[this.dataName].length >= 10) {
             this.$toast.show('最多添加10个' + type)
@@ -820,10 +957,12 @@
         let type = ''
         switch (this.type) {
         case 'navigation':
-          type = '类目'; break
+          type = '类目';
+          break
         case 'hot':
         case 'recommend':
-          type = '商品'; break
+          type = '商品';
+          break
         case 'banner':
           if (this.pageType === 'gift_index') {
             type = 'banner'
@@ -832,7 +971,12 @@
           }
           break
         case 'brand':
-          type = '品牌'; break
+        case 'wall':
+          type = '品牌'
+          break
+        case 'best':
+          type = '精品推荐'
+          break
         }
         if (!this[this.dataName].length) {
           this.$toast.show(`${type}不能为空`, 1500)
@@ -883,7 +1027,8 @@
               this[this.dataName].splice(index, 1)
             })
           })
-          .catch(() => {})
+          .catch(() => {
+          })
       },
       deleteGoodsMainPic() {
         this[this.dataName][this.cmsIndex].detail.image_url = ''
@@ -989,6 +1134,13 @@
     position: relative
     margin-top: 24px
     user-select: none
+    .cate-image
+      margin:0 20px 0 0
+      width:100px
+      height:100px
+      object-fit: cover
+      background: #FFF
+      border: none
     .add-advertisement
       position: relative
       margin-left: 20px
@@ -1038,6 +1190,14 @@
         font-family: $font-family-regular
         color: $color-text-main
         font-size: $font-size-14
+      .brand-title
+        width: 40px
+        height: 20px
+    .column
+      align-items: flex-start
+      flex-direction: column
+      justify-content: space-between
+      height: 92px
 
   .add-icon
     margin: 0 3px 0 0
@@ -1233,6 +1393,7 @@
 
   .article .goods-text:nth-child(2)
     flex: 1.4
+
   .page-box
     box-sizing: border-box
     height: 76px

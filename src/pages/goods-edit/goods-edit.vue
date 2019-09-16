@@ -11,21 +11,8 @@
       >
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
-      <!-- b端 集采特有-->
-      <template v-if="edit.type===1">
-        <base-form-item label="商品类型" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-select v-model="useType" :height="44" :data="goodsUseList" limit="50"
-                       placeholder="商品类型"
-          ></base-select>
-        </base-form-item>
-        <base-form-item label="所属品牌" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
-                       placeholder="所属品牌"
-          ></base-select>
-        </base-form-item>
-      </template>
-      <!------------>
-      <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+      <!-- 礼品商品-->
+      <base-form-item v-if="edit.type===1" label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <cascade-select ref="cascadeSelect"
                         v-model="edit.category_id"
                         valueKey="id"
@@ -35,6 +22,15 @@
                         placeholder2="请选择子分类"
         ></cascade-select>
       </base-form-item>
+      <!-- 自用商品-->
+      <base-form-item v-if="edit.type===2" label="所属品牌" :required="false" labelMarginRight="40" labelWidth="78px"
+                      labelAlign="right"
+      >
+        <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
+                     placeholder="所属品牌"
+        ></base-select>
+      </base-form-item>
+
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
       </base-form-item>
@@ -45,11 +41,6 @@
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
       </base-form-item>
-      <!-- b端 集采特有-->
-      <base-form-item v-if="edit.type===1" label="邮费信息" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <radio v-model="freightType" :list="freightList" @change="changeType"></radio>
-      </base-form-item>
-      <!---------------->
       <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
@@ -69,6 +60,14 @@
     </div>
     <title-line title="销售信息" class="top-title"></title-line>
     <div class="container">
+      <base-form-item label="销售渠道" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <base-checkbox-group v-model="edit.sale_channel">
+          <base-checkbox v-for="item in saleChannelList" :key="item.id" :label="item.label" @select="getSelect"></base-checkbox>
+        </base-checkbox-group>
+      </base-form-item>
+      <base-form-item v-if="edit.type===1" label="邮费信息" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <radio v-model="freightType" :list="freightList" @change="changeType"></radio>
+      </base-form-item>
       <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
         <div>
           <radio v-model="edit.specification_type" :list="specList" @change="changeType"></radio>
@@ -81,7 +80,9 @@
                   </div>
                 </base-input>
               </base-form-item>
-              <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px" verticalAlign="top">
+              <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px"
+                              verticalAlign="top"
+              >
                 <div class="spec-value-row">
                   <template v-for="(spec,i) in item.values">
                     <base-input :key="i" v-model="spec.text" size="small" class="value-input">
@@ -101,7 +102,8 @@
           </div>
         </div>
       </base-form-item>
-      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px"
+                      labelAlign="right"
                       verticalAlign="top"
       >
         <div>
@@ -136,8 +138,8 @@
                 </template>
                 <template v-if="edit.type===2">
                   <div class="list-item  list-item-input">
-                    <base-input v-model="item.cash_price" type="number" width="93" size="mini" clear
-                                class="value-input"
+                    <base-input v-model="item.cash_price" class="value-input" type="number" width="93" size="mini"
+                                clear
                     >
                     </base-input>
                   </div>
@@ -192,6 +194,7 @@
   import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
+
   import API from '@api'
 
   const PAGE_NAME = 'EDIT_PRODUCT'
@@ -276,7 +279,7 @@
         id: 0,
         brandList: [],
         freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
-        goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
+        saleChannelList: [{label: '赞播集采', id: 'purchase'}, {label: '赞播优品', id: 'bean'}],
         edit: {
           type: '',
           name: '',
@@ -286,8 +289,8 @@
           weight: '',
           manufacturer: '',
           goods_detail_images: [],
-          // goodsDetailPic: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F29%2F1564383114632-777951',
           goods_banner_images: [],
+          sale_channel: [],
           specification_type: 0,
           // ------ 单规格-----
           // 赞播优品商品 & 集采商品
@@ -315,9 +318,13 @@
       this._getBrandList()
     },
     mounted() {
+      // 1 礼品商品   2 自用商品
       if (!this.id) this.edit.type = +this.$route.query.type || 1
     },
     methods: {
+      getSelect(){
+        console.log(this.edit.sale_channel,'sale_cahnnel')
+      },
       changeType() {
         if (this.edit.specification_type && !this.goodsSpecification.length) {
           this.getGoodsDetials()
@@ -348,13 +355,13 @@
         // 单规格
         if (!this.edit.specification_type) {
           let obj = this.detailGoodsSpec[0]
-          this.saleable = obj.saleable
-          this.edit.price = obj.price
-          this.specId = obj.spec_id
+          this.saleable = obj.saleable || 0
+          this.edit.price = obj.price || 0
+          this.specId = obj.spec_id || 0
           // 赞播优品与普通商品区别
           if (this.edit.type === 2) {
-            this.edit.cash_price = obj.cash_price
-            this.edit.bean_price = obj.bean_price
+            this.edit.cash_price = obj.cash_price || 0
+            this.edit.bean_price = obj.bean_price || 0
           }
         }
         if (this.edit.type === 1) {
@@ -480,13 +487,13 @@
         }
         // 如果存在此sku
         if (res) {
-          newGoodsSpec.saleable = res.saleable
-          newGoodsSpec.spec_id = res.spec_id
+          newGoodsSpec.saleable = res.saleable || 0
+          newGoodsSpec.spec_id = res.spec_id || 0
           // 赞播优品与普通商品区别
           newGoodsSpec.price = res.price
           if (this.edit.type === 2) {
-            newGoodsSpec.cash_price = res.cash_price
-            newGoodsSpec.bean_price = res.bean_price
+            newGoodsSpec.cash_price = res.cash_price || 0
+            newGoodsSpec.bean_price = res.bean_price || 0
           }
         } else {
           newGoodsSpec.saleable = 0

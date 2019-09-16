@@ -53,8 +53,10 @@
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in currentListHeader" :key="key" class="list-item">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
+                  <div v-else-if="val.type==='array'">{{item[key] && item[key].join('/')}}</div>
                   <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑</router-link>
+                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑
+                    </router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -67,7 +69,9 @@
             <base-blank v-else></base-blank>
           </div>
           <div class="pagination-box">
-            <base-pagination :total="total" :pageSize="filter.limit" :currentPage.sync="filter.page" @pageChange="updatePage(false)"></base-pagination>
+            <base-pagination :total="total" :pageSize="filter.limit" :currentPage.sync="filter.page"
+                             @pageChange="updatePage(false)"
+            ></base-pagination>
           </div>
         </div>
       </div>
@@ -147,7 +151,7 @@
             }
           },
           category_name: {name: '分类'},
-          sale_channel: {name: '销售渠道'},
+          sale_channel_text: {name: '销售渠道', type: 'array'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
           status: {name: '状态', type: "switch"},
@@ -159,8 +163,8 @@
               img: 'goods_cover_image'
             }
           },
-          brand: {name: '品牌名称'},
-          sale_channel: {name: '销售渠道'},
+          brand_name: {name: '品牌名称'},
+          sale_channel_text: {name: '销售渠道'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
           cash_price: {name: '现金价格'},
@@ -201,7 +205,10 @@
       // 页面数据更新
       updatePage(isUpdatePage = true) {
         if (isUpdatePage) this.filter.page = 1
-        let otherParams = this.filter.type === '1' ? {category_id: this.category_id, sale_channel: this.sale_channel} : {brand: this.brand}
+        let otherParams = this.filter.type === '1' ? {
+          category_id: this.category_id,
+          sale_channel: this.sale_channel
+        } : {brand: this.brand}
         this._getList(otherParams)
         this._getStatus(otherParams)
       },
