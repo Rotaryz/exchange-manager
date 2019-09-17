@@ -2,7 +2,7 @@
   <div class="brand-list">
     <div class="content-wrap">
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="品牌列表">
-        <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
+        <!--<base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>-->
         <router-link tag="div" :to="{path:'brand-edit',query:{type:filter.type}}" append>
           <base-button type="primary" plain addIcon>新建品牌</base-button>
         </router-link>
@@ -58,6 +58,7 @@
     beforeRouteEnter(to, from, next) {
       Promise.all([API.Brand.getBrandList({
         data: {
+          status: '',
           page: 1,
           limit: 10
         }
@@ -127,10 +128,10 @@
           this.setData(res)
         })
       },
-      statusChange(val) {
-        this.filter.page = 1
-        this.updatePage()
-      },
+      // statusChange(val) {
+      //   this.filter.page = 1
+      //   this.updatePage()
+      // },
       deleteBtn(item, idx) {
         this.$confirm.confirm({title: '删除品牌', text: '品牌删除后页面管理配置的品牌将会同步下线'}).then(async () => {
           await API.Brand.deleteBrand({data: {id: item.id}, loading: false})
