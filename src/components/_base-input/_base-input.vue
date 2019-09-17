@@ -1,6 +1,6 @@
 <template>
 
-  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
+  <div class="base-input" :class="[{'base-input--after':clear&& !disabled || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
        :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
   >
     <slot name="after">
@@ -116,6 +116,7 @@
     mounted() {},
     methods: {
       clearBtn() {
+        console.log('111',this.value)
         this.$emit('input', '')
       },
       inputEvent(e) {

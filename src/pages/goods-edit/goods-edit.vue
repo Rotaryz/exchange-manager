@@ -245,8 +245,8 @@
   import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
-
   import API from '@api'
+  import {objDeepCopy} from '@utils/common'
 
   const PAGE_NAME = 'EDIT_PRODUCT'
   const TITLE = '新建商品'
@@ -278,9 +278,9 @@
     data() {
       return {
         priceLevelRatioList: {
-          standard_price: 0,
-          versatile_price: 0,
-          partner_price: 0
+          standard_ratio: 0,
+          versatile_ratio: 0,
+          partner_ratio: 0
         },
         specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
         levelPriceTypeList: [{label: '默认价格', id: 0}, {label: '自定义价格', id: 1}],
@@ -337,7 +337,7 @@
           key: 'goods_detail_images', rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
         }],
         // 礼品校验
-        otherJustfy1: [{
+        otherJustify1: [{
           key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
         }, {
           key: 'standard_price', rules: [{require: true, text: '请输入标准版价'}]
@@ -349,7 +349,7 @@
           key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
         // 自用校验
-        otherJustfy2: [{
+        otherJustify2: [{
           key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
         }, {
           key: 'bean_price', rules: [{require: true, text: '请输入播豆'}]
@@ -375,13 +375,15 @@
       goodsSpecification: {
         deep: true,
         handler(val) {
-          console.log('goodsSpecification', val, val.length)
-          if (val.length) {
-            this.getGoodsDetials()
-          }
-
+          this.getGoodsDetials()
         }
-      }
+      },
+      detailGoodsSpec: {
+        deep: true,
+        handler(val) {
+          console.log(val,'bbbbbbb')
+        }
+      },
     },
     created() {
       this._getBrandList()
@@ -392,11 +394,28 @@
       if (!this.id) this.edit.use_type = +this.$route.query.use_type || 1
     },
     methods: {
+      // 设置详情数据
+      setData(res) {
+        let {id, specs_attrs: specsAttrs, brand_id: brandId, category_id: categoryId, goods_specs: goodsSpecs, ...edit} = res.data
+        this.edit = edit
+        this.$set(this.edit,'goods_specs',objDeepCopy(goodsSpecs))
+        this.id = id
+        if (this.edit.use_type === 1) {
+          this.categoryId = categoryId
+          this.$refs.cascadeSelect.setValue({goods_id: this.id})
+        } else {
+          this.brandId = brandId
+        }
+        if (res.data.goods_specs.purchase.length) this.levelPriceType = res.data.goods_specs.purchase[0].level_price_type
+        this.detailGoodsSpec = objDeepCopy(goodsSpecs)
+        this.goodsSpecification = specsAttrs
+      },
+      // 集采价格输入
       priceInputHandler(val, i) {
-        console.log(val,this.priceLevelRatioList.standard_price,this.priceLevelRatioList.versatile_price,this.priceLevelRatioList.versatile_price)
-        this.$set(this.edit.goods_specs.purchase[i],'standard_price',val * this.priceLevelRatioList.standard_price)
-        this.$set(this.edit.goods_specs.purchase[i],'versatile_price',val * this.priceLevelRatioList.versatile_price)
-        this.$set(this.edit.goods_specs.purchase[i],'partner_price',val *this.priceLevelRatioList.partner_price)
+        console.log(val, this.detailGoodsSpec.purchase, this.edit.goods_specs.purchase)
+        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', (val * this.priceLevelRatioList.standard_ratio).toFixed(2))
+        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', (val * this.priceLevelRatioList.versatile_ratio).toFixed(2))
+        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', (val * this.priceLevelRatioList.partner_ratio).toFixed(2))
       },
       // 是否显示 对应的 销售渠道价格库存
       isShowChannel(val) {
@@ -440,13 +459,14 @@
       },
       // 自定义 系统计算
       levelPriceTypeChange() {
-        if (!this.levelPriceType) {
-          this.edit.goods_specs.purchase.forEach(item => {
-            item.standard_price = item.price * this.priceLevelRatioList.standard_price
-            item.versatile_price = item.price * this.priceLevelRatioList.versatile_price
-            item.partner_price = item.price * this.priceLevelRatioList.partner_price
-          })
-        }
+        this.edit.goods_specs.purchase.forEach(item => {
+          item.level_price_type = this.levelPriceType
+          if (!this.levelPriceType) {
+            item.standard_price = item.price * this.priceLevelRatioList.standard_ratio
+            item.versatile_price = item.price * this.priceLevelRatioList.versatile_ratio
+            item.partner_price = item.price * this.priceLevelRatioList.partner_ratio
+          }
+        })
       },
       // 多规格单规格
       changeType() {
@@ -470,104 +490,34 @@
       _getPriceLevelRatioList() {
         API.Level.getLevelList({loading: false})
           .then(res => {
-            this.priceLevelRatioList.standard_price = res.data.find(item => item.id === 1).discount * 0.1
-            this.priceLevelRatioList.versatile_price = res.data.find(item => item.id === 2).discount * 0.1
-            this.priceLevelRatioList.partner_price = res.data.find(item => item.id === 3).discount * 0.1
+            this.priceLevelRatioList.standard_ratio = res.data.find(item => item.id === 1).discount * 0.1
+            this.priceLevelRatioList.versatile_ratio = res.data.find(item => item.id === 2).discount * 0.1
+            this.priceLevelRatioList.partner_ratio = res.data.find(item => item.id === 3).discount * 0.1
           })
-      },
-      _getBrandList() {
-        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}, loading: false})
-          .then(res => {
-            this.brandList = res.data
-          })
-      },
-      setData(res) {
-        let {id, specs_attrs: specsAttrs, brand_id: brandId, category_id: categoryId, ...edit} = res.data
-        this.edit = edit
-        this.id = id
-        if (this.edit.use_type === 1) {
-          this.categoryId = categoryId
-          this.$refs.cascadeSelect.setValue({goods_id: this.id})
-        } else {
-          this.brandId = brandId
-        }
-        this.goodsSpecification = specsAttrs
-        this.detailGoodsSpec = res.data.goods_specs
-        console.log('this.edit', this.edit)
-      },
-      deleteModule(idx) {
-        this.goodsSpecification.splice(idx, 1)
-      },
-      deleteSpec(idx, i) {
-        this.goodsSpecification[idx].values.splice(i, 1)
-      },
-      getGoodsBannerImages(arr) {
-        arr.forEach(item => {
-          item = item.data
-          // 限制5张
-          if (this.edit.goods_banner_images.length < 5) {
-            this.edit.goods_banner_images.push({
-              id: 0,
-              image_url: item.url,
-              image_id: item.id,
-            })
-          }
-        })
-      },
-      getGoodsDetailImages(arr) {
-        arr.forEach(item => {
-          item = item.data
-          this.edit.goods_detail_images.push({
-            id: 0,
-            image_url: item.url,
-            image_id: item.id,
-          })
-        })
-      },
-      cancelBtn() {
-        this.$router.go(-1)
-      },
-      addSpecValue(idx) {
-        this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, {
-          "text": "",
-          "attr_value_id": 0
-        })
-      },
-      addSpecModule() {
-        this.$set(this.goodsSpecification, this.goodsSpecification.length, {
-          name: "",
-          attr_key_id: 0,
-          values: [
-            {
-              text: "",
-              attr_value_id: 0
-            }
-          ]
-        })
       },
       // 获取sku
       getGoodsDetials() {
-        console.log('this.detailGoodsSpec', this.detailGoodsSpec)
         this.edit.sale_channel.forEach(channel => {
-          console.log('channel', channel)
+          console.log(channel, this.goodsSpecification, this.goodsSpecification.length)
           this.$set(this.edit.goods_specs, channel, [])
           // 多规格
-          if (this.goodsSpecification.length > 0) {
+          if (this.goodsSpecification.length) {
+            // 每个规格遍历
             this.goodsSpecification.forEach(item => {
-              this.getData(channel, item, this.detailGoodsSpec[channel])
+              // 获取每个规格 与剩下规格 的交叉
+              this.getData(channel, item)
             })
           } else {
             // 单规格
-            if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel][0].attr.length === 0) {
-              this.detailGoodsSpec[channel] = this.detailGoodsSpec[channel][0]
-            }
-            if (!this.id) {
-              this.detailGoodsSpec[channel] = channel === 'purchase' ? [{
+            if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
+              this.edit.goods_specs[channel] = objDeepCopy(this.detailGoodsSpec[channel])
+            } else {
+              this.edit.goods_specs[channel] = channel === 'purchase' ? [{
                 spec_id: 0,
                 price: 0,
-                standard_price: "",
-                versatile_price: "",
-                partner_price: "",
+                standard_price: 0,
+                versatile_price: 0,
+                partner_price: 0,
                 saleable: 0,
                 level_price_type: this.levelPriceType
               }] : [{
@@ -581,23 +531,37 @@
           }
         })
       },
-      getData(channel, first, oldGoodsSpecs) {
-        let zum = this.edit.goods_specs[channel]
-        console.log(zum, 'zum')
-        // 公共存的集合  第一个集合
-        if (this.edit.goods_specs[channel].length !== 0) {
+      getData(channel, currentSpec) {
+        // 当前 sku 容器
+        let skuArr = this.edit.goods_specs[channel]
+        // 第一个规格 将所有值 列为 一项 初始化的sku
+        if (skuArr.length === 0) {
+          currentSpec.values.forEach(item => {
+            let specsAttr = [{
+              attr_key_id: currentSpec.attr_key_id,
+              attr_key: currentSpec.name,
+              attr_value: item.text,
+              attr_value_id: item.attr_value_id || 0
+            }]
+            // 得到 此规格的 skuArr
+            let ss = this.getGoodsSpec(specsAttr, channel)
+            skuArr.push(ss)
+          })
+          this.$set(this.edit.goods_specs, channel, skuArr)
+        } else {
+          // 剩余的规格
           let zumto = [];
-          zum.forEach(zu => {
-            first.values.forEach(item => {
+          skuArr.forEach(zu => {
+            currentSpec.values.forEach(item => {
               let newZu = [...zu.specs_attrs, {
-                attr_key_id: first.attr_key_id,
-                attr_key: first.name,
+                attr_key_id: currentSpec.attr_key_id,
+                attr_key: currentSpec.name,
                 attr_value: item.text,
                 attr_value_id: item.attr_value_id || 0
               }]
               let obj = {}
               if (this.id) {
-                obj = this.getGoodsSpec(zu, oldGoodsSpecs, newZu)
+                obj = this.getGoodsSpec(newZu, channel)
               } else {
                 obj = {...zu, specs_attrs: newZu}
               }
@@ -605,50 +569,26 @@
             })
           })
           this.$set(this.edit.goods_specs, channel, zumto)
-        } else {
-          first.values.forEach(item => {
-            let ss = {
-              spec_id: 0,
-              price: 0,
-              saleable: 0,
-              specs_attrs: [{
-                attr_key_id: first.attr_key_id,
-                attr_key: first.name,
-                attr_value: item.text,
-                attr_value_id: item.attr_value_id || 0
-              }]
-            }
-            if (channel === 'purchase') {
-              ss.standard_price = 0
-              ss.versatile_price = 0
-              ss.partner_price = 0
-            } else {
-              ss.cash_price = 0
-              ss.bean_price = 0
-            }
-            if (this.id) {
-              ss = this.getGoodsSpec(ss, oldGoodsSpecs, ss.specs_attrs, channel)
-            }
-            zum.push(ss);
-          })
-          this.$set(this.edit.goods_specs, channel, zum)
         }
       },
-      getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs, channel) {
+      // 获取外层的sku 数据
+      getGoodsSpec(newSpecsAttrs, channel) {
         let res = {}
         let newGoodsSpec = {}
         // 详情查询 存在的sku
         if (this.id) {
           let newAttrs = newSpecsAttrs.map(item => item.attr_key_id + '_' + item.attr_value_id)
-          res = oldGoodsSpecs.find(goodsSpec => {
+          res = this.detailGoodsSpec[channel].find(goodsSpec => {
             return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
-          })
+          }) || {}
         }
+        console.log(res, 0)
         newGoodsSpec.saleable = res.saleable || 0
         newGoodsSpec.spec_id = res.spec_id || 0
-        // 赞播优品与普通商品区别
         newGoodsSpec.price = res.price || 0
+        // 赞播集采与 赞播优品
         if (channel === 'purchase') {
+          newGoodsSpec.level_price_type = this.levelPriceType
           newGoodsSpec.standard_price = res.standard_price || 0
           newGoodsSpec.versatile_price = res.versatile_price || 0
           newGoodsSpec.partner_price = res.partner_price || 0
@@ -662,17 +602,13 @@
       // 提交校验
       submitBtn() {
         let over = false
-        // over = this.justifyMethods(this.justifyItems, this.edit)
-        // if (!over) over = this.justifySpec()
-        // if (!over) over = this.justifyGoodsSpecs(this.otherJustfy1)
+        over = this.justifyMethods(this.justifyItems, this.edit)
+        if (!over) over = this.justifySpec()
+        if (!over) over = this.justifyGoodsSpecs()
+        console.log(over)
         if (!over) this._addGoods()
       },
-      justifyGoodsSpecs() {
-        for (let key in  this.edit.goods_specs) {
-          let spec = this.edit.goods_specs[key]
-          key === 'purchase' ? this.justifyMethods(this.otherJustfy1, spec) : this.justifyMethods(this.otherJustfy2, spec)
-        }
-      },
+
       // 规格值校验
       justifySpec() {
         let over = false
@@ -695,6 +631,22 @@
         }
         return over
       },
+      // 校验商品详情
+      justifyGoodsSpecs() {
+        let over = false
+        for (let key in  this.edit.goods_specs) {
+          let goodsSpec = this.edit.goods_specs[key]
+          for(let i ;i<goodsSpec.length;i++){
+            over = key === 'purchase' ? this.justifyMethods(this.otherJustify1, goodsSpec[i]) : this.justifyMethods(this.otherJustify2, goodsSpec[i])
+            console.log(over,'over')
+            if(over) break
+          }
+          if(over) break
+        }
+        console.log(over,'overconsole.log(over,)')
+        return over
+      },
+      // 校验方法
       justifyMethods(justifyArr, dataArr) {
         let over = false
         for (let i = 0; i < justifyArr.length; i++) {
@@ -704,6 +656,7 @@
             let value = dataArr[item.key]
             let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
             if (rulesRes) {
+              console.log(value,rule.text)
               this.$toast.show(rule.text)
               over = true
               break
@@ -713,6 +666,7 @@
         }
         return over
       },
+      // 最终增加商品
       _addGoods() {
         let data = {
           ...this.edit, specs_attrs: this.goodsSpecification
@@ -733,6 +687,71 @@
           this.$emit('update')
           this.$router.go(-1)
         })
+      },
+      // 品牌列表
+      _getBrandList() {
+        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}, loading: false})
+          .then(res => {
+            this.brandList = res.data
+          })
+      },
+      // 主图
+      getGoodsBannerImages(arr) {
+        arr.forEach(item => {
+          item = item.data
+          // 限制5张
+          if (this.edit.goods_banner_images.length < 5) {
+            this.edit.goods_banner_images.push({
+              id: 0,
+              image_url: item.url,
+              image_id: item.id,
+            })
+          }
+        })
+      },
+      // 详情图
+      getGoodsDetailImages(arr) {
+        arr.forEach(item => {
+          item = item.data
+          this.edit.goods_detail_images.push({
+            id: 0,
+            image_url: item.url,
+            image_id: item.id,
+          })
+        })
+      },
+
+      // 增加规格
+      addSpecModule() {
+        this.$set(this.goodsSpecification, this.goodsSpecification.length, {
+          name: "",
+          attr_key_id: 0,
+          values: [
+            {
+              text: "",
+              attr_value_id: 0
+            }
+          ]
+        })
+      },
+      // 增加规格值
+      addSpecValue(idx) {
+        this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, {
+          "text": "",
+          "attr_value_id": 0
+        })
+      },
+      // 删除规格
+      deleteModule(idx) {
+        this.goodsSpecification.splice(idx, 1)
+      },
+      // 删除规格值
+      deleteSpec(idx, i) {
+        this.goodsSpecification[idx].values.splice(i, 1)
+      },
+      // 取消 返回列表
+      cancelBtn() {
+        this.$router.go(-1)
       }
     }
   }

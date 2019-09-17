@@ -131,7 +131,7 @@
     },
     methods: {
       clickHide() {
-        console.log('clickHide', this.visible)
+        if (!this.visible) return
         this.visible = false
         this.$emit('change-visible', false)
       },

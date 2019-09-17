@@ -282,12 +282,12 @@
 
   .list-box .list-item:nth-child(1)
     flex: 2
-
+  .list-box .list-item:last-child
+    max-width:80px
   .list-item
     display flex
-
     .item-text
-      text-overflow: ellipsis;
-      overflow: hidden;
+      text-overflow: ellipsis
+      overflow: hidden
       white-space: nowrap
 </style>
