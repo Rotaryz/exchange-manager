@@ -4,7 +4,7 @@
        :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
   >
     <slot name="after">
-      <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
+      <span v-if="clear && value !==''&& !disabled " class="clear-wrap" @click="clearBtn">
         <i class="clear-icon"></i>
       </span>
     </slot>
@@ -63,7 +63,7 @@
       },
       disabled: {
         default: false,
-        type: Boolean
+        type: [Boolean,Number,String]
       },
       placeholder: {
         default: '',

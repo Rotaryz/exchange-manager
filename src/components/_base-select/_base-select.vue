@@ -11,25 +11,15 @@
       <input :value="valueLabel"
              :placeholder="placeholder"
              :readonly="true"
+             :disabled="disabled"
              type="text"
              class="input__inner"
              @click.stop="selectType"
       >
-      <!--<base-input :value="valueLabel"-->
-      <!--:placeholder="placeholder"-->
-      <!--:disabled="disabled"-->
-      <!--handIcon="pointer"-->
-      <!--type="text"-->
-      <!--autocomplete="off"-->
-      <!--readonly="readonly"-->
-      <!--class="inner-input"-->
-      <!--@click.stop="selectType"-->
-      <!--&gt;-->
       <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
     </div>
-    <!--</base-input>slot="after"-->
     <transition name="fade">
-      <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
+      <ul v-if="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
             :key="chIdx"
             :class="['select-child-item',{active:(valueKey ? child[valueKey] :child)===value}]"
@@ -136,11 +126,12 @@
     },
     mounted() {
       window.onclick = () => {
-        this.visible = false
+        this.clickHide()
       }
     },
     methods: {
       clickHide() {
+        console.log('clickHide', this.visible)
         this.visible = false
         this.$emit('change-visible', false)
       },
@@ -150,7 +141,7 @@
       leaveHide() {
         this.setTime = setTimeout(() => {
           this.clickHide()
-        }, 1500)
+        }, 1000)
       },
       selectType(e) {
         this.$emit('click', e)

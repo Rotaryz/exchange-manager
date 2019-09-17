@@ -1,14 +1,14 @@
 <template>
   <div class="goods-list">
     <base-tabs :data="tabList"
-               :value.sync="filter.type"
+               :value.sync="filter.use_type"
                valueKey="type"
                tabAlign="left"
                @change="tabChange"
     ></base-tabs>
     <div class="content-wrap">
       <base-layout-top>
-        <base-form-item v-if="filter.type==='2'" label="品牌筛选" labelSize="12px" :required="false">
+        <base-form-item v-if="filter.use_type===2" label="品牌筛选" labelSize="12px" :required="false">
           <base-select v-model="brand"
                        :data="brandList"
                        labelKey="name"
@@ -18,7 +18,7 @@
                        @change="updatePage"
           ></base-select>
         </base-form-item>
-        <template v-else-if="filter.type==='1'">
+        <template v-else-if="filter.use_type===1">
           <base-form-item label="分类" labelSize="12px" labelMarginLeft="20" :required="false">
             <cascade-select ref="selects" v-model="category_id" :isAddAll="true" size="small" defaultLabel1="一级分类"
                             defaultLabel2="二级分类"
@@ -39,7 +39,7 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="updatePage"></base-status-tab>
-        <router-link tag="div" :to="{path:'goods-edit',query:{type:filter.type}}" append>
+        <router-link tag="div" :to="{path:'goods-edit',query:{use_type:filter.use_type}}" append>
           <base-button type="primary" plain addIcon>新建商品</base-button>
         </router-link>
       </base-table-tool>
@@ -55,8 +55,7 @@
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
                   <div v-else-if="val.type==='array'">{{item[key] && item[key].join('/')}}</div>
                   <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,type:filter.type}}" class="list-operation" append>编辑
-                    </router-link>
+                    <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,use_type:filter.use_type}}" class="list-operation" append>编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -93,21 +92,21 @@
     },
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
-      let type = to.query.type
-      let otherParams = type === '1' ? {category_id: '', sale_channel: ''} : {brand: ''}
+      let useType = +(to.query.use_type || 1)
+      let otherParams = useType === 1 ? {category_id: '', sale_channel: ''} : {brand: ''}
       Promise.all([API.Goods.getGoodsList({
         data: {
           keyword: '',
           status: '',
           page: 1,
           limit: 10,
-          type: type,
+          use_type: useType,
           ...otherParams
         }
       }), API.Goods.getGoodsListStatus({
         data: {
           keyword: '',
-          type: type,
+          use_type: useType,
           ...otherParams
         }
       })]).then(res => {
@@ -119,7 +118,7 @@
     },
     data() {
       return {
-        tabList: [{text: '礼品商品', type: '1'}, {text: '自用商品', type: '2'}],
+        tabList: [{text: '礼品商品', type: 1}, {text: '自用商品', type: 2}],
         statusList: [],
         // 下拉列表数据
         brandList: [],
@@ -136,7 +135,7 @@
           status: '',
           page: 1,
           limit: 10,
-          type: this.$route.query.type || '1'
+          use_type: +(this.$route.query.use_type || 1)
         },
         // 自用
         brand: '',
@@ -164,7 +163,7 @@
             }
           },
           brand_name: {name: '品牌名称'},
-          sale_channel_text: {name: '销售渠道'},
+          sale_channel_text: {name: '销售渠道', type: 'array'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
           cash_price: {name: '现金价格'},
@@ -177,14 +176,13 @@
     },
     computed: {
       currentListHeader() {
-        return this.filter.type === '1' ? this.listHeader1 : this.listHeader2
+        return this.filter.use_type === 1 ? this.listHeader1 : this.listHeader2
       }
     },
     watch: {
       $route(router) {
         console.log('$route', router)
         if (router.name !== 'mall-goods-goods-list') return
-        this.filter.type = this.$route.query.type || '1'
         this.updatePage()
       }
     },
@@ -194,7 +192,7 @@
     },
     methods: {
       getBrandList(val) {
-        if (val && this.filter.type === '2') {
+        if (val && this.filter.use_type === 2) {
           API.Brand.getBrandList().then(res => {
             this.brandList = [{
               name: '全部', id: ''
@@ -205,7 +203,7 @@
       // 页面数据更新
       updatePage(isUpdatePage = true) {
         if (isUpdatePage) this.filter.page = 1
-        let otherParams = this.filter.type === '1' ? {
+        let otherParams = this.filter.use_type === 1 ? {
           category_id: this.category_id,
           sale_channel: this.sale_channel
         } : {brand: this.brand}
@@ -217,13 +215,13 @@
         this.filter.keyword = ''
         this.filter.status = ''
         this.filter.page = 1
-        if (this.filter.type === '1') {
+        if (this.filter.use_type === 1) {
           this.category_id = ''
           this.sale_channel = ''
         } else {
           this.brand = ''
         }
-        this.$router.replace({name: 'mall-goods-goods-list', query: {type: val}})
+        this.$router.replace({name: 'mall-goods-goods-list', query: {use_type: this.filter.use_type}})
       },
       setData(res) {
         this.list = res.data
@@ -233,7 +231,7 @@
       _getStatus(otherData) {
         API.Goods.getGoodsListStatus({
           data: {
-            type: this.filter.type,
+            use_type: this.filter.use_type,
             keyword: this.filter.keyword,
             ...otherData
           },

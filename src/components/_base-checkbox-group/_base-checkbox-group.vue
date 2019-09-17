@@ -20,14 +20,13 @@
         default: () => [1]
       }
     },
-    provide(){
+    provide() {
       return {
-        selectList :this.value
+        selectList: this.value
       }
     },
     data() {
-      return {
-      }
+      return {}
     },
     watch: {
       value(newValue) {
@@ -36,11 +35,11 @@
     },
     methods: {
       selectItem(item) {
-        console.log('selectItem',[...this.value, item])
+        console.log('selectItem', [...this.value, item])
         this.$emit("select", [...this.value, item])
       },
       deleteItem(item) {
-        console.log('deleteItem',this.value.filter(selectitem => selectitem !== item))
+        console.log('deleteItem', this.value.filter(selectitem => selectitem !== item))
         this.$emit(
           "select",
           this.value.filter(selectitem => selectitem !== item)
@@ -55,5 +54,6 @@
   @import "~@design"
 
   .base-checkbox-group
-    width: 100%
+    display: flex
+
 </style>

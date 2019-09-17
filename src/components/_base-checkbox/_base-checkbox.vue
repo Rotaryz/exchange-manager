@@ -1,6 +1,7 @@
 <template>
   <div class="checkbox hand"
-       :class="[type]"
+       :class="[type,{checked:isChecked,'has-margin-right':isGroup}]"
+       :style="{'margin-right':marginRight ? marginRight : isGroup ? 60 : '' + 'px'}"
        @click="handleClick"
   >
     <div v-if="label" class="label">{{label}}</div>
@@ -24,36 +25,37 @@
       value: {
         type: [String, Number],
         default: ''
-      }
-    },
-
-    inject: ['selectList'],
-    data() {
-      return {
-        selects:this.selectList
+      },
+      marginRight: {
+        type: [String, Number],
+        default: () => ''
       }
     },
     computed: {
+      isGroup() {
+        return this.$parent.$options._componentTag === "base-checkbox-group"
+      },
       isChecked() {
-        console.log(this.selects,9999)
-        if (!this.selectList) return this.type === 'checked'
+        if (!this.isGroup) return this.type === 'checked'
         const {
           value,
           label,
           selectList
         } = this
         return selectList.some(item => item === (value || label))
+      },
+      selectList() {
+        return this.isGroup ? this.$parent.value : null
       }
     },
     methods: {
       handleClick(e) {
+        if (this.type === 'disable') return
         this.$emit("select", this.value || this.label)
-        if (this.selectList) {
+        if (this.isGroup) {
           this.isChecked
             ? this.$parent.deleteItem(this.value || this.label)
             : this.$parent.selectItem(this.value || this.label)
-        } else {
-          this.$emit("select", this.value || this.label)
         }
       }
     }
@@ -69,6 +71,9 @@
     // 选择框样式
     font-size: $font-size-14
 
+    &.has-margin-right
+      margin-right: 60px
+
     .label
       height: 18px
       line-height: 18px
@@ -79,24 +84,30 @@
       content: ''
       width: 18px
       height: 18px
-      border: 1px solid #dcdfe6
-      background-color: #fff
       border-radius: 2px
       line-height 18px
 
     &.default:before
+      width: 16px
+      height: 16px
       border: 1px solid #dcdfe6
       background-color: #fff
 
     &.checked:before
+      width: 18px
+      height: 18px
       border: none
       icon-image('icon-pick')
 
     &.disable:before
+      width: 18px
+      height: 18px
       border: none
       icon-image('icon-nopick')
 
     &.indeterminate:before
+      width: 18px
+      height: 18px
       border: none
       icon-image('icon-bkpick')
 </style>
