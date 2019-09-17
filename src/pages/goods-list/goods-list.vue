@@ -53,7 +53,7 @@
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in currentListHeader" :key="key" class="list-item">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="changeSwitch(item,i)"></base-switch>
-                  <div v-else-if="val.type==='array'">{{item[key] && item[key].join('/')}}</div>
+                  <template v-else-if="val.type==='array'">{{item[key] && item[key].join('/')}}</template>
                   <div v-else-if="val.type === 'operate'">
                     <router-link tag="span" :to="{path:'goods-edit',query:{id:item.id,use_type:filter.use_type}}" class="list-operation" append>编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
@@ -282,6 +282,8 @@
 
   .list-box .list-item:nth-child(1)
     flex: 2
+  .list-box .list-item:nth-child(3)
+    min-width:130px
   .list-box .list-item:last-child
     max-width:80px
   .list-item
