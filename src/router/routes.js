@@ -323,8 +323,8 @@ export default [
                     name: 'content-edit',
                     component: () => import('@pages/content-edit/content-edit'),
                     meta: {
-                      title: '创作文章', // 页面标题
-                      crumbs: ['内容列表', '创作文章'] // 面包屑标题
+                      title: '创建文章', // 页面标题
+                      crumbs: ['内容列表', '创建文章'] // 面包屑标题
                     }
                   }
                 ]
@@ -401,9 +401,9 @@ export default [
                 children: [
                   // 收支明细
                   {
-                    path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
-                    name: 'income-expenses-detail',
-                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    path: '/finance-manager/agent/agent-withdrawal/income-expenses/:id',
+                    name: 'income-expenses',
+                    component: () => import('@pages/income-expenses/income-expenses'),
                     meta: {
                       title: '收支明细', // 页面标题
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题

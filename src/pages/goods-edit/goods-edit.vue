@@ -103,8 +103,9 @@
           </div>
         </div>
       </base-form-item>
-      <!-- 下面表格-->
-      <base-form-item label="价格库存" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
+      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                      verticalAlign="top"
+      >
         <div>
           <div v-if="isShowChannel('purchase')" class="big-list purchase-list">
             <div class="channel-name">赞播集采</div>
@@ -656,7 +657,6 @@
             let value = dataArr[item.key]
             let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
             if (rulesRes) {
-              console.log(value,rule.text)
               this.$toast.show(rule.text)
               over = true
               break
@@ -764,11 +764,11 @@
     z-index: 100
 
   .list-item.list-item-input
-    flex-shrink 0
+    flex-shrink: 0
     min-width: 127px
 
   .icon-delete-wrap
-    position absolute
+    position: absolute
     top: -14px
     right: -13px
     padding: 10px
@@ -776,8 +776,8 @@
     .icon-delete
       width: 13px
       height: 13px
-      background-image url("./icon-delet@2x.png")
-      background-size 100%
+      background-image: url("./icon-delet@2x.png")
+      background-size: 100%
 
   .edit-product
     .top-title
@@ -785,10 +785,10 @@
 
     .container
       padding: 24px 20px 8px 30px
-      background-color $color-white
+      background-color: $color-white
 
     .first-category-item
-      margin-right 12px
+      margin-right: 12px
 
     .after-word
       margin-left: 10px
@@ -796,12 +796,12 @@
     .more-item-wrap
       min-width: 860px
       max-width: 100%
-      background-color #F4F8F9
+      background-color: #F4F8F9
       padding: 20px 20px 10px
       margin: 20px 0
 
       .spec-value-row
-        flex-wrap wrap
+        flex-wrap: wrap
 
       .add-btn
         color: $color-main
@@ -817,7 +817,7 @@
           margin-right: 0px
 
     .tip
-      font-size $font-size-14
+      font-size: $font-size-14
       color: $color-text-sub
       margin-left: 10px
 

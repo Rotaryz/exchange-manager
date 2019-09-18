@@ -19,7 +19,7 @@
       <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
     </div>
     <transition name="fade">
-      <ul v-if="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
+      <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
             :key="chIdx"
             :class="['select-child-item',{active:(valueKey ? child[valueKey] :child)===value}]"
@@ -166,10 +166,10 @@
   @import "~@design"
 
   .base-select
-    position relative
-    background-color $color-white
+    position:relative
+    background-color:$color-white
     color: $color-text-main
-    font-size $font-size-14
+    font-size:$font-size-14
     border-radius: 2px
     white-space: nowrap
     box-sizing: border-box
@@ -178,13 +178,11 @@
     padidng-riggh 15px
     width: 200px
     /*min-height:32px*/
-
     .inner-value
       padding-left: 14px
       padding-right: 30px
-      visibility hidden
-      cursor pointer
-
+      visibility: hidden
+      cursor: pointer
     .select-child
       top: 44px
 
@@ -235,13 +233,13 @@
 
     &.disabled
       border-color: $color-disable
-      cursor not-allowed
+      cursor: not-allowed
 
     .inner-input
       width: 100%
       height: 100%
       min-height: 32px
-      position absolute
+      position: absolute
       top: 0
       right: 0
       bottom 0
@@ -249,7 +247,7 @@
       z-index: 20
       cursor pointer
       display: flex
-      font-size 0
+      font-size: 0
 
       .input__inner
         cursor pointer
@@ -283,7 +281,7 @@
       max-height: 350px
       overflow-y: auto
       width: 100%
-      cursor pointer
+      cursor: pointer
 
       &::-webkit-scrollbar
         width: 8px
