@@ -166,8 +166,6 @@
           sale_channel_text: {name: '销售渠道', type: 'array'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
-          cash_price: {name: '现金价格'},
-          bean_price: {name: '播豆'},
           status: {name: '状态', type: "switch"},
           operate_text: {name: '操作', type: "operate"}
         },
@@ -181,7 +179,6 @@
     },
     watch: {
       $route(router) {
-        console.log('$route', router)
         if (router.name !== 'mall-goods-goods-list') return
         this.updatePage()
       }
@@ -282,12 +279,16 @@
 
   .list-box .list-item:nth-child(1)
     flex: 2
+
   .list-box .list-item:nth-child(3)
-    min-width:130px
+    min-width: 130px
+
   .list-box .list-item:last-child
-    max-width:80px
+    max-width: 80px
+
   .list-item
     display: flex
+
     .item-text
       text-overflow: ellipsis
       overflow: hidden

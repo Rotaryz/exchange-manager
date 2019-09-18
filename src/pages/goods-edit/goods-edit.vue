@@ -103,7 +103,7 @@
           </div>
         </div>
       </base-form-item>
-      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+      <base-form-item label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
                       verticalAlign="top"
       >
         <div>
@@ -376,6 +376,7 @@
       goodsSpecification: {
         deep: true,
         handler(val) {
+          console.log('valdanguige')
           this.getGoodsDetials()
         }
       },
@@ -499,7 +500,7 @@
       // 获取sku
       getGoodsDetials() {
         this.edit.sale_channel.forEach(channel => {
-          console.log(channel, this.goodsSpecification, this.goodsSpecification.length)
+
           this.$set(this.edit.goods_specs, channel, [])
           // 多规格
           if (this.goodsSpecification.length) {
@@ -511,7 +512,7 @@
           } else {
             // 单规格
             if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
-              this.edit.goods_specs[channel] = objDeepCopy(this.detailGoodsSpec[channel])
+              this.$set(this.edit.goods_specs,channel, objDeepCopy(this.detailGoodsSpec[channel]))
             } else {
               this.edit.goods_specs[channel] = channel === 'purchase' ? [{
                 spec_id: 0,
@@ -583,7 +584,6 @@
             return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
           }) || {}
         }
-        console.log(res, 0)
         newGoodsSpec.saleable = res.saleable || 0
         newGoodsSpec.spec_id = res.spec_id || 0
         newGoodsSpec.price = res.price || 0
@@ -639,12 +639,10 @@
           let goodsSpec = this.edit.goods_specs[key]
           for(let i ;i<goodsSpec.length;i++){
             over = key === 'purchase' ? this.justifyMethods(this.otherJustify1, goodsSpec[i]) : this.justifyMethods(this.otherJustify2, goodsSpec[i])
-            console.log(over,'over')
             if(over) break
           }
           if(over) break
         }
-        console.log(over,'overconsole.log(over,)')
         return over
       },
       // 校验方法
