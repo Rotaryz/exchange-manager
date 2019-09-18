@@ -40,7 +40,7 @@
             </div>
             <div class="scroll-wrapper">
               <div v-for="(item, index) in hotList" :key="index" class="hot-item">
-                <img :src="item.detail.image_url" class="hot-good-img">
+                <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
                 <p class="hot-good-name">{{item.detail.title}}</p>
                 <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
               </div>
