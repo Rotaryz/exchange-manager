@@ -440,13 +440,12 @@
           if (this.isShowChannel(key)) {
             if (!this.edit.freight_type[key]) {
               this.edit.freight_type[key] = key === 'purchase' ? 1 : 2
-              console.log(key, key === 'purchase', this.edit.freight_type[key])
             }
             if (this.edit.specification_type) {
               this.getGoodsDetials()
             } else {
-              if (!this.edit.goods_specs[key].length) {
-                this.edit.goods_specs[key] = key === 'purchase' ? [{
+              if (!this.edit.goods_specs[key] || !this.edit.goods_specs[key].length) {
+                let obj = key === 'purchase' ? [{
                   spec_id: 0,
                   price: 0,
                   standard_price: 0,
@@ -460,6 +459,7 @@
                   cash_price: 0,
                   saleable: 0,
                 }]
+                this.$set( this.edit.goods_specs,key,obj)
               }
             }
           } else {
