@@ -9,7 +9,7 @@
     <div class="content-wrap">
       <base-layout-top>
         <base-form-item v-if="filter.use_type===2" label="品牌筛选" labelSize="12px" :required="false">
-          <base-select v-model="brand"
+          <base-select v-model="brand_id"
                        :data="brandList"
                        labelKey="name"
                        size="small"
@@ -93,7 +93,7 @@
     components: {CascadeSelect},
     beforeRouteEnter(to, from, next) {
       let useType = +(to.query.use_type || 1)
-      let otherParams = useType === 1 ? {category_id: '', sale_channel: ''} : {brand: ''}
+      let otherParams = useType === 1 ? {category_id: '', sale_channel: ''} : {brand_id: ''}
       Promise.all([API.Goods.getGoodsList({
         data: {
           keyword: '',
@@ -138,7 +138,7 @@
           use_type: +(this.$route.query.use_type || 1)
         },
         // 自用
-        brand: '',
+        brand_id: '',
         // 礼品
         category_id: '',
         sale_channel: '',
@@ -203,7 +203,7 @@
         let otherParams = this.filter.use_type === 1 ? {
           category_id: this.category_id,
           sale_channel: this.sale_channel
-        } : {brand: this.brand}
+        } : {brand_id: this.brand_id}
         this._getList(otherParams)
         this._getStatus(otherParams)
       },
@@ -216,7 +216,7 @@
           this.category_id = ''
           this.sale_channel = ''
         } else {
-          this.brand = ''
+          this.brand_id = ''
         }
         this.$router.replace({name: 'mall-goods-goods-list', query: {use_type: this.filter.use_type}})
       },
