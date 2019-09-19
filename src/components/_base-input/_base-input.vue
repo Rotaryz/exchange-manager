@@ -21,6 +21,7 @@
               @blur="blurHandler"
               @input="inputEvent"
               @keydown="keydown"
+              @change="changeHandler"
     ></textarea>
     <input v-else
            v-int="isInt"
@@ -36,6 +37,7 @@
            @blur="blurHandler"
            @input="inputEvent"
            @keydown="keydown"
+           @change="changeHandler"
     >
     <span v-if="limit" class="base-input__count" :class="{'input-count__center': type === 'text'}">{{value.length}}/{{limit}}</span>
   </div>
@@ -159,6 +161,10 @@
       inputEvent(e) {
         let value = e.target.value
         this.$emit('input', value)
+      },
+      changeHandler(e){
+        let value = e.target.value
+        this.$emit('change', value)
       },
       keydown(e) {
         this.$emit('keydown', e)

@@ -171,6 +171,7 @@
                 <div class="list-item list-item-input" data-type="price">
                   <base-input v-model="item.saleable" type="number" :isInt="true" size="mini" clear
                               class="value-input"
+                              @input="saleableChange('purchase',i)"
                   ></base-input>
                 </div>
               </div>
@@ -219,6 +220,7 @@
                   <base-input v-model="item.saleable" type="number" :isInt="true" width="93" size="mini"
                               clear
                               class="value-input"
+                              @input="saleableChange('bean',i)"
                   >
                   </base-input>
                 </div>
@@ -408,6 +410,15 @@
       if (!this.id) this.edit.use_type = +this.$route.query.use_type || 1
     },
     methods: {
+      // 库存
+      saleableChange(type,i){
+        console.log(type,i)
+        if(type==='purchase' && this.isShowChannel('bean')){
+          this.$set(this.edit.goods_specs.bean[i],'saleable',this.edit.goods_specs.purchase[i].saleable)
+        }else if (type==='bean' && this.isShowChannel('purchase')){
+          this.$set(this.edit.goods_specs.purchase[i],'saleable',this.edit.goods_specs.bean[i].saleable)
+        }
+      },
       // 获取默认物流费用说明
       _getDefaultLogisticsInfo() {
         API.Logistics.getDefaultLogisticsInfo().then(res => {
