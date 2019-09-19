@@ -86,6 +86,7 @@
     },
     watch: {
       value(val) {
+        this.getWidthAndPositon(val)
       }
     },
     mounted() {

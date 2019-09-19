@@ -85,6 +85,28 @@ export default [
                   crumbs: ['商品分类']
                 }
               },
+              // 商品品牌
+              {
+                path: '/mall/goods/brand-list',
+                name: 'goods-brand-list',
+                component: () => import('@pages/brand-list/brand-list'),
+                meta: {
+                  title: '商品品牌',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['品牌列表']
+                },
+                children: [
+                  // 品牌详情
+                  {
+                    path: '/mall/goods/brand-list/brand-edit',
+                    name: 'goods-brand-edit',
+                    component: () => import('@pages/brand-edit/brand-edit'),
+                    meta: {
+                      crumbs: ['品牌列表', '创作品牌']
+                    }
+                  }
+                ]
+              },
               // 商品分组
               {
                 path: '/mall/goods/goods-grouping',
@@ -103,28 +125,6 @@ export default [
                     component: () => import('@pages/goods-grouping-detail/goods-grouping-detail'),
                     meta: {
                       crumbs: ['商品分组', '详情']
-                    }
-                  }
-                ]
-              },
-              // 品牌列表
-              {
-                path: '/mall/goods/brand-list',
-                name: 'goods-brand-list',
-                component: () => import('@pages/brand-list/brand-list'),
-                meta: {
-                  title: '品牌列表',
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['品牌列表']
-                },
-                children: [
-                  // 品牌详情
-                  {
-                    path: '/mall/goods/brand-list/brand-edit',
-                    name: 'goods-brand-edit',
-                    component: () => import('@pages/brand-edit/brand-edit'),
-                    meta: {
-                      crumbs: ['品牌列表', '创建品牌']
                     }
                   }
                 ]

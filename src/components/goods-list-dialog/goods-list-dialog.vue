@@ -16,7 +16,7 @@
         <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
             <template v-if="val.type === 'select'">
-              <zb-checkbox :type="allCheckType" @click="selectAllGoodsBtn"></zb-checkbox>
+              <checkbox :type="allCheckType" @click="selectAllGoodsBtn"></checkbox>
             </template>
             <template v-else>
               {{val.name}}
@@ -27,7 +27,7 @@
           <div v-for="(item,i) in list" :key="i" class="list-box">
             <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
               <template v-if="val.type === 'select'">
-                <zb-checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></zb-checkbox>
+                <checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></checkbox>
               </template>
               <template v-else>
                 <template v-if="val.before">
@@ -51,7 +51,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import ZbCheckbox from '@components/zb-checkbox/zb-checkbox'
   import CascadeSelect from '@components/cascade-select/cascade-select'
 
   import API from '@api'
@@ -61,7 +60,6 @@
   export default {
     name: COMPONENT_NAME,
     components: {
-      ZbCheckbox,
       CascadeSelect
     },
     props: {
