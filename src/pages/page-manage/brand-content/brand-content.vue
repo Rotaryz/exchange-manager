@@ -2,8 +2,6 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <!--<span @click="changeType('banner')">文章</span>
-        <span @click="changeType('brand')">品牌</span>-->
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
           <div v-if="cms.code === 'banner'" class="banner-bg"></div>
           <!--banner-->
@@ -39,27 +37,13 @@
             <div v-if="!cms.children.length" class="block">点击添加品牌动态</div>
             <div v-for="(brand, ind) in cms.children" :key="ind" class="brand-item">
               <img :src="brand.detail.image_url" alt="" class="brand-image">
-              <!--<div class="brand-title">-->
-              <!--<img :src="brand.detail.brand && brand.detail.brand.logo_image_url" alt="" class="brand-logo">-->
-              <!--<div class="title">-->
-              <!--<p class="name">{{brand.detail.brand && brand.detail.brand.name}}</p>-->
-              <!--<p class="sub-name">{{brand.detail.brand && brand.detail.brand.sub_name}}</p>-->
-              <!--</div>-->
-              <!--</div>-->
-              <!--<div class="scroll-wrapper">-->
-              <!--<div v-for="(item, index) in brand.detail.goodsList" :key="index" class="goods-item">-->
-              <!--<img :src="item.detail.image_url" class="hot-good-img">-->
-              <!--<p class="hot-good-name">{{item.detail.title}}</p>-->
-              <!--<p class="hot-price">¥{{item.detail.sale_price || 0}}</p>-->
-              <!--</div>-->
-              <!--</div>-->
             </div>
           </div>
           <!--精品推荐-->
           <div v-if="cms.code === 'best_recommend'" class="best hand" :class="{'touch': cmsType === 'best'}" @click="changeType('best')">
             <div class="best-title">精品推荐</div>
             <div v-for="(best, index) in bestList" :key="index" class="best-goods">
-              <img v-if="best.detail.image_url" :src="best.detail.image_url" alt="" class="best-img">
+              <img v-if="best.detail.image_url||best.detail.goods_cover_image" :src="best.detail.image_url||best.detail.goods_cover_image" alt="" class="best-img">
               <div class="best-goods-name">{{best.detail.title}}</div>
               <div class="best-goods-money">{{best.detail.sale_price ? '¥' : ''}}{{best.detail.sale_price}}</div>
             </div>

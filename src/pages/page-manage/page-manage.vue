@@ -17,6 +17,8 @@
                         :industryRecommendList="industryRecommendList"
                         :cmsType.sync="type"
                         :cmsList="moduleList"
+                        :hotBanner="hotModuleData.detail.image_url"
+                        :recommendBanner="recommendModuleData.detail.image_url"
           ></gift-content>
           <div class="edit-modular">
             <div class="box">
@@ -130,7 +132,7 @@
                   </div>
                   <div v-if="selectSource===0" class="groups-con">
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
-                    <template v-if="moduleDetail.detail.source===3011&&moduleDetail.detail.title">
+                    <template v-if="moduleDetail.detail.title">
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
                       <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
                     </template>
@@ -181,9 +183,67 @@
                 <div v-if="type === 'recommend'" class="goods">
                   <div class="content-header">
                     <div class="content-title">精品推荐</div>
-                    <div class="content-sub">(最多添加10个商品，鼠标拖拽调整商品顺序)</div>
+                    <div class="content-sub">(最多添加20个商品，鼠标拖拽调整商品顺序)</div>
                   </div>
-                  <slick-list v-model="recommendList" :distance="30" lockAxis="y">
+                  <div class="sub-title">Banner图</div>
+                  <div class="advertisement-msg">
+                    <upload
+                      :data.sync="moduleDetail.detail.image_url"
+                      :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                      imgStyle="width: 100px; height: 100px"
+                      :isShowDel="false"
+                      :isChange="true"
+                      firstTag="更换图片"
+                      @delete="deleteGoodsMainPic()"
+                      @successImage="successBanner"
+                    ></upload>
+                  </div>
+                  <div class="content-header sub-header">
+                    <div class="content-title">商品</div>
+                  </div>
+                  <div class="source-con">
+                    <div class="source-title">商品来源</div>
+                    <div class="source-box hand" @click="_selectSource(0)">
+                      <div class="select-icon" :class="{'select-icon-active': selectSource === 0}">
+                        <span class="after"></span>
+                      </div>
+                      <div>商品分组</div>
+                    </div>
+                    <div class="source-box hand" @click="_selectSource(1)">
+                      <div class="select-icon" :class="{'select-icon-active': selectSource === 1}">
+                        <span class="after"></span>
+                      </div>
+                      <div>商品</div>
+                    </div>
+                  </div>
+                  <div v-if="selectSource===0" class="groups-con">
+                    <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
+                    <template v-if="moduleDetail.detail.title">
+                      <div class="groups-val">{{moduleDetail.detail.title}}</div>
+                      <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
+                    </template>
+                  </div>
+                  <!--今日爆款 商品分组-->
+                  <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.goods_cover_image"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <p class="goods-title">{{item.name}}</p>
+                        </div>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                  <slick-list v-if="selectSource===1" v-model="recommendList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in recommendList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <upload
@@ -310,7 +370,48 @@
                     <div class="content-title">精品推荐</div>
                     <div class="content-sub">(最多添加20商品，鼠标拖拽调整商品顺序)</div>
                   </div>
-                  <slick-list v-model="bestList" :distance="30" lockAxis="y">
+                  <div class="source-con">
+                    <div class="source-title">商品来源</div>
+                    <div class="source-box hand" @click="_selectSource(0)">
+                      <div class="select-icon" :class="{'select-icon-active': selectSource === 0}">
+                        <span class="after"></span>
+                      </div>
+                      <div>商品分组</div>
+                    </div>
+                    <div class="source-box hand" @click="_selectSource(1)">
+                      <div class="select-icon" :class="{'select-icon-active': selectSource === 1}">
+                        <span class="after"></span>
+                      </div>
+                      <div>商品</div>
+                    </div>
+                  </div>
+                  <div v-if="selectSource===0" class="groups-con">
+                    <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
+                    <template v-if="moduleDetail.detail.title">
+                      <div class="groups-val">{{moduleDetail.detail.title}}</div>
+                      <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
+                    </template>
+                  </div>
+                  <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
+                    <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <upload
+                          :data.sync="item.goods_cover_image"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <p class="goods-title">{{item.name}}</p>
+                        </div>
+                      </div>
+                    </slick-item>
+                  </slick-list>
+                  <slick-list v-if="selectSource===1" v-model="bestList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bestList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <upload
@@ -634,7 +735,9 @@
         selectSource: 0,
         groupsList: [], // 商品分组
         groupsGoodsList: [],
-        moduleDetail: {}
+        moduleDetail: {},
+        hotModuleData: {detail:{image_url:''}},
+        recommendModuleData: {detail:{image_url:''}}
       }
     },
     computed: {
@@ -654,6 +757,8 @@
         this._getGoodsList()
       },
       type(news) {
+        this.currentItem = ''
+        this.showSelectIndex = -1
         switch (news) {
         case 'navigation':
           this.typeList = NAV_TYPE
@@ -682,12 +787,16 @@
         this.initData()
         // 遍历找出当前模块
         this.moduleList.forEach((item, index) => {
-          if (item.code.includes(news)) {
-            console.log(item)
+          if (item.code.includes(news) && item.code !== 'industry_recommend') {
             this.moduleDetail = item
+            // 模块没有detail的，初始化detail
+            if (Array.isArray(item.detail) && item.detail.length === 0) {
+              item.detail = {image_url:'',image_id:'',object_id:'',source:'',title:''}
+            }
             this.outLink = item.detail.source || this.typeList[0].status
-            this.selectSource = item.detail.source === 3011 ? 0 : 1
+            this.selectSource = item.detail.source === 3011 ? 0 : 1// 根据保存的来源，显示默认选中的来源
             if (item.detail.source === 3011 && item.detail && item.detail.object_id) {
+              // 如果来源是商品分组，则获取当前分组的商品列表
               this._getGroupsGoods()
             }
           }
@@ -704,19 +813,26 @@
         .then((res) => {
           next((vx) => {
             vx.moduleList = res.data.children
-            res.data.children.forEach((item) => {
+            res.data.children.forEach((item, idx) => {
+              if (idx===0) {
+                vx.moduleDetail = item
+                // 模块没有detail的，初始化detail
+                if (Array.isArray(item.detail) && item.detail.length === 0) {
+                  item.detail = {image_url:'',image_id:'',object_id:'',source:'',title:''}
+                }
+                vx.outLink = item.detail.source || vx.typeList[0].status
+              }
               switch (item.code) {
               case 'navigation':
                 vx.navigationList = item.children
                 break
               case 'hot_goods':
-                // 来源是分组，不展示在商品的列表
-                if (item.detail.source !== 3011) {
-                  vx.hotList = item.children
-                }
+                vx.hotList = JSON.parse(JSON.stringify(item.children))
+                vx.hotModuleData = item
                 break
               case 'recommend':
-                vx.recommendList = item.children
+                vx.recommendList = JSON.parse(JSON.stringify(item.children))
+                vx.recommendModuleData = item
                 break
               case 'banner':
                 vx.bannerList = item.children
@@ -725,7 +841,7 @@
                 vx.brandList = item.children
                 break
               case 'industry_recommend':
-                vx.industryRecommendList = item.children
+                vx.industryRecommendList = JSON.parse(JSON.stringify(item.children))
                 break
               case 'best_recommend':
                 vx.bestList = item.children
@@ -758,7 +874,7 @@
         this.bannerList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
         this.navigationList = [JSON.parse(JSON.stringify(TEMPLATE_OBJ))]
         this.initData()
-        this.moduleShow()
+        this.moduleShow(true)
       },
       searchGoods(keyword) {
         this.keyword = keyword
@@ -779,24 +895,29 @@
         this.$forceUpdate()
       },
       // 获取页面详情
-      moduleShow() {
+      moduleShow(changeTab = false) {
         API.Cms.moduleShow({data: {code: this.pageType}}).then((res) => {
           this.moduleList = res.data.children
           res.data.children.forEach((item, idx) => {
+            if (changeTab && idx === 0) {
+              this.moduleDetail = item
+              // 模块没有detail的，初始化detail
+              if (Array.isArray(item.detail) && item.detail.length === 0) {
+                item.detail = {image_url: '', image_id: '', object_id: '', source: '', title: ''}
+              }
+              this.outLink = item.detail.source || this.typeList[0].status
+            }
             switch (item.code) {
             case 'navigation':
               this.navigationList = item.children
               break
             case 'hot_goods':
-              this.moduleDetail = item
-              console.log(this.moduleDetail)
-              // 商品来源是商品分组的才获取分组商品列表
-              if (this.moduleDetail.detail.source !== 3011) {
-                this.hotList = item.children
-              }
+              this.hotList = JSON.parse(JSON.stringify(item.children))
+              this.hotModuleData = item
               break
             case 'recommend':
-              this.recommendList = item.children
+              this.recommendList = JSON.parse(JSON.stringify(item.children))
+              this.recommendModuleData = item
               break
             case 'banner':
               this.bannerList = item.children
@@ -805,7 +926,7 @@
               this.brandList = item.children
               break
             case 'industry_recommend':
-              this.industryRecommendList = item.children
+              this.industryRecommendList = JSON.parse(JSON.stringify(item.children))
               break
             case 'best_recommend':
               this.bestList = item.children
@@ -815,6 +936,7 @@
               break
             }
           })
+          console.log(this.moduleDetail)
         })
       },
       // 判断
@@ -969,6 +1091,20 @@
         let data = {id: this.moduleDetail.detail.object_id}
         API.Cms.groupsGoodsList({data}).then((res) => {
           this.groupsGoodsList = JSON.parse(JSON.stringify(res.data))
+          // 给当前的list赋值，只做展示
+          this[this.dataName] = this.groupsGoodsList.map((item) => {
+            return {
+              detail: {
+                object_id: item.goods_id,
+                title: item.name,
+                image_url: item.goods_cover_image,
+                goods_cover_image: item.goods_cover_image,
+                sale_price: item.price,
+                add_icon: ADD_IMAGE
+              },
+              style: this.moduleDetail.detail.source
+            }
+          })
         })
       },
       showModalBox(index, id) {
@@ -1011,14 +1147,14 @@
           this._getArticleList()
           break
         case 3010:
-        case 3011:
-          this._getGroupsList()
-          break
         case 3009:
           this._getBrandList()
           break
         case 2011:
           this._getGoodsList()
+          break
+        case 3011:
+          this._getGroupsList()
           break
         }
       },
@@ -1123,7 +1259,7 @@
       },
       infoData() {
         this.moduleList.forEach((item, index) => {
-          if (item.code.includes(this.type)) {
+          if ((this.type !== 'recommend' && item.code.includes(this.type)) || this.type === 'recommend') {
             if (item.code === 'industry_recommend' && this.type === 'recommend') {
             } else {
               this[this.dataName] = this[this.dataName].map((cms, cmsIndex) => {
@@ -1182,17 +1318,66 @@
       },
       // 获取分组商品参数
       moduleSave() {
-        this.moduleDetail.detail.source = this.outLink
-        // 来源是分组，不需要传children
-        if (this.selectSource === 0) {
-          delete this.moduleDetail.children
-        } else {
+        // 只要来源不是分组商品都要传children
+        if (this.outLink !== 3011) {
+          let type = ''
+          switch (this.type) {
+          case 'navigation':
+            type = '类目';
+            break
+          case 'hot':
+          case 'recommend':
+            type = '商品';
+            break
+          case 'banner':
+            if (this.pageType === 'gift_index') {
+              type = 'banner'
+            } else {
+              type = '文章'
+            }
+            break
+          case 'brand':
+          case 'wall':
+            type = '品牌'
+            break
+          case 'best':
+            type = '精品推荐'
+            break
+          }
+          if (!this[this.dataName].length) {
+            this.$toast.show(`${type}不能为空`, 1500)
+            return
+          } else {
+            for (let i = 0; i < this[this.dataName].length; i++) {
+              if (!this[this.dataName][i].detail.image_id) {
+                this.$toast.show(`第${i + 1}${type}个图片不能为空`, 1500)
+                return
+              } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
+                this.$toast.show(`第${i + 1}${type}个不能为空`, 1500)
+                return
+              }
+            }
+          }
+          this.moduleDetail.children = this[this.dataName]
           this.moduleDetail.detail.object_id = ''
+          this.moduleDetail.detail.title = ''
         }
-        console.log(this.moduleDetail)
+        if (['hot_goods', 'recommend', 'best_recommend'].includes(this.moduleDetail.code)) {
+          this.moduleDetail.detail.source = this.outLink
+          // 来源是分组，不需要传children
+          if (this.outLink === 3011) {
+            delete this.moduleDetail.children
+          }
+        }
         this.infoData()
         API.Cms.saveModule({data: {data: [this.moduleDetail]}}).then((res) => {
           this.$toast.show('保存成功')
+          // 如果来源不是分组，则清除分组商品列表
+          if (this.outLink !== 3011) {
+            this.groupsGoodsList = []
+            this.currentItem = ''
+            this.showSelectIndex = -1
+          }
           this.moduleShow()
         })
       },
@@ -1221,7 +1406,29 @@
       // 选择商品来源
       _selectSource(select) {
         this.selectSource = select
-        this.outLink = select===0?3011:3002
+        this.outLink = select === 0 ? 3011 : 3002
+        // 如果当前选择的来源等于之前保存的来源，就赋值保存的商品列表，否则显示初始列表
+        if (this.outLink === this.moduleDetail.detail.source) {
+          this[this.dataName] = this.moduleDetail.children
+        } else {
+          if (select === 0) {
+            // 如果是选择分组商品，展示当前选择的商品分组
+            this[this.dataName] = this.groupsGoodsList.map((item) => {
+              return {
+                detail: {
+                  object_id: item.goods_id,
+                  title: item.name,
+                  image_url: item.goods_cover_image,
+                  goods_cover_image: item.goods_cover_image,
+                  add_icon: ADD_IMAGE
+                },
+                style: this.moduleDetail.detail.source
+              }
+            })
+          } else {
+            this[this.dataName] = []
+          }
+        }
       }
     }
   }

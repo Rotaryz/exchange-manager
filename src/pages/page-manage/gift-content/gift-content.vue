@@ -2,12 +2,6 @@
   <div class="mobile-content">
     <div class="phone">
       <div class="content-box">
-        <!--<div class="menu">
-          <span @click="changeType('banner')">banner</span>
-          <span @click="changeType('navigation')">导航类目</span>
-          <span @click="changeType('hot')">今日爆款</span>
-          <span @click="changeType('recommend')">商品推荐</span>
-        </div>-->
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
           <div v-if="cms.code === 'banner'" class="banner-bg"></div>
           <div v-if="cms.code === 'banner'" class="banner hand" :class="{'touch': cmsType === 'banner'}" @click="changeType('banner')">
@@ -32,8 +26,7 @@
           </div>
           <!--今日爆款-->
           <div v-if="cms.code === 'hot_goods'" class="hot-commodity hand" :class="{'touch': cmsType === 'hot'}" @click="changeType('hot')">
-            <!--<img src="./pic-dhzq_banner@2x.png" alt="" class="hot-bg">-->
-            <img :src="$imageUrl + '/exchange/pic-hot_banner.png'" alt="" class="hot-bg">
+            <img :src="hotBanner||$imageUrl + '/exchange/pic-hot_banner.png'" alt="" class="hot-bg">
             <div class="hot-title">
               今日爆款
               <span class="text">优选国内2%精品品牌</span>
@@ -48,15 +41,14 @@
           </div>
           <!-- 推荐商品列表-->
           <div v-if="cms.code === 'recommend'" class="hot-commodity hand" :class="{'touch': cmsType === 'recommend'}" @click="changeType('recommend')">
-            <!--<img src="./pic-dhzq_banner2@2x.png" alt="" class="hot-bg">-->
-            <img :src="$imageUrl + '/exchange/pic-re_banner.png'" alt="" class="hot-bg">
+            <img :src="recommendBanner||$imageUrl + '/exchange/pic-re_banner.png'" alt="" class="hot-bg">
             <div class="hot-title">
               精选推荐
               <span class="text">优选国内2%优品</span>
             </div>
             <div class="scroll-wrapper">
               <div v-for="(item, index) in recommendList" :key="index" class="hot-item">
-                <img :src="item.detail.image_url" class="hot-good-img">
+                <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
                 <p class="hot-good-name">{{item.detail.title}}</p>
                 <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
               </div>
@@ -86,6 +78,18 @@
       cmsType: {
         type: String,
         default: 'navigation'
+      },
+      hotBanner: {
+        type: String,
+        default: ''
+      },
+      recommendBanner: {
+        type: String,
+        default: ''
+      },
+      iRBanner: {
+        type: String,
+        default: ''
       },
       bannerList: {
         type: Array,
