@@ -140,16 +140,7 @@
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <upload
-                          :data.sync="item.goods_cover_image"
-                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                          imgStyle="width: 100px; height: 100px"
-                          :isShowDel="false"
-                          :isChange="true"
-                          firstTag="更换图片"
-                          @delete="deleteGoodsMainPic()"
-                          @successImage="successImage"
-                        ></upload>
+                        <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title">{{item.name}}</p>
                         </div>
@@ -225,16 +216,7 @@
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <upload
-                          :data.sync="item.goods_cover_image"
-                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                          imgStyle="width: 100px; height: 100px"
-                          :isShowDel="false"
-                          :isChange="true"
-                          firstTag="更换图片"
-                          @delete="deleteGoodsMainPic()"
-                          @successImage="successImage"
-                        ></upload>
+                        <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title">{{item.name}}</p>
                         </div>
@@ -392,16 +374,7 @@
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <upload
-                          :data.sync="item.goods_cover_image"
-                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                          imgStyle="width: 100px; height: 100px"
-                          :isShowDel="false"
-                          :isChange="true"
-                          firstTag="更换图片"
-                          @delete="deleteGoodsMainPic()"
-                          @successImage="successImage"
-                        ></upload>
+                        <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title">{{item.name}}</p>
                         </div>
