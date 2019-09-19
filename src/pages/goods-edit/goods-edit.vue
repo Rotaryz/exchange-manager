@@ -236,13 +236,13 @@
                       labelHeight="44px"
       >
         <div>
-          <base-form-item v-if="isShowChannel('purchase')" label="赞播集采" labelMarginRight="10">
+          <base-form-item v-if="isShowChannel('purchase')" :required="false" label="赞播集采" labelMarginRight="10">
             <base-select v-model="edit.freight_type.purchase" :data="freightList" height="44"
                          width="194"
             ></base-select>
             <div v-if="edit.freight_type.purchase===1" class="tip">{{defaultLogisticsInfo}}</div>
           </base-form-item>
-          <base-form-item v-if="isShowChannel('bean')" label="赞播优品" labelMarginRight="10">
+          <base-form-item v-if="isShowChannel('bean')" :required="false" label="赞播优品" labelMarginRight="10">
             <base-select v-model="edit.freight_type.bean" :data="freightList" :disabled="true" height="44"
                          width="194"
             ></base-select>
@@ -323,7 +323,7 @@
           goods_banner_images: [],
           sale_channel: ['purchase'],
           specification_type: 0,
-          freight_type: {purchase: 1,bean:''},
+          freight_type: {purchase: 1, bean: 0},
           goods_specs: {
             purchase: [{
               spec_id: 0,
@@ -333,7 +333,7 @@
               partner_price: 0,
               saleable: 0,
             }],
-            bean:[]
+            bean: []
           }
         },
         specId: 0,
@@ -391,7 +391,7 @@
         deep: true,
         handler(val) {
           this.edit.sale_channel.forEach(channel => {
-            this. getGoodsDetails(channel)
+            this.getGoodsDetails(channel)
           })
         }
       }
@@ -461,11 +461,11 @@
             }
             // 当此前没有展示的 商品信息
             if (!this.edit.goods_specs[channel].length) {
-              this. getGoodsDetails(channel)
+              this.getGoodsDetails(channel)
             }
           } else {
-            this.$set(this.edit.freight_type, channel,'')
-            this.$set(this.edit.goods_specs, channel,[])
+            this.$set(this.edit.freight_type, channel, '')
+            this.$set(this.edit.goods_specs, channel, [])
           }
         })
 
