@@ -24,11 +24,13 @@
           <!--品牌导航-->
           <div v-if="cms.code === 'brand_wall'" class="nav-box">
             <div class="nav hand" :class="{'touch': cmsType === 'wall'}" @click="changeType('wall')">
-              <div v-for="(item, index) in wallList" :key="index" class="nav-item">
-                <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="nav-image">
-                <div v-else class="nav-image"></div>
-                <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
-              </div>
+              <template v-for="(item, index) in wallList">
+                <div v-if="item.detail&&item.detail.status===1" :key="index" class="nav-item">
+                  <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="nav-image">
+                  <div v-else class="nav-image"></div>
+                  <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
+                </div>
+              </template>
             </div>
           </div>
 
@@ -36,7 +38,7 @@
           <div v-if="cms.code === 'brand_list'" class="brand-commodity hand" :class="{'touch': cmsType === 'brand'}" @click="changeType('brand')">
             <div v-if="!cms.children.length" class="block">点击添加品牌动态</div>
             <div v-for="(brand, ind) in cms.children" :key="ind" class="brand-item">
-              <img :src="brand.detail.image_url" alt="" class="brand-image">
+              <img v-if="brand.detail&&brand.detail.status===1" :src="brand.detail.image_url" alt="" class="brand-image">
             </div>
           </div>
           <!--精品推荐-->
