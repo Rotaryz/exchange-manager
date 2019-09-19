@@ -189,7 +189,7 @@
         height: 8px
 
   .sec-title
-    text-align: center
+    padding-left:20px
     height: 50px
     line-height: 50px
     font-size: $font-size-16

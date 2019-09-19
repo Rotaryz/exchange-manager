@@ -184,13 +184,12 @@
       }
     },
     mounted() {
-      console.log('2222222')
       this.updatePage()
     },
     methods: {
       getBrandList(val) {
         if (val && this.filter.use_type === 2) {
-          API.Brand.getBrandList().then(res => {
+          API.Brand.getBrandList({data:{limit:''}}).then(res => {
             this.brandList = [{
               name: '全部', id: ''
             }, ...res.data]
