@@ -226,6 +226,7 @@
             <base-select v-model="edit.freight_type.purchase" :data="freightList" height="44"
                          width="194"
             ></base-select>
+            <div v-if="edit.freight_type.purchase===1" class="tip">{{defaultLogisticsInfo}}</div>
           </base-form-item>
           <base-form-item v-if="isShowChannel('bean')" label="赞播优品" labelMarginRight="10">
             <base-select v-model="edit.freight_type.bean" :data="freightList" :disabled="true" height="44"
@@ -288,6 +289,7 @@
         levelPriceTypeList: [{label: '默认价格', id: 0}, {label: '自定义价格', id: 1}],
         levelPriceType: 0,
         freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
+        defaultLogisticsInfo:'',
         brandList: [],
         // 商品规格
         goodsSpecification: [],
@@ -391,12 +393,19 @@
     created() {
       this._getBrandList()
       this._getPriceLevelRatioList()
+      this._getDefaultLogisticsInfo()
     },
     mounted() {
       // 1 礼品商品   2 自用商品
       if (!this.id) this.edit.use_type = +this.$route.query.use_type || 1
     },
     methods: {
+      // 获取默认物流费用说明
+      _getDefaultLogisticsInfo(){
+        API.Logistics.getDefaultLogisticsInfo().then(res=>{
+          this.defaultLogisticsInfo = res.data && res.data.billing_description
+        })
+      },
       // 设置详情数据
       setData(res) {
         let {id, specs_attrs: specsAttrs, brand_id: brandId, category_id: categoryId, goods_specs: goodsSpecs, ...edit} = res.data
@@ -493,9 +502,9 @@
       _getPriceLevelRatioList() {
         API.Level.getLevelList({loading: false})
           .then(res => {
-            this.priceLevelRatioList.standard_ratio = res.data.find(item => item.id === 1).discount * 0.1
-            this.priceLevelRatioList.versatile_ratio = res.data.find(item => item.id === 2).discount * 0.1
-            this.priceLevelRatioList.partner_ratio = res.data.find(item => item.id === 3).discount * 0.1
+            this.priceLevelRatioList.standard_ratio = res.data.find(item => item.id === 1).discount * 0.01
+            this.priceLevelRatioList.versatile_ratio = res.data.find(item => item.id === 2).discount * 0.01
+            this.priceLevelRatioList.partner_ratio = res.data.find(item => item.id === 3).discount * 0.01
           })
       },
       // 获取sku
