@@ -134,7 +134,6 @@
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
                     <template v-if="moduleDetail.detail.title">
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
-                      <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
                     </template>
                   </div>
                   <!--今日爆款 商品分组-->
@@ -220,7 +219,6 @@
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
                     <template v-if="moduleDetail.detail.title">
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
-                      <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
                     </template>
                   </div>
                   <!--今日爆款 商品分组-->
@@ -389,7 +387,6 @@
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
                     <template v-if="moduleDetail.detail.title">
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
-                      <div class="groups-delete hand" @click="clearGroupsInfo">删除</div>
                     </template>
                   </div>
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
@@ -1029,9 +1026,6 @@
           break
         }
         this.$forceUpdate()
-      },
-      // 删除分组
-      clearGroupsInfo() {
       },
       // 获取分类
       _getCateList() {
