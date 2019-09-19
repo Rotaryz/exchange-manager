@@ -71,10 +71,7 @@
     align-items: center
     // 选择框样式
     font-size: $font-size-14
-    width: 16px
-    height: 16px
-    border: 1px solid #dcdfe6
-    background-color: #fff
+
     &.has-margin-right
       margin-right: 60px
 
@@ -82,6 +79,7 @@
       height: 18px
       line-height: 18px
       margin-left 10px
+      white-space nowrap
 
     &:before
       display: inline-block
@@ -90,6 +88,8 @@
       height: 18px
       border-radius: 2px
       line-height 18px
+      border: 1px solid #dcdfe6
+      background-color: #fff
 
     &.default:before
       width: 16px
