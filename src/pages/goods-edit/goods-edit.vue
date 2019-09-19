@@ -74,13 +74,14 @@
             <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
                 <base-input v-model="item.name" size="small">
-                  <div v-if="goodsSpecification.length>1" slot="after" class="icon-delete-wrap"
-                       @click="deleteModule(idx)"
-                  >
-                    <div class="icon-delete"></div>
-                  </div>
                 </base-input>
               </base-form-item>
+              <!-- 删除按钮-->
+              <div v-if="goodsSpecification.length>1" class="icon-delete-wrap"
+                   @click="deleteModule(idx)"
+              >
+                <div class="icon-delete"></div>
+              </div>
               <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px"
                               verticalAlign="top"
               >
@@ -767,16 +768,14 @@
 
   .icon-delete-wrap
     position: absolute
-    top: -14px
-    right: -13px
-    padding: 10px
 
     .icon-delete
       width: 13px
       height: 13px
       background-image: url("./icon-delet@2x.png")
-      background-size: 100%
-
+      background-size: 100% 100%
+      &:hover
+        background-image: url("./icon-delet_hover@2x.png")
   .edit-product
     .top-title
       padding-top: 3px
@@ -792,11 +791,20 @@
       margin-left: 10px
 
     .more-item-wrap
+      position relative
       min-width: 860px
       max-width: 100%
       background-color: #F4F8F9
       padding: 20px 20px 10px
       margin: 20px 0
+      .icon-delete-wrap
+        display none
+        top: 0px
+        right: 0px
+        padding: 12px
+        cursor pointer
+      &:hover .icon-delete-wrap
+          display block
 
       .spec-value-row
         flex-wrap: wrap
@@ -813,7 +821,13 @@
 
         &:last-child
           margin-right: 0px
-
+        .icon-delete-wrap
+          display none
+          top: -14px
+          right: -13px
+          padding: 10px
+        &:hover .icon-delete-wrap
+          display block
     .tip
       font-size: $font-size-14
       color: $color-text-sub
