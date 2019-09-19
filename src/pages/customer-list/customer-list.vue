@@ -246,10 +246,15 @@
   .list-box
     .list-item
       &:nth-child(3)
+        flex: 1.4
+        min-width: 140px
+      &:nth-child(5)
         flex: 1.6
         min-width: 140px
+      &:nth-child(4),&:nth-child(7)
+        flex: 0.7
       &:last-child
-        max-width: 58px
-        min-width: 58px
+        max-width: 50px
+        min-width: 50px
         padding: 0
 </style>

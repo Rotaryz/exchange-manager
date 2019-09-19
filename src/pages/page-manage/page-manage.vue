@@ -1253,11 +1253,7 @@
       },
       // 保存
       submitBtn() {
-        // if (this.selectSource === 0 && this.outLink === 3011) {
         this.moduleSave()
-        // } else {
-        // this.childrenModuleSave()
-        // }
       },
       infoData() {
         this.moduleList.forEach((item, index) => {
