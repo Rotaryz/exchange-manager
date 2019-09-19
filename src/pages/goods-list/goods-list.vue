@@ -184,7 +184,6 @@
       }
     },
     mounted() {
-      console.log('2222222')
       this.updatePage()
     },
     methods: {
