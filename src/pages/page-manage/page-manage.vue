@@ -212,7 +212,7 @@
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
                     </template>
                   </div>
-                  <!--今日爆款 商品分组-->
+                  <!--精品推荐 商品分组-->
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
@@ -371,6 +371,7 @@
                       <div class="groups-val">{{moduleDetail.detail.title}}</div>
                     </template>
                   </div>
+                  <!--精品推荐 商品分组-->
                   <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
