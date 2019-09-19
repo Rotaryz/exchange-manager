@@ -171,6 +171,7 @@
                 <div class="list-item list-item-input" data-type="price">
                   <base-input v-model="item.saleable" type="number" :isInt="true" size="mini" clear
                               class="value-input"
+                              @input="saleableChange('purchase',i)"
                   ></base-input>
                 </div>
               </div>
@@ -219,6 +220,7 @@
                   <base-input v-model="item.saleable" type="number" :isInt="true" width="93" size="mini"
                               clear
                               class="value-input"
+                              @input="saleableChange('bean',i)"
                   >
                   </base-input>
                 </div>
@@ -321,7 +323,7 @@
           goods_banner_images: [],
           sale_channel: ['purchase'],
           specification_type: 0,
-          freight_type: {purchase: 1},
+          freight_type: {purchase: 1,bean:''},
           goods_specs: {
             purchase: [{
               spec_id: 0,
@@ -330,7 +332,8 @@
               versatile_price: 0,
               partner_price: 0,
               saleable: 0,
-            }], bean: []
+            }],
+            bean:[]
           }
         },
         specId: 0,
@@ -387,16 +390,11 @@
       goodsSpecification: {
         deep: true,
         handler(val) {
-          console.log('valdanguige')
-          this.getGoodsDetials()
+          this.edit.sale_channel.forEach(channel => {
+            this. getGoodsDetails(channel)
+          })
         }
-      },
-      detailGoodsSpec: {
-        deep: true,
-        handler(val) {
-          console.log(val, 'bbbbbbb')
-        }
-      },
+      }
     },
     created() {
       this._getBrandList()
@@ -408,6 +406,15 @@
       if (!this.id) this.edit.use_type = +this.$route.query.use_type || 1
     },
     methods: {
+      // 库存
+      saleableChange(type, i) {
+        console.log(type, i)
+        if (type === 'purchase' && this.isShowChannel('bean')) {
+          this.$set(this.edit.goods_specs.bean[i], 'saleable', this.edit.goods_specs.purchase[i].saleable)
+        } else if (type === 'bean' && this.isShowChannel('purchase')) {
+          this.$set(this.edit.goods_specs.purchase[i], 'saleable', this.edit.goods_specs.bean[i].saleable)
+        }
+      },
       // 获取默认物流费用说明
       _getDefaultLogisticsInfo() {
         API.Logistics.getDefaultLogisticsInfo().then(res => {
@@ -446,35 +453,19 @@
       // 销售渠道修改
       saleChannelChange() {
         this.saleChannelList.forEach(item => {
-          let key = item.id
-          if (this.isShowChannel(key)) {
-            if (!this.edit.freight_type[key]) {
-              this.edit.freight_type[key] = key === 'purchase' ? 1 : 2
+          let channel = item.id
+          if (this.isShowChannel(channel)) {
+            // 当此前没有展示的 物流信息
+            if (!this.edit.freight_type[channel]) {
+              this.$set(this.edit.freight_type, channel, channel === 'purchase' ? 1 : 2)
             }
-            if (this.edit.specification_type) {
-              this.getGoodsDetials()
-            } else {
-              if (!this.edit.goods_specs[key] || !this.edit.goods_specs[key].length) {
-                let obj = key === 'purchase' ? [{
-                  spec_id: 0,
-                  price: 0,
-                  standard_price: 0,
-                  versatile_price: 0,
-                  partner_price: 0,
-                  saleable: 0,
-                }] : [{
-                  spec_id: 0,
-                  price: 0,
-                  bean_price: 0,
-                  cash_price: 0,
-                  saleable: 0,
-                }]
-                this.$set(this.edit.goods_specs, key, obj)
-              }
+            // 当此前没有展示的 商品信息
+            if (!this.edit.goods_specs[channel].length) {
+              this. getGoodsDetails(channel)
             }
           } else {
-            this.$delete(this.edit.freight_type, key)
-            this.$delete(this.edit.goods_specs, key)
+            this.$set(this.edit.freight_type, channel,'')
+            this.$set(this.edit.goods_specs, channel,[])
           }
         })
 
@@ -521,40 +512,38 @@
           })
       },
       // 获取sku
-      getGoodsDetials() {
-        this.edit.sale_channel.forEach(channel => {
-
-          this.$set(this.edit.goods_specs, channel, [])
-          // 多规格
-          if (this.goodsSpecification.length) {
-            // 每个规格遍历
-            this.goodsSpecification.forEach(item => {
-              // 获取每个规格 与剩下规格 的交叉
-              this.getData(channel, item)
-            })
+      getGoodsDetails(channel) {
+        this.$set(this.edit.goods_specs, channel, [])
+        // 多规格
+        if (this.goodsSpecification.length) {
+          // 每个规格遍历
+          this.goodsSpecification.forEach(item => {
+            // 获取每个规格 与剩下规格 的交叉
+            this.getData(channel, item)
+          })
+        } else {
+          // 单规格
+          if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
+            this.$set(this.edit.goods_specs, channel, objDeepCopy(this.detailGoodsSpec[channel]))
           } else {
-            // 单规格
-            if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
-              this.$set(this.edit.goods_specs, channel, objDeepCopy(this.detailGoodsSpec[channel]))
-            } else {
-              this.edit.goods_specs[channel] = channel === 'purchase' ? [{
-                spec_id: 0,
-                price: 0,
-                standard_price: 0,
-                versatile_price: 0,
-                partner_price: 0,
-                saleable: 0,
-                level_price_type: this.levelPriceType
-              }] : [{
-                spec_id: 0,
-                price: 0,
-                bean_price: "",
-                cash_price: "",
-                saleable: 0,
-              }]
-            }
+            let obj = channel === 'purchase' ? [{
+              spec_id: 0,
+              price: 0,
+              standard_price: 0,
+              versatile_price: 0,
+              partner_price: 0,
+              saleable: 0,
+              level_price_type: this.levelPriceType
+            }] : [{
+              spec_id: 0,
+              price: 0,
+              bean_price: 0,
+              cash_price: 0,
+              saleable: 0,
+            }]
+            this.$set(this.edit.goods_specs, channel, obj)
           }
-        })
+        }
       },
       getData(channel, currentSpec) {
         // 当前 sku 容器
@@ -670,7 +659,7 @@
                 let value = +goodsSpec[a][item.key]
                 let rulesRes = (rule.require && !value)
                 if (rulesRes) {
-                  console.log(key,rule.text,goodsSpec[a])
+                  console.log(key, rule.text, goodsSpec[a])
                   this.$toast.show(rule.text)
                   over = true
                   break
