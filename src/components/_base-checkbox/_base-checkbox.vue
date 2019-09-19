@@ -52,6 +52,7 @@
       handleClick(e) {
         if (this.type === 'disable') return
         this.$emit("select", this.value || this.label)
+        this.$emit("click", this.value || this.label)
         if (this.isGroup) {
           this.isChecked
             ? this.$parent.deleteItem(this.value || this.label)
@@ -70,7 +71,10 @@
     align-items: center
     // 选择框样式
     font-size: $font-size-14
-
+    width: 16px
+    height: 16px
+    border: 1px solid #dcdfe6
+    background-color: #fff
     &.has-margin-right
       margin-right: 60px
 

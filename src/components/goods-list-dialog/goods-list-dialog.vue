@@ -16,7 +16,7 @@
         <div class="list-header list-box">
           <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
             <template v-if="val.type === 'select'">
-              <checkbox :type="allCheckType" @click="selectAllGoodsBtn"></checkbox>
+              <base-checkbox :type="allCheckType" @click="selectAllGoodsBtn"></base-checkbox>
             </template>
             <template v-else>
               {{val.name}}
@@ -27,7 +27,7 @@
           <div v-for="(item,i) in list" :key="i" class="list-box">
             <div v-for="(val,key) in listHeader" :key="key" :style="val.style" class="list-item">
               <template v-if="val.type === 'select'">
-                <checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></checkbox>
+                <base-checkbox :type="item.selecteStatus|| ''" @click="selectGoodsBtn(item,i)"></base-checkbox>
               </template>
               <template v-else>
                 <template v-if="val.before">
@@ -194,6 +194,7 @@
       },
       // 勾选商品
       selectGoodsBtn(item, index) {
+        console.log(item)
         /* eslint-disable */
       switch (item.selecteStatus) {
         case 'disable':
