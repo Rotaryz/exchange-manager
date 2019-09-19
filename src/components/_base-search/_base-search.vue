@@ -73,18 +73,21 @@
     },
     data() {
       return {
-        newText: ''
+        newText: '',
+        newValue: ''
       }
     },
     methods: {
       setValue(val) {
-        this.$emit('input', val)
+        this.newValue = val
       },
       _search() {
-        this.$emit('search',this.value)
+        this.$emit('input', this.newValue)
+        this.$emit('search',this.newValue)
       },
       _enter(e) {
         if (e.keyCode === 13) {
+          this.$emit('input', e.target.value)
           this.$emit('search', e.target.value)
         }
       }

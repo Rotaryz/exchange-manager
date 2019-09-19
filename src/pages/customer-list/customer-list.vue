@@ -1,7 +1,7 @@
 <template>
   <div class="customer-list normal-box table">
     <div class="down-content">
-      <base-form-item :required="false" labelSize="12px" label="筛选" marginBottom="0">
+      <base-form-item :required="false" labelSize="12px" label="等级筛选" marginBottom="0">
         <base-select
           v-model="id"
           boxStyle="margin: 0"
@@ -11,6 +11,19 @@
           :height="32"
           placeholder="账号等级"
           @change="_exchangeList"
+        >
+        </base-select>
+      </base-form-item>
+      <base-form-item :required="false" labelSize="12px" label="行业筛选" marginBottom="0" marginLeft="20">
+        <base-select
+          v-model="industryId"
+          boxStyle="margin: 0"
+          :width="120"
+          :data="tradeList"
+          labelKey="name"
+          :height="32"
+          placeholder="所属行业"
+          @change="_exchangeTradeList"
         >
         </base-select>
       </base-form-item>
@@ -30,6 +43,7 @@
               <div class="list-item">{{item.name}}</div>
               <div class="list-item">{{item.industry_name}}</div>
               <div class="list-item">{{`${item.province} ${item.city} ${item.district}`}}</div>
+              <div class="list-item">{{item.created_at}}</div>
               <div class="list-item">{{item.shop_level_name}}</div>
               <div class="list-item">
                 <router-link tag="span" :to="`level-setting?id=${item.id}`" append class="list-operation">设置</router-link>
@@ -40,7 +54,7 @@
         </div>
         <div class="pagination-box">
           <!--:pageDetail="contentClassPage"-->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -77,7 +91,7 @@
 
   const PAGE_NAME = 'CUSTOMER_LIST'
   const TITLE = '客户列表'
-  const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '账号等级', '操作']
+  const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '操作']
 
   export default {
     name: PAGE_NAME,
@@ -100,22 +114,25 @@
         total: 1,
         defaultLabel: '',
         selectList: [],
-        id: ''
+        id: '',
+        industryId: '',
+        tradeList: []
       }
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id}
+        let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id, industry_id: this.industryId}
         return data
       }
     },
-    watch: {
-      async page() {
-        await this.getCustomerList()
-      }
-    },
+    // watch: {
+    //   async page() {
+    //     await this.getCustomerList()
+    //   }
+    // },
     async created() {
       this._getLevelList()
+      this._getTradeList()
     },
     beforeRouteEnter(to, from, next) {
       let data = {page: 1, keyword: '', shop_level_id: ''}
@@ -131,14 +148,23 @@
         })
     },
     methods: {
+      // 获取行业列表
+      _getTradeList(loading = false) {
+        return API.Goods.getTradeList({
+          data: {limit: 0},
+          loading
+        }).then((res) => {
+          res.data.unshift({name: '全部', id: ''})
+          this.tradeList = res.data
+          console.log(this.tradeList)
+        })
+      },
       // 获取等级列表
       _getLevelList(loading = false) {
         API.Level.getLevelList({
           data: {page: this.page},
           loading,
-          toast: true,
-          doctor() {
-          }
+          toast: true
         })
           .then((res) => {
             res.data.unshift({name: '普通会员', id: 0})
@@ -147,6 +173,10 @@
           })
       },
       async _exchangeList() {
+        this.page = 1
+        await this.getCustomerList()
+      },
+      async _exchangeTradeList() {
         this.page = 1
         await this.getCustomerList()
       },
@@ -185,8 +215,13 @@
         })
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },
+      // 搜索
       async search(keyword) {
         this.page = 1
+        await this.getCustomerList()
+      },
+      // 分页
+      async pageChange() {
         await this.getCustomerList()
       },
       //  弹窗限制

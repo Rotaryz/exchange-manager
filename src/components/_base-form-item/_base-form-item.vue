@@ -1,5 +1,5 @@
 <template>
-  <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom}">
+  <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom, 'margin-left' : marginLeft + 'px'}">
     <div class="label-text" :style="{width:labelWidth,color:labelColor,'font-size':labelSize,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
       <span v-if="required" class="required-mask">*</span>
       {{label}}
@@ -55,6 +55,10 @@
         type: [Number, String]
       },
       marginBottom: {
+        default: '',
+        type: String
+      },
+      marginLeft: {
         default: '',
         type: String
       }
