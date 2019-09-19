@@ -886,7 +886,7 @@
         API.Cms.moduleShow({data: {code: this.pageType}}).then((res) => {
           this.moduleList = res.data.children
           res.data.children.forEach((item, idx) => {
-            if (changeTab && idx === 0) {
+            if ((changeTab && idx === 0) || this.moduleDetail.code === item.code) {
               this.moduleDetail = item
               // 模块没有detail的，初始化detail
               if (Array.isArray(item.detail) && item.detail.length === 0) {
@@ -923,7 +923,6 @@
               break
             }
           })
-          console.log(this.moduleDetail)
         })
       },
       // 判断
@@ -1197,8 +1196,8 @@
         case 'recommend':
         case 'hot':
           type = '商品'
-          if (this[this.dataName].length >= 10) {
-            this.$toast.show('最多添加10个' + type)
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
             return
           }
           break
