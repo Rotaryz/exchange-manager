@@ -78,7 +78,7 @@
                         <!--@click=""-->
                         <div class="advertisement-link column">
                           <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-<!--                          <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>-->
+                          <!--<p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>-->
                           <base-input
                             :value="item.detail.title"
                             class="brand-title"
@@ -440,8 +440,8 @@
 
         <!--弹窗-->
         <base-modal
-          class="page-modal"
           ref="goods"
+          class="page-modal"
           width="1000"
           :visible.sync="showModal"
           :submitBefore="justifyForm"
