@@ -145,21 +145,24 @@
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.standard_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                  <base-input v-model="item.standard_price" :disabled="!levelPriceType" type="number" :isInt="true"
+                              size="mini"
                               clear
                               class="value-input"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.versatile_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                  <base-input v-model="item.versatile_price" :disabled="!levelPriceType" type="number" :isInt="true"
+                              size="mini"
                               clear
                               class="value-input"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.partner_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                  <base-input v-model="item.partner_price" :disabled="!levelPriceType" type="number" :isInt="true"
+                              size="mini"
                               clear
                               class="value-input"
                   >
@@ -298,7 +301,7 @@
         levelPriceTypeList: [{label: '默认价格', id: 0}, {label: '自定义价格', id: 1}],
         levelPriceType: 0,
         freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
-        defaultLogisticsInfo:'',
+        defaultLogisticsInfo: '',
         brandList: [],
         // 商品规格
         goodsSpecification: [],
@@ -358,18 +361,14 @@
           key: 'versatile_price', rules: [{require: true, text: '请输入全能版价'}]
         }, {
           key: 'partner_price', rules: [{require: true, text: '请输入合伙人价'}]
-        }, {
-          key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
         // 自用校验
         otherJustify2: [{
           key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
         }, {
-          key: 'bean_price', rules: [{require: true, text: '请输入播豆'}]
-        }, {
           key: 'cash_price', rules: [{require: true, text: '请输入现金价'}]
         }, {
-          key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
+          key: 'bean_price', rules: [{require: true, text: '请输入播豆'}]
         }],
       }
     },
@@ -395,7 +394,7 @@
       detailGoodsSpec: {
         deep: true,
         handler(val) {
-          console.log(val,'bbbbbbb')
+          console.log(val, 'bbbbbbb')
         }
       },
     },
@@ -410,8 +409,8 @@
     },
     methods: {
       // 获取默认物流费用说明
-      _getDefaultLogisticsInfo(){
-        API.Logistics.getDefaultLogisticsInfo().then(res=>{
+      _getDefaultLogisticsInfo() {
+        API.Logistics.getDefaultLogisticsInfo().then(res => {
           this.defaultLogisticsInfo = res.data && res.data.billing_description
         })
       },
@@ -419,7 +418,7 @@
       setData(res) {
         let {id, specs_attrs: specsAttrs, brand_id: brandId, category_id: categoryId, goods_specs: goodsSpecs, ...edit} = res.data
         this.edit = edit
-        this.$set(this.edit,'goods_specs',objDeepCopy(goodsSpecs))
+        this.$set(this.edit, 'goods_specs', objDeepCopy(goodsSpecs))
         this.id = id
         if (this.edit.use_type === 1) {
           this.categoryId = categoryId
@@ -433,13 +432,12 @@
       },
       // 集采价格输入
       priceInputHandler(val, i) {
-        console.log(val, this.detailGoodsSpec.purchase, this.edit.goods_specs.purchase)
         let standardPrice = Number(val) * this.priceLevelRatioList.standard_ratio
         let versatilePrice = Number(val) * this.priceLevelRatioList.versatile_ratio
         let partnerPrice = Number(val) * this.priceLevelRatioList.partner_ratio
-        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', standardPrice<1?1:Math.round(standardPrice))
-        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', versatilePrice<1?1:Math.round(versatilePrice))
-        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', partnerPrice<1?1:Math.round(partnerPrice))
+        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', standardPrice < 1 ? 1 : Math.round(standardPrice))
+        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', versatilePrice < 1 ? 1 : Math.round(versatilePrice))
+        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', partnerPrice < 1 ? 1 : Math.round(partnerPrice))
       },
       // 是否显示 对应的 销售渠道价格库存
       isShowChannel(val) {
@@ -471,7 +469,7 @@
                   cash_price: 0,
                   saleable: 0,
                 }]
-                this.$set( this.edit.goods_specs,key,obj)
+                this.$set(this.edit.goods_specs, key, obj)
               }
             }
           } else {
@@ -481,17 +479,21 @@
         })
 
       },
-      // 自定义 系统计算
+      // 切换价格定价方式   自定义 系统计算
       levelPriceTypeChange() {
         this.edit.goods_specs.purchase.forEach(item => {
           item.level_price_type = this.levelPriceType
           if (!this.levelPriceType) {
-            item.standard_price = item.price * this.priceLevelRatioList.standard_ratio
-            item.versatile_price = item.price * this.priceLevelRatioList.versatile_ratio
-            item.partner_price = item.price * this.priceLevelRatioList.partner_ratio
+            let standardPrice = Number(item.price) * this.priceLevelRatioList.standard_ratio
+            let versatilePrice = Number(item.price) * this.priceLevelRatioList.versatile_ratio
+            let partnerPrice = Number(item.price) * this.priceLevelRatioList.partner_ratio
+            item.standard_price = standardPrice < 1 ? 1 : Math.round(standardPrice)
+            item.versatile_price = versatilePrice < 1 ? 1 : Math.round(versatilePrice)
+            item.partner_price = partnerPrice < 1 ? 1 : Math.round(partnerPrice)
           }
         })
       },
+      // 获取系统定价联动
       // 多规格单规格
       changeType() {
         // 多规格
@@ -509,7 +511,6 @@
         } else {
           this.goodsSpecification = []
         }
-        console.log('goodsSpecification', this.goodsSpecification)
       },
       _getPriceLevelRatioList() {
         API.Level.getLevelList({loading: false})
@@ -534,7 +535,7 @@
           } else {
             // 单规格
             if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
-              this.$set(this.edit.goods_specs,channel, objDeepCopy(this.detailGoodsSpec[channel]))
+              this.$set(this.edit.goods_specs, channel, objDeepCopy(this.detailGoodsSpec[channel]))
             } else {
               this.edit.goods_specs[channel] = channel === 'purchase' ? [{
                 spec_id: 0,
@@ -659,11 +660,27 @@
         let over = false
         for (let key in  this.edit.goods_specs) {
           let goodsSpec = this.edit.goods_specs[key]
-          for(let i ;i<goodsSpec.length;i++){
-            over = key === 'purchase' ? this.justifyMethods(this.otherJustify1, goodsSpec[i]) : this.justifyMethods(this.otherJustify2, goodsSpec[i])
-            if(over) break
+          for (let a = 0; a < goodsSpec.length; a++) {
+            let otherJustify = key === 'purchase' ? this.otherJustify1 : this.otherJustify2
+            for (let i = 0; i < otherJustify.length; i++) {
+              let item = otherJustify[i]
+              for (let j = 0; j < item.rules.length; j++) {
+                let rule = item.rules[j]
+
+                let value = +goodsSpec[a][item.key]
+                let rulesRes = (rule.require && !value)
+                if (rulesRes) {
+                  console.log(key,rule.text,goodsSpec[a])
+                  this.$toast.show(rule.text)
+                  over = true
+                  break
+                }
+              }
+              if (over) break
+            }
+            if (over) break
           }
-          if(over) break
+          if (over) break
         }
         return over
       },
@@ -795,8 +812,10 @@
       height: 13px
       background-image: url("./icon-delet@2x.png")
       background-size: 100% 100%
+
       &:hover
         background-image: url("./icon-delet_hover@2x.png")
+
   .edit-product
     .top-title
       padding-top: 3px
@@ -818,14 +837,16 @@
       background-color: #F4F8F9
       padding: 20px 20px 10px
       margin: 20px 0
+
       .icon-delete-wrap
         display none
         top: 0px
         right: 0px
         padding: 12px
         cursor pointer
+
       &:hover .icon-delete-wrap
-          display block
+        display block
 
       .spec-value-row
         flex-wrap: wrap
@@ -842,13 +863,16 @@
 
         &:last-child
           margin-right: 0px
+
         .icon-delete-wrap
           display none
           top: -14px
           right: -13px
           padding: 10px
+
         &:hover .icon-delete-wrap
           display block
+
     .tip
       font-size: $font-size-14
       color: $color-text-sub
