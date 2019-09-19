@@ -11,6 +11,15 @@ export default {
     return request.post({url, ...args})
   },
   /**
+   * 保存模块和模块数据
+   * @param args
+   * @returns {*}
+   */
+  saveModule(args) {
+    const url = `/exchange-platform/platform/content/module/save-module`
+    return request.post({url, ...args})
+  },
+  /**
    * 通过code获取页面详情
    * @param args
    * @returns {*}
@@ -54,6 +63,24 @@ export default {
   brandList(args) {
     const url = `/exchange-platform/platform/platform-goods/brand/index`
     return request.get({url, ...args})
+  },
+  /**
+   * 商品分组
+   * @param args
+   * @returns {*}
+   */
+  groupsList(args) {
+    const url = `/exchange-platform/platform/platform-goods/group/index`
+    return request.get({url, ...args})
+  },
+  /**
+   * 分组商品列表
+   * @param args
+   * @returns {*}
+   */
+  groupsGoodsList(args) {
+    const url = `/exchange-platform/platform/platform-goods/group/group-goods-list`
+    return request.post({url, ...args})
   },
   /**
    * 删除模块

@@ -86,6 +86,7 @@
     },
     watch: {
       value(val) {
+        this.getWidthAndPositon(val)
       }
     },
     mounted() {
@@ -100,18 +101,15 @@
     },
     methods: {
       getId(item, idx) {
-        // console.log(typeof (this.valueKey))
         return typeof this.valueKey === 'number' ? idx : item[this.valueKey]
       },
       getWidthAndPositon(id) {
-        // console.log(this.$refs['activeTab' + id])
         let el = this.$refs['activeTab' + id] && this.$refs['activeTab' + id][0]
         if (!el) return
         this.activeLine.lineWidth = el.offsetWidth
         this.activeLine.left = el.offsetLeft
       },
       changeTab(val) {
-        // console.log(val)
         this.getWidthAndPositon(val)
         this.$emit('update:value', val)
         this.$emit('change', val)
@@ -125,8 +123,8 @@
   $tabs-default-color = #999
   .tab-wrap
     width: 100%
-    border-bottom 1px solid #E9ECEE
-    display: flex;
+    border-bottom: 1px solid #E9ECEE
+    display: flex
     justify-content: center
     background-color: $color-white
     &.center
@@ -139,7 +137,6 @@
       justify-content: flex-end
 
   .tab-list
-    display inline-block
     display: flex
     align-items: center
     position: relative
@@ -173,8 +170,8 @@
         display: inline-block
         margin-right: 4px
         font-size: $font-size-12
-        height: 16px;
-        width: 16px;
+        height: 16px
+        width: 16px
         text-align: center
         border-radius: 50%
         color: #fff

@@ -135,31 +135,31 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .goods-grouping-detail
-    background-color $color-white
-    display flex
-    flex-direction column
+    background-color: $color-white
+    display: flex
+    flex-direction: column
  .list-box  .list-item:nth-child(1)
       flex:2
     .list-item
-      display flex
+      display: flex
       .list-text
-        overflow hidden
-        text-overflow ellipsis
-        white-space nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
 .go-back-btn
-  margin-left 10px
+  margin-left: 10px
 
 .status-dot
-  display inline-block
+  display: inline-block
   width: 8px
   height: @width
   border-radius: 50%
   margin-right: 5px
 
   &.success
-    background $color-success
+    background: $color-success
 
   &.error
-    background $color-error
+    background: $color-error
 
 </style>

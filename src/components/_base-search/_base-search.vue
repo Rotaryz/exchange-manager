@@ -73,18 +73,21 @@
     },
     data() {
       return {
-        newText: ''
+        newText: '',
+        newValue: ''
       }
     },
     methods: {
       setValue(val) {
-        this.$emit('input', val)
+        this.newValue = val
       },
       _search() {
-        this.$emit('search',this.value)
+        this.$emit('input', this.newValue)
+        this.$emit('search',this.newValue)
       },
       _enter(e) {
         if (e.keyCode === 13) {
+          this.$emit('input', e.target.value)
           this.$emit('search', e.target.value)
         }
       }
@@ -106,7 +109,7 @@
     height: 32px
     align-items: center
     overflow: hidden
-    position relative
+    position:relative
     &.small
       height: 28px
     .box-tip
@@ -137,9 +140,9 @@
       border-radius 2px
       border: 0.5px solid $color-line
       color: $color-text-main
-      font-size $font-size-14
-      font-family $font-family-regular
-      padding-right 14px
+      font-size:$font-size-14
+      font-family:$font-family-regular
+      padding-right:14px
       transition: all 0.2s
       padding-left 14px
       box-sizing: border-box

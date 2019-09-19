@@ -118,7 +118,8 @@
       },
       valueKey: {
         type: [Object, String], // 返回的对象需要的值 { id:'image_id}'
-        default: () => {}
+        default: () => {
+        }
       },
       otherTag: {
         type: String, // 除第一张图的其他图的标签
@@ -242,8 +243,8 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .inline
-    display flex
-    align-items center
+    display: flex
+    align-items: center
 
   .edit-image
     flex-wrap: wrap
@@ -268,7 +269,7 @@
     margin: 0
 
   .upload-wrap
-    position relative
+    position: relative
 
   .sendImage
     height: 100%
@@ -278,7 +279,7 @@
     opacity: 0
     z-index: 1
     position: absolute
-    font-size 0
+    font-size: 0
 
   .add-video
     icon-image('pic-video')
@@ -287,10 +288,6 @@
     margin-right: 20px
     position: relative
     font-size: 0
-
-    /*&:last-child*/
-    /*margin: 0*/
-
     .image
       height: 90px
       width: @height
@@ -303,18 +300,18 @@
       object-fit: cover
 
   .tag
-    position absolute
-    bottom 0
+    position: absolute
+    bottom: 0
     right: 0
     left: 0
     background: rgba(30, 35, 51, 0.5)
     border-radius: 0 0 1px 1px
     height: 20px
-    line-height 20px
-    text-align center
+    line-height: 20px
+    text-align: center
     color: $color-white
-    font-size $font-size-14
-    font-family $font-family-regular
+    font-size: $font-size-14
+    font-family: $font-family-regular
 
   .close
     icon-image('icon-del')
@@ -341,7 +338,7 @@
 
   .tip
     color: $color-text-sub
-    font-size $font-size-14
+    font-size: $font-size-14
 
   .image-more
     display: flex

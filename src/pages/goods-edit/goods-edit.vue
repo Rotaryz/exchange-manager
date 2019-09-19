@@ -4,63 +4,33 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="商品名称" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.name" :maxlength="30" :limit="30"></base-input>
+        <base-input v-model="edit.name" :maxlength="20" :limit="20"></base-input>
       </base-form-item>
       <base-form-item label="商品描述" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right"
                       verticalAlign="top"
       >
         <base-input v-model="edit.describe" limit="50" type="textarea" placeholder="输入商品描述"></base-input>
       </base-form-item>
-      <!-- b端 集采特有-->
-      <template v-if="edit.type===1">
-        <base-form-item label="商品类型" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-select v-model="useType" :height="44" :data="goodsUseList" limit="50"
-                       placeholder="商品类型"
-          ></base-select>
-        </base-form-item>
-        <base-form-item label="所属品牌" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
-                       placeholder="所属品牌"
-          ></base-select>
-        </base-form-item>
-      </template>
-      <!------------>
-      <base-form-item label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <!--<cascade-select ref="cascadeSelect"-->
-        <!--v-model="edit.category_id"-->
-        <!--valueKey="id"-->
-        <!--:width="194"-->
-        <!--size="middle"-->
-        <!--placeholder1="请选择分类"-->
-        <!--placeholder2="请选择子分类"-->
-        <!--&gt;</cascade-select>-->
-        <base-select v-model="goodsCategoryFirst"
-                     :data="goodsCategoryFirstList"
-                     :height="32"
-                     radius="4"
-                     placeholder="请选择分类"
-                     valueKey="id"
-                     labelKey="name"
-                     size="small"
-                     width="180"
-                     @change-visible="changeVisible"
-                     @change="_selectCategoryFirst"
-        >
-        </base-select>
-        <base-select v-model="goodsCategorySecond"
-                     :data="goodsCategorySecondList"
-                     :height="32"
-                     placeholder="请选择子分类"
-                     width="180"
-                     valueKey="id"
-                     labelKey="name"
-                     size="small"
-                     radius="4"
-                     class="level-two"
-                     @change="goodsCategoryChange"
-        >
-        </base-select>
+      <!-- 礼品商品-->
+      <base-form-item v-if="edit.use_type===1" label="商品分类" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <cascade-select ref="cascadeSelect"
+                        v-model="categoryId"
+                        valueKey="id"
+                        :width="194"
+                        size="middle"
+                        placeholder1="请选择分类"
+                        placeholder2="请选择子分类"
+        ></cascade-select>
       </base-form-item>
+      <!-- 自用商品-->
+      <base-form-item v-if="edit.use_type===2" label="所属品牌" labelMarginRight="40" labelWidth="78px"
+                      labelAlign="right"
+      >
+        <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
+                     placeholder="所属品牌"
+        ></base-select>
+      </base-form-item>
+
       <base-form-item label="商品编码" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.serial_number"></base-input>
       </base-form-item>
@@ -71,11 +41,6 @@
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
       </base-form-item>
-      <!-- b端 集采特有-->
-      <base-form-item v-if="edit.type===1" label="邮费信息" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <radio v-model="freightType" :list="freightList" @change="changeType"></radio>
-      </base-form-item>
-      <!---------------->
       <base-form-item label="商品主图" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top"
                       labelHeight="40px"
       >
@@ -95,6 +60,13 @@
     </div>
     <title-line title="销售信息" class="top-title"></title-line>
     <div class="container">
+      <base-form-item label="销售渠道" labelMarginRight="40" labelWidth="78px" labelAlign="right">
+        <base-checkbox-group v-model="edit.sale_channel" @select="saleChannelChange">
+          <base-checkbox v-for="item in saleChannelList" :key="item.id" :value="item.id" :label="item.label"
+                         :type="item.type"
+          ></base-checkbox>
+        </base-checkbox-group>
+      </base-form-item>
       <base-form-item label="商品规格" labelMarginRight="40" labelWidth="78px" labelAlign="right" verticalAlign="top">
         <div>
           <radio v-model="edit.specification_type" :list="specList" @change="changeType"></radio>
@@ -102,12 +74,17 @@
             <div v-for="(item,idx) in goodsSpecification" :key="idx" class="more-item-wrap">
               <base-form-item labelColor="#868DAA" label="规格名" marginBottom="14px">
                 <base-input v-model="item.name" size="small">
-                  <div v-if="goodsSpecification.length>1" slot="after" class="icon-delete-wrap" @click="deleteModule(idx)">
-                    <div class="icon-delete"></div>
-                  </div>
                 </base-input>
               </base-form-item>
-              <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px" verticalAlign="top">
+              <!-- 删除按钮-->
+              <div v-if="goodsSpecification.length>1" class="icon-delete-wrap"
+                   @click="deleteModule(idx)"
+              >
+                <div class="icon-delete"></div>
+              </div>
+              <base-form-item labelColor="#868DAA" labelHeight="32px" label="规格值" marginBottom="0px"
+                              verticalAlign="top"
+              >
                 <div class="spec-value-row">
                   <template v-for="(spec,i) in item.values">
                     <base-input :key="i" v-model="spec.text" size="small" class="value-input">
@@ -120,92 +97,143 @@
                 </div>
               </base-form-item>
             </div>
-            <div v-if="goodsSpecification.length<3" class="add-moudle-wrap">
+            <div v-if="goodsSpecification.length<3">
               <base-button addIcon plain size="small" @click="addSpecModule">添加规格</base-button>
               <span class="tip">最多支持3组规格</span>
             </div>
           </div>
         </div>
       </base-form-item>
-      <base-form-item v-if="edit.specification_type === 1" label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+      <base-form-item label="商品明细" labelMarginRight="40" labelWidth="78px" labelAlign="right"
                       verticalAlign="top"
       >
         <div>
-          <div class="big-list">
+          <div v-if="isShowChannel('purchase')" class="big-list purchase-list">
+            <div class="channel-name">赞播集采</div>
+            <div class="set-price-box">
+              <radio v-model="levelPriceType" :list="levelPriceTypeList" @change="levelPriceTypeChange"></radio>
+            </div>
             <div class="list-header list-box">
               <div v-for="(item,key) in goodsSpecification" :key="key" class="list-item">{{item.name}}</div>
-              <div class="list-item list-item-input"><span class="required-mark">*</span>零售价</div>
-              <!--     // 赞播优品与普通商品区别 -->
-              <template v-if="edit.type===1">
-                <div class="list-item list-item-input"><span class="required-mark">*</span>库存</div>
-              </template>
-              <template v-if="edit.type===2">
-                <div class="list-item list-item-input"><span class="required-mark">*</span>现金价格(元)</div>
-                <div class="list-item list-item-input"><span class="required-mark">*</span> 播豆</div>
-                <div class="list-item list-item-input"><span class="required-mark">*</span>库存</div>
-              </template>
+              <!-- 单规格 -->
+              <div v-if="edit.specification_type === 0" class="list-item"></div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>零售价(元）
+              </div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>标准版价格(元)
+              </div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span> 全能版价格(元)
+              </div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>合伙版价格(元)
+              </div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>库存</div>
             </div>
             <div class="list">
-              <div v-for="(item,i) in goodsDetails" :key="i" class="list-content list-box">
+              <div v-for="(item,i) in edit.goods_specs.purchase" :key="i" class="list-content list-box">
                 <div v-for="(spec,idx) in item.specs_attrs" :key="idx" class="list-item">
                   {{spec.attr_value}}
                 </div>
-                <div class="list-item list-item-input">
+                <!-- 单规格 -->
+                <div v-if="edit.specification_type === 0" class="list-item list-item-input">
+                  统一规格
+                </div>
+                <!--赞播集采特有-->
+                <div class="list-item list-item-input" data-type="price">
+                  <base-input v-model="item.price" type="number" size="mini" clear class="value-input"
+                              @input="priceInputHandler(item.price,i)"
+                  >
+                  </base-input>
+                </div>
+                <div class="list-item list-item-input" data-type="price">
+                  <base-input v-model="item.standard_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                              class="value-input"
+                  >
+                  </base-input>
+                </div>
+                <div class="list-item list-item-input" data-type="price">
+                  <base-input v-model="item.versatile_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                              class="value-input"
+                  >
+                  </base-input>
+                </div>
+                <div class="list-item list-item-input" data-type="price">
+                  <base-input v-model="item.partner_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                              class="value-input"
+                  >
+                  </base-input>
+                </div>
+                <div class="list-item list-item-input" data-type="price">
+                  <base-input v-model="item.saleable" type="number" size="mini" clear
+                              class="value-input"
+                  ></base-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="isShowChannel('bean')" class="big-list bean-list">
+            <div class="channel-name bean-title">赞播优品</div>
+            <div class="list-header list-box">
+              <div v-for="(item,key) in goodsSpecification" :key="key" class="list-item">{{item.name}}</div>
+              <!-- 单规格 -->
+              <div v-if="edit.specification_type === 0" class="list-item"></div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>零售价</div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>现金价格(元)
+              </div>
+              <div class="list-item list-item-input" data-type="price-2"><span class="required-mark">*</span> 播豆</div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>库存</div>
+            </div>
+            <div class="list">
+              <div v-for="(item,i) in edit.goods_specs.bean" :key="i" class="list-content list-box">
+                <div v-for="(spec,idx) in item.specs_attrs" :key="idx" class="list-item">
+                  {{spec.attr_value}}
+                </div>
+                <!-- 单规格 -->
+                <div v-if="edit.specification_type === 0" class="list-item"> 统一规格</div>
+                <!--赞播优品特有-->
+                <div class="list-item list-item-input" data-type="price">
                   <base-input v-model="item.price" type="number" size="mini" clear class="value-input">
                   </base-input>
                 </div>
-                <!--     // 赞播优品与普通商品区别 -->
-                <template v-if="edit.type===1">
-                  <div class="list-item list-item-input">
-                    <base-input v-model="item.saleable" type="number" size="mini" clear class="value-input"></base-input>
-                  </div>
-                </template>
-                <template v-if="edit.type===2">
-                  <div class="list-item  list-item-input">
-                    <base-input v-model="item.cash_price" type="number" width="93" size="mini" clear
-                                class="value-input"
-                    >
-                    </base-input>
-                  </div>
-                  <div class="list-item  list-item-input">
-                    <base-input v-model="item.bean_price" type="number" width="93" size="mini" clear
-                                class="value-input"
-                    ></base-input>
-                  </div>
-                  <div class="list-item  list-item-input">
-                    <base-input v-model="item.saleable" type="number" width="93" size="mini" clear
-                                class="value-input"
-                    >
-                    </base-input>
-                  </div>
-                </template>
+                <div class="list-item  list-item-input" data-type="price">
+                  <base-input v-model="item.cash_price" class="value-input" type="number" width="93" size="mini"
+                              clear
+                  >
+                  </base-input>
+                </div>
+                <div class="list-item  list-item-input" data-type="price-2">
+                  <base-input v-model="item.bean_price" type="number" width="93" size="mini" clear
+                              class="value-input"
+                  ></base-input>
+                </div>
+                <div class="list-item  list-item-input" data-type="price">
+                  <base-input v-model="item.saleable" type="number" width="93" size="mini" clear
+                              class="value-input"
+                  >
+                  </base-input>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </base-form-item>
-      <!-- 单规格 -->
-      <template v-if="edit.specification_type ===0 ">
-        <!-- 集采商品  优品商品区别-->
-        <!-- 优品商品 -->
-        <base-form-item label="零售价" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-input v-model="edit.price" type="number"></base-input>
-          <span class="after-word">元</span>
-        </base-form-item>
-        <template v-if="edit.type===2">
-          <base-form-item label="现金价" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-            <base-input v-if="edit.specification_type !== 1" v-model="edit.cash_price" type="number"></base-input>
-            <span class="after-word">元</span>
+    </div>
+    <title-line title="物流信息" class="top-title"></title-line>
+    <div class="container">
+      <base-form-item label="物流费用" verticalAlign="top" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                      labelHeight="44px"
+      >
+        <div>
+          <base-form-item v-if="isShowChannel('purchase')" label="赞播集采" labelMarginRight="10">
+            <base-select v-model="edit.freight_type.purchase" :data="freightList" height="44"
+                         width="194"
+            ></base-select>
           </base-form-item>
-          <base-form-item label="播豆" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-            <base-input v-if="edit.specification_type !== 1" v-model="edit.bean_price" type="number"></base-input>
+          <base-form-item v-if="isShowChannel('bean')" label="赞播优品" labelMarginRight="10">
+            <base-select v-model="edit.freight_type.bean" :data="freightList" :disabled="true" height="44"
+                         width="194"
+            ></base-select>
           </base-form-item>
-        </template>
-        <base-form-item label="库存" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-          <base-input v-model="edit.saleable" type="number"></base-input>
-        </base-form-item>
-      </template>
-
+        </div>
+      </base-form-item>
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
@@ -216,10 +244,11 @@
 
 <script type="text/ecmascript-6">
   import Upload from '../../components/zb-upload/zb-upload.vue'
-  // import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
+  import CascadeSelect from '../../components/cascade-select/cascade-select.vue'
   import TitleLine from "../../components/title-line/title-line"
   import Radio from "../../components/zb-radio/zb-radio"
   import API from '@api'
+  import {objDeepCopy} from '@utils/common'
 
   const PAGE_NAME = 'EDIT_PRODUCT'
   const TITLE = '新建商品'
@@ -233,7 +262,7 @@
       TitleLine,
       Upload,
       Radio,
-      // CascadeSelect
+      CascadeSelect
     },
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
@@ -250,15 +279,54 @@
     },
     data() {
       return {
-        arrRes: [],
+        priceLevelRatioList: {
+          standard_ratio: 0,
+          versatile_ratio: 0,
+          partner_ratio: 0
+        },
         specList: [{label: '统一规格', id: 0}, {label: '多规格', id: 1}],
+        levelPriceTypeList: [{label: '默认价格', id: 0}, {label: '自定义价格', id: 1}],
+        levelPriceType: 0,
+        freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
+        brandList: [],
+        // 商品规格
+        goodsSpecification: [],
+        // 新生成的  商品sku列表
+        goodsDetails: [],
+        // 详情返回的元sku列表
+        detailGoodsSpec: {},
+        id: 0,
+        edit: {
+          use_type: '',
+          name: '',
+          describe: '',
+          serial_number: '',
+          weight: '',
+          manufacturer: '',
+          goods_detail_images: [],
+          goods_banner_images: [],
+          sale_channel: ['purchase'],
+          specification_type: 0,
+          freight_type: {purchase: 1},
+          goods_specs: {
+            purchase: [{
+              spec_id: 0,
+              price: 0,
+              standard_price: 0,
+              versatile_price: 0,
+              partner_price: 0,
+              saleable: 0,
+            }], bean: []
+          }
+        },
+        specId: 0,
+        brandId: '',// 品牌
+        categoryId: '', // 类型
         // 多规格校验
         justifyItems: [{
           key: 'name', rules: [{require: true, text: '请输入商品名称'}]
         }, {
           key: 'describe', rules: [{require: false, text: '请输入商品描述'}]
-        }, {
-          key: 'category_id', rules: [{require: true, text: '请选择商品分类'}]
         }, {
           key: 'serial_number', rules: [{require: true, text: '请输入商品编码'}]
         }, {
@@ -270,13 +338,20 @@
         }, {
           key: 'goods_detail_images', rules: [{minLength: 1, text: '请上传商品详情图'}, {maxLength: 15, text: '商品详情图不可超过15张'}]
         }],
-        // 单规格校验
-        otherJustfy1: [{
+        // 礼品校验
+        otherJustify1: [{
           key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
+        }, {
+          key: 'standard_price', rules: [{require: true, text: '请输入标准版价'}]
+        }, {
+          key: 'versatile_price', rules: [{require: true, text: '请输入全能版价'}]
+        }, {
+          key: 'partner_price', rules: [{require: true, text: '请输入合伙人价'}]
         }, {
           key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
-        otherJustfy2: [{
+        // 自用校验
+        otherJustify2: [{
           key: 'price', rules: [{require: true, text: '请输入商品零售价'}]
         }, {
           key: 'bean_price', rules: [{require: true, text: '请输入播豆'}]
@@ -285,130 +360,121 @@
         }, {
           key: 'saleable', rules: [{require: true, text: '请输入商品库存'}]
         }],
-        // 商品规格
-        goodsSpecification: [{
-          "name": "",
-          "attr_key_id": 0,
-          "values": [
-            {
-              "text": "",
-              "attr_value_id": 0
-            }
-          ]
-        }],
-        // 新生成的  商品sku列表
-        goodsDetails: [],
-        // 详情返回的元sku列表
-        detailGoodsSpec: [],
-        id: 0,
-        brandList: [],
-        freightList: [{label: '系统模板计算', id: 1}, {label: '免邮', id: 2}],
-        goodsUseList: [{label: '兑换商品', id: 1}, {label: '自用商品', id: 2}],
-        edit: {
-          type: 1,
-          name: '',
-          describe: '',
-          category_id: '',
-          serial_number: '',
-          weight: '',
-          manufacturer: '',
-          goods_detail_images: [],
-          // goodsDetailPic: 'https://social-shopping-api-1254297111.picgz.myqcloud.com/corp1%2F2019%2F07%2F29%2F1564383114632-777951',
-          goods_banner_images: [],
-          specification_type: 0,
-          // ------ 单规格-----
-          // 赞播优品商品 & 集采商品
-          saleable: 0,
-          price: 0,
-          // 赞播优品商品
-          cash_price: 0,
-          bean_price: 0,
-        },
-        specId: 0,
-        useType: 1,
-        brandId: '',
-        freightType: 1,
-        // 分类选择
-        goodsCategoryFirstList: [],
-        goodsCategorySecondList: [],
-        goodsCategoryFirst: '',
-        goodsCategorySecond: ''
+      }
+    },
+    computed: {
+      saleChannelList() {
+        return this.edit.use_type === 1
+          ? [{label: '赞播集采', id: 'purchase'}, {label: '赞播优品', id: 'bean'}]
+          : [{
+            label: '赞播集采',
+            id: 'purchase',
+            type: 'disable'
+          }]
       }
     },
     watch: {
       goodsSpecification: {
         deep: true,
         handler(val) {
+          console.log('valdanguige')
           this.getGoodsDetials()
         }
-      }
+      },
+      detailGoodsSpec: {
+        deep: true,
+        handler(val) {
+          console.log(val,'bbbbbbb')
+        }
+      },
     },
     created() {
       this._getBrandList()
+      this._getPriceLevelRatioList()
     },
     mounted() {
-      this.id = this.$route.query.id || 0
-      if (this.id) {
-        this.setCategory()
-      } else {
-        this.edit.type = +this.$route.query.type || 1
-      }
+      // 1 礼品商品   2 自用商品
+      if (!this.id) this.edit.use_type = +this.$route.query.use_type || 1
     },
     methods: {
-      setCategory() {
-        this._getCategoryFirst({goods_id: this.id}).then((res) => {
-          let item = res.data.find((item) => item.is_selected)
-          if (!item) return false
-          this.goodsCategoryFirst = item.id
-          this.goodsCategoryChange(this.goodsCategorySecond)
-          this._selectCategoryFirst({goods_id: this.id}).then((res2) => {
-            let item2 = res2.data.find((item) => item.is_selected)
-            if (!item2) return false
-            this.goodsCategorySecond = item2 && item2.id
-            this.goodsCategoryChange(this.goodsCategorySecond)
-          })
-        })
-      },
-      changeVisible(val) {
-        if (!val) return
-        this._getCategoryFirst()
-      },
-      // 获取一级分类
-      async _getCategoryFirst(otherParams = {}) {
-        return API.Goods.getCategory({
-          data: {pid: -1, ...otherParams},
-          loading: false
-        }).then((res) => {
-          if (this.isAddAll) res.data = [{id: '', name: '全部'}, ...res.data]
-          this.goodsCategoryFirstList = res.data || []
-          return res
-        })
-      },
-      // 选择第一分类
-      async _selectCategoryFirst(otherParams = {}) {
-        this.goodsCategorySecond = ''
-        this.goodsCategorySecondList = []
-        let res = null
-        // 选择全部时
-        if (this.goodsCategoryFirst) {
-          // 选择有内容选项
-          res = await API.Goods.getCategory({
-            doctor() {
-            },
-            data: {pid: this.goodsCategoryFirst, ...otherParams},
-            loading: false
-          })
-          this.goodsCategorySecondList = res.data || []
+      // 设置详情数据
+      setData(res) {
+        let {id, specs_attrs: specsAttrs, brand_id: brandId, category_id: categoryId, goods_specs: goodsSpecs, ...edit} = res.data
+        this.edit = edit
+        this.$set(this.edit,'goods_specs',objDeepCopy(goodsSpecs))
+        this.id = id
+        if (this.edit.use_type === 1) {
+          this.categoryId = categoryId
+          this.$refs.cascadeSelect.setValue({goods_id: this.id})
+        } else {
+          this.brandId = brandId
         }
-        this.goodsCategoryChange(this.goodsCategoryFirst)
-        return res
+        if (res.data.goods_specs.purchase.length) this.levelPriceType = res.data.goods_specs.purchase[0].level_price_type
+        this.detailGoodsSpec = objDeepCopy(goodsSpecs)
+        this.goodsSpecification = specsAttrs
       },
-      goodsCategoryChange(val) {
-        this.edit.category_id = val
+      // 集采价格输入
+      priceInputHandler(val, i) {
+        console.log(val, this.detailGoodsSpec.purchase, this.edit.goods_specs.purchase)
+        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', (val * this.priceLevelRatioList.standard_ratio).toFixed(2))
+        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', (val * this.priceLevelRatioList.versatile_ratio).toFixed(2))
+        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', (val * this.priceLevelRatioList.partner_ratio).toFixed(2))
       },
+      // 是否显示 对应的 销售渠道价格库存
+      isShowChannel(val) {
+        return this.edit.sale_channel.includes(val)
+      },
+      // 销售渠道修改
+      saleChannelChange() {
+        this.saleChannelList.forEach(item => {
+          let key = item.id
+          if (this.isShowChannel(key)) {
+            if (!this.edit.freight_type[key]) {
+              this.edit.freight_type[key] = key === 'purchase' ? 1 : 2
+              console.log(key, key === 'purchase', this.edit.freight_type[key])
+            }
+            if (this.edit.specification_type) {
+              this.getGoodsDetials()
+            } else {
+              if (!this.edit.goods_specs[key].length) {
+                this.edit.goods_specs[key] = key === 'purchase' ? [{
+                  spec_id: 0,
+                  price: 0,
+                  standard_price: 0,
+                  versatile_price: 0,
+                  partner_price: 0,
+                  saleable: 0,
+                }] : [{
+                  spec_id: 0,
+                  price: 0,
+                  bean_price: 0,
+                  cash_price: 0,
+                  saleable: 0,
+                }]
+              }
+            }
+          } else {
+            this.$delete(this.edit.freight_type, key)
+            this.$delete(this.edit.goods_specs, key)
+          }
+        })
+
+      },
+      // 自定义 系统计算
+      levelPriceTypeChange() {
+        this.edit.goods_specs.purchase.forEach(item => {
+          item.level_price_type = this.levelPriceType
+          if (!this.levelPriceType) {
+            item.standard_price = item.price * this.priceLevelRatioList.standard_ratio
+            item.versatile_price = item.price * this.priceLevelRatioList.versatile_ratio
+            item.partner_price = item.price * this.priceLevelRatioList.partner_ratio
+          }
+        })
+      },
+      // 多规格单规格
       changeType() {
-        if (this.edit.specification_type && !this.goodsSpecification.length) {
-          this.getGoodsDetials()
+        // 多规格
+        if (this.edit.specification_type) {
           this.goodsSpecification = [{
             "name": "",
             "attr_key_id": 0,
@@ -419,46 +485,217 @@
               }
             ]
           }]
+        } else {
+          this.goodsSpecification = []
+        }
+        console.log('goodsSpecification', this.goodsSpecification)
+      },
+      _getPriceLevelRatioList() {
+        API.Level.getLevelList({loading: false})
+          .then(res => {
+            this.priceLevelRatioList.standard_ratio = res.data.find(item => item.id === 1).discount * 0.1
+            this.priceLevelRatioList.versatile_ratio = res.data.find(item => item.id === 2).discount * 0.1
+            this.priceLevelRatioList.partner_ratio = res.data.find(item => item.id === 3).discount * 0.1
+          })
+      },
+      // 获取sku
+      getGoodsDetials() {
+        this.edit.sale_channel.forEach(channel => {
+
+          this.$set(this.edit.goods_specs, channel, [])
+          // 多规格
+          if (this.goodsSpecification.length) {
+            // 每个规格遍历
+            this.goodsSpecification.forEach(item => {
+              // 获取每个规格 与剩下规格 的交叉
+              this.getData(channel, item)
+            })
+          } else {
+            // 单规格
+            if (this.id && this.detailGoodsSpec[channel] && this.detailGoodsSpec[channel].length === 1 && this.detailGoodsSpec[channel][0].attr_array && this.detailGoodsSpec[channel][0].attr_array.length === 0) {
+              this.$set(this.edit.goods_specs,channel, objDeepCopy(this.detailGoodsSpec[channel]))
+            } else {
+              this.edit.goods_specs[channel] = channel === 'purchase' ? [{
+                spec_id: 0,
+                price: 0,
+                standard_price: 0,
+                versatile_price: 0,
+                partner_price: 0,
+                saleable: 0,
+                level_price_type: this.levelPriceType
+              }] : [{
+                spec_id: 0,
+                price: 0,
+                bean_price: "",
+                cash_price: "",
+                saleable: 0,
+              }]
+            }
+          }
+        })
+      },
+      getData(channel, currentSpec) {
+        // 当前 sku 容器
+        let skuArr = this.edit.goods_specs[channel]
+        // 第一个规格 将所有值 列为 一项 初始化的sku
+        if (skuArr.length === 0) {
+          currentSpec.values.forEach(item => {
+            let specsAttr = [{
+              attr_key_id: currentSpec.attr_key_id,
+              attr_key: currentSpec.name,
+              attr_value: item.text,
+              attr_value_id: item.attr_value_id || 0
+            }]
+            // 得到 此规格的 skuArr
+            let ss = this.getGoodsSpec(specsAttr, channel)
+            skuArr.push(ss)
+          })
+          this.$set(this.edit.goods_specs, channel, skuArr)
+        } else {
+          // 剩余的规格
+          let zumto = [];
+          skuArr.forEach(zu => {
+            currentSpec.values.forEach(item => {
+              let newZu = [...zu.specs_attrs, {
+                attr_key_id: currentSpec.attr_key_id,
+                attr_key: currentSpec.name,
+                attr_value: item.text,
+                attr_value_id: item.attr_value_id || 0
+              }]
+              let obj = {}
+              if (this.id) {
+                obj = this.getGoodsSpec(newZu, channel)
+              } else {
+                obj = {...zu, specs_attrs: newZu}
+              }
+              zumto.push(obj)
+            })
+          })
+          this.$set(this.edit.goods_specs, channel, zumto)
         }
       },
+      // 获取外层的sku 数据
+      getGoodsSpec(newSpecsAttrs, channel) {
+        let res = {}
+        let newGoodsSpec = {}
+        // 详情查询 存在的sku
+        if (this.id) {
+          let newAttrs = newSpecsAttrs.map(item => item.attr_key_id + '_' + item.attr_value_id)
+          res = this.detailGoodsSpec[channel].find(goodsSpec => {
+            return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
+          }) || {}
+        }
+        newGoodsSpec.saleable = res.saleable || 0
+        newGoodsSpec.spec_id = res.spec_id || 0
+        newGoodsSpec.price = res.price || 0
+        // 赞播集采与 赞播优品
+        if (channel === 'purchase') {
+          newGoodsSpec.level_price_type = this.levelPriceType
+          newGoodsSpec.standard_price = res.standard_price || 0
+          newGoodsSpec.versatile_price = res.versatile_price || 0
+          newGoodsSpec.partner_price = res.partner_price || 0
+        } else if (channel === 'bean') {
+          newGoodsSpec.cash_price = res.cash_price || 0
+          newGoodsSpec.bean_price = res.bean_price || 0
+        }
+        newGoodsSpec.specs_attrs = newSpecsAttrs
+        return newGoodsSpec
+      },
+      // 提交校验
+      submitBtn() {
+        let over = false
+        over = this.justifyMethods(this.justifyItems, this.edit)
+        if (!over) over = this.justifySpec()
+        if (!over) over = this.justifyGoodsSpecs()
+        console.log(over)
+        if (!over) this._addGoods()
+      },
+
+      // 规格值校验
+      justifySpec() {
+        let over = false
+        if (this.edit.specification_type) {
+          // 规格
+          for (let i in this.goodsSpecification) {
+            if (!this.goodsSpecification[i].name) {
+              this.$toast.show(`规格名不能为空`)
+              over = true
+              return true
+            }
+            for (let j in this.goodsSpecification[i].values) {
+              if (!this.goodsSpecification[i].values[j].text) {
+                this.$toast.show(`规格值不能为空`)
+                over = true
+                return true
+              }
+            }
+          }
+        }
+        return over
+      },
+      // 校验商品详情
+      justifyGoodsSpecs() {
+        let over = false
+        for (let key in  this.edit.goods_specs) {
+          let goodsSpec = this.edit.goods_specs[key]
+          for(let i ;i<goodsSpec.length;i++){
+            over = key === 'purchase' ? this.justifyMethods(this.otherJustify1, goodsSpec[i]) : this.justifyMethods(this.otherJustify2, goodsSpec[i])
+            if(over) break
+          }
+          if(over) break
+        }
+        return over
+      },
+      // 校验方法
+      justifyMethods(justifyArr, dataArr) {
+        let over = false
+        for (let i = 0; i < justifyArr.length; i++) {
+          let item = justifyArr[i]
+          for (let j = 0; j < item.rules.length; j++) {
+            let rule = item.rules[j]
+            let value = dataArr[item.key]
+            let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
+            if (rulesRes) {
+              this.$toast.show(rule.text)
+              over = true
+              break
+            }
+          }
+          if (over) break
+        }
+        return over
+      },
+      // 最终增加商品
+      _addGoods() {
+        let data = {
+          ...this.edit, specs_attrs: this.goodsSpecification
+        }
+        // 集采商品
+        if (this.edit.use_type === 1) {
+          data.category_id = this.categoryId
+        } else {
+          data.brand_id = this.brandId
+        }
+        //  编辑 or 新增
+        // 编辑
+        if (this.id) data.id = this.id
+        let requestName = this.id ? 'editGoods' : 'addGoods'
+        API.Goods[requestName]({
+          data
+        }).then(() => {
+          this.$emit('update')
+          this.$router.go(-1)
+        })
+      },
+      // 品牌列表
       _getBrandList() {
-        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}})
+        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}, loading: false})
           .then(res => {
             this.brandList = res.data
           })
       },
-      setData(res) {
-        let {specs_attrs: specsAttrs, goods_specs: goodsSpecs, brand_id: brandId, freight_type: freightType, use_type: useType, ...edit} = res.data
-        this.goodsSpecification = specsAttrs
-        this.detailGoodsSpec = goodsSpecs
-        this.edit = edit
-        // 单规格
-
-        if (!this.edit.specification_type) {
-          let obj = this.detailGoodsSpec[0]
-          this.saleable = obj.saleable
-          this.edit.price = obj.price
-          this.specId = obj.spec_id
-          // 赞播优品与普通商品区别
-          if (this.edit.type === 2) {
-            this.edit.cash_price = obj.cash_price
-            this.edit.bean_price = obj.bean_price
-          }
-        }
-        if (this.edit.type === 1) {
-          this.brandId = brandId
-          this.useType = useType
-          this.freightType = freightType
-        }
-      },
-      deleteModule(idx) {
-        this.goodsSpecification.splice(idx, 1)
-      },
-      deleteSpec(idx, i) {
-        this.goodsSpecification[idx].values.splice(i, 1)
-      },
+      // 主图
       getGoodsBannerImages(arr) {
-        // console.log(arr, 'getGoodsBannerImages')
         arr.forEach(item => {
           item = item.data
           // 限制5张
@@ -471,6 +708,7 @@
           }
         })
       },
+      // 详情图
       getGoodsDetailImages(arr) {
         arr.forEach(item => {
           item = item.data
@@ -481,15 +719,8 @@
           })
         })
       },
-      cancelBtn() {
-        this.$router.go(-1)
-      },
-      addSpecValue(idx) {
-        this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, {
-          "text": "",
-          "attr_value_id": 0
-        })
-      },
+
+      // 增加规格
       addSpecModule() {
         this.$set(this.goodsSpecification, this.goodsSpecification.length, {
           name: "",
@@ -502,205 +733,24 @@
           ]
         })
       },
-      getGoodsDetials() {
-        this.goodsDetails = [];
-        this.goodsSpecification.forEach(item => {
-          this.getData(this.goodsDetails, item)
+      // 增加规格值
+      addSpecValue(idx) {
+        this.$set(this.goodsSpecification[idx].values, this.goodsSpecification[idx].values.length, {
+          "text": "",
+          "attr_value_id": 0
         })
       },
-      getData(zum, first) {
-        // 公共存的集合  第一个集合
-        if (zum.length !== 0) {
-          let zumto = [];
-          zum.forEach(zu => {
-            first.values.forEach(item => {
-              let newZu = [...zu.specs_attrs, {
-                attr_key_id: first.attr_key_id,
-                attr_key: first.name,
-                attr_value: item.text,
-                attr_value_id: item.attr_value_id || 0
-              }]
-              let obj = {}
-              if (this.id) {
-                obj = this.getGoodsSpec(zu, this.detailGoodsSpec, newZu)
-              } else {
-                obj = {...zu, specs_attrs: newZu}
-              }
-              zumto.push(obj)
-            })
-          })
-
-          this.goodsDetails = zumto
-        } else {
-          first.values.forEach(item => {
-            let ss = {
-              spec_id: 0,
-              price: 0,
-              cash_price: 0,
-              bean_price: 0,
-              saleable: 0,
-              discount_price: 0,
-              specs_attrs: [{
-                attr_key_id: first.attr_key_id,
-                attr_key: first.name,
-                attr_value: item.text,
-                attr_value_id: item.attr_value_id || 0
-              }]
-            }
-            if (this.id) {
-              ss = this.getGoodsSpec(ss, this.detailGoodsSpec, ss.specs_attrs)
-            }
-            zum.push(ss);
-          })
-          this.goodsDetails = zum;
-        }
+      // 删除规格
+      deleteModule(idx) {
+        this.goodsSpecification.splice(idx, 1)
       },
-      getGoodsSpec(initObj, oldGoodsSpecs, newSpecsAttrs) {
-        let res = null
-        let newGoodsSpec = {}
-        // 详情查询 存在的sku
-        if (this.id) {
-          let newAttrs = newSpecsAttrs.map(item => item.attr_key_id + '_' + item.attr_value_id)
-          res = oldGoodsSpecs.find(goodsSpec => {
-            return goodsSpec.attr_array.length === newAttrs.length && (goodsSpec.attr_array.filter(v => newAttrs.includes(v)).length === newAttrs.length)
-          })
-        }
-        // 如果存在此sku
-        if (res) {
-          newGoodsSpec.saleable = res.saleable
-          newGoodsSpec.spec_id = res.spec_id
-          // 赞播优品与普通商品区别
-          newGoodsSpec.price = res.price
-          if (this.edit.type === 2) {
-            newGoodsSpec.cash_price = res.cash_price
-            newGoodsSpec.bean_price = res.bean_price
-          }
-        } else {
-          newGoodsSpec.saleable = 0
-          newGoodsSpec.spec_id = 0
-          newGoodsSpec.price = 0
-          // 赞播优品与普通商品区别
-          if (this.edit.type === 2) {
-            newGoodsSpec.cash_price = 0
-            newGoodsSpec.bean_price = 0
-          }
-        }
-        newGoodsSpec.specs_attrs = newSpecsAttrs
-        return newGoodsSpec
+      // 删除规格值
+      deleteSpec(idx, i) {
+        this.goodsSpecification[idx].values.splice(i, 1)
       },
-      // 提交校验
-      submitBtn() {
-        let over = false
-        over = this.justfyMethods(this.justifyItems)
-        if (over) return
-        // 多规格的校验
-        if (this.edit.specification_type) {
-          // 规格
-          for (let i in this.goodsSpecification) {
-            if (!this.goodsSpecification[i].name) {
-              this.$toast.show(`规格名不能为空`)
-              over = true
-              return
-            }
-            for (let j in this.goodsSpecification[i].values) {
-              if (!this.goodsSpecification[i].values[j].text) {
-                this.$toast.show(`规格值不能为空`)
-                over = true
-                return
-              }
-            }
-          }
-          for (let j in this.goodsDetails) {
-            // 赞播优品与普通商品区别
-            if (this.edit.type === 1) {
-              if (!this.goodsDetails[j].price) {
-                this.$toast.show(`价格不能为空`)
-                over = true
-                return
-              }
-            } else if (this.edit.type === 2) {
-              if (!this.goodsDetails[j].cash_price) {
-                this.$toast.show(`现金价格不能为空`)
-                over = true
-                return
-              }
-              if (!this.goodsDetails[j].bean_price) {
-                this.$toast.show(`播豆不能为空`)
-                over = true
-                return
-              }
-            }
-            if (!this.goodsDetails[j].saleable) {
-              this.$toast.show(`库存不能为空`)
-              over = true
-              return
-            }
-          }
-        } else {
-          let others = this.edit.type === 1 ? this.otherJustfy1 : this.otherJustfy2
-          over = this.justfyMethods(others)
-        }
-        // 赞播优品与普通商品区别
-
-        if (!over) this._addGoods()
-      },
-      justfyMethods(arr) {
-        let over = false
-        for (let i = 0; i < arr.length; i++) {
-          let item = arr[i]
-          for (let j = 0; j < item.rules.length; j++) {
-            let rule = item.rules[j]
-            let value = this.edit[item.key]
-            let rulesRes = (rule.require && !value) || (rule.maxLength && value.length > rule.maxLength) || (rule.minLength && value.length < rule.minLength)
-            if (rulesRes) {
-              this.$toast.show(rule.text)
-              over = true
-              break
-            }
-          }
-          if (over) break
-        }
-        return over
-      },
-      _addGoods() {
-        let {price, cash_price: cashPrice, bean_price: beanPrice, saleable, ...params} = this.edit
-        let specsAttrs = []
-        let goodsSpecs = this.goodsDetails
-        // 多规格
-        if (this.edit.specification_type) {
-          specsAttrs = this.goodsSpecification
-        } else {
-          // 单规格
-          goodsSpecs = [{
-            "spec_id": this.specId,
-            "price": price,
-            "saleable": saleable
-          }]
-          // 赞播优品与普通商品区别
-          if (this.edit.type === 2) {
-            goodsSpecs[0].cash_price = cashPrice
-            goodsSpecs[0].bean_price = beanPrice
-          }
-        }
-        let data = {
-          ...params, specs_attrs: specsAttrs, goods_specs: goodsSpecs
-        }
-        // 编辑
-        if (this.id) data.id = this.id
-        // 集采商品
-        if (this.edit.type === 1) {
-          data.use_type = this.useType
-          data.brand_id = this.brandId
-          data.freight_type = this.freightType
-        }
-        //  编辑 or 新增
-        let requestName = this.id ? 'editGoods' : 'addGoods'
-        API.Goods[requestName]({
-          data
-        }).then(() => {
-          this.$emit('update')
-          this.$router.go(-1)
-        })
+      // 取消 返回列表
+      cancelBtn() {
+        this.$router.go(-1)
       }
     }
   }
@@ -708,48 +758,56 @@
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
-  .level-two
-    margin-left: 10px
+  .edit-product
+    right: -7px
+    z-index: 100
 
   .list-item.list-item-input
-    flex-shrink 0
+    flex-shrink: 0
     min-width: 127px
 
   .icon-delete-wrap
-    position absolute
-    top: -14px
-    right: -13px
-    padding: 10px
+    position: absolute
 
     .icon-delete
       width: 13px
       height: 13px
-      background-image url("./icon-delet@2x.png")
-      background-size 100%
-
+      background-image: url("./icon-delet@2x.png")
+      background-size: 100% 100%
+      &:hover
+        background-image: url("./icon-delet_hover@2x.png")
   .edit-product
     .top-title
       padding-top: 3px
 
     .container
       padding: 24px 20px 8px 30px
-      background-color $color-white
+      background-color: $color-white
 
     .first-category-item
-      margin-right 12px
+      margin-right: 12px
 
     .after-word
       margin-left: 10px
 
     .more-item-wrap
+      position relative
       min-width: 860px
       max-width: 100%
-      background-color #F4F8F9
+      background-color: #F4F8F9
       padding: 20px 20px 10px
       margin: 20px 0
+      .icon-delete-wrap
+        display none
+        top: 0px
+        right: 0px
+        padding: 12px
+        cursor pointer
+      &:hover .icon-delete-wrap
+          display block
 
       .spec-value-row
-        flex-wrap wrap
+        flex-wrap: wrap
 
       .add-btn
         color: $color-main
@@ -763,15 +821,42 @@
 
         &:last-child
           margin-right: 0px
-
-    .add-moudle-wrap
-      margin-bottom: 16px
-
+        .icon-delete-wrap
+          display none
+          top: -14px
+          right: -13px
+          padding: 10px
+        &:hover .icon-delete-wrap
+          display block
     .tip
-      font-size $font-size-14
+      font-size: $font-size-14
       color: $color-text-sub
       margin-left: 10px
 
     .big-list
       min-width: 860px
+
+      .set-price-box
+        height: 45px
+        line-height: 45px
+        padding-left: 20px
+        border: 1px solid $color-line
+        border-bottom-width 0px
+
+      .channel-name
+        font-size $font-size-14
+        margin-bottom: 20px
+
+      .bean-title
+        margin-top: 20px
+
+      .list-box .list-item[data-type='price']
+        max-width: 170px !important
+
+      .list-box .list-item[data-type='price-2']
+        max-width: 340px !important
+        flex: 2 !important
+
+      .list-box .list-item:last-child
+        max-width: 134px !important
 </style>

@@ -85,6 +85,28 @@ export default [
                   crumbs: ['商品分类']
                 }
               },
+              // 商品品牌
+              {
+                path: '/mall/goods/brand-list',
+                name: 'goods-brand-list',
+                component: () => import('@pages/brand-list/brand-list'),
+                meta: {
+                  title: '商品品牌',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['品牌列表']
+                },
+                children: [
+                  // 品牌详情
+                  {
+                    path: '/mall/goods/brand-list/brand-edit',
+                    name: 'goods-brand-edit',
+                    component: () => import('@pages/brand-edit/brand-edit'),
+                    meta: {
+                      crumbs: ['品牌列表', '创作品牌']
+                    }
+                  }
+                ]
+              },
               // 商品分组
               {
                 path: '/mall/goods/goods-grouping',
@@ -103,28 +125,6 @@ export default [
                     component: () => import('@pages/goods-grouping-detail/goods-grouping-detail'),
                     meta: {
                       crumbs: ['商品分组', '详情']
-                    }
-                  }
-                ]
-              },
-              // 品牌列表
-              {
-                path: '/mall/goods/brand-list',
-                name: 'goods-brand-list',
-                component: () => import('@pages/brand-list/brand-list'),
-                meta: {
-                  title: '品牌列表',
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['品牌列表']
-                },
-                children: [
-                  // 品牌详情
-                  {
-                    path: '/mall/goods/brand-list/brand-edit',
-                    name: 'goods-brand-edit',
-                    component: () => import('@pages/brand-edit/brand-edit'),
-                    meta: {
-                      crumbs: ['品牌列表', '创建品牌']
                     }
                   }
                 ]
@@ -176,9 +176,17 @@ export default [
                     }
                   }
                 ]
-              }, // 交易记录
+              }
+            ]
+          },
+          {
+            path: 'agent',
+            name: 'agent',
+            text: '代理商',
+            component: {render: (h) => h('router-view')},
+            children: [ // 交易记录
               {
-                path: '/client/customer/trading-record',
+                path: '/client/agent/trading-record',
                 name: 'trading-record',
                 component: () => import('@pages/trading-record/trading-record'),
                 meta: {
@@ -189,7 +197,7 @@ export default [
               },
               // 代理申请
               {
-                path: '/client/customer/application-agency',
+                path: '/client/agent/application-agency',
                 name: 'application-agency',
                 component: () => import('@pages/application-agency/application-agency'),
                 meta: {
@@ -200,7 +208,7 @@ export default [
               },
               // 等级管理
               {
-                path: '/client/customer/level-manager',
+                path: '/client/agent/level-manager',
                 name: 'level-manager',
                 component: () => import('@pages/level-manager/level-manager'),
                 meta: {
@@ -211,7 +219,7 @@ export default [
                 children: [
                   // 等级
                   {
-                    path: '/client/customer/level-manager/edit-level',
+                    path: '/client/agent/level-manager/edit-level',
                     name: 'edit-level',
                     component: () => import('@pages/edit-level/edit-level'),
                     meta: {
@@ -401,9 +409,9 @@ export default [
                 children: [
                   // 收支明细
                   {
-                    path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
-                    name: 'income-expenses-detail',
-                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    path: '/finance-manager/agent/agent-withdrawal/income-expenses/:id',
+                    name: 'income-expenses',
+                    component: () => import('@pages/income-expenses/income-expenses'),
                     meta: {
                       title: '收支明细', // 页面标题
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题
@@ -415,7 +423,7 @@ export default [
                     name: 'withdrawal-detail',
                     component: () => import('@pages/withdrawal-detail/withdrawal-detail'),
                     meta: {
-                      title: '收支明细', // 页面标题
+                      title: '收支明细', // 页面标题.
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题
                     }
                   }

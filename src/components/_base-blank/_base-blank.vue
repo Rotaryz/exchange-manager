@@ -36,10 +36,12 @@
     align-items: center
     flex-direction: column
     user-select: none
+
     .blank-img
       width: 168px
       display: block
       margin-top: 15%
+
     .blank-text
       color: $color-text-assist
       margin-top: 20px

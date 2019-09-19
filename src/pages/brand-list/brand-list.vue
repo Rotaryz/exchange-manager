@@ -2,9 +2,9 @@
   <div class="brand-list">
     <div class="content-wrap">
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="品牌列表">
-        <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
+        <!--<base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>-->
         <router-link tag="div" :to="{path:'brand-edit',query:{type:filter.type}}" append>
-          <base-button type="primary" plain addIcon>创建品牌</base-button>
+          <base-button type="primary" plain addIcon>新建品牌</base-button>
         </router-link>
       </base-table-tool>
       <div class="table-content">
@@ -14,36 +14,20 @@
           </div>
           <div class="list">
             <template v-if="list.length">
-              <div v-for="(item,i) in list"
-                   :key="i"
-                   class="list-content list-box"
-              >
-                <div v-for="(val,key) in listHeader"
-                     :key="key"
-                     class="list-item"
-                     :style="val.style"
-                >
-                  <base-switch v-if="val.type ==='switch'"
-                               :status="item.status"
-                               confirmText="上线"
-                               cancelText="下线"
-                               @changeSwitch="changeSwitch(item,i)"
-                  ></base-switch>
-                  <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span"
-                                 :to="{path:'brand-edit',query:{id:item.id}}"
-                                 class="list-operation"
-                                 append
-                    >编辑</router-link>
-                    <span class="list-operation"
-                          @click="deleteBtn(item,i)"
-                    >删除</span>
+              <div v-for="(item,i) in list" :key="i" class="list-content list-box">
+                <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
+                  <!--<base-switch v-if="val.type ==='switch'"-->
+                  <!--:status="item.status"-->
+                  <!--confirmText="上线"-->
+                  <!--cancelText="下线"-->
+                  <!--@changeSwitch="changeSwitch(item,i)"-->
+                  <!--&gt;</base-switch>-->
+                  <div v-if="val.type === 'operate'">
+                    <router-link tag="span" :to="{path:'brand-edit',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
+                    <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
-                    <img v-if="val.before && val.before.img"
-                         class="list-img"
-                         :src="item[val.before.img]"
-                    >
+                    <img v-if="val.before && val.before.img" class="list-img" :src="item[val.before.img]">
                     <div class="item-text">{{item[key]}}</div>
                   </template>
                 </div>
@@ -74,11 +58,11 @@
     beforeRouteEnter(to, from, next) {
       Promise.all([API.Brand.getBrandList({
         data: {
+          status: '',
           page: 1,
           limit: 10
         }
-      }), API.Brand.getBrandListStatus({
-      })]).then(res => {
+      }), API.Brand.getBrandListStatus({})]).then(res => {
         next(vw => {
           vw.setData(res[0])
           vw.setStatus(res[1])
@@ -109,7 +93,7 @@
           industry_name: {name: '所属行业'},
           name: {name: '品牌名称'},
           created_at: {name: '时间 ', style: 'flex: 1.4'},
-          status: {name: '状态', type: "switch"},
+          // status: {name: '状态', type: "switch"},
           operate_text: {name: '操作', type: "operate", style: 'max-width: 75px; padding-right: 0'}
         },
         list: []
@@ -144,20 +128,20 @@
           this.setData(res)
         })
       },
-      statusChange(val) {
-        this.filter.page = 1
-        this.updatePage()
-      },
+      // statusChange(val) {
+      //   this.filter.page = 1
+      //   this.updatePage()
+      // },
       deleteBtn(item, idx) {
         this.$confirm.confirm({title: '删除品牌', text: '品牌删除后页面管理配置的品牌将会同步下线'}).then(async () => {
           await API.Brand.deleteBrand({data: {id: item.id}, loading: false})
           this.updatePage()
         }).catch()
       },
-      async changeSwitch(item) {
-        await API.Brand.switchStatus({data: {id: item.id, status: item.status ? 0 : 1}})
-        this.updatePage()
-      },
+      // async changeSwitch(item) {
+      //   await API.Brand.switchStatus({data: {id: item.id, status: item.status ? 0 : 1}})
+      //   this.updatePage()
+      // },
       pageChange(val) {
         this._getList({loading: false})
       }
@@ -169,25 +153,25 @@
   @import "~@design"
 
   .brand-list
-    position relative
+    position: relative
     width: 100%
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .content-wrap
     flex: 1
-    display flex
-    flex-direction column
+    display: flex
+    flex-direction: column
 
   .list-box > .list-item:nth-child(1)
     flex: 1
 
   .list-item
-    display flex
+    display: flex
 
     .item-text
-      text-overflow: ellipsis;
-      overflow: hidden;
+      text-overflow: ellipsis
+      overflow: hidden
       white-space: nowrap
 
 </style>
