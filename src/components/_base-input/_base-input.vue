@@ -23,6 +23,7 @@
               @keydown="keydown"
     ></textarea>
     <input v-else
+           v-int="isInt"
            :value="value"
            :style="inputStyle"
            :placeholder="placeholder"
@@ -45,6 +46,17 @@
 
   export default {
     name: COMPONENT_NAME,
+    directives:{
+      int:{
+        inserted(el,binding){
+          if(!binding.value)return
+          const input = el
+          input.onkeyup=function (e) {
+            input.value=parseInt(input.value)
+          }
+        }
+      }
+    },
     props: {
       hand: {
         default: false,
@@ -106,8 +118,13 @@
       handIcon: {
         default: '',
         type: String
+      },
+      isInt: {
+        default: false,
+        type: Boolean
       }
     },
+
     data() {
       return {
         isFocus: false
@@ -130,17 +147,18 @@
       focusHandler() {
         this.isFocus = true
       },
-      blurHandler(){
-        setTimeout(()=>{
+      blurHandler() {
+        setTimeout(() => {
           this.isFocus = false
-        },1000)
+        }, 1000)
       },
       clearBtn() {
         console.log('111', this.value)
         this.$emit('input', '')
       },
       inputEvent(e) {
-        this.$emit('input', e.target.value)
+        let value = e.target.value
+        this.$emit('input', value)
       },
       keydown(e) {
         this.$emit('keydown', e)
@@ -229,8 +247,10 @@
         height: @width
         icon-image('icon-delet')
         cursor pointer
+
         &:hover
           icon-image('icon-delet_hover')
+
     &.is-disabled .input__inner
       background: #f9f9f9
       color: $color-text-assist

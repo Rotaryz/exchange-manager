@@ -138,31 +138,35 @@
                 </div>
                 <!--赞播集采特有-->
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.price" type="number" size="mini" clear class="value-input"
+                  <base-input v-model="item.price" type="number" :isInt="true" size="mini" clear
+                              class="value-input"
                               @input="priceInputHandler(item.price,i)"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.standard_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                  <base-input v-model="item.standard_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                              clear
                               class="value-input"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.versatile_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                  <base-input v-model="item.versatile_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                              clear
                               class="value-input"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.partner_price" :disabled="!levelPriceType" type="number" size="mini" clear
+                  <base-input v-model="item.partner_price" :disabled="!levelPriceType" type="number" :isInt="true" size="mini"
+                              clear
                               class="value-input"
                   >
                   </base-input>
                 </div>
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.saleable" type="number" size="mini" clear
+                  <base-input v-model="item.saleable" type="number" :isInt="true" size="mini" clear
                               class="value-input"
                   ></base-input>
                 </div>
@@ -190,22 +194,27 @@
                 <div v-if="edit.specification_type === 0" class="list-item"> 统一规格</div>
                 <!--赞播优品特有-->
                 <div class="list-item list-item-input" data-type="price">
-                  <base-input v-model="item.price" type="number" size="mini" clear class="value-input">
+                  <base-input v-model="item.price" type="number" :isInt="true" size="mini" clear
+                              class="value-input"
+                  >
                   </base-input>
                 </div>
                 <div class="list-item  list-item-input" data-type="price">
-                  <base-input v-model="item.cash_price" class="value-input" type="number" width="93" size="mini"
+                  <base-input v-model="item.cash_price" class="value-input" type="number" :isInt="true" width="93"
+                              size="mini"
                               clear
                   >
                   </base-input>
                 </div>
                 <div class="list-item  list-item-input" data-type="price-2">
-                  <base-input v-model="item.bean_price" type="number" width="93" size="mini" clear
+                  <base-input v-model="item.bean_price" type="number" :isInt="true" width="93" size="mini"
+                              clear
                               class="value-input"
                   ></base-input>
                 </div>
                 <div class="list-item  list-item-input" data-type="price">
-                  <base-input v-model="item.saleable" type="number" width="93" size="mini" clear
+                  <base-input v-model="item.saleable" type="number" :isInt="true" width="93" size="mini"
+                              clear
                               class="value-input"
                   >
                   </base-input>
@@ -425,9 +434,12 @@
       // 集采价格输入
       priceInputHandler(val, i) {
         console.log(val, this.detailGoodsSpec.purchase, this.edit.goods_specs.purchase)
-        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', (val * this.priceLevelRatioList.standard_ratio).toFixed(2))
-        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', (val * this.priceLevelRatioList.versatile_ratio).toFixed(2))
-        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', (val * this.priceLevelRatioList.partner_ratio).toFixed(2))
+        let standardPrice = Number(val) * this.priceLevelRatioList.standard_ratio
+        let versatilePrice = Number(val) * this.priceLevelRatioList.versatile_ratio
+        let partnerPrice = Number(val) * this.priceLevelRatioList.partner_ratio
+        this.$set(this.edit.goods_specs.purchase[i], 'standard_price', standardPrice<1?1:Math.round(standardPrice))
+        this.$set(this.edit.goods_specs.purchase[i], 'versatile_price', versatilePrice<1?1:Math.round(versatilePrice))
+        this.$set(this.edit.goods_specs.purchase[i], 'partner_price', partnerPrice<1?1:Math.round(partnerPrice))
       },
       // 是否显示 对应的 销售渠道价格库存
       isShowChannel(val) {

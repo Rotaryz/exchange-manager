@@ -28,7 +28,7 @@ export default [
     children: [
       /**
        *
-       * 商品管理
+       * 商品
        *
        */
       {
@@ -36,7 +36,7 @@ export default [
         name: 'mall',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '商品管理',
+          title: '商品 ',
           icon: require('./icon-goods@2x.png'),
           iconSelected: ''
         },
@@ -135,14 +135,14 @@ export default [
       },
       /**
        *
-       *客户管理
+       *客户
        *
        */
       {
         path: '/client',
         name: 'client',
         meta: {type: 'first_menu', // 一级标示
-          title: '客户管理',
+          title: '客户 ',
           icon: require('./icon-client@2x.png'),
           iconSelected: ''
         },
@@ -206,13 +206,13 @@ export default [
                   crumbs: ['代理申请'] // 面包屑标题
                 }
               },
-              // 等级管理
+              // 等级
               {
                 path: '/client/agent/level-manager',
                 name: 'level-manager',
                 component: () => import('@pages/level-manager/level-manager'),
                 meta: {
-                  title: '等级管理', // 页面标题
+                  title: '等级 ', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['等级管理'] // 面包屑标题
                 },
@@ -236,7 +236,7 @@ export default [
       },
       /**
        *
-       *订单管理
+       *订单
        *
        */
       {
@@ -244,7 +244,7 @@ export default [
         name: 'order-manager',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '订单管理',
+          title: '订单 ',
           icon: require('./icon-order@2x.png'),
           iconSelected: ''
         },
@@ -273,7 +273,7 @@ export default [
       },
       /**
        *
-       *页面管理
+       *页面
        *
        */
       {
@@ -281,7 +281,7 @@ export default [
         name: 'cms',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '内容管理',
+          title: '内容 ',
           icon: require('./icon-content@2x.png'),
           iconSelected: ''
         },
@@ -345,7 +345,7 @@ export default [
 
       /**
        *
-       *财务管理
+       *财务
        *
        */
       {
@@ -353,7 +353,7 @@ export default [
         name: 'finance-manager',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '财务管理',
+          title: '财务 ',
           icon: require('./icon-finance@2x.png'),
           iconSelected: ''
         },
