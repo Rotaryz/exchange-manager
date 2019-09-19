@@ -323,7 +323,7 @@
           goods_banner_images: [],
           sale_channel: ['purchase'],
           specification_type: 0,
-          freight_type: {purchase: 1},
+          freight_type: {purchase: 1,bean:''},
           goods_specs: {
             purchase: [{
               spec_id: 0,
@@ -332,7 +332,8 @@
               versatile_price: 0,
               partner_price: 0,
               saleable: 0,
-            }]
+            }],
+            bean:[]
           }
         },
         specId: 0,
@@ -459,12 +460,12 @@
               this.$set(this.edit.freight_type, channel, channel === 'purchase' ? 1 : 2)
             }
             // 当此前没有展示的 商品信息
-            if (!this.edit.goods_specs[channel]) {
+            if (!this.edit.goods_specs[channel].length) {
               this. getGoodsDetails(channel)
             }
           } else {
-            this.$delete(this.edit.freight_type, channel)
-            this.$delete(this.edit.goods_specs, channel)
+            this.$set(this.edit.freight_type, channel,'')
+            this.$set(this.edit.goods_specs, channel,[])
           }
         })
 
