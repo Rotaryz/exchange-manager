@@ -389,18 +389,11 @@
       goodsSpecification: {
         deep: true,
         handler(val) {
-          console.log('valdanguige')
-          this.saleChannelList.forEach(channel => {
-            this.getGoodsDetials(channel)
+          this.edit.sale_channel.forEach(channel => {
+            this. getGoodsDetails(channel)
           })
         }
-      },
-      detailGoodsSpec: {
-        deep: true,
-        handler(val) {
-          console.log(val, 'bbbbbbb')
-        }
-      },
+      }
     },
     created() {
       this._getBrandList()
@@ -467,7 +460,7 @@
             }
             // 当此前没有展示的 商品信息
             if (!this.edit.goods_specs[channel]) {
-              this.getGoodsDetials(channel)
+              this. getGoodsDetails(channel)
             }
           } else {
             this.$delete(this.edit.freight_type, channel)
@@ -518,9 +511,7 @@
           })
       },
       // 获取sku
-      getGoodsDetials(channel) {
-        // this.edit.sale_channel.forEach(channel => {
-
+      getGoodsDetails(channel) {
         this.$set(this.edit.goods_specs, channel, [])
         // 多规格
         if (this.goodsSpecification.length) {
@@ -552,7 +543,6 @@
             this.$set(this.edit.goods_specs, channel, obj)
           }
         }
-        // })
       },
       getData(channel, currentSpec) {
         // 当前 sku 容器
