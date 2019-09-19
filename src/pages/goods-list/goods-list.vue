@@ -149,7 +149,7 @@
               img: 'goods_cover_image'
             }
           },
-          category_name: {name: '分类'},
+          category_more_name: {name: '分类', type: 'array'},
           sale_channel_text: {name: '销售渠道', type: 'array'},
           saleable: {name: '库存'},
           price: {name: '零售价'},
