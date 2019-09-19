@@ -137,16 +137,16 @@
                     </template>
                   </div>
                   <!--今日爆款 商品分组-->
-                  <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
-                    <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
+                  <div v-if="selectSource===0">
+                    <div v-for="(item, index) in groupsGoodsList" :key="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
-                          <p class="goods-title">{{item.name}}</p>
+                          <p class="goods-title margin-left-0">{{item.name}}</p>
                         </div>
                       </div>
-                    </slick-item>
-                  </slick-list>
+                    </div>
+                  </div>
                   <!--今日爆款 商品-->
                   <slick-list v-if="selectSource===1" v-model="hotList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in hotList" :key="index" :index="index">
@@ -213,16 +213,16 @@
                     </template>
                   </div>
                   <!--精品推荐 商品分组-->
-                  <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
-                    <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
+                  <div v-if="selectSource===0">
+                    <div v-for="(item, index) in groupsGoodsList" :key="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
-                          <p class="goods-title">{{item.name}}</p>
+                          <p class="goods-title margin-left-0">{{item.name}}</p>
                         </div>
                       </div>
-                    </slick-item>
-                  </slick-list>
+                    </div>
+                  </div>
                   <slick-list v-if="selectSource===1" v-model="recommendList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in recommendList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
@@ -372,16 +372,16 @@
                     </template>
                   </div>
                   <!--精品推荐 商品分组-->
-                  <slick-list v-if="selectSource===0" v-model="groupsGoodsList" :distance="30" lockAxis="y">
-                    <slick-item v-for="(item, index) in groupsGoodsList" :key="index" :index="index">
+                  <div v-if="selectSource===0">
+                    <div v-for="(item, index) in groupsGoodsList" :key="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
-                          <p class="goods-title">{{item.name}}</p>
+                          <p class="goods-title margin-left-0">{{item.name}}</p>
                         </div>
                       </div>
-                    </slick-item>
-                  </slick-list>
+                    </div>
+                  </div>
                   <slick-list v-if="selectSource===1" v-model="bestList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bestList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
@@ -436,12 +436,22 @@
             >
               <div class="shade-tab">
                 <base-select
+                  v-if="pageType==='gift_index'"
                   placeholder="请选择分类"
                   :data="classList"
                   :width="218"
                   valueKey="id"
                   labelKey="name"
-                  :value.sync="parentId"
+                  :value.sync="categoryId"
+                ></base-select>
+                <base-select
+                  v-if="pageType==='brand_index'"
+                  placeholder="请选择品牌"
+                  :data="filterBrandList"
+                  :width="218"
+                  valueKey="id"
+                  labelKey="name"
+                  :value.sync="brandId"
                 ></base-select>
                 <base-search
                   v-model="keyword"
@@ -690,11 +700,13 @@
         articleArr: [], // 文章列表
         brandArr: [], // 品牌列表
         classList: [], // 分类下拉
+        filterBrandList: [], // 商品列表-品牌筛选
         showCateIndex: -1,
         bannerIndex: 0,
         choicePage: 1,
         keyword: '',
-        parentId: '',
+        categoryId: '',
+        brandId: '',
         outLink: 3002,
         delId: '',
         delIndex: -1,
@@ -724,7 +736,10 @@
       goodsPage() {
         this.requestHandle()
       },
-      parentId() {
+      categoryId() {
+        this._getGoodsList()
+      },
+      brandId() {
         this._getGoodsList()
       },
       type(news) {
@@ -830,6 +845,7 @@
     },
     created() {
       this._getCateList() // 获取分类列表
+      this._getFilterBrandList()// 获取筛选品牌
       this._getGoodsList() // 商品列表
     },
     methods: {
@@ -1000,6 +1016,8 @@
           break
         }
         this.$forceUpdate()
+        this.categoryId = ''
+        this.brandId = ''
       },
       // 获取分类
       _getCateList() {
@@ -1011,18 +1029,32 @@
           this.classList = arr
         })
       },
+      // 获取品牌筛选
+      _getFilterBrandList() {
+        API.Brand.getBrandList({data: {limit: 50}}).then(res => {
+          this.filterBrandList = [{
+            name: '全部', id: ''
+          }, ...res.data]
+        })
+      },
       // 获取商品列表
       _getGoodsList() {
         let data = {
           status: 1,
           keyword: this.keyword,
-          category_id: this.parentId,
           limit: 6,
-          page: this.goodsPage
+          page: this.goodsPage,
+          use_type: ''
         }
         // 礼品馆=>兑换商品    品牌馆=>自有商品
-        this.pageType === 'gift_index' && (data.use_type = 1)
-        this.pageType === 'brand_index' && (data.use_type = 2)
+        if (this.pageType === 'gift_index') {
+          data.category_id = this.categoryId
+          data.use_type = 1
+        }
+        if (this.pageType === 'brand_index') {
+          data.brand_id = this.brandId
+          data.use_type = 2
+        }
         API.Cms.goodsList({data})
           .then(res => {
             this.total = res.meta.total
@@ -1135,6 +1167,8 @@
         this.goodsPage = 1
         this.keyword = ''
         this.showCateIndex = -1
+        this.categoryId = ''
+        this.brandId = ''
       },
       getIndex(index) {
         this.cmsIndex = index
@@ -1560,6 +1594,8 @@
         font-family: $font-family-regular
         color: $color-text-main
         font-size: $font-size-14
+        &.margin-left-0
+          margin-left: 0
       .brand-title
         width: 40px
         height: 20px
@@ -1884,6 +1920,7 @@
     color: $color-text-main
   .source-con
     layout(row)
+    align-items: center
     font-size: 14px
     color: $color-text-main
     .source-title
@@ -1892,6 +1929,8 @@
       margin-right: 60px
       layout(row)
       align-items: center
+    .select-icon
+      margin-right: 10px
   .groups-con
     margin-top: 24px
     layout(row)
