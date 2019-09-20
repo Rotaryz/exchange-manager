@@ -271,7 +271,12 @@
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
+                        <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''" class="img-box">
+                          <div class="status-box">已失效</div>
+                          <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
+                        </div>
                         <upload
+                          v-else
                           :data.sync="item.detail.image_url"
                           :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
                           imgStyle="width: 100px; height: 100px"
@@ -296,28 +301,33 @@
                     <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="wallList" :distance="30" lockAxis="y">
-                    <template v-for="(item, index) in wallList">
-                      <slick-item v-if="item.detail&&item.detail.status===1" :key="index" :index="index">
-                        <div class="advertisement-msg" @click="getIndex(index)">
-                          <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
-                          <div v-else class="cate-image"></div>
-                          <!--@click=""-->
-                          <div class="advertisement-link column">
-                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
-                            <base-input
-                              :value="item.detail.title"
-                              class="brand-title"
-                              width="260"
-                              height="44"
-                              placeholder="请输入品牌名称"
-                              limit="4"
-                              @input="changeBrandTitle($event, index)"
-                            ></base-input>
+                    <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <div class="img-box">
+                          <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''"
+                               class="status-box">已失效
                           </div>
-                          <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                          <img v-if="item.detail.logo_image_url||item.detail.image_url"
+                               :src="item.detail.logo_image_url||item.detail.image_url" alt="" class="cate-image">
                         </div>
-                      </slick-item>
-                    </template>
+                        <!--@click=""-->
+                        <div class="advertisement-link column">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)">
+                            <span class="add-icon"></span>添加品牌
+                          </base-button>
+                          <base-input
+                            :value="item.detail.title"
+                            class="brand-title"
+                            width="260"
+                            height="44"
+                            placeholder="请输入品牌名称"
+                            limit="4"
+                            @input="changeBrandTitle($event, index)"
+                          ></base-input>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
                   </slick-list>
                 </div>
                 <div v-if="type === 'brand'" class="brands">
@@ -326,27 +336,32 @@
                     <div class="content-sub">(最多添加20个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="brandList" :distance="30" lockAxis="y">
-                    <template v-for="(item, index) in brandList">
-                      <slick-item v-if="item.detail&&item.detail.status===1" :key="index" :index="index">
-                        <div class="advertisement-msg" @click="getIndex(index)">
-                          <upload
-                            :data.sync="item.detail.image_url"
-                            :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                            imgStyle="width: 100px; height: 100px"
-                            :isShowDel="false"
-                            :isChange="true"
-                            firstTag="更换图片"
-                            @delete="deleteGoodsMainPic()"
-                            @successImage="successImage"
-                          ></upload>
-                          <div class="advertisement-link">
-                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择链接</base-button>
-                            <p class="goods-title">{{item.detail.title}}</p>
-                          </div>
-                          <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                    <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
+                      <div class="advertisement-msg" @click="getIndex(index)">
+                        <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''" class="img-box">
+                          <div class="status-box">已失效</div>
+                          <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
                         </div>
-                      </slick-item>
-                    </template>
+                        <upload
+                          v-else
+                          :data.sync="item.detail.image_url"
+                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                          imgStyle="width: 100px; height: 100px"
+                          :isShowDel="false"
+                          :isChange="true"
+                          firstTag="更换图片"
+                          @delete="deleteGoodsMainPic()"
+                          @successImage="successImage"
+                        ></upload>
+                        <div class="advertisement-link">
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)">
+                            <span class="add-icon"></span>选择链接
+                          </base-button>
+                          <p class="goods-title">{{item.detail.title}}</p>
+                        </div>
+                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
+                      </div>
+                    </slick-item>
                   </slick-list>
                 </div>
                 <div v-if="type === 'best'" class="brands">
@@ -981,17 +996,20 @@
         case 3006:
         case 2011:
           if (this.currentItem !== '') {
-            this[this.dataName][index].detail.image_url = this.currentItem.goods_cover_image||''
+            this[this.dataName][index].detail.image_url = this.currentItem.image_url||this.currentItem.goods_cover_image||''
+            this[this.dataName][index].detail.image_id = this.currentItem.image_id||''
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
             this[this.dataName][index].detail.sale_price = this.currentItem.price || ''
             this[this.dataName][index].detail.source = this.outLink
+            this[this.dataName][index].detail.status = this.currentItem.status||1
           }
           break
         case 3009:
           // 品牌列表
           if (this.currentItem !== '') {
+            this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
@@ -1005,6 +1023,7 @@
         case 3010:
           // 商品品牌
           if (this.currentItem !== '') {
+            this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url || ''
@@ -1538,12 +1557,28 @@
     position: relative
     margin-top: 24px
     user-select: none
-    .cate-image
+    .img-box
+      position: relative
       margin:0 20px 0 0
       width:100px
       height:100px
-      object-fit: cover
       background: #FFF
+      .status-box
+        position: absolute
+        top: 15px
+        left: 15px
+        width:70px
+        height:70px
+        line-height:70px
+        font-family: $font-family-regular
+        color: #fff
+        text-align: center
+        background: rgba(0,0,0,0.5)
+        border-radius: 100%
+    .cate-image
+      width:100px
+      height:100px
+      object-fit: cover
       border: none
     .add-advertisement
       position: relative
