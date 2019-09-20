@@ -984,14 +984,14 @@
             this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
-            this[this.dataName][index].detail.logo_image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
-            this[this.dataName][index].detail.image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
-            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || this.currentItem.logo_image_id || ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url
+            this[this.dataName][index].detail.image_url = this.currentItem.logo_image_url || this.currentItem.banner_image_url
+            this[this.dataName][index].detail.image_id = this.currentItem.logo_image_id || this.currentItem.banner_image_id
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
             this.$set(this[this.dataName][index].detail, 'brand', {
-              logo_image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url || '',
-              image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url || '',
-              image_id: this.currentItem.logo_image_id || this.currentItem.banner_image_id || '',
+              logo_image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url,
+              image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url,
+              image_id: this.currentItem.logo_image_id || this.currentItem.banner_image_id,
               name: this.currentItem.name,
               sub_name: this.currentItem.sub_name
             })
@@ -1003,9 +1003,9 @@
             this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
-            this[this.dataName][index].detail.logo_image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
-            this[this.dataName][index].detail.image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
-            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || this.currentItem.logo_image_id || ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url
+            this[this.dataName][index].detail.image_url = this.currentItem.logo_image_url || this.currentItem.banner_image_url
+            this[this.dataName][index].detail.image_id = this.currentItem.logo_image_id || this.currentItem.banner_image_id
             this[this.dataName][index].detail.title = this.currentItem.name.slice(0, 4)
           }
           break
