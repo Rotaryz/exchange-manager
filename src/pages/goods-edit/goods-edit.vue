@@ -26,7 +26,7 @@
       <base-form-item v-if="edit.use_type===2" label="所属品牌" labelMarginRight="40" labelWidth="78px"
                       labelAlign="right"
       >
-        <base-select v-model="brandId" :height="44" :data="brandList" labelKey="name" limit="50"
+        <base-select v-model="brandId" :height="44" :width="400" :data="brandList" labelKey="name" limit="50"
                      placeholder="所属品牌"
         ></base-select>
       </base-form-item>
@@ -36,7 +36,7 @@
       </base-form-item>
       <base-form-item label="商品重量" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.weight" type="number"></base-input>
-        <span class="after-word">Kg</span>
+        <span class="after-word">kg</span>
       </base-form-item>
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
@@ -379,11 +379,7 @@
       saleChannelList() {
         return this.edit.use_type === 1
           ? [{label: '赞播集采', id: 'purchase'}, {label: '赞播优品', id: 'bean'}]
-          : [{
-            label: '赞播集采',
-            id: 'purchase',
-            type: 'disable'
-          }]
+          : [{label: '赞播集采', id: 'purchase', type: 'disable'}]
       }
     },
     watch: {
@@ -616,9 +612,15 @@
       submitBtn() {
         let over = false
         over = this.justifyMethods(this.justifyItems, this.edit)
+        if (this.edit.use_type === 1 && !this.categoryId) {
+          this.$toast.show('请选择商品分类')
+          over = true
+        }else if(this.edit.use_type === 2 && !this.brandId){
+          this.$toast.show('请选择商品品牌')
+          over = true
+        }
         if (!over) over = this.justifySpec()
         if (!over) over = this.justifyGoodsSpecs()
-        console.log(over)
         if (!over) this._addGoods()
       },
 
@@ -869,8 +871,10 @@
 
     .big-list
       min-width: 860px
+
       &.purchase-list
         margin-bottom: 20px
+
       .set-price-box
         height: 45px
         line-height: 45px
