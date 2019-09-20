@@ -707,7 +707,7 @@
         else if (this.currentType !== 'video' && !this.addData.details.length) message = '请编辑内容详情'
         else if (!(/^[+]{0,1}(\d+)$/.test(this.addData.goodCount))) message = '请输入正确的初始化点赞数'
         else if (!(/^[+]{0,1}(\d+)$/.test(this.addData.lookCount))) message = '请输入正确的初始化浏览数'
-        else if (this.addData.goodCount > this.addData.lookCount) message = '初始化点赞数不能大于初始化浏览数'
+        else if (parseInt(this.addData.goodCount) > parseInt(this.addData.lookCount)) message = '初始化点赞数不能大于初始化浏览数'
         if (message) {
           this.$toast.show(message)
           return false
