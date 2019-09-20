@@ -379,11 +379,7 @@
       saleChannelList() {
         return this.edit.use_type === 1
           ? [{label: '赞播集采', id: 'purchase'}, {label: '赞播优品', id: 'bean'}]
-          : [{
-            label: '赞播集采',
-            id: 'purchase',
-            type: 'disable'
-          }]
+          : [{label: '赞播集采', id: 'purchase', type: 'disable'}]
       }
     },
     watch: {
@@ -616,9 +612,15 @@
       submitBtn() {
         let over = false
         over = this.justifyMethods(this.justifyItems, this.edit)
+        if (this.edit.use_type === 1 && !this.categoryId) {
+          this.$toast.show('请选择商品分类')
+          over = true
+        }else if(this.edit.use_type === 2 && !this.brandId){
+          this.$toast.show('请选择商品品牌')
+          over = true
+        }
         if (!over) over = this.justifySpec()
         if (!over) over = this.justifyGoodsSpecs()
-        console.log(over)
         if (!over) this._addGoods()
       },
 
@@ -869,8 +871,10 @@
 
     .big-list
       min-width: 860px
+
       &.purchase-list
         margin-bottom: 20px
+
       .set-price-box
         height: 45px
         line-height: 45px
