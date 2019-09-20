@@ -15,30 +15,30 @@
                        size="small"
                        defaultLabel="品牌名称"
                        @change-visible="getBrandList"
-                       @change="updatePage"
+                       @change="updatePage(true)"
           ></base-select>
         </base-form-item>
         <template v-else-if="filter.use_type===1">
           <base-form-item label="分类" labelSize="12px" labelMarginLeft="20" :required="false">
             <cascade-select ref="selects" v-model="category_id" :isAddAll="true" size="small" defaultLabel1="一级分类"
                             defaultLabel2="二级分类"
-                            @change="updatePage"
+                            @change="updatePage(true)"
             ></cascade-select>
           </base-form-item>
           <base-form-item label="渠道" labelSize="12px" :required="false">
             <base-select v-model="sale_channel" :data="saleChannelList" :width="120" size="small"
                          defaultLabel="销售渠道"
-                         @change="updatePage"
+                         @change="updatePage(true)"
             ></base-select>
           </base-form-item>
         </template>
 
         <base-form-item :inline="true" :required="false" verticalAlign="center">
-          <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="updatePage"></base-search>
+          <base-search v-model="filter.keyword" placeholder="商品名称或编码" @search="updatePage(true)"></base-search>
         </base-form-item>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="商品列表">
-        <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="updatePage"></base-status-tab>
+        <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="updatePage(true)"></base-status-tab>
         <router-link tag="div" :to="{path:'goods-edit',query:{use_type:filter.use_type}}" append>
           <base-button type="primary" plain addIcon>新建商品</base-button>
         </router-link>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <router-view @update="updatePage"></router-view>
+    <router-view @update="updatePage(true)"></router-view>
   </div>
 </template>
 
@@ -198,6 +198,7 @@
       },
       // 页面数据更新
       updatePage(isUpdatePage = true) {
+        console.log(isUpdatePage,'isUpdatePage')
         if (isUpdatePage) this.filter.page = 1
         let otherParams = this.filter.use_type === 1 ? {
           category_id: this.category_id,
