@@ -183,7 +183,7 @@
               <div v-for="(item,key) in goodsSpecification" :key="key" class="list-item">{{item.name}}</div>
               <!-- 单规格 -->
               <div v-if="edit.specification_type === 0" class="list-item"></div>
-              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>零售价</div>
+              <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>零售价(元)</div>
               <div class="list-item list-item-input" data-type="price"><span class="required-mark">*</span>现金价格(元)
               </div>
               <div class="list-item list-item-input" data-type="price-2"><span class="required-mark">*</span> 播豆</div>
@@ -869,7 +869,8 @@
 
     .big-list
       min-width: 860px
-
+      &.purchase-list
+        margin-bottom: 20px
       .set-price-box
         height: 45px
         line-height: 45px
@@ -881,8 +882,6 @@
         font-size $font-size-14
         margin-bottom: 20px
 
-      .bean-title
-        margin-top: 20px
 
       .list-box .list-item[data-type='price']
         max-width: 170px !important
