@@ -142,7 +142,7 @@
       return {
         listHeader: LIST_HEADER,
         checkVisible: false,
-        radioList: [{label: '认证通过', id: 1}, {label: '审核不通过', id: 2}],
+        radioList: [{label: '认证通过', id: 1}, {label: '认证不通过', id: 2}],
         edit: {
           result: 1,
           reason: ''

@@ -44,11 +44,13 @@
           <!--精品推荐-->
           <div v-if="cms.code === 'best_recommend'" class="best hand" :class="{'touch': cmsType === 'best'}" @click="changeType('best')">
             <div class="best-title">精品推荐</div>
-            <div v-for="(best, index) in bestList" :key="index" class="best-goods">
-              <img v-if="best.detail.image_url||best.detail.goods_cover_image" :src="best.detail.image_url||best.detail.goods_cover_image" alt="" class="best-img">
-              <div class="best-goods-name">{{best.detail.title}}</div>
-              <div class="best-goods-money">{{best.detail.sale_price ? '¥' : ''}}{{best.detail.sale_price}}</div>
-            </div>
+            <template v-for="(best, index) in bestList">
+              <div v-if="best.detail.status===1" :key="index" class="best-goods">
+                <img v-if="best.detail.image_url||best.detail.goods_cover_image" :src="best.detail.image_url||best.detail.goods_cover_image" alt="" class="best-img">
+                <div class="best-goods-name">{{best.detail.title}}</div>
+                <div class="best-goods-money">{{best.detail.sale_price ? '¥' : ''}}{{best.detail.sale_price}}</div>
+              </div>
+            </template>
           </div>
         </div>
       </div>

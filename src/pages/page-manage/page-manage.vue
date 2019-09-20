@@ -128,7 +128,7 @@
                   <!--今日爆款 商品分组-->
                   <div v-if="selectSource===0">
                     <div v-for="(item, index) in groupsGoodsList" :key="index">
-                      <div class="advertisement-msg" @click="getIndex(index)">
+                      <div v-if="item.status===1" class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title margin-left-0">{{item.name}}</p>
@@ -193,7 +193,7 @@
                   <!--精品推荐 商品分组-->
                   <div v-if="selectSource===0">
                     <div v-for="(item, index) in groupsGoodsList" :key="index">
-                      <div class="advertisement-msg" @click="getIndex(index)">
+                      <div v-if="item.status===1" class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title margin-left-0">{{item.name}}</p>
@@ -357,7 +357,7 @@
                   <!--精品推荐 商品分组-->
                   <div v-if="selectSource===0">
                     <div v-for="(item, index) in groupsGoodsList" :key="index">
-                      <div class="advertisement-msg" @click="getIndex(index)">
+                      <div v-if="item.status===1" class="advertisement-msg" @click="getIndex(index)">
                         <img v-if="item.goods_cover_image" :src="item.goods_cover_image" alt="" class="cate-image">
                         <div class="advertisement-link">
                           <p class="goods-title margin-left-0">{{item.name}}</p>
@@ -1101,7 +1101,8 @@
                 image_url: item.goods_cover_image,
                 goods_cover_image: item.goods_cover_image,
                 sale_price: item.price,
-                add_icon: ADD_IMAGE
+                add_icon: ADD_IMAGE,
+                status: item.status
               },
               style: this.moduleDetail.detail.source
             }
@@ -1349,10 +1350,10 @@
           } else {
             for (let i = 0; i < this[this.dataName].length; i++) {
               if (!this[this.dataName][i].detail.image_url) {
-                this.$toast.show(`第${i + 1}${type}个图片不能为空`, 1500)
+                this.$toast.show(`第${i + 1}个${type}图片不能为空`, 1500)
                 return
               } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
-                this.$toast.show(`第${i + 1}${type}个不能为空`, 1500)
+                this.$toast.show(`第${i + 1}个${type}不能为空`, 1500)
                 return
               }
             }
@@ -1419,7 +1420,8 @@
                   title: item.name,
                   image_url: item.goods_cover_image,
                   goods_cover_image: item.goods_cover_image,
-                  add_icon: ADD_IMAGE
+                  add_icon: ADD_IMAGE,
+                  status: item.status
                 },
                 style: this.moduleDetail.detail.source
               }

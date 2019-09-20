@@ -32,11 +32,13 @@
               <span class="text">优选国内2%精品品牌</span>
             </div>
             <div class="scroll-wrapper">
-              <div v-for="(item, index) in hotList" :key="index" class="hot-item">
-                <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
-                <p class="hot-good-name">{{item.detail.title}}</p>
-                <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
-              </div>
+              <template v-for="(item, index) in hotList">
+                <div v-if="item.detail.status===1" :key="index" class="hot-item">
+                  <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
+                  <p class="hot-good-name">{{item.detail.title}}</p>
+                  <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
+                </div>
+              </template>
             </div>
           </div>
           <!-- 推荐商品列表-->
@@ -47,11 +49,13 @@
               <span class="text">优选国内2%优品</span>
             </div>
             <div class="scroll-wrapper">
-              <div v-for="(item, index) in recommendList" :key="index" class="hot-item">
-                <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
-                <p class="hot-good-name">{{item.detail.title}}</p>
-                <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
-              </div>
+              <template v-for="(item, index) in recommendList">
+                <div v-if="item.detail.status===1" :key="index" class="hot-item">
+                  <img :src="item.detail.image_url||item.detail.goods_cover_image" class="hot-good-img">
+                  <p class="hot-good-name">{{item.detail.title}}</p>
+                  <p class="hot-price">¥{{item.detail.sale_price || 0}}</p>
+                </div>
+              </template>
             </div>
           </div>
         </div>
