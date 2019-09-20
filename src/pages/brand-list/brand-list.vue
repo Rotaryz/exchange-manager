@@ -2,7 +2,6 @@
   <div class="brand-list">
     <div class="content-wrap">
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="品牌列表">
-        <!--<base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>-->
         <router-link tag="div" :to="{path:'brand-edit',query:{type:filter.type}}" append>
           <base-button type="primary" plain addIcon>新建品牌</base-button>
         </router-link>
@@ -16,12 +15,6 @@
             <template v-if="list.length">
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
-                  <!--<base-switch v-if="val.type ==='switch'"-->
-                  <!--:status="item.status"-->
-                  <!--confirmText="上线"-->
-                  <!--cancelText="下线"-->
-                  <!--@changeSwitch="changeSwitch(item,i)"-->
-                  <!--&gt;</base-switch>-->
                   <div v-if="val.type === 'operate'">
                     <router-link tag="span" :to="{path:'brand-edit',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
@@ -80,11 +73,6 @@
         },
         // key值代表后台的字段 val代表前端页面字段
         listHeader: {
-          first: {
-            name: '品牌首图', before: {
-              img: 'banner_image_url'
-            }
-          },
           logo: {
             name: '品牌Logo', before: {
               img: 'logo_image_url'
@@ -93,7 +81,6 @@
           industry_name: {name: '所属行业'},
           name: {name: '品牌名称'},
           created_at: {name: '时间 ', style: 'flex: 1.4'},
-          // status: {name: '状态', type: "switch"},
           operate_text: {name: '操作', type: "operate", style: 'max-width: 75px; padding-right: 0'}
         },
         list: []
