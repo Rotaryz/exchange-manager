@@ -26,7 +26,8 @@
       <base-form-item v-if="edit.use_type===2" label="所属品牌" labelMarginRight="40" labelWidth="78px"
                       labelAlign="right"
       >
-        <base-select v-model="brandId" :height="44" :width="400" :data="brandList" labelKey="name" limit="50"
+        <base-select v-model="brandId" :height="44" :width="400" :data="brandList" labelKey="name"
+                     limit="50"
                      placeholder="所属品牌"
         ></base-select>
       </base-form-item>
