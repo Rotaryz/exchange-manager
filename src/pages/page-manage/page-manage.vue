@@ -296,26 +296,28 @@
                     <div class="content-sub">(最多添加10个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="wallList" :distance="30" lockAxis="y">
-                    <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
-                      <div class="advertisement-msg" @click="getIndex(index)">
-                        <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
-                        <div v-else class="cate-image"></div>
-                        <!--@click=""-->
-                        <div class="advertisement-link column">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
-                          <base-input
-                            :value="item.detail.title"
-                            class="brand-title"
-                            width="260"
-                            height="44"
-                            placeholder="请输入品牌名称"
-                            limit="4"
-                            @input="changeBrandTitle($event, index)"
-                          ></base-input>
+                    <template v-for="(item, index) in wallList">
+                      <slick-item v-if="item.detail&&item.detail.status===1" :key="index" :index="index">
+                        <div class="advertisement-msg" @click="getIndex(index)">
+                          <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="cate-image">
+                          <div v-else class="cate-image"></div>
+                          <!--@click=""-->
+                          <div class="advertisement-link column">
+                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加品牌</base-button>
+                            <base-input
+                              :value="item.detail.title"
+                              class="brand-title"
+                              width="260"
+                              height="44"
+                              placeholder="请输入品牌名称"
+                              limit="4"
+                              @input="changeBrandTitle($event, index)"
+                            ></base-input>
+                          </div>
+                          <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                         </div>
-                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                      </div>
-                    </slick-item>
+                      </slick-item>
+                    </template>
                   </slick-list>
                 </div>
                 <div v-if="type === 'brand'" class="brands">
@@ -324,25 +326,27 @@
                     <div class="content-sub">(最多添加20个品牌，鼠标拖拽调整品牌顺序)</div>
                   </div>
                   <slick-list v-model="brandList" :distance="30" lockAxis="y">
-                    <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
-                      <div class="advertisement-msg" @click="getIndex(index)">
-                        <upload
-                          :data.sync="item.detail.image_url"
-                          :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
-                          imgStyle="width: 100px; height: 100px"
-                          :isShowDel="false"
-                          :isChange="true"
-                          firstTag="更换图片"
-                          @delete="deleteGoodsMainPic()"
-                          @successImage="successImage"
-                        ></upload>
-                        <div class="advertisement-link">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择链接</base-button>
-                          <p class="goods-title">{{item.detail.title}}</p>
+                    <template v-for="(item, index) in brandList">
+                      <slick-item v-if="item.detail&&item.detail.status===1" :key="index" :index="index">
+                        <div class="advertisement-msg" @click="getIndex(index)">
+                          <upload
+                            :data.sync="item.detail.image_url"
+                            :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
+                            imgStyle="width: 100px; height: 100px"
+                            :isShowDel="false"
+                            :isChange="true"
+                            firstTag="更换图片"
+                            @delete="deleteGoodsMainPic()"
+                            @successImage="successImage"
+                          ></upload>
+                          <div class="advertisement-link">
+                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择链接</base-button>
+                            <p class="goods-title">{{item.detail.title}}</p>
+                          </div>
+                          <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                         </div>
-                        <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
-                      </div>
-                    </slick-item>
+                      </slick-item>
+                    </template>
                   </slick-list>
                 </div>
                 <div v-if="type === 'best'" class="brands">
@@ -639,7 +643,7 @@
   const NAV_TYPE = [{title: '商品分类', status: 3003}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
   const HOT_TYPE = [{title: '商品列表', status: 3002}]
   const GOODS_TYPE = [{title: '商品列表', status: 3002}]
-  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品列表', status: 3002}]
+  const BRANDS_TYPE = [{title: '品牌列表', status: 3010}, {title: '商品列表', status: 3002}]
   const BEST_TYPE = [{title: '商品列表', status: 3002}]
   const WALL_TYPE = [{title: '商品品牌', status: 3010}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
 
@@ -886,7 +890,7 @@
         API.Cms.moduleShow({data: {code: this.pageType}}).then((res) => {
           this.moduleList = res.data.children
           res.data.children.forEach((item, idx) => {
-            if (changeTab && idx === 0) {
+            if ((changeTab && idx === 0) || this.moduleDetail.code === item.code) {
               this.moduleDetail = item
               // 模块没有detail的，初始化detail
               if (Array.isArray(item.detail) && item.detail.length === 0) {
@@ -923,7 +927,6 @@
               break
             }
           })
-          console.log(this.moduleDetail)
         })
       },
       // 判断
@@ -978,6 +981,7 @@
         case 3006:
         case 2011:
           if (this.currentItem !== '') {
+            this[this.dataName][index].detail.image_url = this.currentItem.goods_cover_image||''
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
@@ -1197,8 +1201,8 @@
         case 'recommend':
         case 'hot':
           type = '商品'
-          if (this[this.dataName].length >= 10) {
-            this.$toast.show('最多添加10个' + type)
+          if (this[this.dataName].length >= 20) {
+            this.$toast.show('最多添加20个' + type)
             return
           }
           break
@@ -1347,7 +1351,7 @@
             return
           } else {
             for (let i = 0; i < this[this.dataName].length; i++) {
-              if (!this[this.dataName][i].detail.image_id) {
+              if (!this[this.dataName][i].detail.image_url) {
                 this.$toast.show(`第${i + 1}${type}个图片不能为空`, 1500)
                 return
               } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
