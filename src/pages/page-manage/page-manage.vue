@@ -249,12 +249,7 @@
                   <slick-list v-model="bannerList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in bannerList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''" class="img-box">
-                          <div class="status-box">已失效</div>
-                          <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
-                        </div>
                         <upload
-                          v-else
                           :data.sync="item.detail.image_url"
                           :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
                           imgStyle="width: 100px; height: 100px"
@@ -282,7 +277,6 @@
                     <slick-item v-for="(item, index) in wallList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
                         <div class="img-box">
-                          <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''" class="status-box">已失效</div>
                           <img v-if="item.detail.logo_image_url||item.detail.image_url" :src="item.detail.logo_image_url||item.detail.image_url" alt="" class="cate-image">
                         </div>
                         <!--@click=""-->
@@ -313,12 +307,7 @@
                   <slick-list v-model="brandList" :distance="30" lockAxis="y">
                     <slick-item v-for="(item, index) in brandList" :key="index" :index="index">
                       <div class="advertisement-msg" @click="getIndex(index)">
-                        <div v-if="item.detail&&item.detail.status!==1&&item.detail.object_id!==''" class="img-box">
-                          <div class="status-box">已失效</div>
-                          <img v-if="item.detail.image_url" :src="item.detail.image_url" alt="" class="cate-image">
-                        </div>
                         <upload
-                          v-else
                           :data.sync="item.detail.image_url"
                           :addStyle="`margin:0 20px 0 0;width:100px;height:100px;background-image: url('${addImage}')`"
                           imgStyle="width: 100px; height: 100px"
