@@ -135,6 +135,114 @@ export default [
       },
       /**
        *
+       *页面
+       *
+       */
+      {
+        path: '/cms',
+        name: 'cms',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '内容 ',
+          icon: require('./icon-content@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'b-mall',
+            name: 'b-mall',
+            text: '内容',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 订单列表
+              // {
+              //   path: '/cms/b-mall/cms-manager',
+              //   name: 'cms-manager',
+              //   component: () => import('@pages/cms-manager/cms-manager'),
+              //   meta: {
+              //     title: '首页配置', // 页面标题
+              //     type: 'sec-menu', // 二级标识
+              //     crumbs: ['首页配置'] // 面包屑标题
+              //   }
+              // },
+              // 礼品馆、品牌馆
+              {
+                path: '/cms/b-mall/page-manage',
+                name: 'page-manage',
+                component: () => import('@pages/page-manage/page-manage'),
+                meta: {
+                  title: '页面管理', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['页面管理'], // 面包屑标题
+                  style:{margin:0}
+                }
+              },
+              {
+                path: '/cms/b-mall/content-list',
+                name: 'content-list',
+                component: () => import('@pages/content-list/content-list'),
+                meta: {
+                  title: '内容列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['内容列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/cms/b-mall/content-list/content-edit',
+                    name: 'content-edit',
+                    component: () => import('@pages/content-edit/content-edit'),
+                    meta: {
+                      title: '创建文章', // 页面标题
+                      crumbs: ['内容列表', '创建文章'] // 面包屑标题
+                    }
+                  }
+                ]
+              }
+
+            ]
+          }
+        ]
+      },
+      /**
+       *
+       *订单
+       *
+       */
+      {
+        path: '/order-manager',
+        name: 'order-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '订单 ',
+          icon: require('./icon-order@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'order',
+            name: 'order',
+            text: '订单',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/order-manager/order/order-list',
+                name: 'order-list',
+                component: () => import('@pages/order-list/order-list'),
+                meta: {
+                  title: '订单列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['订单列表'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ]
+      },
+      /**
+       *
        *客户
        *
        */
@@ -234,115 +342,6 @@ export default [
           }
         ]
       },
-      /**
-       *
-       *订单
-       *
-       */
-      {
-        path: '/order-manager',
-        name: 'order-manager',
-        meta: {
-          type: 'first_menu', // 一级标示
-          title: '订单 ',
-          icon: require('./icon-order@2x.png'),
-          iconSelected: ''
-        },
-        component: {render: (h) => h('router-view')},
-        children: [
-          {
-            path: 'order',
-            name: 'order',
-            text: '订单',
-            component: {render: (h) => h('router-view')},
-            children: [
-              // 订单列表
-              {
-                path: '/order-manager/order/order-list',
-                name: 'order-list',
-                component: () => import('@pages/order-list/order-list'),
-                meta: {
-                  title: '订单列表', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['订单列表'] // 面包屑标题
-                }
-              }
-            ]
-          }
-        ]
-      },
-      /**
-       *
-       *页面
-       *
-       */
-      {
-        path: '/cms',
-        name: 'cms',
-        meta: {
-          type: 'first_menu', // 一级标示
-          title: '内容 ',
-          icon: require('./icon-content@2x.png'),
-          iconSelected: ''
-        },
-        component: {render: (h) => h('router-view')},
-        children: [
-          {
-            path: 'b-mall',
-            name: 'b-mall',
-            text: '内容',
-            component: {render: (h) => h('router-view')},
-            children: [
-              // 订单列表
-              // {
-              //   path: '/cms/b-mall/cms-manager',
-              //   name: 'cms-manager',
-              //   component: () => import('@pages/cms-manager/cms-manager'),
-              //   meta: {
-              //     title: '首页配置', // 页面标题
-              //     type: 'sec-menu', // 二级标识
-              //     crumbs: ['首页配置'] // 面包屑标题
-              //   }
-              // },
-              // 礼品馆、品牌馆
-              {
-                path: '/cms/b-mall/page-manage',
-                name: 'page-manage',
-                component: () => import('@pages/page-manage/page-manage'),
-                meta: {
-                  title: '页面管理', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['页面管理'], // 面包屑标题
-                  style:{margin:0}
-                }
-              },
-              {
-                path: '/cms/b-mall/content-list',
-                name: 'content-list',
-                component: () => import('@pages/content-list/content-list'),
-                meta: {
-                  title: '内容列表', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['内容列表'] // 面包屑标题
-                },
-                children: [
-                  {
-                    path: '/cms/b-mall/content-list/content-edit',
-                    name: 'content-edit',
-                    component: () => import('@pages/content-edit/content-edit'),
-                    meta: {
-                      title: '创建文章', // 页面标题
-                      crumbs: ['内容列表', '创建文章'] // 面包屑标题
-                    }
-                  }
-                ]
-              }
-
-            ]
-          }
-        ]
-      },
-
       /**
        *
        *财务
