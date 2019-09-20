@@ -981,6 +981,7 @@
         case 3006:
         case 2011:
           if (this.currentItem !== '') {
+            this[this.dataName][index].detail.image_url = this.currentItem.goods_cover_image||''
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
@@ -1350,7 +1351,7 @@
             return
           } else {
             for (let i = 0; i < this[this.dataName].length; i++) {
-              if (!this[this.dataName][i].detail.image_id) {
+              if (!this[this.dataName][i].detail.image_url) {
                 this.$toast.show(`第${i + 1}${type}个图片不能为空`, 1500)
                 return
               } else if (!this[this.dataName][i].detail.title && !this[this.dataName][i].detail.url) {
