@@ -394,7 +394,7 @@
       }
     },
     created() {
-      this._getBrandList()
+      if(!this.$route.query.id) this._getBrandList()
       this._getPriceLevelRatioList()
       this._getDefaultLogisticsInfo()
     },
