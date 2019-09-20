@@ -7,18 +7,17 @@
     <div class="inner-value">
       {{valueLabel ? valueLabel : defaultLabel?defaultLabel :placeholder}}
     </div>
-    <base-input :value="valueLabel"
-                :placeholder="placeholder"
-                :disabled="disabled"
-                handIcon="pointer"
-                type="text"
-                autocomplete="off"
-                readonly="readonly"
-                class="inner-input"
-                @click.stop="selectType"
-    >
-      <template slot="after"><span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span></template>
-    </base-input>
+    <div class="inner-input base-input">
+      <input :value="valueLabel"
+             :placeholder="placeholder"
+             :readonly="true"
+             :disabled="disabled"
+             type="text"
+             class="input__inner"
+             @click.stop="selectType"
+      >
+      <span v-if="!disabled" class="arrow-icon" :class="{'active': visible}"></span>
+    </div>
     <transition name="fade">
       <ul v-show="visible" class="select-child" :style="{top: top}" @mouseleave="leaveHide()" @mouseenter="endShow">
         <li v-for="(child, chIdx) in data"
@@ -127,11 +126,12 @@
     },
     mounted() {
       window.onclick = () => {
-        this.visible = false
+        this.clickHide()
       }
     },
     methods: {
       clickHide() {
+        if (!this.visible) return
         this.visible = false
         this.$emit('change-visible', false)
       },
@@ -141,14 +141,15 @@
       leaveHide() {
         this.setTime = setTimeout(() => {
           this.clickHide()
-        }, 1500)
+        }, 1000)
       },
-      selectType() {
+      selectType(e) {
+        this.$emit('click', e)
         if (this.disabled) {
           return
         }
         this.visible = !this.visible
-        this.$emit('change-visible', true)
+        this.$emit('change-visible', this.visible)
       },
       setValue(value, index) {
         this.visible = false
@@ -165,10 +166,10 @@
   @import "~@design"
 
   .base-select
-    position relative
-    background-color $color-white
+    position:relative
+    background-color:$color-white
     color: $color-text-main
-    font-size $font-size-14
+    font-size:$font-size-14
     border-radius: 2px
     white-space: nowrap
     box-sizing: border-box
@@ -180,8 +181,8 @@
     .inner-value
       padding-left: 14px
       padding-right: 30px
-      visibility hidden
-      cursor pointer
+      visibility: hidden
+      cursor: pointer
     .select-child
       top: 44px
 
@@ -232,13 +233,13 @@
 
     &.disabled
       border-color: $color-disable
-      cursor not-allowed
+      cursor: not-allowed
 
     .inner-input
       width: 100%
       height: 100%
       min-height: 32px
-      position absolute
+      position: absolute
       top: 0
       right: 0
       bottom 0
@@ -246,6 +247,10 @@
       z-index: 20
       cursor pointer
       display: flex
+      font-size: 0
+
+      .input__inner
+        cursor pointer
 
     .arrow-icon
       position: absolute
@@ -276,6 +281,7 @@
       max-height: 350px
       overflow-y: auto
       width: 100%
+      cursor: pointer
 
       &::-webkit-scrollbar
         width: 8px

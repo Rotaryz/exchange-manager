@@ -1,5 +1,5 @@
 <template>
-  <div class="income-expenses-detail">
+  <div class="income-expenses">
     <base-layout-top class="money-info-wrap">
       <div v-for="item in totalList" :key="item.valueKey" class="money-item">
         <div :class="['type-icon',item.iconClass]"></div>
@@ -82,6 +82,7 @@
         money: {total_remaining: '—', remaining: '—', already_remaining: '—'},
         filter: {
           page: 1,
+          type: this.$route.query.type,
           target_id: this.$route.params.id
         },
         listHeader: {
@@ -135,7 +136,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
 
-  .income-expenses-detail
+  .income-expenses
     position absolute
     top: 0
     bottom: 0

@@ -1,6 +1,6 @@
 <template>
-  <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom}">
-    <div class="label-text" :style="{width:labelWidth,color:labelColor,'font-size':labelSize,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px'}">
+  <div class="base-form-item" :class="[{inline:inline},verticalAlign]" :style="{'margin-bottom':marginBottom, 'margin-left' : marginLeft + 'px'}">
+    <div class="label-text" :style="{width:labelWidth,color:labelColor,'font-size':labelSize,'text-align':labelAlign,height:labelHeight,'line-height':labelHeight,'margin-right':labelMarginRight+'px','margin-left':labelMarginLeft+'px'}">
       <span v-if="required" class="required-mask">*</span>
       {{label}}
     </div>
@@ -50,11 +50,19 @@
         default: 10,
         type: [Number, String]
       },
+      labelMarginLeft: {
+        default: 10,
+        type: [Number, String]
+      },
       labelSize: {
         default: '',
         type: [Number, String]
       },
       marginBottom: {
+        default: '',
+        type: String
+      },
+      marginLeft: {
         default: '',
         type: String
       }
@@ -72,16 +80,16 @@
     margin-bottom: 24px
 
     &.inline
-      display flex
+      display:flex
 
       &.top
-        align-items flex-start
+        align-items:flex-start
 
       &.center
-        align-items center
+        align-items:center
 
       &.bottom
-        align-items flex-end
+        align-items:flex-end
 
     .required-mask
       color: $color-error

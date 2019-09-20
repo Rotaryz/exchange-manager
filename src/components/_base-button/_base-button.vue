@@ -89,7 +89,7 @@
 
   &.base-button--default
     border: 1px solid $color-btn-border
-    background-color $color-white
+    background-color: $color-white
     color: $color-text-main
 
     &:hover

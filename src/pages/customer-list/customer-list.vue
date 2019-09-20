@@ -1,7 +1,7 @@
 <template>
   <div class="customer-list normal-box table">
     <div class="down-content">
-      <base-form-item :required="false" labelSize="12px" label="筛选" marginBottom="0">
+      <base-form-item :required="false" labelSize="12px" label="等级筛选" marginBottom="0">
         <base-select
           v-model="id"
           boxStyle="margin: 0"
@@ -11,6 +11,19 @@
           :height="32"
           placeholder="账号等级"
           @change="_exchangeList"
+        >
+        </base-select>
+      </base-form-item>
+      <base-form-item :required="false" labelSize="12px" label="行业筛选" marginBottom="0" marginLeft="20">
+        <base-select
+          v-model="industryId"
+          boxStyle="margin: 0"
+          :width="120"
+          :data="tradeList"
+          labelKey="name"
+          :height="32"
+          placeholder="所属行业"
+          @change="_exchangeTradeList"
         >
         </base-select>
       </base-form-item>
@@ -45,6 +58,7 @@
               <div class="list-item">{{item.name}}</div>
               <div class="list-item">{{item.industry_name}}</div>
               <div class="list-item">{{`${item.province} ${item.city} ${item.district}`}}</div>
+              <div class="list-item">{{item.created_at}}</div>
               <div class="list-item">{{item.shop_level_name}}</div>
               <div class="list-item">{{item.certificate_status === 0 ? '待认证' : item.certificate_status === 1 ? '已认证' : '认证未通过'}}</div>
               <div class="list-item">
@@ -60,7 +74,7 @@
         </div>
         <div class="pagination-box">
           <!--:pageDetail="contentClassPage"-->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -116,8 +130,9 @@
 
   const PAGE_NAME = 'CUSTOMER_LIST'
   const TITLE = '客户列表'
-  const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '账号等级', '认证状态', '营业执照', '操作']
+  const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '认证状态', '营业执照', '操作']
   const CERTIFICATELIST = [{name: '全部', id: ''}, {name: '待认证', id: 0}, {name: '已认证', id: 1}, {name: '认证不通过', id: 2}]
+  // const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '操作']
 
   export default {
     name: PAGE_NAME,
@@ -154,22 +169,26 @@
         visibleImg: false,
         photoCertificatesUrl: '',
         curItem: {},
-        certificateStatus: ''
+        certificateStatus: '',
+        industryId: '',
+        tradeList: []
       }
     },
     computed: {
       paramObj() {
-        let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id,certificate_status: this.certificateStatus}
+        let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id, industry_id: this.industryId ,certificate_status: this.certificateStatus}
+        // let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id,certificate_status: this.certificateStatus}
         return data
       }
     },
-    watch: {
-      async page() {
-        await this.getCustomerList()
-      }
-    },
+    // watch: {
+    //   async page() {
+    //     await this.getCustomerList()
+    //   }
+    // },
     async created() {
       this._getLevelList()
+      this._getTradeList()
     },
     beforeRouteEnter(to, from, next) {
       let data = {page: 1, keyword: '', shop_level_id: ''}
@@ -185,14 +204,23 @@
         })
     },
     methods: {
+      // 获取行业列表
+      _getTradeList(loading = false) {
+        return API.Goods.getTradeList({
+          data: {limit: 0},
+          loading
+        }).then((res) => {
+          res.data.unshift({name: '全部', id: ''})
+          this.tradeList = res.data
+          console.log(this.tradeList)
+        })
+      },
       // 获取等级列表
       _getLevelList(loading = false) {
         API.Level.getLevelList({
           data: {page: this.page},
           loading,
-          toast: true,
-          doctor() {
-          }
+          toast: true
         })
           .then((res) => {
             res.data.unshift({name: '普通会员', id: 0})
@@ -205,6 +233,10 @@
         await this.getCustomerList()
       },
       async _exchangeCertificateList() {
+        this.page = 1
+        await this.getCustomerList()
+      },
+      async _exchangeTradeList() {
         this.page = 1
         await this.getCustomerList()
       },
@@ -231,11 +263,6 @@
       },
       showSet(item) {
         this.$router.push(`/client/customer/customer-list/`)
-        console.log(`/client/customer/customer-list/level-setting/${item.id}`)
-      // this.customerId = item.id
-      // this.grade = item.shop_level_id
-      // this.visible = true
-      // this.defaultLabel = item.shop_level_name
       },
       // 设置等级
       async setGrade() {
@@ -248,6 +275,7 @@
         })
         res.error_code === this.$ERR_OK && this.getCustomerList()
       },
+      // 搜索
       async search(keyword) {
         this.page = 1
         await this.getCustomerList()
@@ -271,6 +299,10 @@
           .then(async (res) => {
             await this.getCustomerList()
           })
+      },
+      // 分页
+      async pageChange() {
+        await this.getCustomerList()
       },
       //  弹窗限制
       justifyForm(done) {
@@ -307,8 +339,13 @@
   .list-box
     .list-item
       &:nth-child(3)
+        flex: 1.4
+        min-width: 140px
+      &:nth-child(5)
         flex: 1.6
         min-width: 140px
+      &:nth-child(4),&:nth-child(7)
+        flex: 0.7
       &:last-child
         max-width: 80px
         min-width: 80px

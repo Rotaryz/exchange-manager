@@ -21,15 +21,6 @@
       return {}
     },
     created() {
-    // let data = {hj: '123g'}
-    // API.Global.getToken({
-    //   data,
-    //   doctor(res) {
-    //     console.log(res)
-    //   }
-    // }).then(res => {
-    //   console.log(res)
-    // })
     }
   }
 </script>

@@ -65,12 +65,8 @@
     },
     created() {},
     methods: {
-      _sort(a, b) {
-        return b.sort - a.sort
-      },
       openBtn(index) {
         this.$set(this.selects, index, !this.selects[index])
-      // console.log(this.selects)
       },
       addChild(item, index) {
         this.$emit('add-item', {item, index})
@@ -96,8 +92,8 @@
 
   .img-icon
     width: 100%
-    height @width
-    display block
+    height: @width
+    display: block
     object-fit: cover
 
   .product-top
@@ -186,7 +182,6 @@
     padding-left: 22px
     layout(row)
     align-items: center
-
     .add-icon
       margin-right: 6px
       width: 12px

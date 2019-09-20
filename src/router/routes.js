@@ -28,7 +28,7 @@ export default [
     children: [
       /**
        *
-       * 商品管理
+       * 商品
        *
        */
       {
@@ -36,7 +36,7 @@ export default [
         name: 'mall',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '商品管理',
+          title: '商品 ',
           icon: require('./icon-goods@2x.png'),
           iconSelected: ''
         },
@@ -49,14 +49,14 @@ export default [
             component: {render: (h) => h('router-view')},
             children: [
               {
-                path: '/mall/goods/goods-list',
+                path: '/mall/goods/goods-list', // 路径（需写全路径，面包屑中需要使用）
                 name: 'mall-goods-goods-list',
                 component: () => import('@pages/goods-list/goods-list'),
                 meta: {
-                  title: '商品列表',
+                  title: '商品列表', // 导航标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['商品列表'],
-                  style:{margin:0}
+                  crumbs: ['商品列表'], // 面包屑标题
+                  style:{margin:0} // 最外层路由盒子的自定义样式
                 },
                 children:[
                   // 新建商品
@@ -85,6 +85,28 @@ export default [
                   crumbs: ['商品分类']
                 }
               },
+              // 商品品牌
+              {
+                path: '/mall/goods/brand-list',
+                name: 'goods-brand-list',
+                component: () => import('@pages/brand-list/brand-list'),
+                meta: {
+                  title: '商品品牌',
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['品牌列表']
+                },
+                children: [
+                  // 品牌详情
+                  {
+                    path: '/mall/goods/brand-list/brand-edit',
+                    name: 'goods-brand-edit',
+                    component: () => import('@pages/brand-edit/brand-edit'),
+                    meta: {
+                      crumbs: ['品牌列表', '创作品牌']
+                    }
+                  }
+                ]
+              },
               // 商品分组
               {
                 path: '/mall/goods/goods-grouping',
@@ -106,28 +128,6 @@ export default [
                     }
                   }
                 ]
-              },
-              // 品牌列表
-              {
-                path: '/mall/goods/brand-list',
-                name: 'goods-brand-list',
-                component: () => import('@pages/brand-list/brand-list'),
-                meta: {
-                  title: '品牌列表',
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['品牌列表']
-                },
-                children: [
-                  // 品牌详情
-                  {
-                    path: '/mall/goods/brand-list/brand-edit',
-                    name: 'goods-brand-edit',
-                    component: () => import('@pages/brand-edit/brand-edit'),
-                    meta: {
-                      crumbs: ['品牌列表', '创作品牌']
-                    }
-                  }
-                ]
               }
             ]
           }
@@ -135,137 +135,7 @@ export default [
       },
       /**
        *
-       *客户管理
-       *
-       */
-      {
-        path: '/client',
-        name: 'client',
-        meta: {type: 'first_menu', // 一级标示
-          title: '客户管理',
-          icon: require('./icon-client@2x.png'),
-          iconSelected: ''
-        },
-        component: {render: (h) => h('router-view')},
-        children: [
-          {
-            path: 'customer',
-            name: 'customer',
-            text: '客户',
-            component: {render: (h) => h('router-view')},
-            children: [
-              // 客户列表
-              {
-                path: '/client/customer/customer-list',
-                name: 'customer-list',
-                component: () => import('@pages/customer-list/customer-list'),
-                meta: {
-                  title: '客户列表', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['客户列表'] // 面包屑标题
-                },
-                children: [
-                  // 等级设置
-                  {
-                    path: '/client/customer/customer-list/level-setting',
-                    name: 'level-setting',
-                    component: () => import('@pages/level-setting/level-setting'),
-                    meta: {
-                      title: '等级设置', // 页面标题
-                      crumbs: ['客户列表', '客户设置'] // 面包屑标题
-                    }
-                  }
-                ]
-              }, // 交易记录
-              {
-                path: '/client/customer/trading-record',
-                name: 'trading-record',
-                component: () => import('@pages/trading-record/trading-record'),
-                meta: {
-                  title: '交易记录', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['交易记录'] // 面包屑标题
-                }
-              },
-              // 代理申请
-              {
-                path: '/client/customer/application-agency',
-                name: 'application-agency',
-                component: () => import('@pages/application-agency/application-agency'),
-                meta: {
-                  title: '代理申请', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['代理申请'] // 面包屑标题
-                }
-              },
-              // 等级管理
-              {
-                path: '/client/customer/level-manager',
-                name: 'level-manager',
-                component: () => import('@pages/level-manager/level-manager'),
-                meta: {
-                  title: '等级管理', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['等级管理'] // 面包屑标题
-                },
-                children: [
-                  // 等级
-                  {
-                    path: '/client/customer/level-manager/edit-level',
-                    name: 'edit-level',
-                    component: () => import('@pages/edit-level/edit-level'),
-                    meta: {
-                      title: '等级管理', // 页面标题
-                      variableIndex: 1,
-                      crumbs: ['等级管理', '等级'] // 面包屑标题
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      /**
-       *
-       *订单管理
-       *
-       */
-      {
-        path: '/order-manager',
-        name: 'order-manager',
-        meta: {
-          type: 'first_menu', // 一级标示
-          title: '订单管理',
-          icon: require('./icon-order@2x.png'),
-          iconSelected: ''
-        },
-        component: {render: (h) => h('router-view')},
-        children: [
-          {
-            path: 'order',
-            name: 'order',
-            text: '订单',
-            component: {render: (h) => h('router-view')},
-            children: [
-              // 订单列表
-              {
-                path: '/order-manager/order/order-list',
-                name: 'order-list',
-                component: () => import('@pages/order-list/order-list'),
-                meta: {
-                  title: '订单列表', // 页面标题
-                  type: 'sec-menu', // 二级标识
-                  crumbs: ['订单列表'] // 面包屑标题
-                }
-              }
-            ]
-          }
-        ]
-      },
-      /**
-       *
-       *页面管理
+       *页面
        *
        */
       {
@@ -273,7 +143,7 @@ export default [
         name: 'cms',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '内容管理',
+          title: '内容 ',
           icon: require('./icon-content@2x.png'),
           iconSelected: ''
         },
@@ -323,8 +193,8 @@ export default [
                     name: 'content-edit',
                     component: () => import('@pages/content-edit/content-edit'),
                     meta: {
-                      title: '创作文章', // 页面标题
-                      crumbs: ['内容列表', '创作文章'] // 面包屑标题
+                      title: '创建文章', // 页面标题
+                      crumbs: ['内容列表', '创建文章'] // 面包屑标题
                     }
                   }
                 ]
@@ -334,10 +204,147 @@ export default [
           }
         ]
       },
-
       /**
        *
-       *财务管理
+       *订单
+       *
+       */
+      {
+        path: '/order-manager',
+        name: 'order-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '订单 ',
+          icon: require('./icon-order@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'order',
+            name: 'order',
+            text: '订单',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/order-manager/order/order-list',
+                name: 'order-list',
+                component: () => import('@pages/order-list/order-list'),
+                meta: {
+                  title: '订单列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['订单列表'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ]
+      },
+      /**
+       *
+       *客户
+       *
+       */
+      {
+        path: '/client',
+        name: 'client',
+        meta: {type: 'first_menu', // 一级标示
+          title: '客户 ',
+          icon: require('./icon-client@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'customer',
+            name: 'customer',
+            text: '客户',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 客户列表
+              {
+                path: '/client/customer/customer-list',
+                name: 'customer-list',
+                component: () => import('@pages/customer-list/customer-list'),
+                meta: {
+                  title: '客户列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['客户列表'] // 面包屑标题
+                },
+                children: [
+                  // 等级设置
+                  {
+                    path: '/client/customer/customer-list/level-setting',
+                    name: 'level-setting',
+                    component: () => import('@pages/level-setting/level-setting'),
+                    meta: {
+                      title: '等级设置', // 页面标题
+                      crumbs: ['客户列表', '客户设置'] // 面包屑标题
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            path: 'agent',
+            name: 'agent',
+            text: '代理商',
+            component: {render: (h) => h('router-view')},
+            children: [ // 交易记录
+              {
+                path: '/client/agent/trading-record',
+                name: 'trading-record',
+                component: () => import('@pages/trading-record/trading-record'),
+                meta: {
+                  title: '交易记录', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['交易记录'] // 面包屑标题
+                }
+              },
+              // 代理申请
+              {
+                path: '/client/agent/application-agency',
+                name: 'application-agency',
+                component: () => import('@pages/application-agency/application-agency'),
+                meta: {
+                  title: '代理申请', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['代理申请'] // 面包屑标题
+                }
+              },
+              // 等级
+              {
+                path: '/client/agent/level-manager',
+                name: 'level-manager',
+                component: () => import('@pages/level-manager/level-manager'),
+                meta: {
+                  title: '等级 ', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['等级管理'] // 面包屑标题
+                },
+                children: [
+                  // 等级
+                  {
+                    path: '/client/agent/level-manager/edit-level',
+                    name: 'edit-level',
+                    component: () => import('@pages/edit-level/edit-level'),
+                    meta: {
+                      title: '等级管理', // 页面标题
+                      variableIndex: 1,
+                      crumbs: ['等级管理', '等级'] // 面包屑标题
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      /**
+       *
+       *财务
        *
        */
       {
@@ -345,7 +352,7 @@ export default [
         name: 'finance-manager',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '财务管理',
+          title: '财务 ',
           icon: require('./icon-finance@2x.png'),
           iconSelected: ''
         },
@@ -401,9 +408,9 @@ export default [
                 children: [
                   // 收支明细
                   {
-                    path: '/finance-manager/agent/agent-withdrawal/income-expenses-detail/:id',
-                    name: 'income-expenses-detail',
-                    component: () => import('@pages/income-expenses-detail/income-expenses-detail'),
+                    path: '/finance-manager/agent/agent-withdrawal/income-expenses/:id',
+                    name: 'income-expenses',
+                    component: () => import('@pages/income-expenses/income-expenses'),
                     meta: {
                       title: '收支明细', // 页面标题
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题
@@ -415,7 +422,7 @@ export default [
                     name: 'withdrawal-detail',
                     component: () => import('@pages/withdrawal-detail/withdrawal-detail'),
                     meta: {
-                      title: '收支明细', // 页面标题
+                      title: '收支明细', // 页面标题.
                       crumbs: ['代理商提现', '收支明细'] // 面包屑标题
                     }
                   }

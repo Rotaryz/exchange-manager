@@ -5,11 +5,6 @@
       <title-line title="基本信息" class="top-title"></title-line>
       <div class="edit">
         <base-form-item label="账号等级名称" labelMarginRight="40" labelWidth="92px" labelAlign="right">
-          <!--<base-select-->
-          <!--placeholder="请选择账号等级名称"-->
-          <!--:width="400"-->
-          <!--:height="40"-->
-          <!--&gt;</base-select>-->
           <div class="level">{{msg.name}}</div>
         </base-form-item>
         <base-form-item label="等级" labelMarginRight="40" labelWidth="92px" labelAlign="right">

@@ -2,7 +2,7 @@
   <div class="goods-brand-edit child-router">
     <div class="edit-page-title">
       <img src="./icon-new_commodity@2x.png" class="edit-title-icon">
-      <p class="edit-title-name">创作品牌</p>
+      <p class="edit-title-name">创建品牌</p>
     </div>
     <div class="wrap-container">
       <mobile-content :brandMsg="msg" :goodsList="goodsList"></mobile-content>
@@ -49,7 +49,6 @@
                         verticalAlign="top"
                         labelHeight="40px"
         >
-          <!--<base-drop-down :width="400" :height="44" :select="tradeList" @setValue="_selectTrade"></base-drop-down>-->
           <base-select
             v-model="msg.industry_id"
             :data="tradeList"
@@ -62,7 +61,6 @@
             @change="_selectTrade"
           >
           </base-select>
-          <!--<p class="add-trade hand" @click="_showAddTrade">添加行业</p>-->
         </base-form-item>
 
         <!--品牌名称 -->
@@ -197,7 +195,6 @@
     methods: {
       changeDetailData(data) {
         this.msg = JSON.parse(JSON.stringify(data.data))
-        // this.tradeList.content = data.industry_name
       },
       setGoodsList(data) {
         this.goodsList = JSON.parse(JSON.stringify(data.data))
@@ -231,9 +228,6 @@
       },
       _selectTrade(id, item) {
         this.msg.industry_name = item.name
-      },
-      _showAddTrade() {
-        this.tradeVisible = true
       },
       justifyAddTrade(done) {
         if (!this.trade) {

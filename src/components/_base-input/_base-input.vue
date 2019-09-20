@@ -1,10 +1,11 @@
 <template>
 
-  <div class="base-input" :class="[{'base-input--after':clear || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
+  <div class="base-input"
+       :class="[{'base-input--after':clear&& !disabled || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
        :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
   >
     <slot name="after">
-      <span v-if="clear && value !=='' " class="clear-wrap" @click="clearBtn">
+      <span v-if="isShowClear" class="clear-wrap" @click="clearBtn">
         <i class="clear-icon"></i>
       </span>
     </slot>
@@ -16,10 +17,14 @@
               :readonly="readonly || disabled"
               :disabled="disabled"
               class="zb-textarea input__inner"
+              @focus="focusHandler"
+              @blur="blurHandler"
               @input="inputEvent"
               @keydown="keydown"
+              @change="changeHandler"
     ></textarea>
     <input v-else
+           v-int="isInt"
            :value="value"
            :style="inputStyle"
            :placeholder="placeholder"
@@ -28,10 +33,13 @@
            :maxlength="maxlength || limit"
            :disabled="disabled"
            class="zb-input input__inner"
+           @focus="focusHandler"
+           @blur="blurHandler"
            @input="inputEvent"
            @keydown="keydown"
+           @change="changeHandler"
     >
-    <span v-if="limit" class="base-input__count">{{value.length}}/{{limit}}</span>
+    <span v-if="limit" class="base-input__count" :class="{'input-count__center': type === 'text'}">{{value.length}}/{{limit}}</span>
   </div>
 </template>
 
@@ -40,6 +48,17 @@
 
   export default {
     name: COMPONENT_NAME,
+    directives:{
+      int:{
+        inserted(el,binding){
+          if(!binding.value)return
+          const input = el
+          input.onkeyup=function (e) {
+            input.value=parseInt(input.value)
+          }
+        }
+      }
+    },
     props: {
       hand: {
         default: false,
@@ -63,7 +82,7 @@
       },
       disabled: {
         default: false,
-        type: Boolean
+        type: [Boolean, Number, String]
       },
       placeholder: {
         default: '',
@@ -78,7 +97,8 @@
         type: [String, Boolean]
       },
       inputStyle: {
-        default: () => {},
+        default: () => {
+        },
         type: [Object, String]
       },
       radius: {
@@ -100,12 +120,22 @@
       handIcon: {
         default: '',
         type: String
+      },
+      isInt: {
+        default: false,
+        type: Boolean
       }
     },
+
     data() {
-      return {}
+      return {
+        isFocus: false
+      }
     },
     computed: {
+      isShowClear() {
+        return this.isFocus && this.clear && this.value !== '' && !this.disabled
+      },
       style() {
         return {
           width: this.width && this.width + 'px',
@@ -113,13 +143,28 @@
         }
       }
     },
-    mounted() {},
+    mounted() {
+    },
     methods: {
+      focusHandler() {
+        this.isFocus = true
+      },
+      blurHandler() {
+        setTimeout(() => {
+          this.isFocus = false
+        }, 1000)
+      },
       clearBtn() {
+        console.log('111', this.value)
         this.$emit('input', '')
       },
       inputEvent(e) {
-        this.$emit('input', e.target.value)
+        let value = e.target.value
+        this.$emit('input', value)
+      },
+      changeHandler(e){
+        let value = e.target.value
+        this.$emit('change', value)
       },
       keydown(e) {
         this.$emit('keydown', e)
@@ -131,8 +176,8 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .base-input
-    display inline-block
-    position relative
+    display: inline-block
+    position: relative
 
     &.zb-input--big
       height: 60px
@@ -172,13 +217,15 @@
       border-radius 4px
       border: 0.5px solid $color-line
       color: $color-text-main
-      font-size $font-size-14
-      font-family $font-family-regular
-      padding-right 14px
-      padding-left 14px
+      font-size: $font-size-14
+      font-family: $font-family-regular
+      padding-right: 14px
+      padding-left: 14px
       box-sizing: border-box
+
       &:hover
         border: 0.5px solid $color-border-hover
+
       &:focus
         border: 0.5px solid $color-main
 
@@ -193,18 +240,22 @@
         padding-right: 30px
 
       .clear-wrap
-        display inline-block
-        position absolute
+        display: inline-block
+        position: absolute
         top: 50%
         right: 0px
         padding-right: 10px
         padding-left: 7px
-        transform translateY(-50%)
+        transform: translateY(-50%)
 
       .clear-icon
         width: 13px
         height: @width
         icon-image('icon-delet')
+        cursor pointer
+
+        &:hover
+          icon-image('icon-delet_hover')
 
     &.is-disabled .input__inner
       background: #f9f9f9
@@ -214,10 +265,13 @@
     .base-input__count
       font-size $font-size-12
       color: #C9CCDA
-      letter-spacing 0.5px
-      position absolute
-      bottom 10px
-      right 10px
+      letter-spacing: 0.5px
+      position: absolute
+      bottom: 10px
+      right: 10px
+
+    .input-count__center
+      col-center()
 
   .zb-textarea
     padding 14px
@@ -233,7 +287,7 @@
     background: #f9f9f9
     font-family: $font-family-regular
     color: $color-text-assist
-    cursor not-allowed
+    cursor: not-allowed
 
 
 </style>

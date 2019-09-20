@@ -5,11 +5,12 @@
       <base-form-item :inline="true" :required="false" verticalAlign="center" label="等级筛选" labelSize="12px">
         <base-select
           v-model="level"
-          :data="selectList"
+          :data="levelList"
           labelKey="name"
           placeholder="账号等级"
           width="120"
           radius="2"
+          @change="changeLevel"
         >
         </base-select>
       </base-form-item>
@@ -39,8 +40,7 @@
           <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
-          <!---->
-          <base-pagination ref="pages" :currentPage.sync="page" :total="total"></base-pagination>
+          <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
     </div>
@@ -66,12 +66,12 @@
       return {
         listHeader: LIST_HEADER,
         time: [],
-        applicationList: [{}],
+        applicationList: [],
         page: 1,
         level: '',
         keyword: '',
         total: 1,
-        selectList: []
+        levelList: []
       }
     },
     computed: {
@@ -96,20 +96,13 @@
       }
     },
     watch: {
-      page() {
-        this._getApplicationList()
-      },
-      level() {
-        this.page = 1
-        this._getApplicationList()
-      },
       time() {
         this.page = 1
         this._getApplicationList()
       }
     },
     beforeRouteEnter(to, from, next) {
-      let data = {page: 1, keyword: '', level: '', start_at: '', end_at: ''}
+      let data = {page: 1, keyword: '', current_level_id: '', start_at: '', end_at: ''}
       API.Application.getApplicationList({data, loading: true, toast: true})
         .then((res) => {
           next(vx => {
@@ -137,16 +130,26 @@
           .then((res) => {
             res.data.unshift({name: '普通会员', id: 0})
             res.data.unshift({name: '全部', id: ''})
-            this.selectList = res.data
+            this.levelList = res.data
           })
       },
       // 导出Excel
       downExcel() {
         window.open(this.excelUrl, '_blank')
       },
+      // 搜索
       search(keyword) {
         this.page = 1
         this.keyword = keyword
+        this._getApplicationList()
+      },
+      // 分页
+      pageChange() {
+        this._getApplicationList()
+      },
+      // 修改等级
+      changeLevel() {
+        this.page = 1
         this._getApplicationList()
       },
       _getApplicationList(loading = false) {

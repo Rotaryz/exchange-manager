@@ -37,7 +37,7 @@
   $menu-width = 200px
   @import "~@design"
   .title-line
-    background-color $color-white
+    background-color: $color-white
     padding: 0px 20px
   .line
     height:16px
@@ -46,8 +46,8 @@
       position:absolute
       left:0
       bottom:0
-      border-bottom 2px solid $color-main
-      border-radius 1px
+      border-bottom: 2px solid $color-main
+      border-radius: 1px
       width:34px
 
 </style>

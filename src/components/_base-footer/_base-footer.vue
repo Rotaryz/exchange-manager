@@ -45,14 +45,14 @@
   .footer
     border-top-1px($color-line)
     position: fixed
-    bottom 20px
+    bottom: 20px
     right: 20px
     left 220px
     height: 60px
     background-color: #F7FDFF
-    display flex
-    justify-content center
-    align-items center
+    display: flex
+    justify-content: center
+    align-items: center
     z-index: 20
     & > .btn-box
       margin-right: 10px

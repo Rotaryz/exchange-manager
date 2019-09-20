@@ -102,7 +102,7 @@
         let query = this.$route.query
         return query.type || DEFAULT_TYPE
       },
-      creatTime: {
+      createTime: {
         get() {
           return [this.filter.start_time, this.filter.end_time]
         },
@@ -195,7 +195,7 @@
       goIncomeExpenses(item) {
         const curTab = this.tabList[this.tabIndex]
         this.$router.push({
-          name: 'income-expenses-detail',
+          name: 'income-expenses',
           params: {id: item.source_id},
           query: {name: curTab.text, type: curTab.type}
         })
