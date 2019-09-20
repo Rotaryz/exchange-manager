@@ -311,7 +311,7 @@
         // 新生成的  商品sku列表
         goodsDetails: [],
         // 详情返回的元sku列表
-        detailGoodsSpec: {},
+        detailGoodsSpec: {purchase:[], bean: []},
         id: 0,
         edit: {
           use_type: '',
@@ -394,7 +394,7 @@
       }
     },
     created() {
-      if(!this.$route.query.id) this._getBrandList()
+      if (!this.$route.query.id) this._getBrandList()
       this._getPriceLevelRatioList()
       this._getDefaultLogisticsInfo()
     },
@@ -429,7 +429,7 @@
           this.$refs.cascadeSelect.setValue({goods_id: this.id})
         } else {
           this._getBrandList().then(res => {
-            if(this.brandList.find(item=>item.id===brandId)){
+            if (this.brandList.find(item => item.id === brandId)) {
               this.brandId = brandId
             }
           })
@@ -440,6 +440,7 @@
       },
       // 集采价格输入
       priceInputHandler(val, i) {
+        if (this.levelPriceType === 1 && this.id && this.detailGoodsSpec.purchase.length) return
         let standardPrice = Number(val) * this.priceLevelRatioList.standard_ratio
         let versatilePrice = Number(val) * this.priceLevelRatioList.versatile_ratio
         let partnerPrice = Number(val) * this.priceLevelRatioList.partner_ratio
