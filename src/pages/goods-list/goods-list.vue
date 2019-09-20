@@ -6,7 +6,7 @@
                tabAlign="left"
                @change="tabChange"
     ></base-tabs>
-    <div class="content-wrap">
+    <div v-show="$route.name==='mall-goods-goods-list'" class="content-wrap">
       <base-layout-top>
         <base-form-item v-if="filter.use_type===2" label="品牌筛选" labelSize="12px" :required="false">
           <base-select v-model="brand_id"
@@ -265,11 +265,10 @@
   @import "~@design"
 
   .goods-list
-    position: relative
     width: 100%
     display: flex
     flex-direction: column
-
+    position relative
     .content-wrap
       flex: 1
       padding: 20px

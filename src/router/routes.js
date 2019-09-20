@@ -56,7 +56,7 @@ export default [
                   title: '商品列表', // 导航标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['商品列表'], // 面包屑标题
-                  style:{margin:0} // 最外层路由盒子的自定义样式
+                  style:{padding:0} // 最外层路由盒子的自定义样式
                 },
                 children:[
                   // 新建商品
@@ -175,7 +175,7 @@ export default [
                   title: '页面管理', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['页面管理'], // 面包屑标题
-                  style:{margin:0}
+                  style:{padding:0}
                 }
               },
               {

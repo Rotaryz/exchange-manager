@@ -788,9 +788,7 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .edit-product
-    right: -7px
-    z-index: 100
-
+    bottom:20px
   .list-item.list-item-input
     flex-shrink: 0
     min-width: 127px

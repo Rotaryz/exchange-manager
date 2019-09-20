@@ -1,7 +1,9 @@
 <template>
   <footer :class="{'footer-wrap': isSeize}" class="base-footer">
     <div :style="footerStyle" class="footer">
-      <slot></slot>
+      <div class="footer-content">
+        <slot></slot>
+      </div>
     </div>
   </footer>
 </template>
@@ -27,6 +29,10 @@
       isSeize: {
         type: Boolean,
         default: true
+      },
+      right:{
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -45,15 +51,19 @@
   .footer
     border-top-1px($color-line)
     position: fixed
-    bottom: 20px
+    bottom: 0px
     right: 20px
     left 220px
-    height: 60px
-    background-color: #F7FDFF
-    display: flex
-    justify-content: center
-    align-items: center
+    padding-bottom:20px
     z-index: 20
+    background-color $color-background
+    .footer-content
+      height: 60px
+      background-color: #F7FDFF
+      display: flex
+      justify-content: center
+      align-items: center
+
     & > .btn-box
       margin-right: 10px
       &:last-child
