@@ -36,7 +36,7 @@
       </base-form-item>
       <base-form-item label="商品重量" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.weight" type="number"></base-input>
-        <span class="after-word">Kg</span>
+        <span class="after-word">kg</span>
       </base-form-item>
       <base-form-item label="生产厂商" labelMarginRight="40" labelWidth="78px" labelAlign="right">
         <base-input v-model="edit.manufacturer"></base-input>
