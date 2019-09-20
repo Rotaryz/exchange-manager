@@ -438,9 +438,14 @@
           <div class="model">
             <div class="shade-header">
               <div class="shade-tab-type">
-                <div v-for="(items, index) in typeList" :key="index" :class="{'shade-tab-item-active': tabIndex === index}" class="shade-tab-item hand" @click="setLinkType(index, $event)">
-                  {{items.title}}
+                <div v-if="typeList.length===1" :class="{'shade-tab-item-active': tabIndex === 0}" class="shade-tab-item hand">
+                  {{outLink===3011?'商品分组':typeList[0].title}}
                 </div>
+                <template v-else>
+                  <div v-for="(items, index) in typeList" :key="index" :class="{'shade-tab-item-active': tabIndex === index}" class="shade-tab-item hand" @click="setLinkType(index, $event)">
+                    {{items.title}}
+                  </div>
+                </template>
                 <div v-if="showModalLine" class="line" :style="{left: left, width: lineWidth}"></div>
               </div>
               <span class="close hand" @click="hideGoods"></span>
