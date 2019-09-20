@@ -1308,7 +1308,12 @@
       // 获取分组商品参数
       moduleSave() {
         // 只要来源不是分组商品都要传children
-        if (this.outLink !== 3011) {
+        if (this.outLink === 3011) {
+          if (!this.moduleDetail.detail || !this.moduleDetail.detail.object_id) {
+            this.$toast.show(`请选择商品分组`, 1500)
+            return
+          }
+        } else {
           let type = ''
           switch (this.type) {
           case 'navigation':

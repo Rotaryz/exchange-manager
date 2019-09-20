@@ -1,15 +1,38 @@
 <template>
   <base-modal :visible.sync="dialogVisible"
-              :titleTip="titleTip"
               :footerTopLine="true"
               :submitBefore="beforeAdd"
+              width="840px"
               height="670px"
-              title="选择商品" confirmText="添加" class="goods-list-dialog"
+              confirmText="添加" class="goods-list-dialog"
               @submit="addSubmit"
   >
     <div class="body-inner">
+      <div class="shade-header">
+        <div class="shade-tab-type">
+          <div :class="{'shade-tab-item-active': goodsListFilter.use_type === 1}" class="shade-tab-item hand" @click="_setGoodsType(1, $event)">
+            礼品商品
+          </div>
+          <div :class="{'shade-tab-item-active': goodsListFilter.use_type === 2}" class="shade-tab-item hand" @click="_setGoodsType(2, $event)">
+            自用商品
+          </div>
+          <div class="line" :style="{left: left}"></div>
+          <div class="sub-title">{{titleTip}}</div>
+        </div>
+        <span class="close hand" @click="_hideModal"></span>
+      </div>
+      <!--筛选栏-->
       <div class="operate-box">
-        <cascade-select size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
+        <cascade-select v-if="goodsListFilter.use_type === 1" size="mini" placeholder1="一级分类" placeholder2="二级分类" @change="changeGategory"></cascade-select>
+        <base-select
+          v-if="goodsListFilter.use_type === 2"
+          placeholder="请选择品牌"
+          :data="brandList"
+          :width="218"
+          valueKey="id"
+          labelKey="name"
+          :value.sync="selectId"
+        ></base-select>
         <base-search v-model="goodsListFilter.keyword" placeholder="请输入商品名称" @search="searchBtn"></base-search>
       </div>
       <div class="big-list">
@@ -118,12 +141,15 @@
         goodsListFilter: {
           limit: 6,
           page: 1,
-          category_id: '',
           keyword: '',
-          status: 1
+          status: 1,
+          use_type: 1
         },
         list: [], // 弹框商品列表
-        selectGoods: [] // 单次选择的商品
+        selectGoods: [], // 单次选择的商品
+        left: 0,
+        brandList: [],
+        selectId: ''
       }
     },
     computed: {
@@ -153,14 +179,47 @@
         }
       }
     },
+    watch: {
+      selectId() {
+        this.goodsListFilter.page = 1
+        this.selectGoods = []
+        this._getGoodsList()
+      }
+    },
     mounted() {
       this._getGoodsList()
+      this._getBrandList()
     },
     methods: {
+      _hideModal() {
+        this.dialogVisible = false
+      },
+      // 获取品牌列表用于筛选
+      _getBrandList() {
+        API.Brand.getBrandList({data: {limit: 50}}).then(res => {
+          this.brandList = [{
+            name: '全部', id: ''
+          }, ...res.data]
+        })
+      },
+      _setGoodsType(useType, e) {
+        this.selectGoods = []
+        this.selectId = ''
+        this.goodsListFilter.keyword = ''
+        this.goodsListFilter.use_type = useType
+        this.left = e.target.offsetLeft + 'px'
+        this._getGoodsList()
+      },
       // 获取商品列表
       _getGoodsList() {
+        let params = {...this.goodsListFilter, ...this.otherParams}
+        if (params.use_type === 1) {
+          params.category_id = this.selectId
+        } else if (params.use_type === 2) {
+          params.brand_id = this.selectId
+        }
         API.Goods.getGoodsList({
-          data: {...this.goodsListFilter, ...this.otherParams},
+          data: params,
           loading: true
         }).then((res) => {
           if (res.isFail) return
@@ -181,10 +240,7 @@
       },
       // 选择分类
       async changeGategory(id) {
-        this.goodsListFilter.category_id = id
-        this.goodsListFilter.page = 1
-        this.selectGoods = []
-        await this._getGoodsList()
+        this.selectId = id
       },
       // 搜索商品
       async searchBtn(text) {
@@ -287,4 +343,49 @@
 
   .list-box .list-item:nth-child(3)
     max-width: 90px
+  .shade-header
+    display: flex
+    justify-content: space-between
+    height: 68px
+    box-sizing: border-box
+    padding: 23px 0 16px 0
+    .shade-tab-type
+      height: 100%
+      display: flex
+      position: relative
+      .shade-tab-item
+        position: relative
+        line-height: 1
+        display: flex
+        transition: all 0.3s
+        color: $color-text-main
+        font-family: $font-family-regular
+        &:first-child
+          margin-right: 40px
+      .shade-tab-item-active
+        font-family: $font-family-medium
+      .line
+        transition: all 0.3s
+        left: 0
+        position: absolute
+        bottom: 0
+        height: 3px
+        width: 64px
+        background: $color-main
+        border-radius: 3px
+    .shade-title
+      color: $color-text-main
+      font-family: $font-family-medium
+      font-size: $font-size-16
+    .sub-title
+      line-height: 20px
+      font-size: 12px
+      color: #868daa
+      letter-spacing: 0.5px
+      margin-left: 6px
+    .close
+      icon-image('icon-close')
+      width: 12px
+      height: @width
+      transition: all 0.3s
 </style>
