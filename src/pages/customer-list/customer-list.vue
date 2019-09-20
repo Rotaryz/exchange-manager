@@ -27,21 +27,19 @@
         >
         </base-select>
       </base-form-item>
-      <div style="margin-left: 20px">
-        <base-form-item :required="false" labelSize="12px" label="认证筛选" marginBottom="0">
-          <base-select
-            v-model="certificateStatus"
-            boxStyle="margin: 30px"
-            :width="120"
-            :data="certificateList"
-            labelKey="name"
-            :height="32"
-            placeholder="账号等级"
-            @change="_exchangeCertificateList"
-          >
-          </base-select>
-        </base-form-item>
-      </div>
+      <base-form-item :required="false" labelSize="12px" label="认证筛选" marginBottom="0" marginLeft="20">
+        <base-select
+          v-model="certificateStatus"
+          boxStyle="margin: 30px"
+          :width="120"
+          :data="certificateList"
+          labelKey="name"
+          :height="32"
+          placeholder="账号等级"
+          @change="_exchangeCertificateList"
+        >
+        </base-select>
+      </base-form-item>
       <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户名称" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
@@ -73,7 +71,6 @@
           <base-blank v-else></base-blank>
         </div>
         <div class="pagination-box">
-          <!--:pageDetail="contentClassPage"-->
           <base-pagination ref="pages" :currentPage.sync="page" :total="total" @pageChange="pageChange"></base-pagination>
         </div>
       </div>
@@ -132,7 +129,6 @@
   const TITLE = '客户列表'
   const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '认证状态', '营业执照', '操作']
   const CERTIFICATELIST = [{name: '全部', id: ''}, {name: '待认证', id: 0}, {name: '已认证', id: 1}, {name: '认证不通过', id: 2}]
-  // const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '操作']
 
   export default {
     name: PAGE_NAME,
@@ -177,15 +173,9 @@
     computed: {
       paramObj() {
         let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id, industry_id: this.industryId ,certificate_status: this.certificateStatus}
-        // let data = {page: this.page, keyword: this.keyword, shop_level_id: this.id,certificate_status: this.certificateStatus}
         return data
       }
     },
-    // watch: {
-    //   async page() {
-    //     await this.getCustomerList()
-    //   }
-    // },
     async created() {
       this._getLevelList()
       this._getTradeList()
@@ -260,9 +250,6 @@
           doctor() {}
         })
         this.arr = res.error_code === this.$ERR_OK ? res.data : []
-      },
-      showSet(item) {
-        this.$router.push(`/client/customer/customer-list/`)
       },
       // 设置等级
       async setGrade() {
