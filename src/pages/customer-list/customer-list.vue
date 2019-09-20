@@ -331,8 +331,9 @@
       &:nth-child(5)
         flex: 1.6
         min-width: 140px
-      &:nth-child(4),&:nth-child(7)
-        flex: 0.7
+      &:nth-child(4),&:nth-child(7),&:nth-child(8),&:nth-child(9)
+        flex: 0.65
+        min-width: 80px
       &:last-child
         max-width: 80px
         min-width: 80px
