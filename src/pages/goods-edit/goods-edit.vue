@@ -428,7 +428,11 @@
           this.categoryId = categoryId
           this.$refs.cascadeSelect.setValue({goods_id: this.id})
         } else {
-          this.brandId = brandId
+          this._getBrandList().then(res => {
+            if(this.brandList.find(item=>item.id===brandId)){
+              this.brandId = brandId
+            }
+          })
         }
         if (res.data.goods_specs.purchase.length) this.levelPriceType = res.data.goods_specs.purchase[0].level_price_type
         this.detailGoodsSpec = objDeepCopy(goodsSpecs)
@@ -616,7 +620,7 @@
         if (this.edit.use_type === 1 && !this.categoryId) {
           this.$toast.show('请选择商品分类')
           over = true
-        }else if(this.edit.use_type === 2 && !this.brandId){
+        } else if (this.edit.use_type === 2 && !this.brandId) {
           this.$toast.show('请选择商品品牌')
           over = true
         }
@@ -719,7 +723,7 @@
       },
       // 品牌列表
       _getBrandList() {
-        API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}, loading: false})
+        return API.Goods.getBrandList({data: {page: 0, limit: 0, goods_id: ''}, loading: false})
           .then(res => {
             this.brandList = res.data
           })
@@ -789,7 +793,8 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~@design"
   .edit-product
-    bottom:20px
+    bottom: 20px
+
   .list-item.list-item-input
     flex-shrink: 0
     min-width: 127px
