@@ -117,18 +117,7 @@
                   </div>
                   <div class="source-con">
                     <div class="source-title">商品来源</div>
-                    <div class="source-box hand" @click="_selectSource(0)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 0}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品分组</div>
-                    </div>
-                    <div class="source-box hand" @click="_selectSource(1)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 1}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品</div>
-                    </div>
+                    <radio v-model="selectSource" :list="sourceList" @change="_selectSource"></radio>
                   </div>
                   <div v-if="selectSource===0" class="groups-con">
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
@@ -193,18 +182,7 @@
                   </div>
                   <div class="source-con">
                     <div class="source-title">商品来源</div>
-                    <div class="source-box hand" @click="_selectSource(0)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 0}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品分组</div>
-                    </div>
-                    <div class="source-box hand" @click="_selectSource(1)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 1}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品</div>
-                    </div>
+                    <radio v-model="selectSource" :list="sourceList" @change="_selectSource"></radio>
                   </div>
                   <div v-if="selectSource===0" class="groups-con">
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
@@ -368,18 +346,7 @@
                   </div>
                   <div class="source-con">
                     <div class="source-title">商品来源</div>
-                    <div class="source-box hand" @click="_selectSource(0)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 0}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品分组</div>
-                    </div>
-                    <div class="source-box hand" @click="_selectSource(1)">
-                      <div class="select-icon" :class="{'select-icon-active': selectSource === 1}">
-                        <span class="after"></span>
-                      </div>
-                      <div>商品</div>
-                    </div>
+                    <radio v-model="selectSource" :list="sourceList" @change="_selectSource"></radio>
                   </div>
                   <div v-if="selectSource===0" class="groups-con">
                     <base-button plain buttonStyle="border-radius: 2px;height: 28px" @click="showGroupsModal">选择分组</base-button>
@@ -651,6 +618,7 @@
   import BrandContent from './brand-content/brand-content'
   import {SlickList, SlickItem, HandleDirective} from 'vue-slicksort'
   import Upload from '@components/zb-upload/zb-upload.vue'
+  import Radio from "../../components/zb-radio/zb-radio"
 
   const PAGE_NAME = 'CMS_MANAGER'
   const TITLE = '页面管理'
@@ -686,7 +654,8 @@
       BrandContent,
       SlickList,
       SlickItem,
-      Upload
+      Upload,
+      Radio
     },
     page: {
       title: TITLE
@@ -741,7 +710,8 @@
         groupsGoodsList: [],
         moduleDetail: {},
         hotModuleData: {detail:{image_url:''}},
-        recommendModuleData: {detail:{image_url:''}}
+        recommendModuleData: {detail:{image_url:''}},
+        sourceList: [{label: '商品分组', id: 0}, {label: '商品', id: 1}]
       }
     },
     computed: {
@@ -1049,7 +1019,6 @@
         this.$forceUpdate()
         this.categoryId = ''
         this.brandId = ''
-        console.log(this[this.dataName][index].detail)
       },
       // 获取分类
       _getCateList() {
@@ -1568,9 +1537,9 @@
     user-select: none
     .img-box
       position: relative
-      margin:0 20px 0 0
       width:100px
       height:100px
+      margin:0 20px 0 0
       background: #FFF
       .status-box
         position: absolute
@@ -1587,6 +1556,7 @@
     .cate-image
       width:100px
       height:100px
+      margin:0 20px 0 0
       object-fit: cover
       border: none
     .add-advertisement
