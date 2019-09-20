@@ -655,7 +655,7 @@
   const NAV_TYPE = [{title: '商品分类', status: 3003}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
   const HOT_TYPE = [{title: '商品列表', status: 3002}]
   const GOODS_TYPE = [{title: '商品列表', status: 3002}]
-  const BRANDS_TYPE = [{title: '品牌列表', status: 3010}, {title: '商品列表', status: 3002}]
+  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品列表', status: 3002}]
   const BEST_TYPE = [{title: '商品列表', status: 3002}]
   const WALL_TYPE = [{title: '商品品牌', status: 3010}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
 
@@ -1009,9 +1009,14 @@
             this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || this.currentItem.logo_image_id || ''
             this[this.dataName][index].detail.title = this.currentItem.name || this.currentItem.title
             this.$set(this[this.dataName][index].detail, 'brand', {
-              logo_image_url: this.currentItem.logo_image_url,
+              logo_image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url || '',
+              image_url: this.currentItem.logo_image_url || this.currentItem.banner_image_url || '',
+              image_id: this.currentItem.logo_image_id || this.currentItem.banner_image_id || '',
               name: this.currentItem.name,
               sub_name: this.currentItem.sub_name
             })
@@ -1023,8 +1028,9 @@
             this[this.dataName][index].detail.status = this.currentItem.status||1
             this[this.dataName][index].detail.object_id = this.currentItem.id
             this[this.dataName][index].detail.url = ''
-            this[this.dataName][index].detail.logo_image_url = this.currentItem.logo_image_url || ''
-            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || ''
+            this[this.dataName][index].detail.logo_image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_url = this.currentItem.banner_image_url || this.currentItem.logo_image_url || ''
+            this[this.dataName][index].detail.image_id = this.currentItem.banner_image_id || this.currentItem.logo_image_id || ''
             this[this.dataName][index].detail.title = this.currentItem.name.slice(0, 4)
           }
           break
@@ -1038,6 +1044,7 @@
         this.$forceUpdate()
         this.categoryId = ''
         this.brandId = ''
+        console.log(this[this.dataName][index].detail)
       },
       // 获取分类
       _getCateList() {
