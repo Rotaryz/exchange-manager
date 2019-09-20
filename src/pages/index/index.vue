@@ -55,9 +55,8 @@
     .container
       flex: 1
       box-sizing: border-box
-      margin: 20px
+      padding: 20px
       overflow: auto
-
       &::-webkit-scrollbar
         width: 4px
         height: 4px

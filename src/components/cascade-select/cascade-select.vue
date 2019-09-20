@@ -128,11 +128,17 @@
       setValue(otherParams) {
         this._getCategoryFirst(otherParams).then((res) => {
           let item = res.data.find((item) => item.is_selected)
-          if (!item) return false
+          if (!item){
+            this.$emit('input', '')
+            return false
+          }
           this.goodsCategoryFirst = item.id
           this._selectCategoryFirst(otherParams).then((res2) => {
             let item2 = res2.data.find((item) => item.is_selected)
-            if (!item2) return false
+            if (!item2){
+              this.$emit('input', '')
+              return false
+            }
             this.goodsCategorySecond = item2 && item2.id
             this._selectCategorySecond()
           })

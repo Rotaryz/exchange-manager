@@ -128,7 +128,7 @@
   const PAGE_NAME = 'CUSTOMER_LIST'
   const TITLE = '客户列表'
   const LIST_HEADER = ['客户名称', '手机号', '店铺名称', '所属行业', '所在地区', '注册时间', '账号等级', '认证状态', '营业执照', '操作']
-  const CERTIFICATELIST = [{name: '全部', id: ''}, {name: '待认证', id: 0}, {name: '已认证', id: 1}, {name: '认证不通过', id: 2}]
+  const CERTIFICATELIST = [{name: '全部', id: ''}, {name: '待认证', id: 0}, {name: '已认证', id: 1}, {name: '认证未通过', id: 2}]
 
   export default {
     name: PAGE_NAME,
