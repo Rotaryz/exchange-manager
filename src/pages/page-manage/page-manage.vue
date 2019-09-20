@@ -651,12 +651,12 @@
   const TITLE = '页面管理'
   const ADD_IMAGE = require('./pic-add_img@2x.png')
   // 弹窗菜单栏
-  const TYPE_LIST = [{title: '文章', status: 3006}, {title: '商品列表', status: 3002}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
+  const TYPE_LIST = [{title: '文章', status: 3006}, {title: '商品', status: 3002}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
   const NAV_TYPE = [{title: '商品分类', status: 3003}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
-  const HOT_TYPE = [{title: '商品列表', status: 3002}]
-  const GOODS_TYPE = [{title: '商品列表', status: 3002}]
-  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品列表', status: 3002}]
-  const BEST_TYPE = [{title: '商品列表', status: 3002}]
+  const HOT_TYPE = [{title: '商品', status: 3002}]
+  const GOODS_TYPE = [{title: '商品', status: 3002}]
+  const BRANDS_TYPE = [{title: '品牌列表', status: 3009}, {title: '商品', status: 3002}]
+  const BEST_TYPE = [{title: '商品', status: 3002}]
   const WALL_TYPE = [{title: '商品品牌', status: 3010}, {title: '小程序链接', status: 3005}, {title: 'H5链接', status: 3004}]
 
   // 初始模块数据
