@@ -40,7 +40,7 @@
         >
         </base-select>
       </base-form-item>
-      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户名称" @search="search"></base-search>
+      <base-search v-model="keyword" boxStyle="margin: 30px" placeholder="客户昵称/客户手机号" @search="search"></base-search>
     </div>
     <base-table-tool :iconUrl="require('./icon-customer_list@2x.png')" title="客户列表"></base-table-tool>
     <div class="table-content">
@@ -331,8 +331,9 @@
       &:nth-child(5)
         flex: 1.6
         min-width: 140px
-      &:nth-child(4),&:nth-child(7)
-        flex: 0.7
+      &:nth-child(4),&:nth-child(7),&:nth-child(8),&:nth-child(9)
+        flex: 0.65
+        min-width: 80px
       &:last-child
         max-width: 80px
         min-width: 80px

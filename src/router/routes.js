@@ -320,7 +320,7 @@ export default [
                 name: 'level-manager',
                 component: () => import('@pages/level-manager/level-manager'),
                 meta: {
-                  title: '等级 ', // 页面标题
+                  title: '等级设置', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['等级管理'] // 面包屑标题
                 },
