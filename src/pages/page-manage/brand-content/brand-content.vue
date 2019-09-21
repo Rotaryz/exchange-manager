@@ -25,8 +25,9 @@
           <div v-if="cms.code === 'brand_wall'" class="nav-box">
             <div class="nav hand" :class="{'touch': cmsType === 'wall'}" @click="changeType('wall')">
               <template v-for="(item, index) in wallList">
-                <div v-if="item.detail&&item.detail.status===1" :key="index" class="nav-item">
-                  <img v-if="item.detail.logo_image_url" :src="item.detail.logo_image_url" alt="" class="nav-image">
+                <!--类型是链接的不判断status-->
+                <div v-if="(item.detail&&item.detail.status===1) || ((item.style === 3004 || item.style === 3005) && item.detail.url)" :key="index" class="nav-item">
+                  <img v-if="item.detail.logo_image_url||item.detail.image_url" :src="item.detail.logo_image_url||item.detail.image_url" alt="" class="nav-image">
                   <div v-else class="nav-image"></div>
                   <span class="nav-name">{{item.detail.title.slice(0, 4)}}</span>
                 </div>
