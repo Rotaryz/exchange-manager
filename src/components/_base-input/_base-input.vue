@@ -155,7 +155,6 @@
         }, 1000)
       },
       clearBtn() {
-        console.log('111', this.value)
         this.$emit('input', '')
       },
       inputEvent(e) {
