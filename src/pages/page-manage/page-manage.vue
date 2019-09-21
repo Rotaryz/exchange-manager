@@ -77,8 +77,10 @@
 
                         <!--@click=""-->
                         <div class="advertisement-link column">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
-                          <!--<p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>-->
+                          <div class="top-box">
+                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                            <div v-if="(item.style === 3004 || item.style === 3005) && item.detail.url" class="goods-title">{{item.detail.url}}</div>
+                          </div>
                           <base-input
                             :value="item.detail.title"
                             class="brand-title"
@@ -260,8 +262,8 @@
                           @successImage="successImage"
                         ></upload>
                         <div class="advertisement-link">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
-                          <p class="goods-title">{{item.detail.title}}</p>
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
+                          <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                       </div>
@@ -281,9 +283,12 @@
                         </div>
                         <!--@click=""-->
                         <div class="advertisement-link column">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)">
-                            <span class="add-icon"></span>添加品牌
-                          </base-button>
+                          <div class="top-box">
+                            <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)">
+                              <span class="add-icon"></span>添加品牌
+                            </base-button>
+                            <div v-if="(item.style === 3004 || item.style === 3005) && item.detail.url" class="goods-title">{{item.detail.url}}</div>
+                          </div>
                           <base-input
                             :value="item.detail.title"
                             class="brand-title"
@@ -942,7 +947,7 @@
             return
           }
           this[this.dataName][index].detail.url = this.outHtml
-          this[this.dataName][index].detail.title = ''
+          if (this.moduleDetail.code !== 'brand_wall' && this.moduleDetail.code !== 'navigation') this[this.dataName][index].detail.title = ''
           break
         case 3005:
           if (!this.miniLink) {
@@ -950,7 +955,7 @@
             return
           }
           this[this.dataName][index].detail.url = this.miniLink
-          this[this.dataName][index].detail.title = ''
+          if (this.moduleDetail.code !== 'brand_wall' && this.moduleDetail.code !== 'navigation') this[this.dataName][index].detail.title = ''
           break
         case 3002:
         case 3003:
@@ -1038,6 +1043,7 @@
         }
         // 礼品馆=>兑换商品    品牌馆=>自有商品
         if (this.pageType === 'gift_index') {
+          data.sale_channel = 'purchase'
           data.category_id = this.categoryId
           data.use_type = 1
         }
@@ -1597,7 +1603,11 @@
       display: flex
       align-items: center
       overflow: hidden
+      .top-box
+        layout(row)
+        align-items: center
       .goods-title
+        flex: 1
         margin-left: 18px
         line-height: 1.2
         no-wrap()
