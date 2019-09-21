@@ -16,7 +16,6 @@
 
 <script type="text/ecmascript-6">
   const COMPONENT_NAME = 'BASE_SEARCH'
-
   export default {
     name: COMPONENT_NAME,
     props: {
@@ -74,16 +73,14 @@
     data() {
       return {
         newText: '',
-        newValue: ''
       }
     },
     methods: {
       setValue(val) {
-        this.newValue = val
+        this.$emit('input', val)
       },
       _search() {
-        this.$emit('input', this.newValue)
-        this.$emit('search',this.newValue)
+        this.$emit('search',this.value)
       },
       _enter(e) {
         if (e.keyCode === 13) {
