@@ -261,7 +261,7 @@
                         ></upload>
                         <div class="advertisement-link">
                           <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
-                          <p class="goods-title">{{item.detail.title}}</p>
+                          <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
                       </div>
