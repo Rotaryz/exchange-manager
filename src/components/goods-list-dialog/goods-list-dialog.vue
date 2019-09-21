@@ -214,6 +214,7 @@
       _getGoodsList() {
         let params = {...this.goodsListFilter, ...this.otherParams}
         if (params.use_type === 1) {
+          params.sale_channel = 'purchase'
           params.category_id = this.selectId
         } else if (params.use_type === 2) {
           params.brand_id = this.selectId

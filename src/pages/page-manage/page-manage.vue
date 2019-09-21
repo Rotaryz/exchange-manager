@@ -262,7 +262,7 @@
                           @successImage="successImage"
                         ></upload>
                         <div class="advertisement-link">
-                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>选择文章</base-button>
+                          <base-button plain buttonStyle="width: 108px" @click="showModalBox(index, item.object_id)"><span class="add-icon"></span>添加链接</base-button>
                           <p class="goods-title">{{(item.style === 3004 || item.style === 3005) ? item.detail.url : item.detail.title}}</p>
                         </div>
                         <p class="use list-operation" @click="showConfirm(item.id, index)">删除</p>
@@ -1043,6 +1043,7 @@
         }
         // 礼品馆=>兑换商品    品牌馆=>自有商品
         if (this.pageType === 'gift_index') {
+          data.sale_channel = 'purchase'
           data.category_id = this.categoryId
           data.use_type = 1
         }
