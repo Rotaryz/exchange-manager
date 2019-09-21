@@ -1606,6 +1606,7 @@
         layout(row)
         align-items: center
       .goods-title
+        flex: 1
         margin-left: 18px
         line-height: 1.2
         no-wrap()
