@@ -1016,7 +1016,7 @@
       },
       // 获取分类
       _getCateList() {
-        let data = {pid: 0, goods_id: '', get_goods_count: 1, limit: 0}
+        let data = {pid: 0, goods_id: '', get_goods_count: 1, limit: 0, sale_channel: 'purchase'}
         API.Cms.categoryList({data}).then((res) => {
           this.goodsCate = JSON.parse(JSON.stringify(res.data))
           let arr = JSON.parse(JSON.stringify(res.data))
