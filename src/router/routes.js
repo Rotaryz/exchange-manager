@@ -431,7 +431,39 @@ export default [
             ]
           }
         ]
-      }
+      },
+      {
+        path: '/course',
+        name: 'course',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '课程 ',
+          icon: require('./icon-finance@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'content',
+            name: 'content',
+            text: '内容',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 页面布局
+              {
+                path: '/course/content/course-page',
+                name: 'course-page',
+                component: () => import('@pages/course-page/course-page'),
+                meta: {
+                  title: '页面布局', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['页面布局'] // 面包屑标题
+                }
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   {
