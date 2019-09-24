@@ -295,8 +295,8 @@
       object-fit: cover
 
     .video-tag
-      width: 100%
-      height: 100%
+      width: 90px
+      height: 90px
       object-fit: cover
 
   .tag

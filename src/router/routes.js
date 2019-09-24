@@ -1,4 +1,4 @@
-export default [
+ export default [
   {
     path: '/',
     redirect: '/login'
@@ -430,6 +430,69 @@ export default [
               }
             ]
           }
+        ]
+      },
+      {
+        path: '/course-manager',
+        name: 'course-manager',
+        meta: {
+          type: 'first_menu', // 一级标示
+          title: '课程',
+          icon: require('./icon-finance@2x.png'),
+          iconSelected: ''
+        },
+        component: {render: (h) => h('router-view')},
+        children: [
+          {
+            path: 'course',
+            name: 'course',
+            text: '课程',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 课程列表
+              {
+                path: '/course-manager/course/course-list',
+                name: 'course-list',
+                component: () => import('@pages/course-list/course-list'),
+                meta: {
+                  title: '课程列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['课程列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/course-manager/course/course-list/course-edit',
+                    name: 'course-edit',
+                    component: () => import('@pages/course-edit/course-edit'),
+                    meta: {
+                      title: '新建课程', // 页面标题
+                      type: 'sec-menu', // 二级标识
+                      crumbs: ['课程列表', '新建课程'] // 面包屑标题
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            path: 'customer',
+            name: 'customer',
+            text: '客户',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 客户列表
+              {
+                path: '/course-manager/customer/course-customer-list',
+                name: 'course-customer-list',
+                component: () => import('@pages/course-customer-list/course-customer-list'),
+                meta: {
+                  title: '客户列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['客户列表'] // 面包屑标题
+                }
+              }
+            ]
+          },
         ]
       }
     ]
