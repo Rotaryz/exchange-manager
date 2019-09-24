@@ -39,7 +39,68 @@
             </slick-list>
           </div>
         </div>
-
+        <!--弹窗-->
+        <base-modal
+          ref="goods"
+          class="page-modal"
+          width="1000"
+          :visible.sync="showModal"
+          :submitBefore="justifyForm"
+          @cancel="hideModal"
+          @submit="modalConfirm"
+        >
+          <div class="model">
+            <div class="shade-header">
+              <div class="shade-tab-type">
+                <div v-for="(items, index) in modalTypeList" :key="index" :class="{'shade-tab-item-active': tabIndex === index}" class="shade-tab-item hand" @click="setLinkType(index, $event)">
+                  {{items.title}}
+                </div>
+                <div class="line" :style="{left: left}"></div>
+              </div>
+              <span class="close hand" @click="hideModal"></span>
+            </div>
+            <!--课程列表-->
+            <div v-if="modalType === 3006" class="goods-modal">
+              <div class="shade-tab">
+                <base-search
+                  v-model="modalKeyword"
+                  :width="244"
+                  :isShowTip="false"
+                  boxStyle="margin-left: 0"
+                  placeholder="请输入内容文章标题"
+                  @search="searchCourse"
+                ></base-search>
+              </div>
+              <div class="goods-content article">
+                <div class="goods-item goods-header">
+                  <div class="goods-text"></div>
+                  <div class="goods-text">文章封面</div>
+                  <div class="goods-text">标题</div>
+                </div>
+                <div class="goods-list">
+                  <div v-for="(item, index) in courseList" :key="index" class="goods-item">
+                    <div class="goods-text">
+                      <div class="select-icon hand" :class="{'select-icon-active': selectIndex === index}" @click="selectCourse(item, index)">
+                        <span class="after"></span>
+                      </div>
+                    </div>
+                    <div class="goods-text goods-msg">
+                      <img :src="item.cover_image_url" alt="" class="goods-img">
+                    </div>
+                    <div class="goods-text">{{item.title}}</div>
+                  </div>
+                </div>
+              </div>
+              <div v-if="total > 0" class="page-box">
+                <base-pagination ref="pages" :currentPage.sync="page" :total="total" :pageSize="6"></base-pagination>
+              </div>
+            </div>
+            <!--小程序链接-->
+            <div v-if="modalType === 3005" class="link-text">
+              <textarea v-model="modalLink" class="link-text-box" placeholder="请输入小程序链接"></textarea>
+            </div>
+          </div>
+        </base-modal>
         <base-footer :isSeize="false">
           <base-button plain @click="newCms">新建</base-button>
           <base-button type="primary" @click="saveCms">保存</base-button>
@@ -75,7 +136,18 @@
         addImage: require('./pic-add_img@2x.png'),
         bannerList: [],
         type: 'banner',
-        moduleList: []
+        modalType: 3006,
+        moduleList: [],
+        showModal: false,
+        modalTypeList: [],
+        tabIndex: [],
+        left: 0,
+        courseList: [],
+        selectIndex: 0,
+        page: 1,
+        total: 1,
+        modalLink: '',
+        modalKeyword: ''
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -98,10 +170,17 @@
       getIndex() {},
       deleteGoodsMainPic() {},
       successImage() {},
-      showModalBox() {},
+      showModalBox() {
+        this.showModal = true
+      },
       showConfirm() {},
       newCms() {},
       saveCms() {},
+      justifyForm() {},
+      hideModal() {},
+      modalConfirm() {},
+      searchCourse() {},
+      selectCourse() {},
     }
   }
 </script>
