@@ -3,7 +3,10 @@
     <div class="phone">
       <div class="content-box">
         <div v-for="(cms, cmsIdx) in cmsList" :key="cmsIdx">
-          <div v-if="cms.code === 'banner'" class="banner-bg"></div>
+          <div v-if="cms.code === 'banner'" class="top-box">
+            <div class="circle"></div>
+            <div class="bar"></div>
+          </div>
           <div v-if="cms.code === 'banner'" class="banner hand" :class="{'touch': cmsType === 'banner'}" @click="changeType('banner')">
             <!--banner-->
             <div class="carousel">
@@ -95,7 +98,6 @@
         &::-webkit-scrollbar
           width: 0
   .banner
-    margin-top: 10px
     position: relative
     border: 2px dashed #D9D9D9
   .banner-bg
@@ -107,9 +109,8 @@
     left: 0
     top: 0
   .carousel
-    width: 241px
-    height: 118.8px
-    border-radius: 6px
+    width: 100%
+    height: 127px
     margin: 0 auto
     background: $color-background
     overflow: hidden
@@ -157,4 +158,19 @@
       transform: scale(0.8)
       display: block
       width: 50px
+  .top-box
+    padding: 10px
+    layout(row)
+    align-items: center
+    .circle
+      width: 12px
+      height: 12px
+      margin-right: 3px
+      background: #F4F8F9
+      border-radius: 6px
+    .bar
+      width: 88px
+      height: 12px
+      background: #F4F8F9
+      border-radius: 6px
 </style>
