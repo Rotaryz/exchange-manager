@@ -1,6 +1,6 @@
 <template>
   <div class="base-status-tab">
-    <div v-for="(item, index) in statusList" :key="index" :name="'tab-item'+item[valueKey]" :ref="'tab-item'+item[valueKey]" class="status-tab-item hand"
+    <div v-for="(item, index) in statusList" :key="index" :ref="'tab-item'+item[valueKey]" class="status-tab-item hand"
          :class="{'status-tab-item-active': item[valueKey] === value}" @click="checkStatus(index, item)"
     >
       {{item[labelKey]}} ({{item[numKey]}})
