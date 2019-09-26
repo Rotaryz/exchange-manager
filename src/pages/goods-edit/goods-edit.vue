@@ -785,6 +785,7 @@
       },
       // 取消 返回列表
       cancelBtn() {
+        this.$emit('update')
         this.$router.go(-1)
       }
     }

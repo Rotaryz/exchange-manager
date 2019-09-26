@@ -48,11 +48,11 @@
         </div>
       </draggable>
     </div>
-    <div v-if="type === 'video'" class="edit-image">
+    <div v-if="type === 'video'" class="edit-image video-more">
       <template v-if="data || data.length>0">
         <draggable v-if="multiple" v-model="list" class="draggable">
           <div v-for="(item, index) in data" :key="index" width="90px" class="show-image hand">
-            <video class="video-tag" :src="item.image_url ||item"></video>
+            <video class="video-tag" :src="item.video_url ||item"></video>
             <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
           </div>
         </draggable>
@@ -340,9 +340,8 @@
     color: $color-text-sub
     font-size: $font-size-14
 
-  .image-more
+  .image-more,.video-more
     display: flex
-
     .show-image
       margin-bottom: 14px
 </style>

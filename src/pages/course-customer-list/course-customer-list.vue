@@ -19,7 +19,7 @@
                 <div v-for="(val, key) in listHeader" :key="key" class="list-item" :style="val.style">
                   <img v-if="val.before && item[val.before.img]" class="list-img" :src="item[val.before.img]">
                   <img v-if="val.before && !item[val.before.img]" class="list-img" src="./pic-caogao@2x.png">
-                  <div class="item-text">{{item[key]}}</div>
+                  <div class="item-text">{{key === 'address' ? item.country+item.province+item.city : item[key]}}</div>
                 </div>
               </div>
             </template>
@@ -42,15 +42,15 @@
   const TITLE = '客户列表'
 
   const LIST_HEADER = {
-    name: {
+    nickname: {
       name: '商品名称',
       before: {
-        img: 'goods_cover_image'
+        img: 'avatar'
       }
     },
-    address: { name: '地区' },
+    address: { name: '地区', type: 'address' },
     sex: { name: '性别' },
-    time: { name: '注册时间', style: 'max-width: 144px; padding-right: 0'}
+    created_at: { name: '注册时间', style: 'max-width: 144px; padding-right: 0'}
   }
 
   export default {
@@ -61,15 +61,7 @@
     data() {
       return {
         listHeader: LIST_HEADER,
-        list: [
-          {
-            name: '小粒',
-            goods_cover_image: '',
-            address: '广州',
-            sex: '男',
-            time: '2019-09-24'
-          }
-        ],
+        list: [],
         total: 0,
         filter: {
           keyword: '',
@@ -78,20 +70,37 @@
         }
       }
     },
+    beforeRouteEnter(to, from, next) {
+      API.CourseCustomer.getCustomerList({
+        data: {
+          keyword: '',
+          status: '',
+          page: 1,
+          limit: 10,
+        },
+        list: [],
+        total: '',
+        loading: true
+      })
+        .then(res => {
+          next(vw => {
+            vw.setData(res)
+          })
+        })
+    },
     created() {
       // this.updatePage()
     },
     methods: {
       updatePage() {
         this._getList({loading: false})
-        this._getStatus()
       },
       setData(res) {
         this.list = res.data
         this.total = res.meta.total
       },
       _getList(other) {
-        API.Content.getArticleList({
+        API.CourseCustomer.getCustomerList({
           data: this.filter, ...other
         })
           .then(res => {

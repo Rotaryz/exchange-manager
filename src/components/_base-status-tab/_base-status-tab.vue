@@ -1,6 +1,6 @@
 <template>
   <div class="base-status-tab">
-    <div v-for="(item, index) in statusList" :key="index" :ref="'tab-item'+item[valueKey]" class="status-tab-item hand"
+    <div v-for="(item, index) in statusList" :key="index" :name="'tab-item'+item[valueKey]" :ref="'tab-item'+item[valueKey]" class="status-tab-item hand"
          :class="{'status-tab-item-active': item[valueKey] === value}" @click="checkStatus(index, item)"
     >
       {{item[labelKey]}} ({{item[numKey]}})
@@ -64,8 +64,11 @@
       getStyle() {
         this.statusList.length > 0 &&
           this.$nextTick(() => {
-            let el = this.$refs['tab-item' + this.value][0]
-            this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+            setTimeout(() => {
+              let el = this.$refs['tab-item' + this.value][0]
+              this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+            }, 100)
+
           })
       },
       checkStatus(index, item) {
@@ -90,7 +93,7 @@
 
     .status-tab-item
       border-radius: 100px
-      padding: 0px 14px
+      padding: 0 14px
       color: $color-text-main
       line-height: 30px
       text-align: center
