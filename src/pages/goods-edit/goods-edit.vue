@@ -4,7 +4,7 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="商品名称" labelMarginRight="40" labelWidth="78px" labelAlign="right">
-        <base-input v-model="edit.name" :maxlength="20" :limit="20"></base-input>
+        <base-input v-model="edit.name" :maxlength="30" :limit="30"></base-input>
       </base-form-item>
       <base-form-item label="商品描述" :required="false" labelMarginRight="40" labelWidth="78px" labelAlign="right"
                       verticalAlign="top"
