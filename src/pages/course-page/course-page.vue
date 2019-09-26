@@ -200,7 +200,7 @@
       },
       // 获取课程列表
       _getCourse() {
-        API.Cms.getCourseList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: ''}}).then((res) => {
+        API.Course.getCourseList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: ''}}).then((res) => {
           this.courseList = res.data
           this.modalParams.total = res.meta.total
         })

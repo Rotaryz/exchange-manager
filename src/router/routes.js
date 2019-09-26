@@ -475,6 +475,25 @@ export default [
             ]
           },
           {
+            path: 'content',
+            name: 'content',
+            text: '内容',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 页面布局
+              {
+                path: '/course-manager/content/course-page',
+                name: 'course-page',
+                component: () => import('@pages/course-page/course-page'),
+                meta: {
+                  title: '页面布局', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['页面布局'] // 面包屑标题
+                }
+              }
+            ]
+          },
+          {
             path: 'customer',
             name: 'customer',
             text: '客户',
@@ -492,7 +511,7 @@ export default [
                 }
               }
             ]
-          },
+          }
         ]
       }
     ]
