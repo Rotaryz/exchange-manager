@@ -438,7 +438,7 @@ export default [
         meta: {
           type: 'first_menu', // 一级标示
           title: '课程',
-          icon: require('./icon-finance@2x.png'),
+          icon: require('./icon-course@2x.png'),
           iconSelected: ''
         },
         component: {render: (h) => h('router-view')},
