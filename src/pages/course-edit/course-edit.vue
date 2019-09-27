@@ -164,7 +164,6 @@
         this.msg.detail_images = [...this.msg.detail_images, ...arr]
       },
       cancelBtn() {
-        this.$emit('update')
         this.$router.back()
       },
       courseNew() {
