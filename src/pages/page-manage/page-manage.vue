@@ -1370,6 +1370,7 @@
           }
         }
         this.infoData()
+        console.log(JSON.stringify(this.moduleDetail))
         API.Cms.saveModule({data: {data: [this.moduleDetail]}}).then((res) => {
           this.$toast.show('保存成功')
           // 如果来源不是分组，则清除分组商品列表
