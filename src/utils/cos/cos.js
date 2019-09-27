@@ -8,7 +8,7 @@ import storage from 'storage-controller'
  */
 function _saveFile(data) {
   const url = `/exchange-platform/common/file/${data.type}/create`
-  return request.post({url, data, loading: false})
+  return request.post({url, data, loading: false, timeout: 20 * 1000})
 }
 
 /**

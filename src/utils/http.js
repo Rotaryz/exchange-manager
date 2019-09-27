@@ -50,13 +50,15 @@ class HTTP {
   }
 
   _formatRequestData(args, {method}) {
-    const {url, data} = args
+    const {url, data, timeout} = args
     if (typeof this.callback.beforeRequest === 'function') {
       this.callback.beforeRequest(args)
     }
+    let key = timeout ? 'timeout' : ''
     return this.http
       .request(url, data, {
-        method
+        method,
+        [key]: timeout
       })
       .then((response) => {
         return checkStatus(response)
