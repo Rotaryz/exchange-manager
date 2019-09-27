@@ -213,7 +213,7 @@
     .input__inner
       width: 100%
       height: 100%
-      border-radius 4px
+      border-radius: 4px
       border: 0.5px solid $color-line
       color: $color-text-main
       font-size: $font-size-14
@@ -251,7 +251,7 @@
         width: 13px
         height: @width
         icon-image('icon-delet')
-        cursor pointer
+        cursor: pointer
 
         &:hover
           icon-image('icon-delet_hover')
@@ -259,10 +259,10 @@
     &.is-disabled .input__inner
       background: #f9f9f9
       color: $color-text-assist
-      cursor not-allowed
+      cursor: not-allowed
 
     .base-input__count
-      font-size $font-size-12
+      font-size: $font-size-12
       color: #C9CCDA
       letter-spacing: 0.5px
       position: absolute
@@ -273,8 +273,8 @@
       col-center()
 
   .zb-textarea
-    padding 14px
-    resize none
+    padding: 14px
+    resize: none
 
   input::-webkit-input-placeholder
   textarea::-webkit-input-placeholder

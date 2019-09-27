@@ -198,7 +198,6 @@
       },
       // 页面数据更新
       updatePage(isUpdatePage = true) {
-        console.log(isUpdatePage,'isUpdatePage')
         if (isUpdatePage) this.filter.page = 1
         let otherParams = this.filter.use_type === 1 ? {
           category_id: this.category_id,

@@ -64,8 +64,11 @@
       getStyle() {
         this.statusList.length > 0 &&
           this.$nextTick(() => {
-            let el = this.$refs['tab-item' + this.value][0]
-            this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+            setTimeout(() => {
+              let el = this.$refs['tab-item' + this.value][0]
+              this.style = `left: ${el.offsetLeft}px; width: ${el.offsetWidth}px`
+            }, 100)
+
           })
       },
       checkStatus(index, item) {
@@ -90,7 +93,7 @@
 
     .status-tab-item
       border-radius: 100px
-      padding: 0px 14px
+      padding: 0 14px
       color: $color-text-main
       line-height: 30px
       text-align: center
