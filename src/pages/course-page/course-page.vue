@@ -67,7 +67,7 @@
                   :width="244"
                   :isShowTip="false"
                   boxStyle="margin-left: 0"
-                  placeholder="请输入内容文章标题"
+                  placeholder="请输入课程名称"
                   @search="modalSearch"
                 ></base-search>
               </div>
