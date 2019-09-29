@@ -175,7 +175,8 @@
           .then((res) => {
             this.$toast.show('保存成功')
             setTimeout(() => {
-              this.isSubmit = false
+              this.msg.name = ''
+              this.isSubmit = true
               this.$emit('update')
               this.$router.back()
             }, 1500)
@@ -191,7 +192,7 @@
           .then(res => {
             this.$toast.show('保存成功')
             setTimeout(() => {
-              this.isSubmit = false
+              this.isSubmit = true
               this.$emit('update')
               this.$router.back()
             }, 1500)
@@ -202,9 +203,10 @@
       },
       submitBtn() {
         if (this.isSubmit) return
-        this.isSubmit = true
         let checkResult = this.checkForm()
         if (!checkResult) return
+        this.isSubmit = true
+        console.log(this.isSubmit,  '2222')
         if (this.id) {
           this.courseEdit()
         } else {

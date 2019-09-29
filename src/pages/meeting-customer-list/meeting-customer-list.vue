@@ -43,7 +43,7 @@
 
   const LIST_HEADER = {
     nickname: {
-      name: '商品名称',
+      name: '客户',
       before: {
         img: 'avatar'
       }
