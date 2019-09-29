@@ -3,13 +3,13 @@
     <div v-show="$route.name==='meeting-list'" class="content-wrap">
       <base-layout-top>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
-          <base-search v-model="filter.keyword" placeholder="课程名称" class="base-search" @search="searchBtn"></base-search>
+          <base-search v-model="filter.keyword" placeholder="会议名称" class="base-search" @search="searchBtn"></base-search>
         </base-form-item>
       </base-layout-top>
-      <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="课程列表">
+      <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="会议列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
         <router-link tag="div" :to="{path:'meeting-edit'}" append>
-          <base-button type="primary" plain addIcon>新建课程</base-button>
+          <base-button type="primary" plain addIcon>新建会议</base-button>
         </router-link>
       </base-table-tool>
       <div class="table-content">
@@ -47,7 +47,7 @@
 <script type="text/ecmascript-6">
   import API from '@api'
   const PAGE_NAME = 'COURSE_LIST'
-  const TITLE = '课程列表'
+  const TITLE = '会议列表'
 
   const LIST_HEADER = {
     name: {
@@ -136,7 +136,7 @@
         this.$confirm.confirm({text: `确定要删除`}).then(() => {
           API.Meeting.meetingDel({data: {id: item.id}, loading: false})
             .then(res => {
-              this.$toast.show('课程删除成功')
+              this.$toast.show('会议删除成功')
               this.updatePage()
             })
         })
@@ -154,7 +154,7 @@
         this.$confirm.confirm({text: `确定要${text}`}).then(() => {
           API.Meeting.meetingUpDown({data: {status, id: item.id}})
             .then(res => {
-              this.$toast.show(`课程${text}成功`)
+              this.$toast.show(`会议${text}成功`)
               this.updatePage()
             })
         })

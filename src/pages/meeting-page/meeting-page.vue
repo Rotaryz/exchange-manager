@@ -59,7 +59,7 @@
               </div>
               <span class="close hand" @click="hideModalBox"></span>
             </div>
-            <!--课程列表-->
+            <!--会议列表-->
             <div v-if="modalType === 3013" class="goods-modal">
               <div class="shade-tab">
                 <base-search
@@ -67,14 +67,14 @@
                   :width="244"
                   :isShowTip="false"
                   boxStyle="margin-left: 0"
-                  placeholder="请输入课程名称"
+                  placeholder="请输入会议名称"
                   @search="modalSearch"
                 ></base-search>
               </div>
               <div class="goods-content article">
                 <div class="goods-item goods-header">
                   <div class="goods-text"></div>
-                  <div class="goods-text">课程名称</div>
+                  <div class="goods-text">会议名称</div>
                 </div>
                 <div class="goods-list">
                   <div v-for="(item, index) in courseList" :key="index" class="goods-item hand" @click="modalSelect(item, index)">
@@ -141,7 +141,7 @@
         },
         curItem: {},
         showModal: false,
-        modalTypeList: [{title: '选择课程', status: 3013}, {title: '小程序链接', status: 3005}],
+        modalTypeList: [{title: '选择会议', status: 3013}, {title: '小程序链接', status: 3005}],
         tabIndex: 0,
         lineStyle: {
           left: 0,
@@ -199,7 +199,7 @@
         this.$set(this.curItem.detail, 'image_id', res.data.id)
         this.$forceUpdate()
       },
-      // 获取课程列表
+      // 获取会议列表
       _getCourse() {
         API.Meeting.getMeetingList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
           this.courseList = res.data

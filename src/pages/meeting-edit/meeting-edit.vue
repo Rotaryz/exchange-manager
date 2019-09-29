@@ -1,20 +1,20 @@
 <template>
   <div class="course-edit child-router">
-    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" :title="(id ?'编辑':'新建')+'课程'"></base-table-tool>
+    <base-table-tool :iconUrl="require('./icon-new_commodity@2x.png')" :title="(id ?'编辑':'新建')+'会议'"></base-table-tool>
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
-      <base-form-item label="课程名称" labelMarginRight="40" labelWidth="82px" labelAlign="right">
+      <base-form-item label="会议名称" labelMarginRight="40" labelWidth="82px" labelAlign="right">
         <base-input v-model="msg.name" :limit="20"></base-input>
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
-      <base-form-item label="课程描述"
+      <base-form-item label="会议描述"
                       :required="false"
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
                       verticalAlign="top"
       >
-        <base-input v-model="msg.description" :limit="100" type="textarea" placeholder="输入课程描述"></base-input>
+        <base-input v-model="msg.description" :limit="100" type="textarea" placeholder="输入会议描述"></base-input>
       </base-form-item>
 
       <!--上传封面图-->
@@ -89,7 +89,7 @@
 
   import API from '@api'
   const PAGE_NAME = 'COURSE_EDIT'
-  const TITLE = '新建课程'
+  const TITLE = '新建会议'
 
   export default {
     name: PAGE_NAME,
@@ -218,12 +218,12 @@
           {
             target: 'name',
             type: ['length'],
-            toast: ['请输入课程名称']
+            toast: ['请输入会议名称']
           },
           {
             target: 'description',
             type: ['length'],
-            toast: ['请输入课程描述']
+            toast: ['请输入会议描述']
           },
           {
             target: 'banner_images',
