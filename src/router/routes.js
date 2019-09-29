@@ -437,7 +437,7 @@ export default [
         name: 'meeting-manager',
         meta: {
           type: 'first_menu', // 一级标示
-          title: '课程',
+          title: '新营销',
           icon: require('./icon-course@2x.png'),
           iconSelected: ''
         },
