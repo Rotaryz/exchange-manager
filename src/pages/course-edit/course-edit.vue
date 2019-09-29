@@ -143,6 +143,7 @@
           }
         })
         this.msg.banner_images = [...this.msg.banner_images, ...arr]
+        this.msg.banner_images = this.msg.banner_images.slice(0, 5)
       },
       addVideo(data) {
         this.msg.banner_videos = data.map(item => {
@@ -162,6 +163,7 @@
           }
         })
         this.msg.detail_images = [...this.msg.detail_images, ...arr]
+        this.msg.detail_images = this.msg.detail_images.slice(0, 15)
       },
       cancelBtn() {
         this.$router.back()
