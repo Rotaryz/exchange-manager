@@ -283,7 +283,7 @@
             return
           }
           if(!item.detail.title && !item.detail.url) {
-            this.$toast.show(`第${i + 1}不能为空`, 1500)
+            this.$toast.show(`第${i + 1}个banner不能为空`, 1500)
             return
           }
           item.parent_id = curModule.id
