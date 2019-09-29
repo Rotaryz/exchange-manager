@@ -77,16 +77,16 @@
                   <div class="goods-text">课程名称</div>
                 </div>
                 <div class="goods-list">
-                  <div v-for="(item, index) in courseList" :key="index" class="goods-item">
+                  <div v-for="(item, index) in courseList" :key="index" class="goods-item hand" @click="modalSelect(item, index)">
                     <div class="goods-text">
-                      <div class="select-icon hand" :class="{'select-icon-active': selectIndex === index}" @click="modalSelect(item, index)">
+                      <div class="select-icon hand" :class="{'select-icon-active': selectIndex === index}">
                         <span class="after"></span>
                       </div>
                     </div>
-<!--                    <div class="goods-text goods-msg">-->
-<!--                      <img :src="item.cover_image_url" alt="" class="goods-img">-->
-<!--                    </div>-->
-                    <div class="goods-text">{{item.name}}</div>
+                    <div class="goods-text goods-msg">
+                      <img :src="item.cover_image" alt="" class="goods-img">
+                      {{item.name}}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -139,6 +139,7 @@
         moduleObj: {
           banner: {children: []}
         },
+        curItem: {},
         showModal: false,
         modalTypeList: [{title: '选择课程', status: 3013}, {title: '小程序链接', status: 3005}],
         tabIndex: 0,
@@ -149,7 +150,6 @@
         courseList: [],
         selectIndex: -1,
         selectItem: {},
-        curItem: {},
         modalParams: {
           page: 1,
           total: 0,
@@ -193,6 +193,7 @@
       setCurItem(item) {
         this.curItem = item
       },
+      // 上传图片成功
       uploadSuccess(res) {
         this.$set(this.curItem.detail, 'image_url', res.data.url)
         this.$set(this.curItem.detail, 'image_id', res.data.id)
@@ -200,7 +201,7 @@
       },
       // 获取课程列表
       _getCourse() {
-        API.Course.getCourseList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: ''}}).then((res) => {
+        API.Course.getCourseList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
           this.courseList = res.data
           this.modalParams.total = res.meta.total
         })
@@ -257,11 +258,10 @@
         case 3013:
           this.curItem.detail.title = this.selectItem.name
           this.curItem.detail.object_id = this.selectItem.id
+          this.curItem.detail.image_url = this.selectItem.cover_image
+          this.curItem.detail.image_id = this.selectItem.cover_image_id
           break
         }
-        // test
-        this.curItem.detail.image_id = 1772
-        this.curItem.detail.image_url = "https://exchange-platform-1254297111.picgz.myqcloud.com/dev/2019/09/25/1569397929504-168145.jpeg"
         this.curItem.style = this.modalType
         this.hideModalBox()
       },
