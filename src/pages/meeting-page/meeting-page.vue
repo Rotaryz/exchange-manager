@@ -201,7 +201,7 @@
       },
       // 获取课程列表
       _getCourse() {
-        API.Course.getCourseList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
+        API.Meeting.getMeetingList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
           this.courseList = res.data
           this.modalParams.total = res.meta.total
         })
