@@ -272,6 +272,10 @@
           return
         }
         this.curModuleChildren.push({detail: {object_id: '', url: '', title: '', image_id: '',}, style: ''})
+        let ele = document.querySelector('.box')
+        setTimeout(() => {
+          ele.scrollTop = ele.scrollHeight
+        }, 100)
       },
       // 保存按钮
       saveCms() {
