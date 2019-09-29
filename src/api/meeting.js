@@ -2,38 +2,38 @@ import request from '@utils/http'
 
 export default {
   // ---- 课程列表 ----
-  getCourseList(args) {
-    const url = `/exchange-platform/platform/course/course/index`
+  getMeetingList(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/index`
     return request.get({url, loading: false, ...args})
   },
   // ---- 课程数量 ----
-  getCourseStatus(args) {
-    const url = `/exchange-platform/platform/course/course/statistic`
+  getMeetingStatus(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/statistic`
     return request.get({url, loading: false, ...args})
   },
   // ---- 删除课程 ----
-  courseDel(args) {
-    const url = `/exchange-platform/platform/course/course/destroy`
+  meetingDel(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/destroy`
     return request.delete({url, loading: false, ...args})
   },
   // ---- 删除上下架 ----
-  courseUpDown(args) {
-    const url = `/exchange-platform/platform/course/course/set-status`
+  meetingUpDown(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/set-status`
     return request.get({url, loading: false, ...args})
   },
   // ---- 课程详情 ----
-  courseDetail(args) {
-    const url = `/exchange-platform/platform/course/course/show`
+  meetingDetail(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/show`
     return request.get({url, loading: false, ...args})
   },
   // ---- 新建课程 ----
-  courseNew(args) {
-    const url = `/exchange-platform/platform/course/course/create`
+  meetingNew(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/create`
     return request.post({url, loading: false, ...args})
   },
   // ---- 编辑课程 ----
-  courseEdit(args) {
-    const url = `/exchange-platform/platform/course/course/update`
+  meetingEdit(args) {
+    const url = `/exchange-platform/platform/meeting/meeting/update`
     return request.put({url, loading: false, ...args})
   },
 

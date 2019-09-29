@@ -102,7 +102,7 @@
     },
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
-        API.Course.courseDetail({
+        API.Meeting.meetingDetail({
           data: {id: to.query.id}
         }).then(res => {
           next(vw => {
@@ -169,7 +169,7 @@
         this.$router.back()
       },
       courseNew() {
-        API.Course.courseNew({
+        API.Meeting.meetingNew({
           data: this.msg
         })
           .then((res) => {
@@ -185,7 +185,7 @@
           })
       },
       courseEdit() {
-        API.Course.courseEdit({
+        API.Meeting.meetingEdit({
           data: this.msg
         })
           .then(res => {

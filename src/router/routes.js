@@ -433,8 +433,8 @@ export default [
         ]
       },
       {
-        path: '/course-manager',
-        name: 'course-manager',
+        path: '/meeting-manager',
+        name: 'meeting-manager',
         meta: {
           type: 'first_menu', // 一级标示
           title: '课程',
@@ -444,16 +444,16 @@ export default [
         component: {render: (h) => h('router-view')},
         children: [
           {
-            path: 'course',
-            name: 'course',
+            path: 'meeting',
+            name: 'meeting',
             text: '课程',
             component: {render: (h) => h('router-view')},
             children: [
               // 课程列表
               {
-                path: '/course-manager/course/course-list',
-                name: 'course-list',
-                component: () => import('@pages/course-list/course-list'),
+                path: '/meeting-manager/meeting/meeting-list',
+                name: 'meeting-list',
+                component: () => import('@pages/meeting-list/meeting-list'),
                 meta: {
                   title: '课程列表', // 页面标题
                   type: 'sec-menu', // 二级标识
@@ -461,9 +461,9 @@ export default [
                 },
                 children: [
                   {
-                    path: '/course-manager/course/course-list/course-edit',
-                    name: 'course-edit',
-                    component: () => import('@pages/course-edit/course-edit'),
+                    path: '/meeting-manager/meeting/meeting-list/meeting-edit',
+                    name: 'meeting-edit',
+                    component: () => import('@pages/meeting-edit/meeting-edit'),
                     meta: {
                       title: '新建课程', // 页面标题
                       type: 'sec-menu', // 二级标识
@@ -482,9 +482,9 @@ export default [
             children: [
               // 页面布局
               {
-                path: '/course-manager/content/course-page',
-                name: 'course-page',
-                component: () => import('@pages/course-page/course-page'),
+                path: '/meeting-manager/content/meeting-page',
+                name: 'meeting-page',
+                component: () => import('@pages/meeting-page/meeting-page'),
                 meta: {
                   title: '页面布局', // 页面标题
                   type: 'sec-menu', // 二级标识
@@ -501,9 +501,9 @@ export default [
             children: [
               // 客户列表
               {
-                path: '/course-manager/customer/course-customer-list',
-                name: 'course-customer-list',
-                component: () => import('@pages/course-customer-list/course-customer-list'),
+                path: '/meeting-manager/customer/meeting-customer-list',
+                name: 'meeting-customer-list',
+                component: () => import('@pages/meeting-customer-list/meeting-customer-list'),
                 meta: {
                   title: '客户列表', // 页面标题
                   type: 'sec-menu', // 二级标识

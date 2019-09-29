@@ -1,6 +1,6 @@
 <template>
   <div class="course-list">
-    <div v-show="$route.name==='course-list'" class="content-wrap">
+    <div v-show="$route.name==='meeting-list'" class="content-wrap">
       <base-layout-top>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
           <base-search v-model="filter.keyword" placeholder="课程名称" class="base-search" @search="searchBtn"></base-search>
@@ -8,7 +8,7 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="课程列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
-        <router-link tag="div" :to="{path:'course-edit'}" append>
+        <router-link tag="div" :to="{path:'meeting-edit'}" append>
           <base-button type="primary" plain addIcon>新建课程</base-button>
         </router-link>
       </base-table-tool>
@@ -23,7 +23,7 @@
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
                   <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="upDownHandle(item,i)"></base-switch>
                   <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'course-edit', query:{id: item.id}}" append class="list-operation">编辑</router-link>
+                    <router-link tag="span" :to="{path:'meeting-edit', query:{id: item.id}}" append class="list-operation">编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -81,7 +81,7 @@
       }
     },
     beforeRouteEnter(to, from, next) {
-      Promise.all([API.Course.getCourseList({
+      Promise.all([API.Meeting.getMeetingList({
         data: {
           keyword: '',
           status: '',
@@ -89,7 +89,7 @@
           limit: 10,
         },
         loading: true
-      }), API.Course.getCourseStatus({
+      }), API.Meeting.getMeetingStatus({
         data: {
           keyword: '',
         }
@@ -113,7 +113,7 @@
         this.statusList = res.data
       },
       _getStatus() {
-        API.Course.getCourseStatus({
+        API.Meeting.getMeetingStatus({
           data: {
             keyword: this.filter.keyword
           }
@@ -122,7 +122,7 @@
         })
       },
       _getList() {
-        API.Course.getCourseList({
+        API.Meeting.getMeetingList({
           data: this.filter
         }).then(res => {
           this.setData(res)
@@ -134,7 +134,7 @@
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm({text: `确定要删除`}).then(() => {
-          API.Course.courseDel({data: {id: item.id}, loading: false})
+          API.Meeting.meetingDel({data: {id: item.id}, loading: false})
             .then(res => {
               this.$toast.show('课程删除成功')
               this.updatePage()
@@ -152,7 +152,7 @@
         let status = +item.status === 1 ? 0 : 1
         let text = +item.status === 1 ? '下架' : '上架'
         this.$confirm.confirm({text: `确定要${text}`}).then(() => {
-          API.Course.courseUpDown({data: {status, id: item.id}})
+          API.Meeting.meetingUpDown({data: {status, id: item.id}})
             .then(res => {
               this.$toast.show(`课程${text}成功`)
               this.updatePage()
