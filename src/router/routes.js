@@ -446,18 +446,18 @@ export default [
           {
             path: 'meeting',
             name: 'meeting',
-            text: '课程',
+            text: '会议',
             component: {render: (h) => h('router-view')},
             children: [
-              // 课程列表
+              // 会议列表
               {
                 path: '/meeting-manager/meeting/meeting-list',
                 name: 'meeting-list',
                 component: () => import('@pages/meeting-list/meeting-list'),
                 meta: {
-                  title: '课程列表', // 页面标题
+                  title: '会议列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['课程列表'] // 面包屑标题
+                  crumbs: ['会议列表'] // 面包屑标题
                 },
                 children: [
                   {
@@ -465,9 +465,9 @@ export default [
                     name: 'meeting-edit',
                     component: () => import('@pages/meeting-edit/meeting-edit'),
                     meta: {
-                      title: '新建课程', // 页面标题
+                      title: '新建会议', // 页面标题
                       type: 'sec-menu', // 二级标识
-                      crumbs: ['课程列表', '新建课程'] // 面包屑标题
+                      crumbs: ['会议列表', '新建会议'] // 面包屑标题
                     }
                   }
                 ]
