@@ -96,7 +96,7 @@
             </div>
             <!--小程序链接-->
             <div v-if="modalType === 3005" class="link-text">
-              <textarea v-model="modalParams.link" class="link-text-box" placeholder="请输入小程序链接"></textarea>
+              <textarea v-model="modalParams.link" class="link-text-box" placeholder="请输入自定义链接"></textarea>
             </div>
           </div>
         </base-modal>
