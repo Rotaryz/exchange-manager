@@ -467,7 +467,8 @@ export default [
                     meta: {
                       title: '新建会议', // 页面标题
                       type: 'sec-menu', // 二级标识
-                      crumbs: ['会议列表', '新建会议'] // 面包屑标题
+                      variableIndex: 1,
+                      crumbs: ['会议列表', '会议'] // 面包屑标题
                     }
                   }
                 ]

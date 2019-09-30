@@ -151,13 +151,18 @@
       upDownHandle(item, index) {
         let status = +item.status === 1 ? 0 : 1
         let text = +item.status === 1 ? '下架' : '上架'
-        this.$confirm.confirm({text: `确定要${text}`}).then(() => {
-          API.Meeting.meetingUpDown({data: {status, id: item.id}})
-            .then(res => {
-              this.$toast.show(`会议${text}成功`)
-              this.updatePage()
-            })
-        })
+        // this.$confirm.confirm({text: `确定要${text}`}).then(() => {
+        //   API.Meeting.meetingUpDown({data: {status, id: item.id}})
+        //     .then(res => {
+        //       this.$toast.show(`会议${text}成功`)
+        //       this.updatePage()
+        //     })
+        // })
+        API.Meeting.meetingUpDown({data: {status, id: item.id}})
+          .then(res => {
+            this.$toast.show(`会议${text}成功`)
+            this.updatePage()
+          })
       }
     }
   }
