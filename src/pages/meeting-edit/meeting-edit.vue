@@ -48,13 +48,13 @@
                 multiple
                 firstTag="视频"
                 :limit="1"
-                tip="建议上传50M以内的清晰视频，内容突出商品1-2个核心卖点。"
+                tip="建议上传50M以内的清晰视频，内容突出会议1-2个核心卖点。"
                 @successImage="addVideo"
         ></upload>
       </base-form-item>
 
       <!--上传详情图-->
-      <base-form-item label="商品详情图"
+      <base-form-item label="会议详情图"
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
@@ -206,7 +206,6 @@
         let checkResult = this.checkForm()
         if (!checkResult) return
         this.isSubmit = true
-        console.log(this.isSubmit,  '2222')
         if (this.id) {
           this.courseEdit()
         } else {
