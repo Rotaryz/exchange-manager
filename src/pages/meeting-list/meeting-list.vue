@@ -51,7 +51,7 @@
 
   const LIST_HEADER = {
     name: {
-      name: '商品名称',
+      name: '会议名称',
       before: {
         img: 'goods_cover_image'
       }
