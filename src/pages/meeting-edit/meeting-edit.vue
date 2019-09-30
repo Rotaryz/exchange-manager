@@ -14,7 +14,7 @@
                       labelAlign="right"
                       verticalAlign="top"
       >
-        <base-input v-model="msg.description" :limit="100" type="textarea" placeholder="输入会议描述"></base-input>
+        <base-input v-model="msg.description" :limit="100" type="textarea" :textareaHeight="120" placeholder="输入会议描述"></base-input>
       </base-form-item>
 
       <!--上传封面图-->

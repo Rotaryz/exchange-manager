@@ -2,7 +2,7 @@
 
   <div class="base-input"
        :class="[{'base-input--after':clear&& !disabled || $slots.after,'is-disabled':disabled},size ? 'zb-input--' + size : '',radius?'zb-input--radius-'+radius:'']"
-       :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && 94 + 'px'}"
+       :style="{width:width && width + 'px',height:height && height + 'px' || type==='textarea' && textareaHeight + 'px'}"
   >
     <slot name="after">
       <span v-if="isShowClear" class="clear-wrap" @click="clearBtn">
@@ -115,6 +115,10 @@
       },
       height: {
         default: '',
+        type: [String, Number]
+      },
+      textareaHeight: {
+        default: 94,
         type: [String, Number]
       },
       handIcon: {
