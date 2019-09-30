@@ -49,7 +49,10 @@
       // 取消,将promise断定为reject状态
       cancel() {
         this.visible = false
-        this.reject('cancel')
+        this.reject && this.reject('cancel')
+      },
+      clear() {
+        this.visible = false
       },
       // 显示confirm弹出,并创建promise对象，给父组件调用
       confirm(options = {}) {
