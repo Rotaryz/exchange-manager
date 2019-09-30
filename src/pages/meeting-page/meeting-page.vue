@@ -192,6 +192,7 @@
       // 设置当前操作的内容
       setCurItem(item) {
         this.curItem = item
+        this.modalParams.link = item.detail.url||''
       },
       // 上传图片成功
       uploadSuccess(res) {
@@ -220,9 +221,11 @@
       },
       hideModalBox() {
         this.showModal = false
+        this.modalParams.link = ''
+        this.setModalType(0)
       },
       // 弹窗切换tab
-      setModalType(index, e) {
+      setModalType(index, e = {target: {offsetLeft: 0, offsetWidth: '64'}}) {
         this.tabIndex = index
         this.lineStyle = {left: e.target.offsetLeft + 'px', width: e.target.offsetWidth + 'px'}
         this.modalType = this.modalTypeList[index].status
