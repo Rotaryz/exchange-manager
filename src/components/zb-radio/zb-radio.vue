@@ -4,7 +4,7 @@
       <span class="radio__input" :class="{'is-check':item[valueKey] == value}">
         <span class="radio__inner"></span>
       </span>
-      <label :for="'item'+item[valueKey]" class="radio__label">{{item[labelKey]}}</label>
+      <label :for="'item'+item[valueKey]" class="radio__label hand">{{item[labelKey]}}</label>
     </div>
   </div>
 </template>

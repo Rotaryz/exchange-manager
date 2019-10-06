@@ -1,17 +1,17 @@
 <template>
   <div :class="{inline:inline}">
     <div v-if="type === 'image' && !multiple" class="image-one">
-      <div v-if="data" class="show-image hand">
+      <div v-if="data" class="show-image">
         <div v-if="showLoading" class="loading-mask">
           <img src="./loading.gif" class="loading">
         </div>
         <img :src="data" class="image" :style="imgStyle">
-        <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
+        <span v-if="!disabled && isShowDel" class="close hand" @click="deleteBtn()"></span>
         <input
           v-if="isChange"
           type="file"
           :multiple="multiple"
-          class="sendImage"
+          class="sendImage hand"
           accept="image/*"
           @change="getFiles($event)"
         >
@@ -30,9 +30,9 @@
     </div>
     <div v-if="type === 'image' && multiple" class="edit-image image-more">
       <draggable v-model="list" class="draggable">
-        <div v-for="(item, index) in data" :key="index" class="show-image hand">
+        <div v-for="(item, index) in data" :key="index" class="show-image">
           <img :src="item.image_url ||item" class="image" :style="imgStyle">
-          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
+          <span v-if="!disabled && isShowDel" class="close hand" @click="deleteBtn(index)"></span>
           <div v-if="firstTag && !index" class="tag">{{firstTag || item.title}}</div>
           <div v-if="otherTag && index" class="tag">{{otherTag || item.title}}</div>
         </div>
@@ -51,14 +51,14 @@
     <div v-if="type === 'video'" class="edit-image video-more">
       <template v-if="data || data.length>0">
         <draggable v-if="multiple" v-model="list" class="draggable">
-          <div v-for="(item, index) in data" :key="index" width="90px" class="show-image hand">
+          <div v-for="(item, index) in data" :key="index" width="90px" class="show-image">
             <video class="video-tag" :src="item.video_url ||item"></video>
-            <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn(index)"></span>
+            <span v-if="!disabled && isShowDel" class="close hand" @click="deleteBtn(index)"></span>
           </div>
         </draggable>
-        <div v-else width="90px" class="show-image hand">
+        <div v-else width="90px" class="show-image">
           <video class="video-tag" :src="item.video_url ||item"></video>
-          <span v-if="!disabled && isShowDel" class="close" @click="deleteBtn()"></span>
+          <span v-if="!disabled && isShowDel" class="close hand" @click="deleteBtn()"></span>
         </div>
       </template>
       <div v-if="(multiple && data.length < limit) || (!multiple && !data)" class="hand upload-wrap">

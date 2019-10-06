@@ -60,7 +60,7 @@
               <div class="list-item">{{item.shop_level_name}}</div>
               <div class="list-item">{{item.certificate_status === 0 ? '待认证' : item.certificate_status === 1 ? '已认证' : '认证未通过'}}</div>
               <div class="list-item">
-                <img v-if="item.certificate_image_url" :src="item.certificate_image_url" class="list-img" @click="showCertificatesPhoto(item.certificate_image_url)">
+                <img v-if="item.certificate_image_url" :src="item.certificate_image_url" class="list-img hand" @click="showCertificatesPhoto(item.certificate_image_url)">
               </div>
               <div class="list-item">
                 <span v-if="item.certificate_status === 0" class="list-operation" @click="checkBtn(item)">审核</span>
