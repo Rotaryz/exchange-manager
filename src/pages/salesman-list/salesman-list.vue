@@ -1,15 +1,15 @@
 <template>
   <div class="course-list">
-    <div v-show="$route.name==='meeting-list'" class="content-wrap">
+    <div v-show="$route.name==='salesman-list'" class="content-wrap">
       <base-layout-top>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
-          <base-search v-model="filter.keyword" placeholder="会议名称" class="base-search" @search="searchBtn"></base-search>
+          <base-search v-model="filter.keyword" placeholder="分销员名称" class="base-search" @search="searchBtn"></base-search>
         </base-form-item>
       </base-layout-top>
-      <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="会议列表">
-        <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
-        <router-link tag="div" :to="{path:'meeting-edit'}" append>
-          <base-button type="primary" plain addIcon>新建会议</base-button>
+      <base-table-tool :iconUrl="require('./icon-distribution_list@2x.png')" title="分销员列表">
+        <!--<base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>-->
+        <router-link tag="div" :to="{path:'salesman-edit'}" append>
+          <base-button type="primary" plain addIcon>新建分销员</base-button>
         </router-link>
       </base-table-tool>
       <div class="table-content">
@@ -21,10 +21,8 @@
             <template v-if="list.length">
               <div v-for="(item,i) in list" :key="i" class="list-content list-box">
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
-                  <base-switch v-if="val.type ==='switch'" :status="item.status" @changeSwitch="upDownHandle(item,i)"></base-switch>
-                  <div v-else-if="key ==='sale_count'">{{item.sale_count}}/{{item.total_stock}}</div>
-                  <div v-else-if="val.type === 'operate'">
-                    <router-link tag="span" :to="{path:'meeting-edit', query:{id: item.id}}" append class="list-operation">编辑</router-link>
+                  <div v-if="val.type === 'operate'">
+                    <router-link tag="span" :to="{path:'salesman-edit', query:{id: item.id}}" append class="list-operation">编辑</router-link>
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -47,20 +45,15 @@
 
 <script type="text/ecmascript-6">
   import API from '@api'
-  const PAGE_NAME = 'COURSE_LIST'
-  const TITLE = '会议列表'
+  const PAGE_NAME = 'SALESMAN_LIST'
+  const TITLE = '分销员列表'
 
   const LIST_HEADER = {
-    name: {
-      name: '会议名称',
-      before: {
-        img: 'goods_cover_image'
-      }
-    },
-    created_at: { name: '创建时间' },
-    status: { name: '状态', type: "switch" },
-    price: { name: '票价' },
-    sale_count: { name: '已售数/总库存数' },
+    name: { name: '分销员名称' },
+    mobile: { name: '帐号' },
+    invite_num: { name: '累计邀请人数' },
+    turnover_num: { name: '累计成交人数' },
+    created_at: { name: '加入时间' },
     operate_text: { name: '操作', type: "operate", style: 'max-width: 99px; padding-right: 0' }
   }
 
@@ -76,56 +69,38 @@
         statusList: [],
         total: 0,
         filter: {
+          role_type: 1,
           keyword: '',
-          status: '',
           page: 1,
           limit: 10
         }
       }
     },
     beforeRouteEnter(to, from, next) {
-      Promise.all([API.Meeting.getMeetingList({
+      API.Salesman.getSalesmanList({
         data: {
+          role_type: 1,
           keyword: '',
-          status: '',
           page: 1,
           limit: 10,
         },
         loading: true
-      }), API.Meeting.getMeetingStatus({
-        data: {
-          keyword: '',
-        }
-      })]).then(res => {
+      }).then(res => {
         next(vw => {
-          vw.setData(res[0])
-          vw.setStatus(res[1])
+          vw.setData(res)
         })
       })
     },
     methods: {
       updatePage() {
         this._getList()
-        this._getStatus()
       },
       setData(res) {
         this.list = res.data
         this.total = res.meta.total
       },
-      setStatus(res) {
-        this.statusList = res.data
-      },
-      _getStatus() {
-        API.Meeting.getMeetingStatus({
-          data: {
-            keyword: this.filter.keyword
-          }
-        }).then(res => {
-          this.statusList = res.data
-        })
-      },
       _getList() {
-        API.Meeting.getMeetingList({
+        API.Salesman.getSalesmanList({
           data: this.filter
         }).then(res => {
           this.setData(res)
@@ -137,9 +112,9 @@
       },
       deleteBtn(item, idx) {
         this.$confirm.confirm({text: `确定要删除`}).then(() => {
-          API.Meeting.meetingDel({data: {id: item.id}, loading: false})
+          API.Salesman.salesmanDel({data: {id: item.id}, loading: false})
             .then(res => {
-              this.$toast.show('会议删除成功')
+              this.$toast.show('分销员删除成功')
               this.updatePage()
             })
         })
@@ -150,22 +125,6 @@
       },
       pageChange(val) {
         this._getList()
-      },
-      upDownHandle(item, index) {
-        let status = +item.status === 1 ? 0 : 1
-        let text = +item.status === 1 ? '下架' : '上架'
-        // this.$confirm.confirm({text: `确定要${text}`}).then(() => {
-        //   API.Meeting.meetingUpDown({data: {status, id: item.id}})
-        //     .then(res => {
-        //       this.$toast.show(`会议${text}成功`)
-        //       this.updatePage()
-        //     })
-        // })
-        API.Meeting.meetingUpDown({data: {status, id: item.id}})
-          .then(res => {
-            this.$toast.show(`会议${text}成功`)
-            this.updatePage()
-          })
       }
     }
   }

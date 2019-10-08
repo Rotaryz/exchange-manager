@@ -4,7 +4,7 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="会议名称" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <base-input v-model="msg.name" :limit="20"></base-input>
+        <base-input v-model="msg.name" :limit="20" placeholder="输入会议名称"></base-input>
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
       <base-form-item label="会议描述"
@@ -15,6 +15,16 @@
                       verticalAlign="top"
       >
         <base-input v-model="msg.description" :limit="100" type="textarea" :textareaHeight="120" placeholder="输入会议描述"></base-input>
+      </base-form-item>
+
+      <base-form-item label="票价" labelMarginRight="40" labelWidth="82px" labelAlign="right">
+        <base-input v-model="msg.price" type="number" placeholder="输入票价"></base-input>
+        <span class="after-word">元</span>
+        <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
+      </base-form-item>
+      <base-form-item label="总库存数" labelMarginRight="40" labelWidth="82px" labelAlign="right">
+        <base-input v-model="msg.saleable" type="number" placeholder="输入总库存"></base-input>
+        <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
 
       <!--上传封面图-->
@@ -71,9 +81,51 @@
         ></upload>
       </base-form-item>
 
-      <base-form-item label="关联微信号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
+      <!--<base-form-item label="关联微信号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
         <base-input v-model="msg.wechat" :limit="20"></base-input>
-      </base-form-item>
+      </base-form-item>-->
+
+      <title-line title="基本信息" class="top-title"></title-line>
+      <div class="container">
+        <base-form-item label="微信号" verticalAlign="top" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                        labelHeight="44px"
+        >
+          <div class="wechat-content">
+            <div class="wechat-list">
+              <div class="wechat-title">
+                <span class="left-item"><span class="tag">*</span>头像</span>
+                <span class="right-item"><span class="tag">*</span>微信号码</span>
+              </div>
+              <div v-for="(item, index) in msg.meeting_wechats" :key="index" class="wechat">
+                <span class="left-item">
+                  <upload :data.sync="item.image_url"
+                          addStyle="width: 36px; height: 36px;"
+                          imgStyle="width: 36px; height: 36px"
+                          :multiple="false"
+                          inline
+                          tip=""
+                          @successImage="addWechatImage($event, index)"
+                  >
+                    <div slot="icon" class="upload-add-icon"></div>
+                  </upload>
+                </span>
+                <p class="right-item">
+                  <base-input
+                    v-model="item.wechat"
+                    type="number"
+                    placeholder=""
+                    width="300"
+                    height="36"
+                    inputStyle="border-radius: 0"
+                  ></base-input>
+                  <span v-if="index > 0" class="delete" @click="delWechatItem(index)"></span>
+                </p>
+              </div>
+            </div>
+            <base-button type="primary" plain @click="addWechatItem"><span class="add-icon"></span>添加微信</base-button>
+          </div>
+        </base-form-item>
+      </div>
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
@@ -118,10 +170,13 @@
         msg: {
           name: '',
           description: '',
+          price: '',
+          saleable: '',
           wechat: '',
           banner_images: [],
           banner_videos: [],
-          detail_images: []
+          detail_images: [],
+          meeting_wechats: [{image_url: ''}]
         },
         id: '',
         isSubmit: false
@@ -164,6 +219,29 @@
         })
         this.msg.detail_images = [...this.msg.detail_images, ...arr]
         this.msg.detail_images = this.msg.detail_images.slice(0, 15)
+      },
+      addWechatImage(data, index) {
+        this.$set(
+          this.msg.meeting_wechats,
+          index,
+          {
+            id: 0,
+            image_url: data.data.url,
+            image_id: data.data.id,
+            wechat: this.msg.meeting_wechats[index].wechat || ''
+          }
+        )
+      },
+      addWechatItem() {
+        if (this.msg.meeting_wechats.length > 2) return
+        let arr = JSON.parse(JSON.stringify(this.msg.meeting_wechats))
+        arr.push({image_url: ''})
+        this.$set(this.msg, 'meeting_wechats', arr)
+      },
+      delWechatItem(index) {
+        let arr = JSON.parse(JSON.stringify(this.msg.meeting_wechats))
+        arr.splice(index, 1)
+        this.$set(this.msg, 'meeting_wechats', arr)
       },
       cancelBtn() {
         this.$router.back()
@@ -225,6 +303,16 @@
             toast: ['请输入会议描述']
           },
           {
+            target: 'price',
+            type: ['length'],
+            toast: ['请输入票价']
+          },
+          {
+            target: 'saleable',
+            type: ['length'],
+            toast: ['请输入总库存数']
+          },
+          {
             target: 'banner_images',
             type: ['length'],
             toast: ['请添加封面图']
@@ -245,11 +333,12 @@
             let item = testConfig[i]
             switch (item.type[j]) {
             case 'length':
-              if (this.msg[item.target][j] instanceof String && !this.msg[item.target][j].trim().length) {
+              // console.log(this.msg[item.target], this.msg[item.target].trim().length, item.target, 234)
+              if (this.msg[item.target][j] instanceof String && !this.msg[item.target].trim().length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false
-              } else if (this.msg[item.target][j] instanceof Array && !this.msg[item.target][j].length) {
+              } else if (this.msg[item.target][j] instanceof Array && !this.msg[item.target].length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false
@@ -273,4 +362,54 @@
     .container
       padding: 24px 20px 8px 30px
       background-color: $color-white
+    .after-word
+      margin-left: 10px
+
+
+    .container
+      margin-bottom: 40px
+    .wechat-list
+      border: 1px solid $color-line
+      background: #F4F8F9
+      color: #000035
+      font-size: $font-size-14
+      font-family: $font-family-regular
+      margin-bottom: 20px
+      .wechat-title
+        border-bottom: 1px solid $color-line
+        padding: 0 20px
+        display: flex
+        align-items: center
+        height: 44px
+        width: 580px
+        .tag
+          content: "*"
+          color: #FF6F79
+
+      .wechat
+        display: flex
+        align-items: center
+        padding: 0 20px
+        height: 60px
+        width: 580px
+        border-bottom: 1px solid $color-line
+        &:last-child
+          border-bottom: 0
+        .delete
+          width: 14px
+          height: 14px
+          display: inline-block
+          margin-left: 10px
+          background: url('./icon-delet_hover@2x.png')
+          background-size: 100% 100%
+
+      .left-item
+        width: 120px
+
+
+
+
+    .add-icon
+      margin-left: 0
+      margin-right: 4px
 </style>
