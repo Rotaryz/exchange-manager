@@ -7,12 +7,12 @@
         <base-input v-model="userInfo.name" :limit="20"></base-input>
       </base-form-item>
       <base-form-item label="手机号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <div v-if="id" class="money">{{userInfo.mobile}}</div>
+        <div v-if="id" class="val-text">{{userInfo.mobile}}</div>
         <base-input v-else v-model="userInfo.mobile" type="number"></base-input>
       </base-form-item>
       <base-form-item label="角色类型" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <div v-if="id" class="money">{{userInfo.role_type_text}}</div>
-        <radio v-else v-model="userInfo.role_type" :list="roleTypeList" @change="roleTypeChange"></radio>
+        <div v-if="id" class="val-text">{{userInfo.role_type_text}}</div>
+        <radio v-else v-model="userInfo.role_type" :list="roleTypeList"></radio>
       </base-form-item>
     </div>
     <base-footer>
@@ -42,8 +42,8 @@
     data() {
       return {
         id: this.$route.query.id||'',
-        userInfo: {mobile: '', name: '', role_type: ''},
-        roleTypeList: [{label: '分销员', id: 1}, {label: '客服人员', id: 2}]
+        userInfo: {mobile: '', name: '', role_type: 2},
+        roleTypeList: [{label: '客服人员', id: 2}]
       }
     },
     mounted() {
@@ -57,20 +57,6 @@
             if(!res.data) return
             this.userInfo = res.data
           })
-      },
-      // 切换价格定价方式   自定义 系统计算
-      roleTypeChange() {
-        // this.edit.goods_specs.purchase.forEach(item => {
-        //   item.level_price_type = this.levelPriceType
-        //   if (!this.levelPriceType) {
-        //     let standardPrice = Number(item.price) * this.priceLevelRatioList.standard_ratio
-        //     let versatilePrice = Number(item.price) * this.priceLevelRatioList.versatile_ratio
-        //     let partnerPrice = Number(item.price) * this.priceLevelRatioList.partner_ratio
-        //     item.standard_price = standardPrice < 1 ? 1 : Math.round(standardPrice)
-        //     item.versatile_price = versatilePrice < 1 ? 1 : Math.round(versatilePrice)
-        //     item.partner_price = partnerPrice < 1 ? 1 : Math.round(partnerPrice)
-        //   }
-        // })
       },
       // 确认修改姓名之前的检查
       submitChecker() {
@@ -120,4 +106,7 @@
     .container
       padding: 24px 20px 8px 30px
       background-color: $color-white
+      .base-form-item .val-text
+        font-size: 14px
+        font-family: $font-family-regular
 </style>

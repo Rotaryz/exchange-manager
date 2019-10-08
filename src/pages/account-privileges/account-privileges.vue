@@ -93,7 +93,6 @@
         .then((res) => {
           next((vx) => {
             vx.setData(res)
-            // vx._createAccount()
           })
         })
     },
@@ -168,16 +167,11 @@
 
   .account-privileges
     width: 100%
-    padding-top: 50px
     position: relative
     display: flex
     flex-direction: column
-    .tab-top
-      position: fixed
-      top: 50px
-      left: 200px
-      z-index: 99
   .content-wrap
+    padding: 20px
     flex: 1
     display: flex
     flex-direction: column

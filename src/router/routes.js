@@ -547,7 +547,8 @@ export default [
                 meta: {
                   title: '账号权限', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['账号权限'] // 面包屑标题
+                  crumbs: ['账号权限'], // 面包屑标题
+                  style:{padding:0} // 最外层路由盒子的自定义样式
                 },
                 children: [
                   {
