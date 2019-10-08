@@ -36,5 +36,10 @@ export default {
     const url = `/exchange-platform/platform/meeting/meeting/update`
     return request.put({url, loading: false, ...args})
   },
+  // ---- 课程列表 ----
+  getCourseList(args) {
+    const url = `/exchange-platform/platform/course/course/index`
+    return request.get({url, loading: false, ...args})
+  },
 
 }
