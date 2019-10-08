@@ -7,6 +7,9 @@
         </base-form-item>
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-product_list@2x.png')" title="客户列表">
+        <base-button plain buttonStyle="width: 92px" @click="downExcel">
+          导出Excel
+        </base-button>
       </base-table-tool>
       <div class="table-content">
         <div class="big-list">
@@ -38,8 +41,10 @@
 <script type="text/ecmascript-6">
   // import * as Helpers from './modules/helpers'
   import API from '@api'
+  import storage from 'storage-controller'
   const PAGE_NAME = 'COURSE_CUSTOMER_LIST'
   const TITLE = '客户列表'
+  let ORDER_EXCEL_URL = '/exchange-platform/platform/business-customer/customer/index'
 
   const LIST_HEADER = {
     nickname: {
@@ -48,8 +53,11 @@
         img: 'avatar'
       }
     },
-    address: { name: '地区', type: 'address' },
     sex: { name: '性别' },
+    address: { name: '地区', type: 'address' },
+    mobile: { name: '手机号', type: 'mobile' },
+    browse_course_count: { name: '浏览课程数', type: 'browse_course_count' },
+    order_count: { name: '下单数', type: 'order_count' },
     created_at: { name: '注册时间', style: 'max-width: 144px; padding-right: 0'}
   }
 
@@ -67,7 +75,22 @@
           keyword: '',
           page: 1,
           limit: 10
+        },
+        excel: ORDER_EXCEL_URL
+      }
+    },
+    computed: {
+      excelUrl() {
+        let data = {
+          keyword: this.filter.keyword,
+          access_token: storage.get('auth.token', '')
         }
+        let search = []
+        for (let key in data) {
+          search.push(`${key}=${data[key]}`)
+        }
+        let url = `${process.env.VUE_APP_API}${this.excel}?${search.join('&')}`
+        return url
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -113,6 +136,10 @@
       },
       pageChange(val) {
         this._getList({loading: false})
+      },
+      // 导出Excel
+      downExcel() {
+        window.open(this.excelUrl, '_blank')
       }
     }
   }
