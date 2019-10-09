@@ -8,6 +8,7 @@
       </base-layout-top>
       <base-table-tool :iconUrl="require('./icon-order_list@2x.png')" title="订单列表">
         <base-status-tab slot="left" :statusList="statusList" :value.sync="filter.status" @change="statusChange"></base-status-tab>
+        <base-button plain @click="exportExcel">导出Excel</base-button>
       </base-table-tool>
       <div class="table-content">
         <div class="big-list">
@@ -38,6 +39,7 @@
 
 <script type="text/ecmascript-6">
   import API from '@api'
+  import storage from 'storage-controller'
   const PAGE_NAME = 'ECONOMY_ORDER'
   const TITLE = '订单列表'
 
@@ -129,6 +131,17 @@
       },
       pageChange() {
         this._getList({loading: false})
+      },
+      // 导出
+      exportExcel() {
+        const EXCEL_URL = '/exchange-platform/platform/meeting-order/order/export'
+        let _params = {...this.filter, access_token: storage.get('auth.token', '')}
+        let search = []
+        for (let key in _params) {
+          search.push(`${key}=${_params[key]}`)
+        }
+        let url = `${process.env.VUE_APP_API}${EXCEL_URL}?${search.join('&')}`
+        window.open(url, '_blank')
       }
     }
   }
