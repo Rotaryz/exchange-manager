@@ -25,7 +25,6 @@
                 <div v-for="(val,key) in accountHeader" :key="key" class="list-item" :style="val.style">
                   <div v-if="val.type === 'operate'">
                     <router-link tag="span" :to="{path:'account-edit',query:{id:item.id}}" class="list-operation" append>编辑</router-link>
-<!--                    <span class="list-operation" @click="editBtn(item)">编辑</span>-->
                     <span class="list-operation" @click="deleteBtn(item,i)">删除</span>
                   </div>
                   <template v-else>
@@ -59,9 +58,6 @@
             </template>
             <base-blank v-else></base-blank>
           </div>
-          <!--<div class="pagination-box">-->
-          <!--  <base-pagination :total="total" :pageSize="filter.limit" :currentPage.sync="filter.page" @pageChange="pageChange"></base-pagination>-->
-          <!--</div>-->
         </div>
       </div>
     </div>
@@ -124,9 +120,6 @@
         this.time = []
         this._getList({loading: true})
       },
-      updatePage() {
-        this._getList({loading: false})
-      },
       // set列表数据
       setData(res) {
         if(!res.data) return
@@ -135,10 +128,19 @@
       },
       // 获取列表数据
       _getList(other) {
-        let apiArr = ['getAccountList','getRoleList']
-        API.Business[apiArr[this.tabIndex]]({data: this.filter, ...other}).then(res => {
+        let apiName = 'getAccountList'
+        let params = this.filter
+        if (this.tabIndex === 1) {
+          apiName = 'getRoleList'
+          params = {}
+        }
+        API.Business[apiName]({data: params, ...other}).then(res => {
           this.setData(res)
         })
+      },
+      // 更新页面数据
+      updatePage() {
+        this._getList({loading: false})
       },
       // 操作-删除按钮
       deleteBtn(item) {

@@ -4,15 +4,11 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="姓名" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <base-input v-model="userInfo.name" :limit="20"></base-input>
+        <base-input v-model="userInfo.name" :limit="20" placeholder="请输入客服人员名称"></base-input>
       </base-form-item>
-      <base-form-item label="手机号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
+      <base-form-item label="账号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
         <div v-if="id" class="val-text">{{userInfo.mobile}}</div>
-        <base-input v-else v-model="userInfo.mobile" type="number"></base-input>
-      </base-form-item>
-      <base-form-item label="角色类型" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <div v-if="id" class="val-text">{{userInfo.role_type_text}}</div>
-        <radio v-else v-model="userInfo.role_type" :list="roleTypeList"></radio>
+        <base-input v-else v-model="userInfo.mobile" type="number" placeholder="请输入手机号"></base-input>
       </base-form-item>
     </div>
     <base-footer>
@@ -26,7 +22,6 @@
   // import * as Helpers from './modules/helpers'
   import API from '@api'
   import TitleLine from "../../components/title-line/title-line"
-  import Radio from "../../components/zb-radio/zb-radio"
   const PAGE_NAME = 'ACCOUNT_EDIT'
   const TITLE = '账号'
 
@@ -36,14 +31,12 @@
       title: TITLE
     },
     components: {
-      Radio,
       TitleLine
     },
     data() {
       return {
         id: this.$route.query.id||'',
-        userInfo: {mobile: '', name: '', role_type: 2},
-        roleTypeList: [{label: '客服人员', id: 2}]
+        userInfo: {mobile: '', name: '', role_type: 2}
       }
     },
     mounted() {
@@ -68,10 +61,6 @@
           this.$toast.show('请填写手机号')
           return
         }
-        if (!this.userInfo.role_type) {
-          this.$toast.show('请选择角色类型')
-          return
-        }
         this.editSubmit()
       },
       // 新建/编辑账号
@@ -83,10 +72,8 @@
         API.Business[apiName]({data: this.userInfo})
           .then(res => {
             this.$toast.show('保存成功！')
-            setTimeout(()=>{
-              this.$emit('update')
-              this.$router.go(-1)
-            })
+            this.$emit('update')
+            this.$router.go(-1)
           })
       },
       // 取消 返回列表
