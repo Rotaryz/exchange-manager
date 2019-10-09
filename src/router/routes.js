@@ -563,7 +563,7 @@ export default [
                       title: '新建分销员', // 页面标题
                       type: 'sec-menu', // 二级标识
                       variableIndex: 1,
-                      crumbs: ['分销员列表', '新建分销员'] // 面包屑标题
+                      crumbs: ['分销员列表', '分销员'] // 面包屑标题
                     }
                   }
                 ]
