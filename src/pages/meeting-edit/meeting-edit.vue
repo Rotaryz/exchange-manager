@@ -7,14 +7,25 @@
         <base-input v-model="msg.name" :limit="20" placeholder="输入会议名称"></base-input>
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
-      <base-form-item label="会议描述"
+
+      <base-form-item label="会议时间"
                       :required="false"
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
                       verticalAlign="top"
       >
-        <base-input v-model="msg.description" :limit="100" type="textarea" :textareaHeight="120" placeholder="输入会议描述"></base-input>
+        <base-input v-model="msg.meeting_time" placeholder=""></base-input>
+      </base-form-item>
+
+      <base-form-item label="会议地点"
+                      :required="false"
+                      labelMarginRight="40"
+                      labelWidth="82px"
+                      labelAlign="right"
+                      verticalAlign="top"
+      >
+        <base-input v-model="msg.description" placeholder=""></base-input>
       </base-form-item>
 
       <base-form-item label="票价" labelMarginRight="40" labelWidth="82px" labelAlign="right">
@@ -170,6 +181,7 @@
         msg: {
           name: '',
           description: '',
+          meeting_time: '',
           price: '',
           saleable: '',
           banner_images: [],

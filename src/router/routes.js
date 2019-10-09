@@ -379,7 +379,7 @@ export default [
           },
           {
             path: 'agent',
-            name: 'agent',
+            name: 'agents',
             text: '代理商结算',
             component: {render: (h) => h('router-view')},
             children: [
@@ -513,7 +513,7 @@ export default [
                 children: [
                   {
                     path: '/meeting-manager/marketing/salesman-list/salesman-edit',
-                    name: 'meeting-edit',
+                    name: 'salesman-edit',
                     component: () => import('@pages/salesman-edit/salesman-edit'),
                     meta: {
                       title: '新建分销员', // 页面标题
@@ -528,7 +528,7 @@ export default [
           },
           {
             path: 'customer',
-            name: 'customer',
+            name: 'customers',
             text: '客户',
             component: {render: (h) => h('router-view')},
             children: [
