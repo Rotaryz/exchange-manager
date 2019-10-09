@@ -7,7 +7,7 @@
         <base-input v-model="msg.name" :limit="20" placeholder="请输入分销员名称"></base-input>
       </base-form-item>
       <base-form-item label="帐号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <base-input v-model="msg.mobile" :limit="20" placeholder="请输入手机号"></base-input>
+        <base-input v-model="msg.mobile" placeholder="请输入手机号" type="number"></base-input>
         <span class="after-word">使用该帐号可登陆客户端</span>
       </base-form-item>
     </div>
@@ -165,7 +165,7 @@
           {
             target: 'name',
             type: ['length'],
-            toast: ['请输入会议名称']
+            toast: ['请输入分销员名称']
           },
           {
             target: 'mobile',
@@ -178,11 +178,11 @@
             let item = testConfig[i]
             switch (item.type[j]) {
             case 'length':
-              if (this.msg[item.target][j] instanceof String && !this.msg[item.target][j].trim().length) {
+              if ((this.msg[item.target].constructor === String) && !this.msg[item.target].trim().length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false
-              } else if (this.msg[item.target][j] instanceof Array && !this.msg[item.target][j].length) {
+              } else if ((this.msg[item.target].constructor === Array) && !this.msg[item.target].length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false

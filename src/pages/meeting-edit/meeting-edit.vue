@@ -172,7 +172,6 @@
           description: '',
           price: '',
           saleable: '',
-          wechat: '',
           banner_images: [],
           banner_videos: [],
           detail_images: [],
@@ -283,6 +282,15 @@
         if (this.isSubmit) return
         let checkResult = this.checkForm()
         if (!checkResult) return
+        for (let i in this.msg.meeting_wechats) {
+          if (!this.msg.meeting_wechats[i].image_id) {
+            this.$toast.show('请添加微信头像')
+            return
+          } else if (!this.msg.meeting_wechats[i].wechat) {
+            this.$toast.show('请填写微信号')
+            return
+          }
+        }
         this.isSubmit = true
         if (this.id) {
           this.courseEdit()
@@ -297,11 +305,11 @@
             type: ['length'],
             toast: ['请输入会议名称']
           },
-          {
-            target: 'description',
-            type: ['length'],
-            toast: ['请输入会议描述']
-          },
+          // {
+          //   target: 'description',
+          //   type: ['length'],
+          //   toast: ['请输入会议描述']
+          // },
           {
             target: 'price',
             type: ['length'],
@@ -321,24 +329,18 @@
             target: 'detail_images',
             type: ['length'],
             toast: ['请添加详情图']
-          },
-          {
-            target: 'wechat',
-            type: ['length'],
-            toast: ['请输入关联微信号']
-          },
+          }
         ]
         for (let i = 0; i < testConfig.length; i++) {
           for (let j = 0; j < testConfig[i].type.length; j++) {
             let item = testConfig[i]
             switch (item.type[j]) {
             case 'length':
-              // console.log(this.msg[item.target], this.msg[item.target].trim().length, item.target, 234)
-              if (this.msg[item.target][j] instanceof String && !this.msg[item.target].trim().length) {
+              if ((this.msg[item.target].constructor === String) && !this.msg[item.target].trim().length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false
-              } else if (this.msg[item.target][j] instanceof Array && !this.msg[item.target].length) {
+              } else if ((this.msg[item.target].constructor === Array) && !this.msg[item.target].length) {
                 this.$toast.show(item.toast[j])
                 this.isSubmit = false
                 return false
