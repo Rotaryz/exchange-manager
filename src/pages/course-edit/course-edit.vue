@@ -132,8 +132,7 @@
           name: '',
           description: '',
           banner_images: [],
-          detail_images: [],
-          wechat: 'eleven'
+          detail_images: []
         },
         id: '',
         isSubmit: false,

@@ -44,7 +44,7 @@
   import storage from 'storage-controller'
   const PAGE_NAME = 'COURSE_CUSTOMER_LIST'
   const TITLE = '客户列表'
-  let ORDER_EXCEL_URL = '/exchange-platform/platform/business-customer/customer/index'
+  let CUSTOMER_EXCEL_URL = '/exchange-platform/platform/business-customer/customer/export'
 
   const LIST_HEADER = {
     nickname: {
@@ -76,7 +76,7 @@
           page: 1,
           limit: 10
         },
-        excel: ORDER_EXCEL_URL
+        excel: CUSTOMER_EXCEL_URL
       }
     },
     computed: {
