@@ -4,7 +4,7 @@
     <title-line title="基本信息" class="top-title"></title-line>
     <div class="container base-info-cont">
       <base-form-item label="分销员名称" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <base-input v-model="msg.name" :limit="20" placeholder="请输入分销员名称"></base-input>
+        <base-input v-model="msg.name" :limit="20" placeholder="请输入分销员名称" :disabled="id > 0"></base-input>
       </base-form-item>
       <base-form-item label="帐号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
         <base-input v-model="msg.mobile" placeholder="请输入手机号" type="number"></base-input>
@@ -20,7 +20,6 @@
 
 <script type="text/ecmascript-6">
   import TitleLine from "../../components/title-line/title-line"
-  // import {objDeepCopy} from '@utils/common'
 
   import API from '@api'
   const PAGE_NAME = 'COURSE_EDIT'

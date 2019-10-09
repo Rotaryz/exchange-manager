@@ -54,7 +54,7 @@
     invite_num: { name: '累计邀请人数' },
     turnover_num: { name: '累计成交人数' },
     created_at: { name: '加入时间' },
-    operate_text: { name: '操作', type: "operate", style: 'max-width: 99px; padding-right: 0' }
+    operate_text: { name: '操作', type: "operate", style: 'max-width: 76px; padding-right: 0' }
   }
 
   export default {
