@@ -13,9 +13,9 @@
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
-                      verticalAlign="top"
       >
-        <base-input v-model="msg.meeting_time" placeholder=""></base-input>
+        <date-select datePlaceholder="请选择时间" textName="" dateType="datetime" dateStyle="width:400px; height: 44px" :infoTime.sync="msg.meeting_time"></date-select>
+        <!--<base-input v-model="msg.meeting_time" placeholder=""></base-input>-->
       </base-form-item>
 
       <base-form-item label="会议地点"
@@ -23,7 +23,6 @@
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
-                      verticalAlign="top"
       >
         <base-input v-model="msg.description" placeholder=""></base-input>
       </base-form-item>
@@ -123,7 +122,7 @@
                 <p class="right-item">
                   <base-input
                     v-model="item.wechat"
-                    type="number"
+                    type="text"
                     placeholder=""
                     width="300"
                     height="36"
@@ -148,6 +147,7 @@
 <script type="text/ecmascript-6">
   import TitleLine from "../../components/title-line/title-line"
   import Upload from '../../components/zb-upload/zb-upload.vue'
+  import DateSelect from '@components/date-select/date-select.vue'
   // import {objDeepCopy} from '@utils/common'
 
   import API from '@api'
@@ -161,7 +161,8 @@
     },
     components: {
       TitleLine,
-      Upload
+      Upload,
+      DateSelect
     },
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
