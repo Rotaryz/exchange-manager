@@ -481,6 +481,30 @@ export default [
             text: '内容',
             component: {render: (h) => h('router-view')},
             children: [
+              // 课程列表
+              {
+                path: '/meeting-manager/content/course-list',
+                name: 'course-list',
+                component: () => import('@pages/course-list/course-list'),
+                meta: {
+                  title: '课程列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['课程列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/meeting-manager/content/course-list/course-edit',
+                    name: 'meeting-edit',
+                    component: () => import('@pages/course-edit/course-edit'),
+                    meta: {
+                      title: '新建课程', // 页面标题
+                      type: 'sec-menu', // 二级标识
+                      variableIndex: 1,
+                      crumbs: ['课程列表', '课程'] // 面包屑标题
+                    }
+                  }
+                ]
+              },
               // 页面布局
               {
                 path: '/meeting-manager/content/meeting-page',
@@ -490,6 +514,26 @@ export default [
                   title: '页面布局', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['页面布局'] // 面包屑标题
+                }
+              }
+            ]
+          },
+          // 订单
+          {
+            path: 'order',
+            name: 'order',
+            text: '订单',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 订单列表
+              {
+                path: '/meeting-manager/order/economy-order',
+                name: 'economy-order',
+                component: () => import('@pages/economy-order/economy-order'),
+                meta: {
+                  title: '订单列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['订单列表'] // 面包屑标题
                 }
               }
             ]
@@ -542,6 +586,39 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['客户列表'] // 面包屑标题
                 }
+              }
+            ]
+          },
+          {
+            path: 'setting',
+            name: 'setting',
+            text: '设置',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 账号权限
+              {
+                path: '/meeting-manager/setting/account-privileges',
+                name: 'account-privileges',
+                component: () => import('@pages/account-privileges/account-privileges'),
+                meta: {
+                  title: '账号权限', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['账号权限'], // 面包屑标题
+                  style:{padding:0} // 最外层路由盒子的自定义样式
+                },
+                children: [
+                  {
+                    path: '/meeting-manager/setting/account-privileges/account-edit',
+                    name: 'account-edit',
+                    component: () => import('@pages/account-edit/account-edit'),
+                    meta: {
+                      title: '账号', // 页面标题
+                      type: 'sec-menu', // 二级标识
+                      variableIndex: 1,
+                      crumbs: ['账号权限', '账号'] // 面包屑标题
+                    }
+                  }
+                ]
               }
             ]
           }

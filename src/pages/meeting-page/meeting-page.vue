@@ -60,21 +60,21 @@
               <span class="close hand" @click="hideModalBox"></span>
             </div>
             <!--会议列表-->
-            <div v-if="modalType === 3013" class="goods-modal">
+            <div v-if="modalType === 3013 || modalType === 3014" class="goods-modal">
               <div class="shade-tab">
                 <base-search
                   v-model="modalParams.keyword"
                   :width="244"
                   :isShowTip="false"
                   boxStyle="margin-left: 0"
-                  placeholder="请输入会议名称"
+                  :placeholder="'请输入'+modalTypeList[tabIndex].name"
                   @search="modalSearch"
                 ></base-search>
               </div>
               <div class="goods-content article">
                 <div class="goods-item goods-header">
                   <div class="goods-text"></div>
-                  <div class="goods-text">会议名称</div>
+                  <div class="goods-text">{{modalTypeList[tabIndex].name}}</div>
                 </div>
                 <div class="goods-list">
                   <div v-for="(item, index) in courseList" :key="index" class="goods-item hand" @click="modalSelect(item, index)">
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <div v-if="modalParams.total > 0" class="page-box">
-                <base-pagination ref="pages" :currentPage.sync="modalParams.page" :total="modalParams.total" :pageSize="6" @pageChange="_getCourse"></base-pagination>
+                <base-pagination ref="pages" :currentPage.sync="modalParams.page" :total="modalParams.total" :pageSize="6" @pageChange="_getCourseList"></base-pagination>
               </div>
             </div>
             <!--小程序链接-->
@@ -141,7 +141,7 @@
         },
         curItem: {},
         showModal: false,
-        modalTypeList: [{title: '选择会议', status: 3013}, {title: '小程序链接', status: 3005}],
+        modalTypeList: [{title: '选择会议', name: '会议名称', status: 3013}, {title: '选择课程', name: '课程名称', status: 3014}, {title: '小程序链接', status: 3005}],
         tabIndex: 0,
         lineStyle: {
           left: 0,
@@ -200,9 +200,10 @@
         this.$set(this.curItem.detail, 'image_id', res.data.id)
         this.$forceUpdate()
       },
-      // 获取会议列表
-      _getCourse() {
-        API.Meeting.getMeetingList({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
+      // 获取会议/课程列表
+      _getCourseList() {
+        let apiArr = ['getMeetingList','getCourseList']
+        API.Meeting[apiArr[this.tabIndex]]({data: {page: this.modalParams.page, limit: 6, keyword: this.modalParams.keyword, status: 1}}).then((res) => {
           this.courseList = res.data
           this.modalParams.total = res.meta.total
         })
@@ -210,13 +211,8 @@
       // 弹窗显示
       showModalBox() {
         // 重置弹窗的参数
-        this.modalParams = {
-          page: 1,
-          total: 0,
-          link: '',
-          keyword: ''
-        }
-        this._getCourse()
+        this.modalParams = {page: 1, total: 0, link: '', keyword: ''}
+        this._getCourseList()
         this.showModal = true
       },
       hideModalBox() {
@@ -226,14 +222,21 @@
       },
       // 弹窗切换tab
       setModalType(index, e = {target: {offsetLeft: 0, offsetWidth: '64'}}) {
+        // 重置弹窗的参数
+        this.modalParams = {page: 1, total: 0, link: '', keyword: ''}
+        this.courseList = []
+        this.selectItem = {}
+        this.selectIndex = -1
+
         this.tabIndex = index
         this.lineStyle = {left: e.target.offsetLeft + 'px', width: e.target.offsetWidth + 'px'}
         this.modalType = this.modalTypeList[index].status
+        this._getCourseList()
       },
       // 弹窗的搜索
       modalSearch() {
         this.modalParams.page = 1
-        this._getCourse()
+        this._getCourseList()
       },
       // 弹窗的单选框
       modalSelect(item, index) {
@@ -259,6 +262,7 @@
           this.curItem.detail.url = this.modalParams.link
           break
         case 3013:
+        case 3014:
           this.curItem.detail.title = this.selectItem.name
           this.curItem.detail.object_id = this.selectItem.id
           this.curItem.detail.image_url = this.selectItem.cover_image
@@ -602,9 +606,9 @@
           background: #F4F8F9
         .goods-img
           margin-right: 10px
-          width: 40px
-          height: @width
-          min-height: @width
+          width: 75px
+          height: 42px
+          min-height: @height
           min-width: @width
           object-fit: cover
           overflow: hidden
