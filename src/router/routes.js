@@ -481,6 +481,30 @@ export default [
             text: '内容',
             component: {render: (h) => h('router-view')},
             children: [
+              // 课程列表
+              {
+                path: '/meeting-manager/content/course-list',
+                name: 'course-list',
+                component: () => import('@pages/course-list/course-list'),
+                meta: {
+                  title: '课程列表', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['课程列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/meeting-manager/content/course-list/course-edit',
+                    name: 'meeting-edit',
+                    component: () => import('@pages/course-edit/course-edit'),
+                    meta: {
+                      title: '新建课程', // 页面标题
+                      type: 'sec-menu', // 二级标识
+                      variableIndex: 1,
+                      crumbs: ['课程列表', '课程'] // 面包屑标题
+                    }
+                  }
+                ]
+              },
               // 页面布局
               {
                 path: '/meeting-manager/content/meeting-page',
@@ -511,6 +535,38 @@ export default [
                   type: 'sec-menu', // 二级标识
                   crumbs: ['订单列表'] // 面包屑标题
                 }
+              }
+            ]
+          },
+          {
+            path: 'marketing',
+            name: 'marketing',
+            text: '营销',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 分销员
+              {
+                path: '/meeting-manager/marketing/salesman-list',
+                name: 'salesman-list',
+                component: () => import('@pages/salesman-list/salesman-list'),
+                meta: {
+                  title: '分销员', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['分销员列表'] // 面包屑标题
+                },
+                children: [
+                  {
+                    path: '/meeting-manager/marketing/salesman-list/salesman-edit',
+                    name: 'meeting-edit',
+                    component: () => import('@pages/salesman-edit/salesman-edit'),
+                    meta: {
+                      title: '新建分销员', // 页面标题
+                      type: 'sec-menu', // 二级标识
+                      variableIndex: 1,
+                      crumbs: ['分销员列表', '分销员'] // 面包屑标题
+                    }
+                  }
+                ]
               }
             ]
           },
