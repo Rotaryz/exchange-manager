@@ -114,6 +114,7 @@
                           :multiple="false"
                           inline
                           tip=""
+                          @delete="deleteWechat($event, index)"
                           @successImage="addWechatImage($event, index)"
                   >
                     <div slot="icon" class="upload-add-icon"></div>
@@ -244,6 +245,9 @@
           }
         )
       },
+      deleteWechat(num, index) {
+        this.$set(this.msg.meeting_wechats[index], 'image_id', '')
+      },
       addWechatItem() {
         if (this.msg.meeting_wechats.length > 2) return
         let arr = JSON.parse(JSON.stringify(this.msg.meeting_wechats))
@@ -304,6 +308,7 @@
             return
           }
         }
+
         this.isSubmit = true
         if (this.id) {
           this.courseEdit()
