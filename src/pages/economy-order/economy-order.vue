@@ -21,7 +21,8 @@
                 <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
                   <div v-if="val.type === 'status'" class="status-box" :class="[item.status===10?'online':'']">{{item[key]}}</div>
                   <template v-else>
-                    <div class="item-text">{{item[key]}}</div>
+                    <div v-if="(key==='meeting_name'||key==='meeting_num')&&item.detail" class="item-text">{{item.detail[0][key]}}</div>
+                    <div v-else class="item-text">{{item[key]}}</div>
                   </template>
                 </div>
               </div>
@@ -105,7 +106,6 @@
       _getStatus() {
         API.MeetingOrder.getOrderStatistic({
           data: {
-            status: this.filter.status,
             keyword: this.filter.keyword,
           }, loading: false
         }).then(res => {
