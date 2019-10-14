@@ -52,7 +52,7 @@
       },
       valueFormat: {
         type: String, //
-        default: 'yyyy-MM-dd hh:mm:ss'
+        default: 'yyyy-MM-dd HH:mm:ss'
       },
       disabled: {
         type: Boolean,
