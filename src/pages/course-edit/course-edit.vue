@@ -78,7 +78,7 @@
                 </div>
               </div>
               <div class="list-item">
-                <base-input v-model="item.name" :limit="20" width="350"></base-input>
+                <base-input v-model="item.video_name" :limit="20" width="350"></base-input>
                 <img src="./icon-del_2@2x.png" class="item-close hand" @click="delVideoItem(index)">
               </div>
             </div>
@@ -243,7 +243,7 @@
               over = true
               return true
             }
-            if (!this.videoList[i].name) {
+            if (!this.videoList[i].video_name) {
               this.$toast.show(`视频标题不能为空`)
               over = true
               return true
@@ -296,7 +296,7 @@
         this.videoList.splice(index, 1)
       },
       addVideoList() {
-        this.videoList.push({id: '', video_id:'', video_url: '', name: ''})
+        this.videoList.push({id: '', video_id:'', video_url: '', video_name: ''})
       }
     }
   }
