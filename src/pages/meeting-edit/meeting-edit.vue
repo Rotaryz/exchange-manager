@@ -7,14 +7,24 @@
         <base-input v-model="msg.name" :limit="20" placeholder="输入会议名称"></base-input>
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
-      <base-form-item label="会议描述"
+
+      <base-form-item label="会议时间"
                       :required="false"
                       labelMarginRight="40"
                       labelWidth="82px"
                       labelAlign="right"
-                      verticalAlign="top"
       >
-        <base-input v-model="msg.description" :limit="100" type="textarea" :textareaHeight="120" placeholder="输入会议描述"></base-input>
+        <date-select datePlaceholder="请选择时间" textName="" dateType="datetime" dateStyle="width:400px; height: 44px" :infoTime.sync="msg.meeting_time"></date-select>
+        <!--<base-input v-model="msg.meeting_time" placeholder=""></base-input>-->
+      </base-form-item>
+
+      <base-form-item label="会议地点"
+                      :required="false"
+                      labelMarginRight="40"
+                      labelWidth="82px"
+                      labelAlign="right"
+      >
+        <base-input v-model="msg.description" placeholder=""></base-input>
       </base-form-item>
 
       <base-form-item label="票价" labelMarginRight="40" labelWidth="82px" labelAlign="right">
@@ -104,6 +114,7 @@
                           :multiple="false"
                           inline
                           tip=""
+                          @delete="deleteWechat($event, index)"
                           @successImage="addWechatImage($event, index)"
                   >
                     <div slot="icon" class="upload-add-icon"></div>
@@ -112,7 +123,7 @@
                 <p class="right-item">
                   <base-input
                     v-model="item.wechat"
-                    type="number"
+                    type="text"
                     placeholder=""
                     width="300"
                     height="36"
@@ -137,6 +148,7 @@
 <script type="text/ecmascript-6">
   import TitleLine from "../../components/title-line/title-line"
   import Upload from '../../components/zb-upload/zb-upload.vue'
+  import DateSelect from '@components/date-select/date-select.vue'
   // import {objDeepCopy} from '@utils/common'
 
   import API from '@api'
@@ -150,7 +162,8 @@
     },
     components: {
       TitleLine,
-      Upload
+      Upload,
+      DateSelect
     },
     beforeRouteEnter(to, from, next) {
       if (to.query.id) {
@@ -170,6 +183,7 @@
         msg: {
           name: '',
           description: '',
+          meeting_time: '',
           price: '',
           saleable: '',
           banner_images: [],
@@ -231,6 +245,9 @@
           }
         )
       },
+      deleteWechat(num, index) {
+        this.$set(this.msg.meeting_wechats[index], 'image_id', '')
+      },
       addWechatItem() {
         if (this.msg.meeting_wechats.length > 2) return
         let arr = JSON.parse(JSON.stringify(this.msg.meeting_wechats))
@@ -291,6 +308,7 @@
             return
           }
         }
+
         this.isSubmit = true
         if (this.id) {
           this.courseEdit()

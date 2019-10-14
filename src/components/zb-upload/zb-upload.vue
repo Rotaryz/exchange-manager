@@ -203,7 +203,11 @@
     methods: {
       deleteBtn(index) {
         let res = this.data
-        if (Array.isArray(this.data)) res.splice(index, 1)
+        if (Array.isArray(this.data)) {
+          res.splice(index, 1)
+        } else {
+          res = ''
+        }
         this.$emit('update:data', res)
         this.$emit('delete', index)
       },
