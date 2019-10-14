@@ -292,6 +292,7 @@
     margin-right: 20px
     position: relative
     font-size: 0
+    overflow: hidden
     .image
       height: 90px
       width: @height
