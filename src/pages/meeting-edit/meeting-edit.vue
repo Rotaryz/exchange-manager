@@ -33,7 +33,7 @@
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
       <base-form-item label="总库存数" labelMarginRight="40" labelWidth="82px" labelAlign="right">
-        <base-input v-model="msg.saleable" type="number" placeholder="输入总库存"></base-input>
+        <base-input v-model="msg.saleable" type="number" :disabled="id > 0" placeholder="输入总库存"></base-input>
         <!--<base-input v-model="msg.name" :maxlength="20" :limit="20"></base-input>-->
       </base-form-item>
 
