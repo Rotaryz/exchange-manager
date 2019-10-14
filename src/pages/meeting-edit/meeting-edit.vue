@@ -149,9 +149,12 @@
   import TitleLine from "../../components/title-line/title-line"
   import Upload from '../../components/zb-upload/zb-upload.vue'
   import DateSelect from '@components/date-select/date-select.vue'
-  // import {objDeepCopy} from '@utils/common'
-
   import API from '@api'
+
+  const MONEYREG = /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/
+  const COUNTREG = /^[1-9]\d*$/
+
+
   const PAGE_NAME = 'COURSE_EDIT'
   const TITLE = '新建会议'
 
@@ -330,13 +333,13 @@
           // },
           {
             target: 'price',
-            type: ['length'],
-            toast: ['请输入票价']
+            type: ['length', 'price'],
+            toast: ['请输入票价', '请输入大于0且最多两位小数的票价']
           },
           {
             target: 'saleable',
-            type: ['length'],
-            toast: ['请输入总库存数']
+            type: ['length', 'num'],
+            toast: ['请输入总库存数', '请输入正整数的库存数']
           },
           {
             target: 'banner_images',
@@ -363,6 +366,19 @@
                 this.isSubmit = false
                 return false
               }
+              break
+            case 'price':
+              if (!MONEYREG.test(this.msg[item.target])) {
+                this.$toast.show(item.toast[j], 2000)
+                return false
+              }
+              break
+            case 'num':
+              if (!COUNTREG.test(this.msg[item.target])) {
+                this.$toast.show(item.toast[j], 2000)
+                return false
+              }
+              break
             }
           }
         }

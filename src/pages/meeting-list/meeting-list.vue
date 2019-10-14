@@ -53,14 +53,15 @@
   const LIST_HEADER = {
     name: {
       name: '会议名称',
+      style: 'flex: 1.4',
       before: {
         img: 'goods_cover_image'
       }
     },
-    created_at: { name: '创建时间' },
-    status: { name: '状态', type: "switch" },
     price: { name: '票价' },
     sale_count: { name: '已售数/总库存数' },
+    created_at: { name: '创建时间' },
+    status: { name: '状态', type: "switch" },
     operate_text: { name: '操作', type: "operate", style: 'max-width: 99px; padding-right: 0' }
   }
 
