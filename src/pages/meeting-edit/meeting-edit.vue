@@ -24,7 +24,7 @@
                       labelWidth="82px"
                       labelAlign="right"
       >
-        <base-input v-model="msg.description" placeholder=""></base-input>
+        <base-input v-model="msg.description" placeholder="输入会议地点"></base-input>
       </base-form-item>
 
       <base-form-item label="票价" labelMarginRight="40" labelWidth="82px" labelAlign="right">
@@ -94,49 +94,48 @@
       <!--<base-form-item label="关联微信号" labelMarginRight="40" labelWidth="82px" labelAlign="right">
         <base-input v-model="msg.wechat" :limit="20"></base-input>
       </base-form-item>-->
-
-      <title-line title="基本信息" class="top-title"></title-line>
-      <div class="container">
-        <base-form-item label="微信号" verticalAlign="top" labelMarginRight="40" labelWidth="78px" labelAlign="right"
-                        labelHeight="44px"
-        >
-          <div class="wechat-content">
-            <div class="wechat-list">
-              <div class="wechat-title">
-                <span class="left-item"><span class="tag">*</span>头像</span>
-                <span class="right-item"><span class="tag">*</span>微信号码</span>
-              </div>
-              <div v-for="(item, index) in msg.meeting_wechats" :key="index" class="wechat">
-                <span class="left-item">
-                  <upload :data.sync="item.image_url"
-                          addStyle="width: 36px; height: 36px;"
-                          imgStyle="width: 36px; height: 36px"
-                          :multiple="false"
-                          inline
-                          tip=""
-                          @delete="deleteWechat($event, index)"
-                          @successImage="addWechatImage($event, index)"
-                  >
-                    <div slot="icon" class="upload-add-icon"></div>
-                  </upload>
-                </span>
-                <p class="right-item">
-                  <base-input
-                    v-model="item.wechat"
-                    type="text"
-                    placeholder=""
-                    width="300"
-                    height="36"
-                    inputStyle="border-radius: 0"
-                  ></base-input>
-                  <span v-if="index > 0" class="delete" @click="delWechatItem(index)"></span>
-                </p>
-              </div>
+    </div>
+    <title-line title="联系方式" class="top-title"></title-line>
+    <div class="container">
+      <base-form-item label="微信号" verticalAlign="top" labelMarginRight="40" labelWidth="78px" labelAlign="right"
+                      labelHeight="44px"
+      >
+        <div class="wechat-content">
+          <div class="wechat-list">
+            <div class="wechat-title">
+              <span class="left-item"><span class="tag">*</span>头像</span>
+              <span class="right-item"><span class="tag">*</span>微信号码</span>
             </div>
-            <base-button type="primary" plain @click="addWechatItem"><span class="add-icon"></span>添加微信</base-button>
+            <div v-for="(item, index) in msg.meeting_wechats" :key="index" class="wechat">
+              <span class="left-item">
+                <upload :data.sync="item.image_url"
+                        addStyle="width: 36px; height: 36px;"
+                        imgStyle="width: 36px; height: 36px"
+                        :multiple="false"
+                        inline
+                        tip=""
+                        @delete="deleteWechat($event, index)"
+                        @successImage="addWechatImage($event, index)"
+                >
+                  <div slot="icon" class="upload-add-icon"></div>
+                </upload>
+              </span>
+              <p class="right-item">
+                <base-input
+                  v-model="item.wechat"
+                  type="text"
+                  placeholder=""
+                  width="300"
+                  height="36"
+                  inputStyle="border-radius: 0"
+                ></base-input>
+                <span v-if="index > 0" class="delete" @click="delWechatItem(index)"></span>
+              </p>
+            </div>
           </div>
-        </base-form-item>
-      </div>
+          <base-button type="primary" plain @click="addWechatItem"><span class="add-icon"></span>添加微信</base-button>
+        </div>
+      </base-form-item>
     </div>
     <base-footer>
       <base-button @click="cancelBtn">取消</base-button>
@@ -192,7 +191,10 @@
           banner_images: [],
           banner_videos: [],
           detail_images: [],
-          meeting_wechats: [{image_url: ''}]
+          meeting_wechats: [{
+            image_id: 3712,
+            image_url: 'https://exchange-platform-1254297111.picgz.myqcloud.com/test/2019/10/15/1571129138821-201893.png'
+          }]
         },
         id: '',
         isSubmit: false
@@ -252,9 +254,15 @@
         this.$set(this.msg.meeting_wechats[index], 'image_id', '')
       },
       addWechatItem() {
-        if (this.msg.meeting_wechats.length > 2) return
+        if (this.msg.meeting_wechats.length > 2) {
+          this.$toast.show('最多添加3个微信号')
+          return
+        }
         let arr = JSON.parse(JSON.stringify(this.msg.meeting_wechats))
-        arr.push({image_url: ''})
+        arr.push({
+          image_id: 3712,
+          image_url: 'https://exchange-platform-1254297111.picgz.myqcloud.com/test/2019/10/15/1571129138821-201893.png'
+        })
         this.$set(this.msg, 'meeting_wechats', arr)
       },
       delWechatItem(index) {
@@ -397,13 +405,13 @@
     background: #FFF
     .container
       padding: 24px 20px 8px 30px
+      padding-bottom: 40px
       background-color: $color-white
     .after-word
       margin-left: 10px
+    .base-info-cont
+      padding-bottom: 8px
 
-
-    .container
-      margin-bottom: 40px
     .wechat-list
       border: 1px solid $color-line
       background: #F4F8F9
