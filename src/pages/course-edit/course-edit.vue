@@ -352,6 +352,7 @@
           position: relative
           icon-image('pic-add_video')
           cursor: pointer
+          overflow: hidden
       .list-first
         max-width: 135px
   .sendImage
