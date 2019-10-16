@@ -3,7 +3,7 @@
     <div class="block">
       <span v-if="showTextName" class="demonstration">{{textName}}</span>
       <date-picker
-        v-model="times"
+        :value="infoTime"
         style="height:32px; width: 280px"
         :type="dateType"
         :placeholder="datePlaceholder"
@@ -11,6 +11,8 @@
         :valueFormat="valueFormat"
         :startPlaceholder="startPlaceholder"
         :endPlaceholder="endPlaceholder"
+        @change="change"
+        @input="update"
       >
       </date-picker>
     </div>
@@ -19,6 +21,7 @@
 
 <script type="text/ecmascript-6">
   import {DatePicker} from 'element-ui'
+
   const COMPONENT_NAME = 'BASE_DATE'
 
   export default {
@@ -78,21 +81,14 @@
         }
       }
     },
-    data() {
-      return {
-        times: this.infoTime
-      }
-    },
-    watch: {
-      infoTime(times) {
-        this.times = times
+    methods: {
+      update(val) {
+        this.$emit('update:infoTime', val || [])
       },
-      times(news) {
-        this.$emit('update:infoTime', news || [])
-        this.$emit('changeDate', news || [])
+      change(val) {
+        this.$emit('changeDate', val || [])
       }
-    },
-    methods: {}
+    }
   }
 </script>
 

@@ -1,11 +1,4 @@
 export default [
-  // 拼团数据
-  {
-    path: '/group-buy-data',
-    name: 'group-buy-data',
-    component: () => import('@pages/group-buy-data/group-buy-data')
-  },
-
   {
     path: '/',
     redirect: '/login'
@@ -63,9 +56,9 @@ export default [
                   title: '商品列表', // 导航标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['商品列表'], // 面包屑标题
-                  style:{padding:0} // 最外层路由盒子的自定义样式
+                  style: {padding: 0} // 最外层路由盒子的自定义样式
                 },
-                children:[
+                children: [
                   // 新建商品
                   {
                     path: '/mall/goods/goods-list/goods-edit',
@@ -182,7 +175,7 @@ export default [
                   title: '页面管理', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['页面管理'], // 面包屑标题
-                  style:{padding:0}
+                  style: {padding: 0}
                 }
               },
               {
@@ -256,7 +249,8 @@ export default [
       {
         path: '/client',
         name: 'client',
-        meta: {type: 'first_menu', // 一级标示
+        meta: {
+          type: 'first_menu', // 一级标示
           title: '客户 ',
           icon: require('./icon-client@2x.png'),
           iconSelected: ''
@@ -450,6 +444,26 @@ export default [
         },
         component: {render: (h) => h('router-view')},
         children: [
+          // 拼团
+          {
+            path: 'group-buy',
+            name: 'group-buy',
+            text: '统计',
+            component: {render: (h) => h('router-view')},
+            children: [
+              // 拼团数据
+              {
+                path: '/meeting-manager/group-buy/group-buy-data',
+                name: 'group-buy-data',
+                component: () => import('@pages/group-buy-data/group-buy-data'),
+                meta: {
+                  title: '拼团数据', // 页面标题
+                  type: 'sec-menu', // 二级标识
+                  crumbs: ['统计','拼团数据'] // 面包屑标题
+                }
+              }
+            ]
+          },
           {
             path: 'meeting',
             name: 'meeting',
@@ -541,7 +555,7 @@ export default [
                   title: '订单列表', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['订单列表'], // 面包屑标题
-                  style:{padding:0}
+                  style: {padding: 0}
                 }
               }
             ]
@@ -612,7 +626,7 @@ export default [
                   title: '账号权限', // 页面标题
                   type: 'sec-menu', // 二级标识
                   crumbs: ['账号权限'], // 面包屑标题
-                  style:{padding:0} // 最外层路由盒子的自定义样式
+                  style: {padding: 0} // 最外层路由盒子的自定义样式
                 },
                 children: [
                   {
