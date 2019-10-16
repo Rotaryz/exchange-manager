@@ -1,4 +1,11 @@
 export default [
+  // 拼团数据
+  {
+    path: '/group-buy-data',
+    name: 'group-buy-data',
+    component: () => import('@pages/group-buy-data/group-buy-data')
+  },
+
   {
     path: '/',
     redirect: '/login'
@@ -533,7 +540,8 @@ export default [
                 meta: {
                   title: '订单列表', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['订单列表'] // 面包屑标题
+                  crumbs: ['订单列表'], // 面包屑标题
+                  style:{padding:0}
                 }
               }
             ]

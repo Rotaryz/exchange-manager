@@ -10,5 +10,13 @@ export default {
   getOrderStatistic(args) {
     const url = `/exchange-platform/platform/meeting-order/order/statistic`
     return request.get({url, loading: false, ...args})
+  },
+  getGroupOrderList(args) {
+    const url = `/exchange-platform/platform/business-order/order/index`
+    return request.get({url, loading: false, ...args})
+  },
+  getGroupOrderStatistic(args) {
+    const url = `/exchange-platform/platform/business-order/order/statistic`
+    return request.get({url, loading: false, ...args})
   }
 }
