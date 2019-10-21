@@ -122,7 +122,7 @@
           'detail.0.goods_price': {name: '团购价'},
           'detail.0.goods_num': {name: '数量'},
           pay_amount: {name: '实付金额'},
-          'detail.name': {name: '卖家'},
+          'seller.name': {name: '卖家'},
           status_str: {name: '状态', type: 'status', style: 'max-width:92px; padding-right: 0'}
         }
       }
