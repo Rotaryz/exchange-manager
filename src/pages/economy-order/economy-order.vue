@@ -8,7 +8,7 @@
     ></base-tabs>
     <div class="content-wrap">
       <base-layout-top>
-        <base-date v-if="type===2" datePlaceholder="请选择时间" textName="支付时间" :infoTime.sync="time"
+        <base-date v-if="type===2" datePlaceholder="请选择时间" textName="下单时间" :infoTime.sync="time"
                    @changeDate="changeDate"
         ></base-date>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
@@ -118,9 +118,9 @@
         } : {
           order_sn: {name: '订单号', style: {flex: 1.5}},
           'buyer.name': {name: '客户名称', style: {flex: 1.5}},
-          goods_name: {name: '活动名称', style: {flex: 3}},
-          goods_price: {name: '团购价'},
-          goods_num: {name: '数量'},
+          'detail.0.goods_name': {name: '活动名称', style: {flex: 3}},
+          'detail.0.goods_price': {name: '团购价'},
+          'detail.0.goods_num': {name: '数量'},
           pay_amount: {name: '实付金额'},
           'detail.name': {name: '卖家'},
           status_str: {name: '状态', type: 'status', style: 'max-width:92px; padding-right: 0'}
