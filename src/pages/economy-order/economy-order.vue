@@ -12,7 +12,7 @@
                    @changeDate="changeDate"
         ></base-date>
         <base-form-item :inline="true" :required="false" verticalAlign="center" labelMarginRight="0">
-          <base-search v-model="filter.keyword" placeholder="订单号/商品名称" class="base-search"
+          <base-search v-model="filter.keyword" placeholder="订单号" class="base-search"
                        @search="searchBtn"
           ></base-search>
         </base-form-item>
@@ -220,7 +220,11 @@
       // 导出
       exportExcel() {
         const EXCEL_URL = this.type === 1 ? '/exchange-platform/platform/meeting-order/order/export' : '/exchange-platform/platform/business-order/order/export'
-        let filter = this.type === 1 ? this.filter : {...this.filter, start_at: this.startTime, end_at: this.endTime}
+        let filter = this.type === 1 ? this.filter : {
+          ...this.filter,
+          start_at: this.time[0] || '',
+          end_at: this.time[1] || ''
+        }
         let _params = {...filter, access_token: storage.get('auth.token', '')}
         let search = []
         for (let key in _params) {
