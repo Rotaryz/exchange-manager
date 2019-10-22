@@ -35,6 +35,10 @@
                   <div v-if="val.type === 'status'" class="status-box" :class="[item.status===10?'online':'']">
                     {{item[key]}}
                   </div>
+                  <div v-else-if="val.second">
+                    <div class="item-text">{{item[key]}}</div>
+                    <div class="time-creat-at">{{item[val.second]}}</div>
+                  </div>
                   <div v-else class="item-text">
                     {{getChild(key,item)}}
                   </div>
@@ -108,7 +112,7 @@
     computed: {
       listHeader() {
         return this.type === 1 ? {
-          order_sn: {name: '订单号', style: {flex: 1.5}},
+          order_sn: {name: '订单号', style: {flex: 1.5},second:'created_at'},
           'detail.0.meeting_name': {name: '商品名称', style: {flex: 1.5}, ParentName: 'detail'},
           'detail.0.meeting_price': {name: '单价'},
           'detail.0.meeting_num': {name: '数量'},
@@ -116,7 +120,7 @@
           name: {name: '客户名称'},
           status_str: {name: '状态', type: 'status', style: 'max-width:92px; padding-right: 0'}
         } : {
-          order_sn: {name: '订单号', style: {flex: 1.5}},
+          order_sn: {name: '订单号', style: {flex: 2},second:'created_at'},
           'buyer.name': {name: '客户名称', style: {flex: 1.5}},
           'detail.0.goods_name': {name: '活动名称', style: {flex: 3}},
           'detail.0.goods_price': {name: '团购价'},
@@ -286,4 +290,10 @@
       text-overflow: ellipsis
       overflow: hidden
       white-space: nowrap
+    .time-creat-at
+      font-size:$font-size-14
+      line-height:14px
+      color: #C0C4D1
+      min-width:150px
+      margin-top: 7px
 </style>
