@@ -73,7 +73,7 @@
         },
         time: [],
         listHeader: {
-          'seller.nickname': {name: '卖家', style: {flex: 2}},
+          'seller.name': {name: '卖家', style: {flex: 2}},
           number: {name: '订单数', style: {flex: 2}},
           amount: {name: '销售额'},
         },
