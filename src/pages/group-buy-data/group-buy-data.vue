@@ -6,7 +6,7 @@
                    @search="updateList"
       ></base-search>
     </base-layout-top>
-    <base-table-tool :iconUrl="require('./icon-meeting_list@2x.png')" title="商品列表">
+    <base-table-tool :iconUrl="require('./icon-meeting_list@2x.png')" title="卖家排行">
     </base-table-tool>
     <div class="table-content">
       <div class="big-list">
