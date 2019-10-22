@@ -459,7 +459,7 @@ export default [
                 meta: {
                   title: '拼团数据', // 页面标题
                   type: 'sec-menu', // 二级标识
-                  crumbs: ['统计','拼团数据'] // 面包屑标题
+                  crumbs: ['拼团数据'] // 面包屑标题
                 }
               }
             ]

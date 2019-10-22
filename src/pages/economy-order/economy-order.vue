@@ -95,7 +95,7 @@
     },
     data() {
       return {
-        tabList: [{text: '订单列表', type: 1}, {text: '拼团订单', type: 2}],
+        tabList: [{text: '会议订单', type: 1}, {text: '拼团订单', type: 2}],
         type: 1,
         statusList: [],
         total: 0,
