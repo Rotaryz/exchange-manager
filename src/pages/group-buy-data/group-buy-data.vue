@@ -19,8 +19,8 @@
               <div v-for="(val,key) in listHeader" :key="key" class="list-item" :style="val.style">
                 <div class="item-text">
                   {{getChild(key,item)}}
-                  <template v-if="val.after">{{getChild(val.after,item)}}</template>
                 </div>
+                <div v-if="val.second" class="second-text">{{getChild(val.second,item)}}</div>
               </div>
             </div>
           </template>
@@ -74,7 +74,7 @@
         },
         time: [],
         listHeader: {
-          'seller.name': {name: '卖家', style: {flex: 2},after:'seller.mobile'},
+          'seller.name': {name: '卖家', style: {flex: 2},second:'seller.mobile'},
           number: {name: '订单数', style: {flex: 2}},
           amount: {name: '销售额'},
         },
@@ -132,5 +132,6 @@
     width: 100%
     display: flex
     flex-direction: column
-
+  .second-text
+    margin-top 7px
 </style>
