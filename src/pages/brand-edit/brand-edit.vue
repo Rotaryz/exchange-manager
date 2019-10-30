@@ -99,7 +99,7 @@
             type="textarea"
             width="400"
             height="94"
-            limit="500"
+            limit="120"
             placeholder="请输入品牌介绍"
           ></base-input>
         </base-form-item>
