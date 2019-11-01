@@ -23,8 +23,8 @@
               @keydown="keydown"
               @change="changeHandler"
     ></textarea>
+    <!--v-int="isInt"-->
     <input v-else
-           v-int="isInt"
            :value="value"
            :style="inputStyle"
            :placeholder="placeholder"
@@ -48,17 +48,19 @@
 
   export default {
     name: COMPONENT_NAME,
-    directives:{
-      int:{
-        inserted(el,binding){
-          if(!binding.value)return
-          const input = el
-          input.onkeyup=function (e) {
-            input.value=parseInt(input.value)
-          }
-        }
-      }
-    },
+    // directives:{
+    //   int:{
+    //     inserted(el,binding){
+    //       if(!binding.value){
+    //         return
+    //       }
+    //       const input = el
+    //       input.onkeyup=function (e) {
+    //         input.value=parseInt(input.value)
+    //       }
+    //     }
+    //   }
+    // },
     props: {
       hand: {
         default: false,
@@ -163,6 +165,7 @@
       },
       inputEvent(e) {
         let value = e.target.value
+        if(this.isInt)  value=parseInt(value)
         this.$emit('input', value)
       },
       changeHandler(e){
